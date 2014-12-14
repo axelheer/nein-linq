@@ -1,0 +1,12 @@
+# User-specific files
+*.suo
+*.user
+
+# Build results
+*.nupkg
+bin/
+obj/
+
+# NuGet Packages
+packages/*
+!packages/repositories.config

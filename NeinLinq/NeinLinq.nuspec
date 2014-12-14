@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>NeinLinq</id>
+    <version>1.0.0</version>
+    <title>NeinLinq</title>
+    <authors>Axel Heer</authors>
+    <owners>Axel Heer</owners>
+    <licenseUrl>http://opensource.org/licenses/mit</licenseUrl>
+    <projectUrl>http://github.com/axelheer/nein-linq</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), rewriting LINQ queries (even making them null-safe), and building dynamic queries using (translatable) predicates.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright (c) 2014 Axel Heer</copyright>
+    <tags>LINQ EF</tags>
+  </metadata>
+</package>
