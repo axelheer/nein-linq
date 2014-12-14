@@ -94,7 +94,7 @@ namespace NeinLinq.Tests
             Expression<Func<PredicateDummyC, bool>> p = d => d.Name == "Narf";
 
             var r = data.OfType<PredicateDummyC>().Where(p).Count();
-            var s = data.OfType<PredicateDummyB>().Where(p.Translate().To<PredicateDummyB>((b, q) => b.C.Any(q))).Count();
+            var s = data.OfType<PredicateDummyB>().Where(p.Translate().To<PredicateDummyB>((b, q) => b.C.Any(c => q(c)))).Count();
 
             Assert.Equal(1, r);
             Assert.Equal(2, s);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace NeinLinq
@@ -47,16 +48,14 @@ namespace NeinLinq
 
             if (node.Expression == parameter)
             {
-                var lambda = (LambdaExpression)replacement;
+                var lambda = replacement as LambdaExpression;
+                if (lambda != null)
+                {
+                    var binders = lambda.Parameters.Zip(node.Arguments,
+                        (p, a) => new ParameterBinder(p, a));
 
-                // predicates have only one parameter...
-                var t = lambda.Parameters[0];
-                var u = node.Arguments[0];
-
-                // ...which we replace with current argument
-                var binder = new ParameterBinder(t, u);
-
-                return binder.Visit(lambda.Body);
+                    return binders.Aggregate(lambda.Body, (e, b) => b.Visit(e));
+                }
             }
 
             return base.VisitInvocation(node);
