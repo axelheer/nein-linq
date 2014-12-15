@@ -14,5 +14,7 @@ namespace NeinLinq.Tests
         public IEnumerable<NullsafeDummyA> SomeOthers { get; set; }
 
         public ICollection<NullsafeDummyA> MoreOthers { get; set; }
+
+        public ISet<NullsafeDummyA> EvenLotMoreOthers { get; set; }
     }
 }

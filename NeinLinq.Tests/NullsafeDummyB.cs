@@ -9,8 +9,10 @@ namespace NeinLinq.Tests
 
         public int Integer { get; set; }
 
-        public IEnumerable<int> Others { get; set; }
+        public IEnumerable<int> Other { get; set; }
 
         public IEnumerable<int> More { get; set; }
+
+        public IEnumerable<int> Lot { get; set; }
     }
 }
