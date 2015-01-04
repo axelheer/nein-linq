@@ -6,6 +6,6 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Axel Heer")]
 [assembly: AssemblyProduct("NeinLinq")]
-[assembly: AssemblyCopyright("Copyright © 2014 Axel Heer")]
+[assembly: AssemblyCopyright("Copyright © 2014-2015 Axel Heer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
