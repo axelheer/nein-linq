@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{08B1E43D-E5C2-4284-A060-522DECDBDA3C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NeinLinq.Tests.EF6</RootNamespace>
+    <AssemblyName>NeinLinq.Tests.EF6</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>3daa83fb</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NeinLinq.Tests\InjectableDummy.cs">
+      <Link>InjectableDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\InjectableFunctions.cs">
+      <Link>InjectableFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\InjectableTest.cs">
+      <Link>InjectableTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\NullsafeDummyA.cs">
+      <Link>NullsafeDummyA.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\NullsafeDummyB.cs">
+      <Link>NullsafeDummyB.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\NullsafeTest.cs">
+      <Link>NullsafeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\PredicateDummyA.cs">
+      <Link>PredicateDummyA.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\PredicateDummyB.cs">
+      <Link>PredicateDummyB.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\PredicateDummyC.cs">
+      <Link>PredicateDummyC.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\PredicateTest.cs">
+      <Link>PredicateTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\SubstitutionDummy.cs">
+      <Link>SubstitutionDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\SubstitutionFunctionsA.cs">
+      <Link>SubstitutionFunctionsA.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\SubstitutionFunctionsB.cs">
+      <Link>SubstitutionFunctionsB.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\SubstitutionTest.cs">
+      <Link>SubstitutionTest.cs</Link>
+    </Compile>
+    <Compile Include="DbAsyncContext.cs" />
+    <Compile Include="DbAsyncDummy.cs" />
+    <Compile Include="DbAsyncRewriter.cs" />
+    <Compile Include="DbAsyncTest.cs" />
+    <Compile Include="FakeAsyncDummy.cs" />
+    <Compile Include="FakeAsyncRewriter.cs" />
+    <Compile Include="FakeAsyncTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NeinLinq.EF6\NeinLinq.EF6.csproj">
+      <Project>{c263d5d4-74f2-4863-af62-4d02e5d84663}</Project>
+      <Name>NeinLinq.EF6</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props'))" />
+  </Target>
+</Project>

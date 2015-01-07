@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using System.Resources;
 
-[assembly: AssemblyTitle("NeinLinq")]
+[assembly: AssemblyTitle("NeinLinq.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Axel Heer")]
@@ -10,7 +9,3 @@ using System.Resources;
 [assembly: AssemblyCopyright("Copyright © 2014-2015 Axel Heer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
-[assembly: NeutralResourcesLanguage("en")]
-[assembly: CLSCompliant(true)]

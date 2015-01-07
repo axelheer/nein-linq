@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NeinLinq")]
 [assembly: AssemblyDescription("")]
@@ -14,3 +15,4 @@ using System.Resources;
 [assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: NeutralResourcesLanguage("en")]
 [assembly: CLSCompliant(true)]
+[assembly: ComVisible(false)]
