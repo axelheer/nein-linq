@@ -7,7 +7,7 @@ To install *NeinLinq*, run the following command in the [NuGet Package Manager C
 
     PM> Install-Package NeinLinq
 
-To use async queries within *Entity Framework 6* use the "special" build (there's an extra dependency for that; thus, the extra build).
+To run async queries within *Entity Framework 6* use the "special" build (there's an extra dependency for that; thus, the extra build).
 
     PM> Install-Package NeinLinq -Version x.x.x-ef6 -Pre
 
@@ -48,7 +48,7 @@ Finally, let us look at a query using *Entity Framework* or the like:
         Value = d.DoSomethingFancy()
     }
 
-The methods `FulfillsSomeCriteria` and `DoSomethingFancy` should be marked accordingly, using an attribute or just the simple convention "same class, same name, matching signature" (which requires the class to be whitelisted by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
+The methods `FulfillsSomeCriteria` and `DoSomethingFancy` should be marked accordingly, using an attribute or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
 
 
 Null-safe queries
@@ -56,7 +56,7 @@ Null-safe queries
 
 We are writing the year 2014 and still have to worry about null values.
 
-Howsoever, we got used to it and we are fine. But writing queries in C# loaded with null checks doesn't feel right, it just looks awful, the tranlated SQL even gets worse. A LINQ query just for SQL dbs can spare these null checks, a LINQ query just for in-memory calculcations must include them. And a LINQ query for both has a problem, which *NeinLinq* tries to solve.
+Howsoever, we got used to it and we are fine. But writing queries in C# loaded with null checks doesn't feel right, it just looks awful, the translated SQL even gets worse. A LINQ query just for SQL dbs can spare these null checks, a LINQ query just for in-memory calculations must include them. And a LINQ query for both has a problem, which *NeinLinq* tries to solve.
 
 The following query may trigger null references:
 
@@ -170,3 +170,8 @@ Just think of helper functions like the `SqlFunctions` class provided by *Entity
     ...
 
 That's it.
+
+Custom query manipulation
+-------------------------
+
+You want more? Okay, you can use the generic rewrite mechanism of this library to intercept LINQ queries with your own *Expression visitor*. The code behind the substitution above should provide a good example.
