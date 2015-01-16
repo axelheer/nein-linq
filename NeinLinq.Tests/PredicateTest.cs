@@ -65,6 +65,18 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
+        public void NotShouldNegatePredicate()
+        {
+            Expression<Func<PredicateDummyA, bool>> p = d => d.Name == "Narf";
+
+            var r = data.Where(p).Count();
+            var s = data.Where(p.Not()).Count();
+
+            Assert.Equal(3, r);
+            Assert.Equal(6, s);
+        }
+
+        [Fact]
         public void ToSubtypeShouldSubstitute()
         {
             Expression<Func<PredicateDummyA, bool>> p = d => d.Name == "Narf";

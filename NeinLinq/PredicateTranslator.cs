@@ -73,5 +73,22 @@ namespace NeinLinq
             return Expression.Lambda<Func<T, bool>>(
                 Expression.OrElse(binder.Visit(left.Body), right.Body), r);
         }
+
+        /// <summary>
+        /// Negates the given predicate using a binary NOT operation.
+        /// </summary>
+        /// <typeparam name="T">The type of the predicate's parameter.</typeparam>
+        /// <param name="predicate">The predicate expression.</param>
+        /// <returns>A predicate expression.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Not(predicate.Body), predicate.Parameters);
+        }
     }
 }
