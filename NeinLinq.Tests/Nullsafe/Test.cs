@@ -3,49 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests.Nullsafe
 {
-    public class NullsafeTest
+    public class Test
     {
-        private readonly IQueryable<NullsafeDummyA> data;
+        private readonly IQueryable<Dummy> data;
 
-        public NullsafeTest()
+        public Test()
         {
-            data = new[] {
-                new NullsafeDummyA
+            data = new[]
+            {
+                new Dummy
                 {
                     SomeInteger = 7,
                     SomeDate = new DateTime(1977, 05, 25),
-                    SomeOther = new NullsafeDummyA { SomeInteger = 42 }
+                    SomeOther = new Dummy { SomeInteger = 42 }
                 },
-                new NullsafeDummyA
+                new Dummy
                 {
                     SomeInteger = 1138,
                     SomeDate = new DateTime(1980, 05, 21),
                     SomeOthers = new[]
                     {
-                        new NullsafeDummyA { SomeDate = new DateTime(2000, 3, 1) },
-                        new NullsafeDummyA { SomeDate = new DateTime(2000, 6, 1) }
+                        new Dummy { SomeDate = new DateTime(2000, 3, 1) },
+                        new Dummy { SomeDate = new DateTime(2000, 6, 1) }
                     }
                 },
-                new NullsafeDummyA
+                new Dummy
                 {
                     SomeInteger = 123456,
                     SomeDate = new DateTime(1983, 05, 25),
                     MoreOthers = new[]
                     {
-                        new NullsafeDummyA { SomeOther = new NullsafeDummyA { SomeDate = new DateTime(2000, 1, 5) } },
-                        new NullsafeDummyA { SomeOther = new NullsafeDummyA { SomeDate = new DateTime(2000, 1, 8) } }
+                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 5) } },
+                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 8) } }
                     }
                 },
-                new NullsafeDummyA
+                new Dummy
                 {
                     SomeInteger = 654321,
                     SomeDate = new DateTime(2015, 12, 18),
-                    EvenLotMoreOthers = new HashSet<NullsafeDummyA>()
+                    EvenLotMoreOthers = new HashSet<Dummy>()
                     {
-                        new NullsafeDummyA { SomeOther = new NullsafeDummyA { SomeDate = new DateTime(2000, 1, 4) } },
-                        new NullsafeDummyA { SomeOther = new NullsafeDummyA { SomeDate = new DateTime(2000, 1, 7) } }
+                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 4) } },
+                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 7) } }
                     }
                 },
                 null
@@ -74,11 +75,11 @@ namespace NeinLinq.Tests
             assertDummy(result[4], year: 2015, lot: new[] { 4, 7 });
         }
 
-        private static IQueryable<NullsafeDummyB> query(IQueryable<NullsafeDummyA> data)
+        private static IQueryable<DummyView> query(IQueryable<Dummy> data)
         {
             return from a in data
                    orderby a.SomeInteger
-                   select new NullsafeDummyB
+                   select new DummyView
                    {
                        Year = a.SomeDate.Year,
                        Integer = a.SomeOther.SomeInteger,
@@ -91,7 +92,7 @@ namespace NeinLinq.Tests
                    };
         }
 
-        private static void assertDummy(NullsafeDummyB dummy, int year = 0, int integer = 0, int[] other = null, int[] more = null, int[] lot = null)
+        private static void assertDummy(DummyView dummy, int year = 0, int integer = 0, int[] other = null, int[] more = null, int[] lot = null)
         {
             Assert.Equal(year, dummy.Year);
             Assert.Equal(integer, dummy.Integer);

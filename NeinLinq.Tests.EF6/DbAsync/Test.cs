@@ -1,50 +1,58 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NeinLinq.Tests.EF6
+namespace NeinLinq.Tests.DbAsync
 {
-    public class FakeAsyncTest
+    public class Test
     {
-        private readonly IQueryable<FakeAsyncDummy> data;
-
-        public FakeAsyncTest()
+        static Test()
         {
-            data = new[] {
-                new FakeAsyncDummy
+            Database.SetInitializer<Context>(new DropCreateDatabaseAlways<Context>());
+        }
+
+        private readonly Context db;
+
+        public Test()
+        {
+            db = new Context();
+            db.Database.Initialize(force: true);
+
+            db.Dummies.AddRange(new[]
+            {
+                new Dummy
                 {
                     Id = 1,
                     Name = "Asdf",
                     Number = 123.45m
                 },
-                new FakeAsyncDummy
+                new Dummy
                 {
                     Id = 2,
                     Name = "Qwer",
                     Number = 67.89m
                 },
-                new FakeAsyncDummy
+                new Dummy
                 {
                     Id = 3,
                     Name = "Narf",
                     Number = 3.14m
                 }
-            }.AsQueryable();
+            });
+            db.SaveChanges();
         }
 
         [Fact]
-        public void ToListAsyncShouldFail()
+        public async Task ToListAsyncShouldWork()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                data.ToListAsync());
+            await db.Dummies.ToListAsync();
         }
 
         [Fact]
         public async Task ToListAsyncShouldSucceed()
         {
-            var query = data.Rewrite(new FakeAsyncRewriter());
+            var query = db.Dummies.Rewrite(new Rewriter());
 
             var result = await query.ToListAsync();
 
@@ -52,16 +60,15 @@ namespace NeinLinq.Tests.EF6
         }
 
         [Fact]
-        public void SumAsyncShouldFail()
+        public async Task SumAsyncShouldWork()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                data.SumAsync(d => d.Number));
+            await db.Dummies.SumAsync(d => d.Number);
         }
 
         [Fact]
         public async Task SumAsyncShouldSucceed()
         {
-            var query = data.Rewrite(new FakeAsyncRewriter());
+            var query = db.Dummies.Rewrite(new Rewriter());
 
             var result = await query.SumAsync(d => d.Number);
 

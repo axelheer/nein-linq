@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests.Nullsafe
 {
-    public class NullsafeDummyB
+    public class DummyView
     {
         public int Year { get; set; }
 

@@ -8,8 +8,8 @@
     <ProjectGuid>{08B1E43D-E5C2-4284-A060-522DECDBDA3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NeinLinq.Tests.EF6</RootNamespace>
-    <AssemblyName>NeinLinq.Tests.EF6</AssemblyName>
+    <RootNamespace>NeinLinq.Tests</RootNamespace>
+    <AssemblyName>NeinLinq.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -50,55 +50,55 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NeinLinq.Tests\InjectableDummy.cs">
-      <Link>InjectableDummy.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Injectable\Dummy.cs">
+      <Link>Injectable\Dummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\InjectableFunctions.cs">
-      <Link>InjectableFunctions.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Injectable\Functions.cs">
+      <Link>Injectable\Functions.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\InjectableTest.cs">
-      <Link>InjectableTest.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Injectable\Test.cs">
+      <Link>Injectable\Test.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\NullsafeDummyA.cs">
-      <Link>NullsafeDummyA.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Nullsafe\Dummy.cs">
+      <Link>Nullsafe\Dummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\NullsafeDummyB.cs">
-      <Link>NullsafeDummyB.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Nullsafe\DummyView.cs">
+      <Link>Nullsafe\DummyView.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\NullsafeTest.cs">
-      <Link>NullsafeTest.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Nullsafe\Test.cs">
+      <Link>Nullsafe\Test.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\PredicateDummyA.cs">
-      <Link>PredicateDummyA.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Predicate\Dummy.cs">
+      <Link>Predicate\Dummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\PredicateDummyB.cs">
-      <Link>PredicateDummyB.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Predicate\DummyOne.cs">
+      <Link>Predicate\DummyOne.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\PredicateDummyC.cs">
-      <Link>PredicateDummyC.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Predicate\DummyTwo.cs">
+      <Link>Predicate\DummyTwo.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\PredicateTest.cs">
-      <Link>PredicateTest.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Predicate\Test.cs">
+      <Link>Predicate\Test.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\SubstitutionDummy.cs">
-      <Link>SubstitutionDummy.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Substitution\Dummy.cs">
+      <Link>Substitution\Dummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\SubstitutionFunctionsA.cs">
-      <Link>SubstitutionFunctionsA.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Substitution\Functions.cs">
+      <Link>Substitution\Functions.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\SubstitutionFunctionsB.cs">
-      <Link>SubstitutionFunctionsB.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Substitution\OtherFunctions.cs">
+      <Link>Substitution\OtherFunctions.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\SubstitutionTest.cs">
-      <Link>SubstitutionTest.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Substitution\Test.cs">
+      <Link>Substitution\Test.cs</Link>
     </Compile>
-    <Compile Include="DbAsyncContext.cs" />
-    <Compile Include="DbAsyncDummy.cs" />
-    <Compile Include="DbAsyncRewriter.cs" />
-    <Compile Include="DbAsyncTest.cs" />
-    <Compile Include="FakeAsyncDummy.cs" />
-    <Compile Include="FakeAsyncRewriter.cs" />
-    <Compile Include="FakeAsyncTest.cs" />
+    <Compile Include="DbAsync\Context.cs" />
+    <Compile Include="DbAsync\Dummy.cs" />
+    <Compile Include="DbAsync\Rewriter.cs" />
+    <Compile Include="DbAsync\Test.cs" />
+    <Compile Include="FakeAsync\Dummy.cs" />
+    <Compile Include="FakeAsync\Rewriter.cs" />
+    <Compile Include="FakeAsync\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

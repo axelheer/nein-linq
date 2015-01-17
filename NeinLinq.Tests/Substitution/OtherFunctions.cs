@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests.Substitution
 {
-    public class SubstitutionFunctionsB
+    public class OtherFunctions
     {
         public static bool IsSomehowCalled { get; set; }
 

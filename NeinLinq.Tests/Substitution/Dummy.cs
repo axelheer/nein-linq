@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests.Substitution
 {
-    public class SubstitutionDummy
+    public class Dummy
     {
         public int Id { get; set; }
 

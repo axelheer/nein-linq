@@ -2,19 +2,19 @@
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests.Injectable
 {
-    public class InjectableTest
+    public class Test
     {
-        private readonly IQueryable<InjectableDummy> data;
+        private readonly IQueryable<Dummy> data;
 
-        public InjectableTest()
+        public Test()
         {
             data = new[]
             {
-                new InjectableDummy { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
-                new InjectableDummy { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
-                new InjectableDummy { Id = 3, Name = "Qwer", Distance = 8, Time = .125 }
+                new Dummy { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
+                new Dummy { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
+                new Dummy { Id = 3, Name = "Qwer", Distance = 8, Time = .125 }
             }
             .AsQueryable();
         }
@@ -22,7 +22,7 @@ namespace NeinLinq.Tests
         [Fact]
         public void InjectShouldFailWithoutSibling()
         {
-            var query = from d in data.ToInjectable(typeof(InjectableFunctions))
+            var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithoutSibling();
 
             Assert.Throws<InvalidOperationException>(() =>
@@ -32,7 +32,7 @@ namespace NeinLinq.Tests
         [Fact]
         public void InjectShouldSucceedWithConvention()
         {
-            var query = from d in data.ToInjectable(typeof(InjectableFunctions))
+            var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithConvention();
 
             var result = query.ToList();
@@ -65,7 +65,7 @@ namespace NeinLinq.Tests
         [Fact]
         public void InjectShouldFailWithInvalidSiblingResult()
         {
-            var query = from d in data.ToInjectable(typeof(InjectableFunctions))
+            var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithInvalidSiblingResult();
 
             Assert.Throws<InvalidOperationException>(() =>
@@ -75,7 +75,7 @@ namespace NeinLinq.Tests
         [Fact]
         public void InjectShouldFailWithInvalidSiblingSignature()
         {
-            var query = from d in data.ToInjectable(typeof(InjectableFunctions))
+            var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithInvalidSiblingSignature();
 
             Assert.Throws<InvalidOperationException>(() =>

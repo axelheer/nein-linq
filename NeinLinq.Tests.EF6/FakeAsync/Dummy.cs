@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace NeinLinq.Tests.EF6
+namespace NeinLinq.Tests.FakeAsync
 {
-    public class FakeAsyncDummy
+    public class Dummy
     {
         public int Id { get; set; }
 

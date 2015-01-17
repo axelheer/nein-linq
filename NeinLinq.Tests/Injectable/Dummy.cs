@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests.Injectable
 {
-    public class InjectableDummy
+    public class Dummy
     {
         public int Id { get; set; }
 

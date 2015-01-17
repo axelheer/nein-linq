@@ -1,13 +1,11 @@
 ﻿using System;
 
-namespace NeinLinq.Tests.EF6
+namespace NeinLinq.Tests.Predicate
 {
-    public class DbAsyncDummy
+    public class Dummy
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public decimal Number { get; set; }
     }
 }
