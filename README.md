@@ -1,7 +1,7 @@
 ﻿NeinLinq
 ========
 
-*NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), rewriting LINQ queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
+*NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
 
 To install *NeinLinq*, run the following command in the [NuGet Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console).
 

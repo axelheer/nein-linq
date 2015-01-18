@@ -2,14 +2,14 @@
 <package>
   <metadata>
     <id>NeinLinq</id>
-    <version>1.1.0-ef6</version>
+    <version>1.2.0-ef6</version>
     <title>NeinLinq</title>
     <authors>Axel Heer</authors>
     <owners>Axel Heer</owners>
     <licenseUrl>http://opensource.org/licenses/mit</licenseUrl>
     <projectUrl>http://github.com/axelheer/nein-linq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), rewriting LINQ queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.</description>
+    <description>NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.</description>
     <releaseNotes>Added NOT to predicate translator. Added selector translator. (Use -ef6 build to run EF6 async queries.)</releaseNotes>
     <copyright>Copyright (c) 2014-2015 Axel Heer</copyright>
     <tags>LINQ EF</tags>
