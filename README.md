@@ -156,6 +156,24 @@ Let us use all of this as a windup:
 
     db.Courses.Where(finalPredicate)...
 
+Selector translator (experimental)
+----------------------------------
+
+As with predicates selectors need some love too. If we've an existing selector for some base type and want to reuse this code for one or more concrete types, we're forced to copy and paste again. Don't do that!
+
+Let us think of two entities (Academy and SuperAcademy) with according Contracts / ViewModels / DTOs / Whatever (AcademyView and SuperAcademyView).
+
+    Expression<Func<Academy, AcademyView>> s = a => new AcademyView { Id = a.Id, Name = a.Name };
+    Expression<Func<SuperAcademy, SuperAcademyView>> t = a => new SuperAcademyView { Narf = a.Narf };
+
+Note that we omit the *Member bindings* of the first selector within the second one. Don't repeat yourself, remember?
+
+    db.Academies.OfType<SuperAcademy>().Select(s.Translate().Cross<SuperAcademy>().Apply(t));
+
+Although there're more options, the common scenario can look that way: reuse the base selector, start it's translation (type inference!), say where to start (no type inference), and finally apply the additional selector (type inference again!).
+
+*Attention:* i'm still playing around with this feature, so please beware my fickleness.
+
 Function substitution
 ---------------------
 
