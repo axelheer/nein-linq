@@ -38,6 +38,7 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Result<V>()
+            where V : U
         {
             var init = selector.Body as MemberInitExpression;
 
@@ -59,6 +60,7 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<V, U>> Source<V>()
+            where V : T
         {
             var t = selector.Parameters[0];
             var v = Expression.Parameter(typeof(V), t.Name);
@@ -78,6 +80,7 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public SelectorTranslation<V, U> Cross<V>()
+            where V : T
         {
             return new SelectorTranslation<V, U>(Source<V>());
         }
@@ -93,6 +96,7 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Apply<V>(Expression<Func<T, V>> value)
+            where V : U
         {
             return Result<V>().Apply(value);
         }
