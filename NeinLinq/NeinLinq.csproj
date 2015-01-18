@@ -61,6 +61,8 @@
     <Compile Include="RewriteQuery.cs" />
     <Compile Include="RewriteQueryBuilder.cs" />
     <Compile Include="RewriteQueryProvider.cs" />
+    <Compile Include="SelectorTranslation.cs" />
+    <Compile Include="SelectorTranslator.cs" />
     <Compile Include="SubstitutionQueryBuilder.cs" />
     <Compile Include="SubstitutionQueryRewriter.cs" />
   </ItemGroup>

@@ -88,6 +88,12 @@
     <Compile Include="..\NeinLinq\RewriteQueryBuilder.cs">
       <Link>RewriteQueryBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\NeinLinq\SelectorTranslation.cs">
+      <Link>SelectorTranslation.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq\SelectorTranslator.cs">
+      <Link>SelectorTranslator.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq\SubstitutionQueryBuilder.cs">
       <Link>SubstitutionQueryBuilder.cs</Link>
     </Compile>

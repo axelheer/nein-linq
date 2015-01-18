@@ -80,6 +80,21 @@
     <Compile Include="..\NeinLinq.Tests\Predicate\Test.cs">
       <Link>Predicate\Test.cs</Link>
     </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\Dummy.cs">
+      <Link>Selector\Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\DummyView.cs">
+      <Link>Selector\DummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\SuperDummy.cs">
+      <Link>Selector\SuperDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\SuperDummyView.cs">
+      <Link>Selector\SuperDummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\Test.cs">
+      <Link>Selector\Test.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq.Tests\Substitution\Dummy.cs">
       <Link>Substitution\Dummy.cs</Link>
     </Compile>

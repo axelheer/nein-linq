@@ -52,6 +52,11 @@
     <Compile Include="Predicate\DummyTwo.cs" />
     <Compile Include="Predicate\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Selector\Dummy.cs" />
+    <Compile Include="Selector\DummyView.cs" />
+    <Compile Include="Selector\SuperDummy.cs" />
+    <Compile Include="Selector\SuperDummyView.cs" />
+    <Compile Include="Selector\Test.cs" />
     <Compile Include="Substitution\Dummy.cs" />
     <Compile Include="Substitution\Functions.cs" />
     <Compile Include="Substitution\OtherFunctions.cs" />
