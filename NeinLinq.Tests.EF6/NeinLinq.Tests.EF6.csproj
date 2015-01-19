@@ -83,6 +83,18 @@
     <Compile Include="..\NeinLinq.Tests\Selector\Dummy.cs">
       <Link>Selector\Dummy.cs</Link>
     </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\DummyOne.cs">
+      <Link>Selector\DummyOne.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\DummyOneView.cs">
+      <Link>Selector\DummyOneView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\DummyTwo.cs">
+      <Link>Selector\DummyTwo.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\DummyTwoView.cs">
+      <Link>Selector\DummyTwoView.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq.Tests\Selector\DummyView.cs">
       <Link>Selector\DummyView.cs</Link>
     </Compile>

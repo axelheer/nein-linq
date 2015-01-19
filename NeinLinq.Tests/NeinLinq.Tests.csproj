@@ -53,6 +53,10 @@
     <Compile Include="Predicate\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selector\Dummy.cs" />
+    <Compile Include="Selector\DummyOne.cs" />
+    <Compile Include="Selector\DummyOneView.cs" />
+    <Compile Include="Selector\DummyTwo.cs" />
+    <Compile Include="Selector\DummyTwoView.cs" />
     <Compile Include="Selector\DummyView.cs" />
     <Compile Include="Selector\SuperDummy.cs" />
     <Compile Include="Selector\SuperDummyView.cs" />

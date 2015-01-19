@@ -59,7 +59,7 @@ namespace NeinLinq
             var bindings = leftInit.Bindings.Concat(rightInit.Bindings);
 
             return Expression.Lambda<Func<T, U>>(
-                binder.Visit(Expression.MemberInit(Expression.New(typeof(U)), bindings)), right.Parameters);
+                binder.Visit(Expression.MemberInit(Expression.New(typeof(U)), bindings)), r);
         }
     }
 }

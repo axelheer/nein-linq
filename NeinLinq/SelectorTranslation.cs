@@ -30,6 +30,50 @@ namespace NeinLinq
         }
 
         /// <summary>
+        /// Translates a given selector for a given subtype using it's source parameter.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <returns>A translated selector expression.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
+        public Expression<Func<V, U>> Source<V>()
+            where V : T
+        {
+            var t = selector.Parameters[0];
+            var v = Expression.Parameter(typeof(V), t.Name);
+
+            var binder = new ParameterBinder(t, v);
+
+            return Expression.Lambda<Func<V, U>>(
+                binder.Visit(selector.Body), v);
+        }
+
+        /// <summary>
+        /// Translates a given selector for a given related type using it's source parameter.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <param name="path">The path from the desired type to the given type.</param>
+        /// <returns>A translated selector expression.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
+        public Expression<Func<V, U>> Source<V>(Expression<Func<V, T>> path)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            var t = selector.Parameters[0];
+            var v = path.Parameters[0];
+
+            var binder = new ParameterBinder(t, path.Body);
+
+            return Expression.Lambda<Func<V, U>>(
+                binder.Visit(selector.Body), v);
+        }
+
+        /// <summary>
         /// Translates a given selector for a given subtype using it's result parameter.
         /// </summary>
         /// <typeparam name="V">The type of the translated selector's result parameter.</typeparam>
@@ -52,23 +96,29 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Translates a given selector for a given subtype using it's source parameter.
+        /// Translates a given selector for a given related type using it's result parameter.
         /// </summary>
-        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <typeparam name="V">The type of the translated selector's result parameter.</typeparam>
+        /// <param name="path">The path from the desired type to the given type.</param>
         /// <returns>A translated selector expression.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
-        public Expression<Func<V, U>> Source<V>()
-            where V : T
+        public Expression<Func<T, V>> Result<V>(Expression<Func<V, U>> path)
         {
-            var t = selector.Parameters[0];
-            var v = Expression.Parameter(typeof(V), t.Name);
+            if (path == null)
+                throw new ArgumentNullException("path");
 
-            var binder = new ParameterBinder(t, v);
+            var member = path.Body as MemberExpression;
 
-            return Expression.Lambda<Func<V, U>>(
-                binder.Visit(selector.Body), v);
+            if (member == null)
+                throw new NotSupportedException("Only member expressions are supported yet.");
+
+            var bind = Expression.Bind(member.Member, selector.Body);
+
+            return Expression.Lambda<Func<T, V>>(
+                Expression.MemberInit(Expression.New(typeof(V)), bind), selector.Parameters);
         }
 
         /// <summary>
@@ -86,6 +136,20 @@ namespace NeinLinq
         }
 
         /// <summary>
+        /// Continues translation of a given selector for a given related type using it's source parameter.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <param name="path">The path from the desired type to the given type.</param>
+        /// <returns>Another translation object for the given selector.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
+        public SelectorTranslation<V, U> Cross<V>(Expression<Func<V, T>> path)
+        {
+            return new SelectorTranslation<V, U>(Source<V>(path));
+        }
+
+        /// <summary>
         /// Translates a given selector for a given subtype using it's result parameter
         /// and combines it with another given selector by merging their member bindings.
         /// </summary>
@@ -99,6 +163,22 @@ namespace NeinLinq
             where V : U
         {
             return Result<V>().Apply(value);
+        }
+
+        /// <summary>
+        /// Translates a given selector for a given related type using it's result parameter
+        /// and combines it with another given selector by merging their member bindings.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's result parameter.</typeparam>
+        /// <param name="path">The path from the desired type to the given type.</param>
+        /// <param name="value">The additional selector expression to combine.</param>
+        /// <returns>A single translated and combined selector expression.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
+        public Expression<Func<T, V>> Apply<V>(Expression<Func<V, U>> path, Expression<Func<T, V>> value)
+        {
+            return Result<V>(path).Apply(value);
         }
     }
 }
