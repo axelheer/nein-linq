@@ -7,7 +7,7 @@ namespace NeinLinq.Tests.Nullsafe
     {
         public int SomeInteger { get; set; }
 
-        public DateTime SomeDate { get; set; }
+        public DateTime OneDay { get; set; }
 
         public Dummy SomeOther { get; set; }
 

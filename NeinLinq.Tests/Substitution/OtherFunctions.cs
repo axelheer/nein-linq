@@ -2,7 +2,7 @@
 
 namespace NeinLinq.Tests.Substitution
 {
-    public class OtherFunctions
+    public static class OtherFunctions
     {
         public static bool IsSomehowCalled { get; set; }
 

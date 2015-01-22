@@ -16,37 +16,37 @@ namespace NeinLinq.Tests.Nullsafe
                 new Dummy
                 {
                     SomeInteger = 7,
-                    SomeDate = new DateTime(1977, 05, 25),
+                    OneDay = new DateTime(1977, 05, 25),
                     SomeOther = new Dummy { SomeInteger = 42 }
                 },
                 new Dummy
                 {
                     SomeInteger = 1138,
-                    SomeDate = new DateTime(1980, 05, 21),
+                    OneDay = new DateTime(1980, 05, 21),
                     SomeOthers = new[]
                     {
-                        new Dummy { SomeDate = new DateTime(2000, 3, 1) },
-                        new Dummy { SomeDate = new DateTime(2000, 6, 1) }
+                        new Dummy { OneDay = new DateTime(2000, 3, 1) },
+                        new Dummy { OneDay = new DateTime(2000, 6, 1) }
                     }
                 },
                 new Dummy
                 {
                     SomeInteger = 123456,
-                    SomeDate = new DateTime(1983, 05, 25),
+                    OneDay = new DateTime(1983, 05, 25),
                     MoreOthers = new[]
                     {
-                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 5) } },
-                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 8) } }
+                        new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 5) } },
+                        new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 8) } }
                     }
                 },
                 new Dummy
                 {
                     SomeInteger = 654321,
-                    SomeDate = new DateTime(2015, 12, 18),
+                    OneDay = new DateTime(2015, 12, 18),
                     EvenLotMoreOthers = new HashSet<Dummy>()
                     {
-                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 4) } },
-                        new Dummy { SomeOther = new Dummy { SomeDate = new DateTime(2000, 1, 7) } }
+                        new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 4) } },
+                        new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 7) } }
                     }
                 },
                 null
@@ -81,18 +81,23 @@ namespace NeinLinq.Tests.Nullsafe
                    orderby a.SomeInteger
                    select new DummyView
                    {
-                       Year = a.SomeDate.Year,
+                       Year = a.OneDay.Year,
                        Integer = a.SomeOther.SomeInteger,
                        Other = from b in a.SomeOthers
-                               select b.SomeDate.Month,
+                               select b.OneDay.Month,
                        More = from c in a.MoreOthers
-                              select c.SomeOther.SomeDate.Day,
+                              select c.SomeOther.OneDay.Day,
                        Lot = from d in a.EvenLotMoreOthers
-                             select d.SomeOther.SomeDate.Day
+                             select d.SomeOther.OneDay.Day
                    };
         }
 
-        private static void assertDummy(DummyView dummy, int year = 0, int integer = 0, int[] other = null, int[] more = null, int[] lot = null)
+        private static void assertDummy(DummyView dummy,
+                                        int year = 0,
+                                        int integer = 0,
+                                        int[] other = null,
+                                        int[] more = null,
+                                        int[] lot = null)
         {
             Assert.Equal(year, dummy.Year);
             Assert.Equal(integer, dummy.Integer);
