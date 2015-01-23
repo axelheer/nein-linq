@@ -7,7 +7,7 @@ namespace NeinLinq.Tests.Predicate
 {
     public class Test
     {
-        private readonly IQueryable<Dummy> data;
+        private readonly IQueryable<IDummy> data;
 
         public Test()
         {
@@ -17,65 +17,71 @@ namespace NeinLinq.Tests.Predicate
                 new Dummy { Id = 2, Name = "Narf" },
                 new Dummy { Id = 3, Name = "Qwer" }
             };
-            var o = new[]
+            var s = new[]
             {
-                new DummyOne { Id = 4, Name = "Asdf" },
-                new DummyOne { Id = 5, Name = "Narf" },
-                new DummyOne { Id = 6, Name = "Qwer" }
+                new SuperDummy { Id = 4, Name = "Asdf" },
+                new SuperDummy { Id = 5, Name = "Narf" },
+                new SuperDummy { Id = 6, Name = "Qwer" }
             };
-            var t = new[]
+            var p = new[]
             {
-                new DummyTwo { Id = 7, Name = "Asdf", One = o[1] },
-                new DummyTwo { Id = 8, Name = "Narf", One = o[2] },
-                new DummyTwo { Id = 9, Name = "Qwer", One = o[0] }
+                new ParentDummy { Id = 7, Name = "Asdf" },
+                new ParentDummy { Id = 8, Name = "Narf" },
+                new ParentDummy { Id = 9, Name = "Qwer" }
             };
-            o[0].Twos = new[] { t[0], t[1] };
-            o[1].Twos = new[] { t[1], t[2] };
-            o[2].Twos = new[] { t[0], t[2] };
+            var c = new[]
+            {
+                new ChildDummy { Id = 10, Name = "Asdf", Parent = p[1] },
+                new ChildDummy { Id = 11, Name = "Narf", Parent = p[2] },
+                new ChildDummy { Id = 12, Name = "Qwer", Parent = p[0] }
+            };
+            p[0].Childs = new[] { c[0], c[1] };
+            p[1].Childs = new[] { c[1], c[2] };
+            p[2].Childs = new[] { c[0], c[2] };
 
-            data = d.Concat(o).Concat(t).AsQueryable();
+            data = d.Concat<IDummy>(s).Concat(p).Concat(c).AsQueryable();
         }
 
         [Fact]
         public void AndShouldCombinePredicates()
         {
-            Expression<Func<Dummy, bool>> p = d => d.Id % 2 == 1;
-            Expression<Func<Dummy, bool>> q = d => d.Name == "Narf";
+            Expression<Func<IDummy, bool>> p = d => d.Id % 2 == 1;
+            Expression<Func<IDummy, bool>> q = d => d.Name == "Narf";
 
             var r = data.Where(p).Count();
             var s = data.Where(q).Count();
             var t = data.Where(p.And(q)).Count();
 
-            Assert.Equal(5, r);
-            Assert.Equal(3, s);
-            Assert.Equal(1, t);
+            Assert.Equal(6, r);
+            Assert.Equal(4, s);
+            Assert.Equal(2, t);
         }
 
         [Fact]
         public void OrShouldCombinePredicates()
         {
-            Expression<Func<Dummy, bool>> p = d => d.Id % 2 == 1;
-            Expression<Func<Dummy, bool>> q = d => d.Name == "Narf";
+            Expression<Func<IDummy, bool>> p = d => d.Id % 2 == 1;
+            Expression<Func<IDummy, bool>> q = d => d.Name == "Narf";
 
             var r = data.Where(p).Count();
             var s = data.Where(q).Count();
             var t = data.Where(p.Or(q)).Count();
 
-            Assert.Equal(5, r);
-            Assert.Equal(3, s);
-            Assert.Equal(7, t);
+            Assert.Equal(6, r);
+            Assert.Equal(4, s);
+            Assert.Equal(8, t);
         }
 
         [Fact]
         public void NotShouldNegatePredicate()
         {
-            Expression<Func<Dummy, bool>> p = d => d.Name == "Narf";
+            Expression<Func<IDummy, bool>> p = d => d.Name == "Narf";
 
             var r = data.Where(p).Count();
             var s = data.Where(p.Not()).Count();
 
-            Assert.Equal(3, r);
-            Assert.Equal(6, s);
+            Assert.Equal(4, r);
+            Assert.Equal(8, s);
         }
 
         [Fact]
@@ -83,20 +89,20 @@ namespace NeinLinq.Tests.Predicate
         {
             Expression<Func<Dummy, bool>> p = d => d.Name == "Narf";
 
-            var r = data.Where(p).Count();
-            var s = data.OfType<DummyOne>().Where(p.Translate().To<DummyOne>()).Count();
+            var r = data.OfType<Dummy>().Where(p).Count();
+            var s = data.OfType<SuperDummy>().Where(p.Translate().To<SuperDummy>()).Count();
 
-            Assert.Equal(3, r);
+            Assert.Equal(2, r);
             Assert.Equal(1, s);
         }
 
         [Fact]
         public void ToPathShouldSubstitute()
         {
-            Expression<Func<DummyOne, bool>> p = d => d.Name == "Narf";
+            Expression<Func<ParentDummy, bool>> p = d => d.Name == "Narf";
 
-            var r = data.OfType<DummyOne>().Where(p).Count();
-            var s = data.OfType<DummyTwo>().Where(p.Translate().To<DummyTwo>(c => c.One)).Count();
+            var r = data.OfType<ParentDummy>().Where(p).Count();
+            var s = data.OfType<ChildDummy>().Where(p.Translate().To<ChildDummy>(c => c.Parent)).Count();
 
             Assert.Equal(1, r);
             Assert.Equal(1, s);
@@ -105,10 +111,10 @@ namespace NeinLinq.Tests.Predicate
         [Fact]
         public void ToTranslationShouldSubstitute()
         {
-            Expression<Func<DummyTwo, bool>> p = d => d.Name == "Narf";
+            Expression<Func<ChildDummy, bool>> p = d => d.Name == "Narf";
 
-            var r = data.OfType<DummyTwo>().Where(p).Count();
-            var s = data.OfType<DummyOne>().Where(p.Translate().To<DummyOne>((b, q) => b.Twos.Any(c => q(c)))).Count();
+            var r = data.OfType<ChildDummy>().Where(p).Count();
+            var s = data.OfType<ParentDummy>().Where(p.Translate().To<ParentDummy>((b, q) => b.Childs.Any(c => q(c)))).Count();
 
             Assert.Equal(1, r);
             Assert.Equal(2, s);

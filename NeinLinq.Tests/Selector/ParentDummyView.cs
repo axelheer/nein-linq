@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NeinLinq.Tests.Selector
 {
-    public class Dummy : IDummy
+    public class ParentDummyView
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public IEnumerable<ChildDummyView> Childs { get; set; }
     }
 }

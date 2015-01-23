@@ -87,7 +87,16 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<V, IEnumerable<U>>> Source<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
-            throw new NotImplementedException();
+            if (translation == null)
+                throw new ArgumentNullException("translation");
+
+            var v = translation.Parameters[0];
+            var s = translation.Parameters[1];
+
+            var binder = new ParameterBinder(s, selector);
+
+            return Expression.Lambda<Func<V, IEnumerable<U>>>(
+                binder.Visit(translation.Body), v);
         }
 
         /// <summary>
@@ -108,8 +117,10 @@ namespace NeinLinq
             if (init.NewExpression.Arguments.Any())
                 throw new NotSupportedException("Only parameterless constructors are supported yet.");
 
+            var t = selector.Parameters[0];
+
             return Expression.Lambda<Func<T, V>>(
-                Expression.MemberInit(Expression.New(typeof(V)), init.Bindings), selector.Parameters);
+                Expression.MemberInit(Expression.New(typeof(V)), init.Bindings), t);
         }
 
         /// <summary>
@@ -128,14 +139,15 @@ namespace NeinLinq
                 throw new ArgumentNullException("path");
 
             var member = path.Body as MemberExpression;
-
             if (member == null)
                 throw new NotSupportedException("Only member expressions are supported yet.");
+
+            var t = selector.Parameters[0];
 
             var bind = Expression.Bind(member.Member, selector.Body);
 
             return Expression.Lambda<Func<T, V>>(
-                Expression.MemberInit(Expression.New(typeof(V)), bind), selector.Parameters);
+                Expression.MemberInit(Expression.New(typeof(V)), bind), t);
         }
 
         /// <summary>
@@ -151,7 +163,16 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Result<V>(Expression<Func<T, Func<T, U>, V>> translation)
         {
-            throw new NotImplementedException();
+            if (translation == null)
+                throw new ArgumentNullException("translation");
+
+            var t = translation.Parameters[0];
+            var s = translation.Parameters[1];
+
+            var binder = new ParameterBinder(s, selector);
+
+            return Expression.Lambda<Func<T, V>>(
+                binder.Visit(translation.Body), t);
         }
 
         /// <summary>
@@ -194,7 +215,7 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public SelectorTranslation<V, IEnumerable<U>> Cross<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
-            throw new NotImplementedException();
+            return new SelectorTranslation<V, IEnumerable<U>>(Source<V>(translation));
         }
 
         /// <summary>
@@ -243,7 +264,7 @@ namespace NeinLinq
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Apply<V>(Expression<Func<T, Func<T, U>, V>> translation, Expression<Func<T, V>> value)
         {
-            throw new NotImplementedException();
+            return Result<V>(translation).Apply(value);
         }
     }
 }

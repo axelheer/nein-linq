@@ -68,35 +68,44 @@
     <Compile Include="..\NeinLinq.Tests\Nullsafe\Test.cs">
       <Link>Nullsafe\Test.cs</Link>
     </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate\ChildDummy.cs">
+      <Link>Predicate\ChildDummy.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq.Tests\Predicate\Dummy.cs">
       <Link>Predicate\Dummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\DummyOne.cs">
-      <Link>Predicate\DummyOne.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Predicate\IDummy.cs">
+      <Link>Predicate\IDummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\DummyTwo.cs">
-      <Link>Predicate\DummyTwo.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Predicate\ParentDummy.cs">
+      <Link>Predicate\ParentDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate\SuperDummy.cs">
+      <Link>Predicate\SuperDummy.cs</Link>
     </Compile>
     <Compile Include="..\NeinLinq.Tests\Predicate\Test.cs">
       <Link>Predicate\Test.cs</Link>
     </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\ChildDummy.cs">
+      <Link>Selector\ChildDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\ChildDummyView.cs">
+      <Link>Selector\ChildDummyView.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq.Tests\Selector\Dummy.cs">
       <Link>Selector\Dummy.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\DummyOne.cs">
-      <Link>Selector\DummyOne.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\DummyOneView.cs">
-      <Link>Selector\DummyOneView.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\DummyTwo.cs">
-      <Link>Selector\DummyTwo.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\DummyTwoView.cs">
-      <Link>Selector\DummyTwoView.cs</Link>
-    </Compile>
     <Compile Include="..\NeinLinq.Tests\Selector\DummyView.cs">
       <Link>Selector\DummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\IDummy.cs">
+      <Link>Selector\IDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\ParentDummy.cs">
+      <Link>Selector\ParentDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector\ParentDummyView.cs">
+      <Link>Selector\ParentDummyView.cs</Link>
     </Compile>
     <Compile Include="..\NeinLinq.Tests\Selector\SuperDummy.cs">
       <Link>Selector\SuperDummy.cs</Link>
