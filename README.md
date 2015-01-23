@@ -39,6 +39,21 @@ public static Expression<Func<string, int, string>> LimitText()
 
 If a query is marked as "injectable" and a function within this query is marked as "inject here", the rewrite engine of *NeinLinq* replaces the method call with the matching lambda expression, which can get translate to SQL or whatever. Thus, we are able to encapsulate unsupported .NET functionality and even create our own. Bazinga!
 
+```csharp
+[InjectLambda]
+public static bool Like(this string value, string likePattern)
+{
+    throw new NotImplementedException();
+}
+
+public static Expression<Func<string, string, bool>> Like()
+{
+    return (v, p) => SqlFunctions.PatIndex(p, v) > 0;
+}
+```
+
+This is an example how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions or the like to run our code *without* touching `SqlFunctions` too...
+
 Finally, let us look at a query using *Entity Framework* or the like:
 
 ```csharp
@@ -52,7 +67,7 @@ select new
 }
 ```
 
-The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using an attribute or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
+The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
 
 
 Null-safe queries
@@ -173,7 +188,7 @@ var academyPredicateForCourse =
     singlePredicateForAcademy.Translate()
                              .To<Course>(c => c.Academy);
 var coursePredicateForCourse =
-    singlePredicateForCourse;
+    singlePredicateForCourse; // the hard one ^^
 var lecturePredicateForCourse =
     singlePredicateForLecture.Translate()
                              .To<Course>((c, p) => c.Lectures.Any(l => p(l)));
@@ -185,7 +200,7 @@ var finalPredicate =
 db.Courses.Where(finalPredicate)...
 ```
 
-In addition to it no *Invoke* is used to achieve that: many LINQ provider do not support it (*Entity Framework*, i'm looking at you...), so this solution should be quite compatible.
+In addition to it, no *Invoke* is used to achieve that: many LINQ providers do not support it (*Entity Framework*, i'm looking at you...), so this solution should be quite compatible.
 
 Selector translator (experimental)
 ----------------------------------
