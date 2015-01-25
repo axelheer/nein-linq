@@ -52,7 +52,7 @@ public static Expression<Func<string, string, bool>> Like()
 }
 ```
 
-This is an example how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions or the like to run our code *without* touching `SqlFunctions` too...
+This is an example how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions to run our code *without* touching `SqlFunctions` too...
 
 Finally, let us look at a query using *Entity Framework* or the like:
 
@@ -226,6 +226,45 @@ db.Academies.OfType<SuperAcademy>()
 ```
 
 Although there're more options, the common scenario can look that way: reuse the base selector, start it's translation (type inference!), say where to start (no type inference), and finally apply the additional selector (type inference again!).
+
+Now let us consider parent / child relations (Academy and Course).
+
+```csharp
+Expression<Func<Academy, AcademyView>> s =
+    a => new AcademyView { Id = a.Id, Name = a.Name };
+Expression<Func<Course, CourseView>> t =
+    c => new CourseView { Id = c.Id, Name = c.Name };
+
+db.Courses.Select(s.Translate()
+                   .Cross<Course>(c => c.Academy)
+                   .Apply(c => c.Academy, t));
+
+db.Academies.Select(t.Translate()
+                     .Cross<Academy>((a, v) => a.Courses.Select(c => v(c)))
+                     .Apply(a => a.Courses, s));
+```
+
+Again, apart from other options, we can translate from parent to child: reuse the parent selector, start it's translation, say where to start (given the path to it's parent entity), and finally apply the additional selector (given the path to it's parent "view"). And we can translate the other way too: reuse the child selector, start it's translation, say where to start (given an expression to select the children), and finally apply the additional selector...
+
+To be more flexible the "Source translation" / "Result translation" can be used individually:
+
+```csharp
+Expression<Func<Academy, AcademyView>> selectAcademy =
+    a => new AcademyView { Id = a.Id, Name = a.Name };
+
+var selectCourseWithAcademy =
+    selectAcademy.Translate()
+                 .Source<Course>(c => c.Academy)
+                 .Translate()
+                 .Result<CourseView>(c => c.Academy)
+                 .Apply(a => new CourseView
+                 {
+                     Id = a.Id,
+                     Name = a.Name
+                 });
+```
+
+*Note:* for parent / child relations the less dynamic but (maybe) more readable *Lambda injection* is also an option: just encapsulate the selector as a nice extension method.
 
 *Attention:* i'm still playing around with this feature, so please beware my fickleness.
 

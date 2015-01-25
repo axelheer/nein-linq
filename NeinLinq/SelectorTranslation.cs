@@ -11,6 +11,7 @@ namespace NeinLinq
     /// </summary>
     /// <typeparam name="T">The type of the selector's source parameter.</typeparam>
     /// <typeparam name="U">The type of the selector's result parameter.</typeparam>
+    /// <remarks>Use <see cref="SelectorTranslator" /> to start a translation.</remarks>
     [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U")]
     public class SelectorTranslation<T, U>
