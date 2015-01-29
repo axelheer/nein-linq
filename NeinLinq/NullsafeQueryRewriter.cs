@@ -18,7 +18,7 @@ namespace NeinLinq
             if (node == null || node.Expression == null)
                 return node;
 
-            var fallback = fallbackOfType(node.Type);
+            var fallback = Fallback(node.Type);
 
             // check both, expression's value and expression's member's value, if not default
             if (fallback.NodeType != ExpressionType.Default)
@@ -38,13 +38,14 @@ namespace NeinLinq
                 node);
         }
 
-        private static Expression fallbackOfType(Type type)
+        private static Expression Fallback(Type type)
         {
             // default values for generic collections
             if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
                 var typeDefinition = type.GetGenericTypeDefinition();
-                if (typeDefinition == typeof(IEnumerable<>) || typeDefinition == typeof(ICollection<>))
+                if (typeDefinition == typeof(IEnumerable<>) ||
+                    typeDefinition == typeof(ICollection<>))
                 {
                     var typeArguments = type.GetGenericArguments();
                     return Expression.Convert(
