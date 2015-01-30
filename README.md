@@ -14,7 +14,7 @@ To run async queries within *Entity Framework 6* use the "special" build (there'
 Lambda injection
 ----------------
 
-Many LINQ providers can only support a very minor subset of .NET functionality, they cannot even support our own "functions". Say, we implement a simple method `LimitText` and use it within an ordinary LINQ query, which will get translated to SQL through Entity Framework...
+Many LINQ providers can only support a very minor subset of .NET functionality, they cannot even support our own "functions". Say, we implement a simple method `LimitText` and use it within an ordinary LINQ query, which will get translated to SQL through *Entity Framework*...
 
 > *LINQ to Entities does not recognize the method 'System.String LimitText(System.String, Int32)' method, and this method cannot be translated into a store expression.*
 
@@ -35,9 +35,18 @@ public static Expression<Func<string, int, string>> LimitText()
 {
     return (v, l) => v != null && v.Length > l ? v.Substring(0, l) : v;
 }
+
+// -------------------------------------------------------------------
+
+from d in data.ToInjectable()
+select new
+{
+    Id = d.Id,
+    Value = d.Name.LimitText(10)
+}
 ```
 
-If a query is marked as "injectable" and a function within this query is marked as "inject here", the rewrite engine of *NeinLinq* replaces the method call with the matching lambda expression, which can get translate to SQL or whatever. Thus, we are able to encapsulate unsupported .NET functionality and even create our own. Bazinga!
+If a query is marked as "injectable" (`ToInjectable()`) and a function within this query is marked as "inject here" (`[InjectLambda]`), the rewrite engine of *NeinLinq* replaces the method call with the matching lambda expression, which can get translate to SQL or whatever. Thus, we are able to encapsulate unsupported .NET functionality and even create our own. Bazinga!
 
 ```csharp
 [InjectLambda]
@@ -50,11 +59,17 @@ public static Expression<Func<string, string, bool>> Like()
 {
     return (v, p) => SqlFunctions.PatIndex(p, v) > 0;
 }
+
+// -------------------------------------------------------------------
+
+from d in data.ToInjectable()
+where d.Name.Like("%na_f%")
+select ...
 ```
 
 This is an example how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions to run our code *without* touching `SqlFunctions` too...
 
-Finally, let us look at a query using *Entity Framework* or the like:
+Finally, let us look at this query using *Entity Framework* or the like:
 
 ```csharp
 from d in data.ToInjectable()
@@ -64,6 +79,41 @@ select new
 {
     Id = d.Id,
     Value = d.DoTheFancy(e)
+}
+
+// -------------------------------------------------------------------
+
+[InjectLambda]
+public static Whatever RetrieveWhatever(this Entity value)
+{
+    throw new NotImplementedException();
+}
+
+public static Expression<Func<Entity, Whatever>> RetrieveWhatever()
+{
+    return d => d.Whatevers.FirstOrDefault(e => ...);
+}
+
+[InjectLambda]
+public static bool FulfillsSomeCriteria(this Entity value)
+{
+    throw new NotImplementedException();
+}
+
+public static Expression<Func<Entity, bool>> FulfillsSomeCriteria()
+{
+    return d => ...
+}
+
+[InjectLambda]
+public static decimal DoTheFancy(this Entity value, Whatever other)
+{
+    throw new NotImplementedException();
+}
+
+public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
+{
+    return (d, e) => ...
 }
 ```
 
@@ -144,8 +194,8 @@ Many data driven applications need to build some kind of dynamic queries. This c
 Let us think of three entities: Academy has Courses, Courses has Lectures.
 
 ```csharp
-Expression<Func<Course, bool>> p = ...
-Expression<Func<Course, bool>> q = ...
+Expression<Func<Course, bool>> p = c => ...
+Expression<Func<Course, bool>> q = c => ...
 
 db.Courses.Where(p.And(q))...
 ```
@@ -153,7 +203,7 @@ db.Courses.Where(p.And(q))...
 Ok, we already know that.
 
 ```csharp
-Expression<Func<Academy, bool>> p = ...
+Expression<Func<Academy, bool>> p = a => ...
 
 db.Courses.Where(p.Translate()
                   .To<Course>(c => c.Academy))...
@@ -162,7 +212,7 @@ db.Courses.Where(p.Translate()
 We now can translate a (combined) predicate for a parent entity...
 
 ```csharp
-Expression<Func<Lecture, bool>> p = ...
+Expression<Func<Lecture, bool>> p = l => ...
 
 db.Courses.Where(p.Translate()
                   .To<Course>((c, q) => c.Lectures.Any(l => q(l))))...
