@@ -5,15 +5,16 @@ using System.Linq.Expressions;
 namespace NeinLinq
 {
     /// <summary>
-    /// Creates rewritten queries.
+    /// Create rewritten queries.
     /// </summary>
     /// <remarks>
-    /// Use specialized builders like <see cref="InjectableQueryBuilder"/>, <see cref="NullsafeQueryBuilder"/> or <see cref="SubstitutionQueryBuilder"/>.
+    /// Use specialized builders like <see cref="InjectableQueryBuilder"/>, <see cref="NullsafeQueryBuilder"/>
+    /// or <see cref="SubstitutionQueryBuilder"/>.
     /// </remarks>
     public static class RewriteQueryBuilder
     {
         /// <summary>
-        /// Rewrites a given query.
+        /// Rewrite a given query.
         /// </summary>
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
@@ -31,7 +32,7 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Rewrites a given query.
+        /// Rewrite a given query.
         /// </summary>
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
@@ -49,7 +50,7 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Rewrites a given query.
+        /// Rewrite a given query.
         /// </summary>
         /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">The query to rewrite.</param>
@@ -66,7 +67,7 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Rewrites a given query.
+        /// Rewrite a given query.
         /// </summary>
         /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">The query to rewrite.</param>

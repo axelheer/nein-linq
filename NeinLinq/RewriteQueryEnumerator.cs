@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
+#if EF6
+
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
 
+#endif
+
 namespace NeinLinq
 {
     /// <summary>
-    /// Asyn enumerator for non async queries.
+    /// Proxy for query enumerator.
     /// </summary>
-    public abstract class RewriteQueryEnumerator : IDbAsyncEnumerator
+    public abstract class RewriteQueryEnumerator : IEnumerator, IDisposable
+#if EF6
+, IDbAsyncEnumerator
+#endif
     {
         private readonly IEnumerator enumerator;
 
         /// <summary>
-        /// Create a async new enumerator.
+        /// Create a new enumerator proxy.
         /// </summary>
         /// <param name="enumerator">The actual enumerator.</param>
         protected RewriteQueryEnumerator(IEnumerator enumerator)
@@ -33,9 +41,25 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
+        public bool MoveNext()
+        {
+            return enumerator.MoveNext();
+        }
+
+#if EF6
+
+        /// <inheritdoc />
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(enumerator.MoveNext());
+        }
+
+#endif
+
+        /// <inheritdoc />
+        public void Reset()
+        {
+            enumerator.Reset();
         }
 
         /// <summary>
@@ -58,7 +82,8 @@ namespace NeinLinq
         /// <summary>
         /// Disposes of the resources (other than memory).
         /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        /// <param name="disposing">true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
@@ -71,14 +96,17 @@ namespace NeinLinq
     }
 
     /// <summary>
-    /// Asyn enumerator for non async queries.
+    /// Proxy for query enumerator.
     /// </summary>
-    public class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IDbAsyncEnumerator<T>
+    public class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IEnumerator<T>
+#if EF6
+, IDbAsyncEnumerator<T>
+#endif
     {
         private readonly IEnumerator<T> enumerator;
 
         /// <summary>
-        /// Create a async new enumerator.
+        /// Create a new enumerator proxy.
         /// </summary>
         /// <param name="enumerator">The actual enumerator.</param>
         public RewriteQueryEnumerator(IEnumerator<T> enumerator)

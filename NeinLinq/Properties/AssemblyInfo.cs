@@ -2,6 +2,10 @@
 using System.Reflection;
 using System.Resources;
 
+#if EF6
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+#endif
+
 [assembly: AssemblyTitle("NeinLinq")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

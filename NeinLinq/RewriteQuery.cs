@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+
+#if EF6
+
+using System.Data.Entity.Infrastructure;
+
+#endif
 
 namespace NeinLinq
 {
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    [SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface")]
     public abstract class RewriteQuery : IOrderedQueryable
+#if EF6
+        , IDbAsyncEnumerable
+#endif
     {
         private readonly Type elementType;
         private readonly Expression expression;
@@ -48,6 +54,21 @@ namespace NeinLinq
             return enumerable.Value.GetEnumerator();
         }
 
+#if EF6
+
+        /// <inheritdoc />
+        public IDbAsyncEnumerator GetAsyncEnumerator()
+        {
+            var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable;
+            if (asyncEnumerable != null)
+                return asyncEnumerable.GetAsyncEnumerator();
+            return (RewriteQueryEnumerator)Activator.CreateInstance(
+                    typeof(RewriteQueryEnumerator<>).MakeGenericType(elementType),
+                    enumerable.Value.GetEnumerator());
+        }
+
+#endif
+
         /// <inheritdoc />
         public Type ElementType
         {
@@ -70,8 +91,10 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public class RewriteQuery<T> : RewriteQuery, IOrderedQueryable<T>
+#if EF6
+        , IDbAsyncEnumerable<T>
+#endif
     {
         private readonly Lazy<IEnumerable<T>> enumerable;
 
@@ -93,5 +116,18 @@ namespace NeinLinq
         {
             return enumerable.Value.GetEnumerator();
         }
+
+#if EF6
+
+        /// <inheritdoc />
+        public new IDbAsyncEnumerator<T> GetAsyncEnumerator()
+        {
+            var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable<T>;
+            if (asyncEnumerable != null)
+                return asyncEnumerable.GetAsyncEnumerator();
+            return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
+        }
+
+#endif
     }
 }

@@ -1,25 +1,20 @@
-﻿using System;
+﻿#if EF6
+
+using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NeinLinq.Tests.DbAsync
+namespace NeinLinq.Tests.FakeAsync
 {
     public class Test
     {
-        static Test()
-        {
-            Database.SetInitializer<Context>(new DropCreateDatabaseAlways<Context>());
-        }
-
-        private readonly Context db;
+        private readonly IQueryable<Dummy> data;
 
         public Test()
         {
-            db = new Context();
-            db.Database.Initialize(force: true);
-
-            db.Dummies.AddRange(new[]
+            data = new[]
             {
                 new Dummy
                 {
@@ -39,20 +34,21 @@ namespace NeinLinq.Tests.DbAsync
                     Name = "Narf",
                     Number = 3.14m
                 }
-            });
-            db.SaveChanges();
+            }
+            .AsQueryable();
         }
 
         [Fact]
-        public async Task ToListAsyncShouldWork()
+        public void ToListAsyncShouldFail()
         {
-            await db.Dummies.ToListAsync();
+            Assert.Throws<InvalidOperationException>(() =>
+                data.ToListAsync());
         }
 
         [Fact]
         public async Task ToListAsyncShouldSucceed()
         {
-            var query = db.Dummies.Rewrite(new Rewriter());
+            var query = data.Rewrite(new Rewriter());
 
             var result = await query.ToListAsync();
 
@@ -60,15 +56,16 @@ namespace NeinLinq.Tests.DbAsync
         }
 
         [Fact]
-        public async Task SumAsyncShouldWork()
+        public void SumAsyncShouldFail()
         {
-            await db.Dummies.SumAsync(d => d.Number);
+            Assert.Throws<InvalidOperationException>(() =>
+                data.SumAsync(d => d.Number));
         }
 
         [Fact]
         public async Task SumAsyncShouldSucceed()
         {
-            var query = db.Dummies.Rewrite(new Rewriter());
+            var query = data.Rewrite(new Rewriter());
 
             var result = await query.SumAsync(d => d.Number);
 
@@ -76,3 +73,5 @@ namespace NeinLinq.Tests.DbAsync
         }
     }
 }
+
+#endif

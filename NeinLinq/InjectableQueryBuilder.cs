@@ -33,6 +33,7 @@ namespace NeinLinq
         /// <summary>
         /// Replaces method calls with lambda expressions.
         /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
@@ -44,6 +45,7 @@ namespace NeinLinq
         /// <summary>
         /// Replaces method calls with lambda expressions.
         /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>

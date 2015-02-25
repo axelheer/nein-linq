@@ -2,12 +2,23 @@
 using System.Linq;
 using System.Linq.Expressions;
 
+#if EF6
+
+using System.Data.Entity.Infrastructure;
+using System.Threading;
+using System.Threading.Tasks;
+
+#endif
+
 namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query provider.
     /// </summary>
     public class RewriteQueryProvider : IQueryProvider
+#if EF6
+, IDbAsyncQueryProvider
+#endif
     {
         private readonly IQueryProvider provider;
         private readonly ExpressionVisitor rewriter;
@@ -55,5 +66,29 @@ namespace NeinLinq
             // execute query with rewritten expression
             return provider.Execute(rewriter.Visit(expression));
         }
+
+#if EF6
+
+        /// <inheritdoc />
+        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        {
+            // execute query with rewritten expression; async, if possible
+            var asyncProvider = provider as IDbAsyncQueryProvider;
+            if (asyncProvider != null)
+                return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression), cancellationToken);
+            return Task.FromResult(provider.Execute<TResult>(rewriter.Visit(expression)));
+        }
+
+        /// <inheritdoc />
+        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken)
+        {
+            // execute query with rewritten expression; async, if possible
+            var asyncProvider = provider as IDbAsyncQueryProvider;
+            if (asyncProvider != null)
+                return asyncProvider.ExecuteAsync(rewriter.Visit(expression), cancellationToken);
+            return Task.FromResult(provider.Execute(rewriter.Visit(expression)));
+        }
+
+#endif
     }
 }

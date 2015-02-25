@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace NeinLinq
 {
     /// <summary>
-    /// Rebinds parameters and parameterized lambda expressions.
+    /// Rebinds a parameter or a parameterized lambda expression.
     /// </summary>
     public class ParameterBinder : ExpressionVisitor
     {

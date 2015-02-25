@@ -3,6 +3,7 @@
   <Import Project="..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{08B1E43D-E5C2-4284-A060-522DECDBDA3C}</ProjectGuid>
@@ -10,18 +11,16 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NeinLinq.Tests</RootNamespace>
     <AssemblyName>NeinLinq.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>3daa83fb</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;EF6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;EF6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -40,106 +39,127 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="xunit">
       <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NeinLinq.Tests\Injectable\Dummy.cs">
-      <Link>Injectable\Dummy.cs</Link>
+    <Compile Include="..\NeinLinq.Tests\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\NeinLinq.Tests\Injectable\Functions.cs">
-      <Link>Injectable\Functions.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Injectable\Test.cs">
-      <Link>Injectable\Test.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Nullsafe\Dummy.cs">
-      <Link>Nullsafe\Dummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Nullsafe\DummyView.cs">
-      <Link>Nullsafe\DummyView.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Nullsafe\Test.cs">
-      <Link>Nullsafe\Test.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\ChildDummy.cs">
-      <Link>Predicate\ChildDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\Dummy.cs">
-      <Link>Predicate\Dummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\IDummy.cs">
-      <Link>Predicate\IDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\ParentDummy.cs">
-      <Link>Predicate\ParentDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\SuperDummy.cs">
-      <Link>Predicate\SuperDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Predicate\Test.cs">
-      <Link>Predicate\Test.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\ChildDummy.cs">
-      <Link>Selector\ChildDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\ChildDummyView.cs">
-      <Link>Selector\ChildDummyView.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\Dummy.cs">
-      <Link>Selector\Dummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\DummyView.cs">
-      <Link>Selector\DummyView.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\IDummy.cs">
-      <Link>Selector\IDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\ParentDummy.cs">
-      <Link>Selector\ParentDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\ParentDummyView.cs">
-      <Link>Selector\ParentDummyView.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\SuperDummy.cs">
-      <Link>Selector\SuperDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\SuperDummyView.cs">
-      <Link>Selector\SuperDummyView.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Selector\Test.cs">
-      <Link>Selector\Test.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Substitution\Dummy.cs">
-      <Link>Substitution\Dummy.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Substitution\Functions.cs">
-      <Link>Substitution\Functions.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Substitution\OtherFunctions.cs">
-      <Link>Substitution\OtherFunctions.cs</Link>
-    </Compile>
-    <Compile Include="..\NeinLinq.Tests\Substitution\Test.cs">
-      <Link>Substitution\Test.cs</Link>
-    </Compile>
-    <Compile Include="DbAsync\Context.cs" />
-    <Compile Include="DbAsync\Dummy.cs" />
-    <Compile Include="DbAsync\Rewriter.cs" />
-    <Compile Include="DbAsync\Test.cs" />
-    <Compile Include="FakeAsync\Dummy.cs" />
-    <Compile Include="FakeAsync\Rewriter.cs" />
-    <Compile Include="FakeAsync\Test.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <Compile Include="..\NeinLinq.Tests\DbAsync.Context.cs">
+      <Link>DbAsync.Context.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\DbAsync.Dummy.cs">
+      <Link>DbAsync.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\DbAsync.Rewriter.cs">
+      <Link>DbAsync.Rewriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\DbAsync.Test.cs">
+      <Link>DbAsync.Test.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\FakeAsync.Dummy.cs">
+      <Link>FakeAsync.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\FakeAsync.Rewriter.cs">
+      <Link>FakeAsync.Rewriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\FakeAsync.Test.cs">
+      <Link>FakeAsync.Test.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Injectable.Dummy.cs">
+      <Link>Injectable.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Injectable.Functions.cs">
+      <Link>Injectable.Functions.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Injectable.Test.cs">
+      <Link>Injectable.Test.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Nullsafe.Dummy.cs">
+      <Link>Nullsafe.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Nullsafe.DummyView.cs">
+      <Link>Nullsafe.DummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Nullsafe.Test.cs">
+      <Link>Nullsafe.Test.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate.ChildDummy.cs">
+      <Link>Predicate.ChildDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate.Dummy.cs">
+      <Link>Predicate.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate.IDummy.cs">
+      <Link>Predicate.IDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate.ParentDummy.cs">
+      <Link>Predicate.ParentDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate.SuperDummy.cs">
+      <Link>Predicate.SuperDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Predicate.Test.cs">
+      <Link>Predicate.Test.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.ChildDummy.cs">
+      <Link>Selector.ChildDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.ChildDummyView.cs">
+      <Link>Selector.ChildDummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.Dummy.cs">
+      <Link>Selector.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.DummyView.cs">
+      <Link>Selector.DummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.IDummy.cs">
+      <Link>Selector.IDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.ParentDummy.cs">
+      <Link>Selector.ParentDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.ParentDummyView.cs">
+      <Link>Selector.ParentDummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.SuperDummy.cs">
+      <Link>Selector.SuperDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.SuperDummyView.cs">
+      <Link>Selector.SuperDummyView.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Selector.Test.cs">
+      <Link>Selector.Test.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Substitution.Dummy.cs">
+      <Link>Substitution.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Substitution.Functions.cs">
+      <Link>Substitution.Functions.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Substitution.OtherFunctions.cs">
+      <Link>Substitution.OtherFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Substitution.Test.cs">
+      <Link>Substitution.Test.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeinLinq.EF6\NeinLinq.EF6.csproj">
@@ -151,7 +171,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
@@ -159,4 +178,5 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
     <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

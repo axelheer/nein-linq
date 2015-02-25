@@ -4,12 +4,12 @@ using System.Linq;
 namespace NeinLinq
 {
     /// <summary>
-    /// Makes queries a bit more nullsafe.
+    /// Makes a query null-safe.
     /// </summary>
     public static class NullsafeQueryBuilder
     {
         /// <summary>
-        /// Makes a query a bit more nullsafe.
+        /// Makes a query null-safe.
         /// </summary>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
@@ -19,7 +19,7 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Makes a query a bit more nullsafe.
+        /// Makes a query null-safe.
         /// </summary>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
@@ -29,8 +29,9 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Makes a query a bit more nullsafe.
+        /// Makes a query null-safe.
         /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
         public static IQueryable<T> ToNullsafe<T>(this IQueryable<T> value)
@@ -39,8 +40,9 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Makes a query a bit more nullsafe.
+        /// Makes a query null-safe.
         /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedQueryable<T> ToNullsafe<T>(this IOrderedQueryable<T> value)

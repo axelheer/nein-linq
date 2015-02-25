@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace NeinLinq
@@ -15,7 +14,6 @@ namespace NeinLinq
         /// <typeparam name="T">The type of the predicate's parameter.</typeparam>
         /// <param name="predicate">The predicate expression to translate.</param>
         /// <returns>A translation object for the given predicate.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static PredicateTranslation<T> Translate<T>(this Expression<Func<T, bool>> predicate)
         {
             if (predicate == null)
@@ -31,8 +29,6 @@ namespace NeinLinq
         /// <param name="left">The first predicate expression to combine.</param>
         /// <param name="right">The second predicate expression to combine.</param>
         /// <returns>A single combined predicate expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
         {
             if (left == null)
@@ -56,8 +52,6 @@ namespace NeinLinq
         /// <param name="left">The first predicate expression to combine.</param>
         /// <param name="right">The second predicate expression to combine.</param>
         /// <returns>A single combined predicate expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
         {
             if (left == null)
@@ -80,8 +74,6 @@ namespace NeinLinq
         /// <typeparam name="T">The type of the predicate's parameter.</typeparam>
         /// <param name="predicate">The predicate expression.</param>
         /// <returns>A predicate expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> predicate)
         {
             if (predicate == null)

@@ -47,7 +47,7 @@ namespace NeinLinq
                 // inject only configured or whitelisted targets
                 if (data.Config || whitelist.Contains(data.Target))
                 {
-                    var factory = data.Factory;
+                    var factory = data.CreateFactory();
                     if (factory == null)
                         throw new InvalidOperationException(
                             string.Concat("Unable to retrieve lambda expression from ",

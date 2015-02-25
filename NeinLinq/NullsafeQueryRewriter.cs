@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 namespace NeinLinq
 {
     /// <summary>
-    /// Expression visitor for making member access nullsafe.
+    /// Expression visitor for making member access null-safe.
     /// </summary>
     /// <remarks>
-    /// Use <see cref="NullsafeQueryBuilder" /> to make a query nullsafe.
+    /// Use <see cref="NullsafeQueryBuilder" /> to make a query null-safe.
     /// </remarks>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {

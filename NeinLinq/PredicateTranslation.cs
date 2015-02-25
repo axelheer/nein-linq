@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace NeinLinq
@@ -17,7 +16,6 @@ namespace NeinLinq
         /// Creates a new predicate translation.
         /// </summary>
         /// <param name="predicate">The predicate to translate.</param>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public PredicateTranslation(Expression<Func<T, bool>> predicate)
         {
             if (predicate == null)
@@ -31,9 +29,6 @@ namespace NeinLinq
         /// </summary>
         /// <typeparam name="U">The type of the translated predicate's parameter.</typeparam>
         /// <returns>A translated predicate expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U")]
         public Expression<Func<U, bool>> To<U>()
             where U : T
         {
@@ -52,10 +47,6 @@ namespace NeinLinq
         /// <typeparam name="U">The type of the translated predicate's parameter.</typeparam>
         /// <param name="path">The path from the desired type to the given type.</param>
         /// <returns>A translated predicate expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U")]
         public Expression<Func<U, bool>> To<U>(Expression<Func<U, T>> path)
         {
             if (path == null)
@@ -77,10 +68,6 @@ namespace NeinLinq
         /// <param name="translation">The translation from the desired type to the given type,
         /// using the initially given predicate to be injected into a new predicate.</param>
         /// <returns>A translated predicate expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U")]
         public Expression<Func<U, bool>> To<U>(Expression<Func<U, Func<T, bool>, bool>> translation)
         {
             if (translation == null)

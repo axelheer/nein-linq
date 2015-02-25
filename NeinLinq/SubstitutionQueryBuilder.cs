@@ -35,6 +35,7 @@ namespace NeinLinq
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
         /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <param name="from">A type to replace.</param>
         /// <param name="to">A type to use instead.</param>
@@ -47,6 +48,7 @@ namespace NeinLinq
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
         /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <param name="from">A type to replace.</param>
         /// <param name="to">A type to use instead.</param>

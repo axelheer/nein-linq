@@ -28,13 +28,6 @@ namespace NeinLinq
             get { return config; }
         }
 
-        private readonly Lazy<Func<LambdaExpression>> factory;
-
-        public Func<LambdaExpression> Factory
-        {
-            get { return factory.Value; }
-        }
-
         private InjectLambdaMetadata(Type target, string method, bool config, Type returns, params Type[] args)
         {
             this.target = target;
@@ -62,6 +55,13 @@ namespace NeinLinq
                 // compile factory call for performance reasons
                 return Expression.Lambda<Func<LambdaExpression>>(Expression.Call(factoryMethod)).Compile();
             });
+        }
+
+        private readonly Lazy<Func<LambdaExpression>> factory;
+
+        public Func<LambdaExpression> CreateFactory()
+        {
+            return factory.Value;
         }
 
         public static InjectLambdaMetadata Create(MethodInfo call)

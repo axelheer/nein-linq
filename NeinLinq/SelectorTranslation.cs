@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -12,8 +11,6 @@ namespace NeinLinq
     /// <typeparam name="T">The type of the selector's source parameter.</typeparam>
     /// <typeparam name="U">The type of the selector's result parameter.</typeparam>
     /// <remarks>Use <see cref="SelectorTranslator" /> to start a translation.</remarks>
-    [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U")]
     public class SelectorTranslation<T, U>
     {
         private readonly Expression<Func<T, U>> selector;
@@ -22,7 +19,6 @@ namespace NeinLinq
         /// Starts translation of a given selector.
         /// </summary>
         /// <param name="selector">The selector expression to translate.</param>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public SelectorTranslation(Expression<Func<T, U>> selector)
         {
             if (selector == null)
@@ -36,9 +32,6 @@ namespace NeinLinq
         /// </summary>
         /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
         /// <returns>A translated selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<V, U>> Source<V>()
             where V : T
         {
@@ -57,10 +50,6 @@ namespace NeinLinq
         /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
         /// <param name="path">The path from the desired type to the given type.</param>
         /// <returns>A translated selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<V, U>> Source<V>(Expression<Func<V, T>> path)
         {
             if (path == null)
@@ -82,10 +71,6 @@ namespace NeinLinq
         /// <param name="translation">The translation from the desired type to the given type,
         /// using the initially given selector to be injected into a new selector.</param>
         /// <returns>A translated selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<V, IEnumerable<U>>> Source<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
             if (translation == null)
@@ -105,9 +90,6 @@ namespace NeinLinq
         /// </summary>
         /// <typeparam name="V">The type of the translated selector's result parameter.</typeparam>
         /// <returns>A translated selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Result<V>()
             where V : U
         {
@@ -130,10 +112,6 @@ namespace NeinLinq
         /// <typeparam name="V">The type of the translated selector's result parameter.</typeparam>
         /// <param name="path">The path from the desired type to the given type.</param>
         /// <returns>A translated selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Result<V>(Expression<Func<V, U>> path)
         {
             if (path == null)
@@ -158,10 +136,6 @@ namespace NeinLinq
         /// <param name="translation">The translation from the desired type to the given type,
         /// using the initially given selector to be injected into a new selector.</param>
         /// <returns>A translated selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Result<V>(Expression<Func<T, Func<T, U>, V>> translation)
         {
             if (translation == null)
@@ -181,9 +155,6 @@ namespace NeinLinq
         /// </summary>
         /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
         /// <returns>Another translation object for the given selector.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public SelectorTranslation<V, U> Cross<V>()
             where V : T
         {
@@ -196,9 +167,6 @@ namespace NeinLinq
         /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
         /// <param name="path">The path from the desired type to the given type.</param>
         /// <returns>Another translation object for the given selector.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public SelectorTranslation<V, U> Cross<V>(Expression<Func<V, T>> path)
         {
             return new SelectorTranslation<V, U>(Source<V>(path));
@@ -211,9 +179,6 @@ namespace NeinLinq
         /// <param name="translation">The translation from the desired type to the given type,
         /// using the initially given selector to be injected into a new selector.</param>
         /// <returns>Another translation object for the given selector.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public SelectorTranslation<V, IEnumerable<U>> Cross<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
             return new SelectorTranslation<V, IEnumerable<U>>(Source<V>(translation));
@@ -226,9 +191,6 @@ namespace NeinLinq
         /// <typeparam name="V">The type of the translated selector's result parameter.</typeparam>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Apply<V>(Expression<Func<T, V>> value)
             where V : U
         {
@@ -243,9 +205,6 @@ namespace NeinLinq
         /// <param name="path">The path from the desired type to the given type.</param>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Apply<V>(Expression<Func<V, U>> path, Expression<Func<T, V>> value)
         {
             return Result<V>(path).Apply(value);
@@ -260,9 +219,6 @@ namespace NeinLinq
         /// using the initially given selector to be injected into a new selector.</param>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V")]
         public Expression<Func<T, V>> Apply<V>(Expression<Func<T, Func<T, U>, V>> translation, Expression<Func<T, V>> value)
         {
             return Result<V>(translation).Apply(value);

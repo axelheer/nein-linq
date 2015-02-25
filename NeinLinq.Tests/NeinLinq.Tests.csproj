@@ -3,6 +3,7 @@
   <Import Project="..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.0.99.9-build1021\build\net20\xunit.runner.visualstudio.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BA609B88-2142-4E66-B450-F3E1C47B65A7}</ProjectGuid>
@@ -10,10 +11,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NeinLinq.Tests</RootNamespace>
     <AssemblyName>NeinLinq.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RestorePackages>true</RestorePackages>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,41 +33,50 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="xunit">
       <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Injectable\Dummy.cs" />
-    <Compile Include="Injectable\Functions.cs" />
-    <Compile Include="Injectable\Test.cs" />
-    <Compile Include="Nullsafe\Dummy.cs" />
-    <Compile Include="Nullsafe\DummyView.cs" />
-    <Compile Include="Nullsafe\Test.cs" />
-    <Compile Include="Predicate\Dummy.cs" />
-    <Compile Include="Predicate\IDummy.cs" />
-    <Compile Include="Predicate\ParentDummy.cs" />
-    <Compile Include="Predicate\ChildDummy.cs" />
-    <Compile Include="Predicate\SuperDummy.cs" />
-    <Compile Include="Predicate\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Selector\Dummy.cs" />
-    <Compile Include="Selector\IDummy.cs" />
-    <Compile Include="Selector\ParentDummy.cs" />
-    <Compile Include="Selector\ParentDummyView.cs" />
-    <Compile Include="Selector\ChildDummy.cs" />
-    <Compile Include="Selector\ChildDummyView.cs" />
-    <Compile Include="Selector\DummyView.cs" />
-    <Compile Include="Selector\SuperDummy.cs" />
-    <Compile Include="Selector\SuperDummyView.cs" />
-    <Compile Include="Selector\Test.cs" />
-    <Compile Include="Substitution\Dummy.cs" />
-    <Compile Include="Substitution\Functions.cs" />
-    <Compile Include="Substitution\OtherFunctions.cs" />
-    <Compile Include="Substitution\Test.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbAsync.Context.cs" />
+    <Compile Include="DbAsync.Dummy.cs" />
+    <Compile Include="DbAsync.Rewriter.cs" />
+    <Compile Include="DbAsync.Test.cs" />
+    <Compile Include="FakeAsync.Dummy.cs" />
+    <Compile Include="FakeAsync.Rewriter.cs" />
+    <Compile Include="FakeAsync.Test.cs" />
+    <Compile Include="Injectable.Dummy.cs" />
+    <Compile Include="Injectable.Functions.cs" />
+    <Compile Include="Injectable.Test.cs" />
+    <Compile Include="Nullsafe.Dummy.cs" />
+    <Compile Include="Nullsafe.DummyView.cs" />
+    <Compile Include="Nullsafe.Test.cs" />
+    <Compile Include="Predicate.ChildDummy.cs" />
+    <Compile Include="Predicate.Dummy.cs" />
+    <Compile Include="Predicate.IDummy.cs" />
+    <Compile Include="Predicate.ParentDummy.cs" />
+    <Compile Include="Predicate.SuperDummy.cs" />
+    <Compile Include="Predicate.Test.cs" />
+    <Compile Include="Selector.ChildDummy.cs" />
+    <Compile Include="Selector.ChildDummyView.cs" />
+    <Compile Include="Selector.Dummy.cs" />
+    <Compile Include="Selector.DummyView.cs" />
+    <Compile Include="Selector.IDummy.cs" />
+    <Compile Include="Selector.ParentDummy.cs" />
+    <Compile Include="Selector.ParentDummyView.cs" />
+    <Compile Include="Selector.SuperDummy.cs" />
+    <Compile Include="Selector.SuperDummyView.cs" />
+    <Compile Include="Selector.Test.cs" />
+    <Compile Include="Substitution.Dummy.cs" />
+    <Compile Include="Substitution.Functions.cs" />
+    <Compile Include="Substitution.OtherFunctions.cs" />
+    <Compile Include="Substitution.Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

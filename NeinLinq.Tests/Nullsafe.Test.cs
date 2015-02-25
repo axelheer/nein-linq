@@ -58,24 +58,24 @@ namespace NeinLinq.Tests.Nullsafe
         public void OrdinaryQueryShouldFail()
         {
             Assert.Throws<NullReferenceException>(() =>
-                query(data).ToList());
+                Query(data).ToList());
         }
 
         [Fact]
         public void NullsafeQueryShouldSucceed()
         {
-            var result = query(data.ToNullsafe()).ToList();
+            var result = Query(data.ToNullsafe()).ToList();
 
             Assert.Equal(5, result.Count);
 
-            assertDummy(result[0]);
-            assertDummy(result[1], year: 1977, integer: 42);
-            assertDummy(result[2], year: 1980, other: new[] { 3, 6 });
-            assertDummy(result[3], year: 1983, more: new[] { 5, 8 });
-            assertDummy(result[4], year: 2015, lot: new[] { 4, 7 });
+            AssertDummy(result[0]);
+            AssertDummy(result[1], year: 1977, integer: 42);
+            AssertDummy(result[2], year: 1980, other: new[] { 3, 6 });
+            AssertDummy(result[3], year: 1983, more: new[] { 5, 8 });
+            AssertDummy(result[4], year: 2015, lot: new[] { 4, 7 });
         }
 
-        private static IQueryable<DummyView> query(IQueryable<Dummy> data)
+        private static IQueryable<DummyView> Query(IQueryable<Dummy> data)
         {
             return from a in data
                    orderby a.SomeInteger
@@ -92,7 +92,7 @@ namespace NeinLinq.Tests.Nullsafe
                    };
         }
 
-        private static void assertDummy(DummyView dummy,
+        private static void AssertDummy(DummyView dummy,
                                         int year = 0,
                                         int integer = 0,
                                         int[] other = null,
