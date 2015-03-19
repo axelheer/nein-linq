@@ -1,15 +1,14 @@
-# User-specific files
+# User
 *.suo
 *.user
 
-# Build results
-*.nupkg
+# Build
 bin/
 obj/
 
-# Test results
+# Test
 TestResults/
 
-# NuGet Packages
+# NuGet
 packages/*
 !packages/repositories.config

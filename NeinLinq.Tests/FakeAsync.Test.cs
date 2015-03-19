@@ -3,7 +3,6 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NeinLinq.Tests.FakeAsync
@@ -39,14 +38,14 @@ namespace NeinLinq.Tests.FakeAsync
         }
 
         [Fact]
-        public void ToListAsyncShouldFail()
+        public async void ToListAsyncShouldFail()
         {
-            Assert.Throws<InvalidOperationException>(() =>
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 data.ToListAsync());
         }
 
         [Fact]
-        public async Task ToListAsyncShouldSucceed()
+        public async void ToListAsyncShouldSucceed()
         {
             var query = data.Rewrite(new Rewriter());
 
@@ -56,14 +55,14 @@ namespace NeinLinq.Tests.FakeAsync
         }
 
         [Fact]
-        public void SumAsyncShouldFail()
+        public async void SumAsyncShouldFail()
         {
-            Assert.Throws<InvalidOperationException>(() =>
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 data.SumAsync(d => d.Number));
         }
 
         [Fact]
-        public async Task SumAsyncShouldSucceed()
+        public async void SumAsyncShouldSucceed()
         {
             var query = data.Rewrite(new Rewriter());
 
