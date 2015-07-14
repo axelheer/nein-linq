@@ -62,4 +62,24 @@ namespace NeinLinq.Tests.Injectable
             return (d, t) => d / t;
         }
     }
+
+    public class ParameterizedFunctions
+    {
+        private readonly int digits;
+
+        public ParameterizedFunctions(int digits)
+        {
+            this.digits = digits;
+        }
+
+        public double Velocity(Dummy value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression<Func<Dummy, double>> Velocity()
+        {
+            return v => Math.Round(v.Distance / v.Time, digits);
+        }
+    }
 }

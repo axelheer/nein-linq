@@ -34,7 +34,7 @@ namespace NeinLinq
             this.method = method;
             this.config = config;
 
-            factory = new Lazy<Func<LambdaExpression>>(() =>
+            factory = new Lazy<Func<Expression, LambdaExpression>>(() =>
             {
                 // assume method without any parameters
                 var factoryMethod = target.GetMethod(method, new Type[0]);
@@ -52,16 +52,28 @@ namespace NeinLinq
                 if (delegateSignature == null || delegateSignature.ReturnParameter.ParameterType != returns)
                     return null;
 
-                // compile factory call for performance reasons
-                return Expression.Lambda<Func<LambdaExpression>>(Expression.Call(factoryMethod)).Compile();
+                if (factoryMethod.IsStatic)
+                {
+                    // compile factory call for performance reasons
+                    return Expression.Lambda<Func<Expression, LambdaExpression>>(
+                        Expression.Call(factoryMethod), Expression.Parameter(typeof(Expression))).Compile();
+                }
+                else
+                {
+                    // parameterize actual target value, compiles every time... :-(
+                    return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factoryMethod)).Compile()();
+                }
             });
         }
 
-        private readonly Lazy<Func<LambdaExpression>> factory;
+        private readonly Lazy<Func<Expression, LambdaExpression>> factory;
 
-        public Func<LambdaExpression> CreateFactory()
+        public LambdaExpression Replacement(Expression value)
         {
-            return factory.Value;
+            if (factory.Value == null)
+                return null;
+
+            return factory.Value(value);
         }
 
         public static InjectLambdaMetadata Create(MethodInfo call)

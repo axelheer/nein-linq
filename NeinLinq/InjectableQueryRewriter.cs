@@ -34,32 +34,28 @@ namespace NeinLinq
             if (node == null || node.Method == null)
                 return node;
 
-            if (node.Object == null)
+            // cache "metadata" for performance reasons
+            var data = default(InjectLambdaMetadata);
+            if (!cache.TryGetValue(node.Method, out data))
             {
-                // cache "metadata" for performance reasons
-                InjectLambdaMetadata data;
-                if (!cache.TryGetValue(node.Method, out data))
-                {
-                    data = InjectLambdaMetadata.Create(node.Method);
-                    cache[node.Method] = data;
-                }
+                data = InjectLambdaMetadata.Create(node.Method);
+                cache[node.Method] = data;
+            }
 
-                // inject only configured or whitelisted targets
-                if (data.Config || whitelist.Contains(data.Target))
-                {
-                    var factory = data.CreateFactory();
-                    if (factory == null)
-                        throw new InvalidOperationException(
-                            string.Concat("Unable to retrieve lambda expression from ",
-                                data.Target.FullName, ".", data.Method, "."));
+            // inject only configured or whitelisted targets
+            if (data.Config || whitelist.Contains(data.Target))
+            {
+                var replacement = data.Replacement(node.Object);
+                if (replacement == null)
+                    throw new InvalidOperationException(
+                        string.Concat("Unable to retrieve lambda expression from ",
+                            data.Target.FullName, ".", data.Method, "."));
 
-                    // rebind expression parameters for current arguments
-                    var replacement = factory();
-                    var binders = replacement.Parameters.Zip(node.Arguments,
-                        (p, a) => new ParameterBinder(p, a));
+                // rebind expression parameters for current arguments
+                var binders = replacement.Parameters.Zip(node.Arguments,
+                    (p, a) => new ParameterBinder(p, a));
 
-                    return Visit(binders.Aggregate(replacement.Body, (e, b) => b.Visit(e)));
-                }
+                return Visit(binders.Aggregate(replacement.Body, (e, b) => b.Visit(e)));
             }
 
             return base.VisitMethodCall(node);

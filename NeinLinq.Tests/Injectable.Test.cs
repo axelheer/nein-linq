@@ -14,7 +14,7 @@ namespace NeinLinq.Tests.Injectable
             {
                 new Dummy { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
                 new Dummy { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
-                new Dummy { Id = 3, Name = "Qwer", Distance = 8, Time = .125 }
+                new Dummy { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
             }
             .AsQueryable();
         }
@@ -37,7 +37,7 @@ namespace NeinLinq.Tests.Injectable
 
             var result = query.ToList();
 
-            Assert.Equal(new[] { 200.0, 0.0, 64.0 }, result);
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace NeinLinq.Tests.Injectable
 
             var result = query.ToList();
 
-            Assert.Equal(new[] { 200.0, 0.0, 64.0 }, result);
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace NeinLinq.Tests.Injectable
 
             var result = query.ToList();
 
-            Assert.Equal(new[] { 200.0, 0.0, 64.0 }, result);
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
 
         [Fact]
@@ -80,6 +80,17 @@ namespace NeinLinq.Tests.Injectable
 
             Assert.Throws<InvalidOperationException>(() =>
                 query.ToList());
+        }
+        [Fact]
+        public void InjectShouldSucceedWithObject()
+        {
+            var functions = new ParameterizedFunctions(1);
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctions))
+                        select functions.Velocity(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
         }
     }
 }
