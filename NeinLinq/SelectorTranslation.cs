@@ -158,7 +158,7 @@ namespace NeinLinq
         public SelectorTranslation<V, U> Cross<V>()
             where V : T
         {
-            return new SelectorTranslation<V, U>(Source<V>());
+            return Source<V>().Translate();
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace NeinLinq
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<V, U> Cross<V>(Expression<Func<V, T>> path)
         {
-            return new SelectorTranslation<V, U>(Source<V>(path));
+            return Source<V>(path).Translate();
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace NeinLinq
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<V, IEnumerable<U>> Cross<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
-            return new SelectorTranslation<V, IEnumerable<U>>(Source<V>(translation));
+            return Source<V>(translation).Translate();
         }
 
         /// <summary>
