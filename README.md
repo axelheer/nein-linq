@@ -119,6 +119,7 @@ public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
 
 The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
 
+Note: that works with instance methods too.
 
 Null-safe queries
 -----------------
