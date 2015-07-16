@@ -50,11 +50,12 @@ namespace NeinLinq.Tests.Selector
             Expression<Func<Dummy, DummyView>> t = d => new DummyView { Name = d.Name };
 
             var select = s.Apply(t);
-            var result = data.OfType<Dummy>().Select(select);
+            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
 
-            Assert.True(result.Any(v => v.Id == 1 && v.Name == "Asdf"));
-            Assert.True(result.Any(v => v.Id == 2 && v.Name == "Narf"));
-            Assert.True(result.Any(v => v.Id == 3 && v.Name == "Qwer"));
+            Assert.Collection(result,
+                v => { Assert.Equal(1, v.Id); Assert.Equal("Asdf", v.Name); },
+                v => { Assert.Equal(2, v.Id); Assert.Equal("Narf", v.Name); },
+                v => { Assert.Equal(3, v.Id); Assert.Equal("Qwer", v.Name); });
         }
 
         [Fact]
@@ -65,9 +66,10 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Source<SuperDummy>();
             var result = data.OfType<SuperDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Id == 4 && v.Name == "Asdf"));
-            Assert.True(result.Any(v => v.Id == 5 && v.Name == "Narf"));
-            Assert.True(result.Any(v => v.Id == 6 && v.Name == "Qwer"));
+            Assert.Collection(result,
+                v => { Assert.Equal(4, v.Id); Assert.Equal("Asdf", v.Name); },
+                v => { Assert.Equal(5, v.Id); Assert.Equal("Narf", v.Name); },
+                v => { Assert.Equal(6, v.Id); Assert.Equal("Qwer", v.Name); });
         }
 
         [Fact]
@@ -78,9 +80,10 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Result<SuperDummyView>();
             var result = data.OfType<SuperDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Id == 4 && v.Name == "Asdf" && v.Description == null));
-            Assert.True(result.Any(v => v.Id == 5 && v.Name == "Narf" && v.Description == null));
-            Assert.True(result.Any(v => v.Id == 6 && v.Name == "Qwer" && v.Description == null));
+            Assert.Collection(result,
+                v => { Assert.Equal(4, v.Id); Assert.Equal("Asdf", v.Name); Assert.Null(v.Description); },
+                v => { Assert.Equal(5, v.Id); Assert.Equal("Narf", v.Name); Assert.Null(v.Description); },
+                v => { Assert.Equal(6, v.Id); Assert.Equal("Qwer", v.Name); Assert.Null(v.Description); });
         }
 
         [Fact]
@@ -92,9 +95,10 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Cross<SuperDummy>().Apply(t);
             var result = data.OfType<SuperDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Id == 4 && v.Name == "Asdf" && v.Description == "Asdf"));
-            Assert.True(result.Any(v => v.Id == 5 && v.Name == "Narf" && v.Description == "Narf"));
-            Assert.True(result.Any(v => v.Id == 6 && v.Name == "Qwer" && v.Description == "Qwer"));
+            Assert.Collection(result,
+                v => { Assert.Equal(4, v.Id); Assert.Equal("Asdf", v.Name); Assert.Equal("Asdf", v.Description); },
+                v => { Assert.Equal(5, v.Id); Assert.Equal("Narf", v.Name); Assert.Equal("Narf", v.Description); },
+                v => { Assert.Equal(6, v.Id); Assert.Equal("Qwer", v.Name); Assert.Equal("Qwer", v.Description); });
         }
 
         [Fact]
@@ -105,9 +109,10 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Source<ChildDummy>(d => d.Parent);
             var result = data.OfType<ChildDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Id == 7 && v.Name == "Asdf"));
-            Assert.True(result.Any(v => v.Id == 8 && v.Name == "Narf"));
-            Assert.True(result.Any(v => v.Id == 9 && v.Name == "Qwer"));
+            Assert.Collection(result,
+                v => { Assert.Equal(8, v.Id); Assert.Equal("Narf", v.Name); },
+                v => { Assert.Equal(9, v.Id); Assert.Equal("Qwer", v.Name); },
+                v => { Assert.Equal(7, v.Id); Assert.Equal("Asdf", v.Name); });
         }
 
         [Fact]
@@ -118,9 +123,10 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Result<ChildDummyView>(d => d.Parent);
             var result = data.OfType<ChildDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Parent.Id == 7 && v.Parent.Name == "Asdf"));
-            Assert.True(result.Any(v => v.Parent.Id == 8 && v.Parent.Name == "Narf"));
-            Assert.True(result.Any(v => v.Parent.Id == 9 && v.Parent.Name == "Qwer"));
+            Assert.Collection(result,
+                v => { Assert.Equal(8, v.Parent.Id); Assert.Equal("Narf", v.Parent.Name); },
+                v => { Assert.Equal(9, v.Parent.Id); Assert.Equal("Qwer", v.Parent.Name); },
+                v => { Assert.Equal(7, v.Parent.Id); Assert.Equal("Asdf", v.Parent.Name); });
         }
 
         [Fact]
@@ -132,9 +138,10 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Cross<ChildDummy>(d => d.Parent).Apply(d => d.Parent, t);
             var result = data.OfType<ChildDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Id == 10 && v.Name == "Asdf" && v.Parent.Id == 8 && v.Parent.Name == "Narf"));
-            Assert.True(result.Any(v => v.Id == 11 && v.Name == "Narf" && v.Parent.Id == 9 && v.Parent.Name == "Qwer"));
-            Assert.True(result.Any(v => v.Id == 12 && v.Name == "Qwer" && v.Parent.Id == 7 && v.Parent.Name == "Asdf"));
+            Assert.Collection(result,
+                v => { Assert.Equal(10, v.Id); Assert.Equal("Asdf", v.Name); Assert.Equal(8, v.Parent.Id); Assert.Equal("Narf", v.Parent.Name); },
+                v => { Assert.Equal(11, v.Id); Assert.Equal("Narf", v.Name); Assert.Equal(9, v.Parent.Id); Assert.Equal("Qwer", v.Parent.Name); },
+                v => { Assert.Equal(12, v.Id); Assert.Equal("Qwer", v.Name); Assert.Equal(7, v.Parent.Id); Assert.Equal("Asdf", v.Parent.Name); });
         }
 
         [Fact]
@@ -145,9 +152,16 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Source<ParentDummy>((d, v) => d.Childs.Select(e => v(e)));
             var result = data.OfType<ParentDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Any(w => w.Id == 10 && w.Name == "Asdf")));
-            Assert.True(result.Any(v => v.Any(w => w.Id == 11 && w.Name == "Narf")));
-            Assert.True(result.Any(v => v.Any(w => w.Id == 12 && w.Name == "Qwer")));
+            Assert.Collection(result,
+                v => Assert.Collection(v,
+                    w => { Assert.Equal(10, w.Id); Assert.Equal("Asdf", w.Name); },
+                    w => { Assert.Equal(11, w.Id); Assert.Equal("Narf", w.Name); }),
+                v => Assert.Collection(v,
+                    w => { Assert.Equal(11, w.Id); Assert.Equal("Narf", w.Name); },
+                    w => { Assert.Equal(12, w.Id); Assert.Equal("Qwer", w.Name); }),
+                v => Assert.Collection(v,
+                    w => { Assert.Equal(12, w.Id); Assert.Equal("Qwer", w.Name); },
+                    w => { Assert.Equal(10, w.Id); Assert.Equal("Asdf", w.Name); }));
         }
 
         [Fact]
@@ -158,9 +172,13 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Result((d, v) => new ParentDummyView { Childs = v(d).Take(1) });
             var result = data.OfType<ParentDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Childs.Any(w => w.Id == 10 && w.Name == "Asdf")));
-            Assert.True(result.Any(v => v.Childs.Any(w => w.Id == 11 && w.Name == "Narf")));
-            Assert.True(result.Any(v => v.Childs.Any(w => w.Id == 12 && w.Name == "Qwer")));
+            Assert.Collection(result,
+                v => Assert.Collection(v.Childs,
+                    w => { Assert.Equal(10, w.Id); Assert.Equal("Asdf", w.Name); }),
+                v => Assert.Collection(v.Childs,
+                    w => { Assert.Equal(11, w.Id); Assert.Equal("Narf", w.Name); }),
+                v => Assert.Collection(v.Childs,
+                    w => { Assert.Equal(12, w.Id); Assert.Equal("Qwer", w.Name); }));
         }
 
         [Fact]
@@ -172,9 +190,28 @@ namespace NeinLinq.Tests.Selector
             var select = s.Translate().Cross<ParentDummy>((d, v) => d.Childs.Select(e => v(e))).Apply((d, v) => new ParentDummyView { Childs = v(d).Take(1) }, t);
             var result = data.OfType<ParentDummy>().Select(select);
 
-            Assert.True(result.Any(v => v.Id == 7 && v.Name == "Asdf" && v.Childs.Any(w => w.Id == 10 && w.Name == "Asdf")));
-            Assert.True(result.Any(v => v.Id == 8 && v.Name == "Narf" && v.Childs.Any(w => w.Id == 11 && w.Name == "Narf")));
-            Assert.True(result.Any(v => v.Id == 9 && v.Name == "Qwer" && v.Childs.Any(w => w.Id == 12 && w.Name == "Qwer")));
+            Assert.Collection(result,
+                v =>
+                {
+                    Assert.Equal(7, v.Id);
+                    Assert.Equal("Asdf", v.Name);
+                    Assert.Collection(v.Childs,
+                        w => { Assert.Equal(10, w.Id); Assert.Equal("Asdf", w.Name); });
+                },
+                v =>
+                {
+                    Assert.Equal(8, v.Id);
+                    Assert.Equal("Narf", v.Name);
+                    Assert.Collection(v.Childs,
+                        w => { Assert.Equal(11, w.Id); Assert.Equal("Narf", w.Name); });
+                },
+                v =>
+                {
+                    Assert.Equal(9, v.Id);
+                    Assert.Equal("Qwer", v.Name);
+                    Assert.Collection(v.Childs,
+                        w => { Assert.Equal(12, w.Id); Assert.Equal("Qwer", w.Name); });
+                });
         }
     }
 }
