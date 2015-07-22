@@ -20,9 +20,9 @@ namespace NeinLinq
         public ParameterBinder(ParameterExpression parameter, Expression replacement)
         {
             if (parameter == null)
-                throw new ArgumentNullException("parameter");
+                throw new ArgumentNullException(nameof(parameter));
             if (replacement == null)
-                throw new ArgumentNullException("replacement");
+                throw new ArgumentNullException(nameof(replacement));
 
             this.parameter = parameter;
             this.replacement = replacement;

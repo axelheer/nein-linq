@@ -22,7 +22,7 @@ namespace NeinLinq
         public SelectorTranslation(Expression<Func<T, U>> selector)
         {
             if (selector == null)
-                throw new ArgumentNullException("selector");
+                throw new ArgumentNullException(nameof(selector));
 
             this.selector = selector;
         }
@@ -53,7 +53,7 @@ namespace NeinLinq
         public Expression<Func<V, U>> Source<V>(Expression<Func<V, T>> path)
         {
             if (path == null)
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
 
             var t = selector.Parameters[0];
             var v = path.Parameters[0];
@@ -74,7 +74,7 @@ namespace NeinLinq
         public Expression<Func<V, IEnumerable<U>>> Source<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
             if (translation == null)
-                throw new ArgumentNullException("translation");
+                throw new ArgumentNullException(nameof(translation));
 
             var v = translation.Parameters[0];
             var s = translation.Parameters[1];
@@ -115,7 +115,7 @@ namespace NeinLinq
         public Expression<Func<T, V>> Result<V>(Expression<Func<V, U>> path)
         {
             if (path == null)
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
 
             var member = path.Body as MemberExpression;
             if (member == null)
@@ -139,7 +139,7 @@ namespace NeinLinq
         public Expression<Func<T, V>> Result<V>(Expression<Func<T, Func<T, U>, V>> translation)
         {
             if (translation == null)
-                throw new ArgumentNullException("translation");
+                throw new ArgumentNullException(nameof(translation));
 
             var t = translation.Parameters[0];
             var s = translation.Parameters[1];

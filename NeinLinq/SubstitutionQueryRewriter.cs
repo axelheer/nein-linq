@@ -23,9 +23,9 @@ namespace NeinLinq
         public SubstitutionQueryRewriter(Type from, Type to)
         {
             if (from == null)
-                throw new ArgumentNullException("from");
+                throw new ArgumentNullException(nameof(from));
             if (to == null)
-                throw new ArgumentNullException("to");
+                throw new ArgumentNullException(nameof(to));
 
             this.from = from;
             this.to = to;

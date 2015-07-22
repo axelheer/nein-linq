@@ -22,9 +22,9 @@ namespace NeinLinq
         public static IQueryable Rewrite(this IQueryable value, ExpressionVisitor rewriter)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             if (rewriter == null)
-                throw new ArgumentNullException("rewriter");
+                throw new ArgumentNullException(nameof(rewriter));
 
             return (IQueryable)Activator.CreateInstance(
                 typeof(RewriteQuery<>).MakeGenericType(value.ElementType),
@@ -40,9 +40,9 @@ namespace NeinLinq
         public static IOrderedQueryable Rewrite(this IOrderedQueryable value, ExpressionVisitor rewriter)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             if (rewriter == null)
-                throw new ArgumentNullException("rewriter");
+                throw new ArgumentNullException(nameof(rewriter));
 
             return (IOrderedQueryable)Activator.CreateInstance(
                 typeof(RewriteQuery<>).MakeGenericType(value.ElementType),
@@ -59,9 +59,9 @@ namespace NeinLinq
         public static IQueryable<T> Rewrite<T>(this IQueryable<T> value, ExpressionVisitor rewriter)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             if (rewriter == null)
-                throw new ArgumentNullException("rewriter");
+                throw new ArgumentNullException(nameof(rewriter));
 
             return new RewriteQuery<T>(value, rewriter);
         }
@@ -76,9 +76,9 @@ namespace NeinLinq
         public static IOrderedQueryable<T> Rewrite<T>(this IOrderedQueryable<T> value, ExpressionVisitor rewriter)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             if (rewriter == null)
-                throw new ArgumentNullException("rewriter");
+                throw new ArgumentNullException(nameof(rewriter));
 
             return new RewriteQuery<T>(value, rewriter);
         }

@@ -32,9 +32,9 @@ namespace NeinLinq
         public static Expression<Func<T, U>> Apply<T, U>(this Expression<Func<T, U>> left, Expression<Func<T, U>> right)
         {
             if (left == null)
-                throw new ArgumentNullException("left");
+                throw new ArgumentNullException(nameof(left));
             if (right == null)
-                throw new ArgumentNullException("right");
+                throw new ArgumentNullException(nameof(right));
 
             var leftInit = left.Body as MemberInitExpression;
             var rightInit = right.Body as MemberInitExpression;

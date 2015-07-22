@@ -31,7 +31,7 @@ namespace NeinLinq.Tests.Injectable
             return v => v.Distance / v.Time;
         }
 
-        [InjectLambda(typeof(Functions), "Narf")]
+        [InjectLambda(typeof(Functions), nameof(Narf))]
         public static double VelocityWithAdvancedMetadata(this Dummy value)
         {
             throw new NotImplementedException();

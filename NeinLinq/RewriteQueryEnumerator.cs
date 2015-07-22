@@ -29,7 +29,7 @@ namespace NeinLinq
         protected RewriteQueryEnumerator(IEnumerator enumerator)
         {
             if (enumerator == null)
-                throw new ArgumentNullException("enumerator");
+                throw new ArgumentNullException(nameof(enumerator));
 
             this.enumerator = enumerator;
         }
@@ -113,7 +113,7 @@ namespace NeinLinq
             : base(enumerator)
         {
             if (enumerator == null)
-                throw new ArgumentNullException("enumerator");
+                throw new ArgumentNullException(nameof(enumerator));
 
             this.enumerator = enumerator;
         }

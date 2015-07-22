@@ -31,9 +31,9 @@ namespace NeinLinq
         public RewriteQueryProvider(IQueryProvider provider, ExpressionVisitor rewriter)
         {
             if (provider == null)
-                throw new ArgumentNullException("provider");
+                throw new ArgumentNullException(nameof(provider));
             if (rewriter == null)
-                throw new ArgumentNullException("rewriter");
+                throw new ArgumentNullException(nameof(rewriter));
 
             this.provider = provider;
             this.rewriter = rewriter;

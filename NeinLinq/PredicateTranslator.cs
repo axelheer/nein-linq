@@ -17,7 +17,7 @@ namespace NeinLinq
         public static PredicateTranslation<T> Translate<T>(this Expression<Func<T, bool>> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+                throw new ArgumentNullException(nameof(predicate));
 
             return new PredicateTranslation<T>(predicate);
         }
@@ -32,9 +32,9 @@ namespace NeinLinq
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
         {
             if (left == null)
-                throw new ArgumentNullException("left");
+                throw new ArgumentNullException(nameof(left));
             if (right == null)
-                throw new ArgumentNullException("right");
+                throw new ArgumentNullException(nameof(right));
 
             var l = left.Parameters[0];
             var r = right.Parameters[0];
@@ -55,9 +55,9 @@ namespace NeinLinq
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
         {
             if (left == null)
-                throw new ArgumentNullException("left");
+                throw new ArgumentNullException(nameof(left));
             if (right == null)
-                throw new ArgumentNullException("right");
+                throw new ArgumentNullException(nameof(right));
 
             var l = left.Parameters[0];
             var r = right.Parameters[0];
@@ -77,7 +77,7 @@ namespace NeinLinq
         public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+                throw new ArgumentNullException(nameof(predicate));
 
             return Expression.Lambda<Func<T, bool>>(
                 Expression.Not(predicate.Body), predicate.Parameters);

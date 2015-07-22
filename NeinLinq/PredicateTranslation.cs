@@ -19,7 +19,7 @@ namespace NeinLinq
         public PredicateTranslation(Expression<Func<T, bool>> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+                throw new ArgumentNullException(nameof(predicate));
 
             this.predicate = predicate;
         }
@@ -50,7 +50,7 @@ namespace NeinLinq
         public Expression<Func<U, bool>> To<U>(Expression<Func<U, T>> path)
         {
             if (path == null)
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
 
             var t = predicate.Parameters[0];
             var u = path.Parameters[0];
@@ -71,7 +71,7 @@ namespace NeinLinq
         public Expression<Func<U, bool>> To<U>(Expression<Func<U, Func<T, bool>, bool>> translation)
         {
             if (translation == null)
-                throw new ArgumentNullException("translation");
+                throw new ArgumentNullException(nameof(translation));
 
             var u = translation.Parameters[0];
             var p = translation.Parameters[1];

@@ -79,7 +79,7 @@ namespace NeinLinq
         public static InjectLambdaMetadata Create(MethodInfo call)
         {
             if (call == null)
-                throw new ArgumentNullException("call");
+                throw new ArgumentNullException(nameof(call));
 
             // inject by convention
             var target = call.DeclaringType;

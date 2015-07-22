@@ -33,9 +33,9 @@ namespace NeinLinq
         protected RewriteQuery(IQueryable query, ExpressionVisitor rewriter)
         {
             if (query == null)
-                throw new ArgumentNullException("query");
+                throw new ArgumentNullException(nameof(query));
             if (rewriter == null)
-                throw new ArgumentNullException("rewriter");
+                throw new ArgumentNullException(nameof(rewriter));
 
             elementType = query.ElementType;
             expression = query.Expression;
