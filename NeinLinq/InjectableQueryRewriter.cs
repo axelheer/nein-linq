@@ -14,6 +14,8 @@ namespace NeinLinq
     /// </remarks>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
+        private static readonly object cacheLock = new object();
+
         private static readonly Dictionary<MethodInfo, InjectLambdaMetadata> cache =
             new Dictionary<MethodInfo, InjectLambdaMetadata>();
 
@@ -36,10 +38,13 @@ namespace NeinLinq
 
             // cache "metadata" for performance reasons
             var data = default(InjectLambdaMetadata);
-            if (!cache.TryGetValue(node.Method, out data))
+            lock (cacheLock)
             {
-                data = InjectLambdaMetadata.Create(node.Method);
-                cache[node.Method] = data;
+                if (!cache.TryGetValue(node.Method, out data))
+                {
+                    data = InjectLambdaMetadata.Create(node.Method);
+                    cache.Add(node.Method, data);
+                }
             }
 
             // inject only configured or whitelisted targets
