@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>NeinLinq</id>
-    <version>1.3.1-ef6</version>
+    <version>1.3.2-ef6</version>
     <title>NeinLinq</title>
     <authors>Axel Heer</authors>
     <owners>Axel Heer</owners>
@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/axelheer/nein-linq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.</description>
-    <releaseNotes>Enhanced lambda injection for instance methods. (Use -ef6 build to run EF6 async queries.)</releaseNotes>
+    <releaseNotes>Fixed race condition within lambda injection. (Use -ef6 build to run EF6 async queries.)</releaseNotes>
     <copyright>Copyright (c) 2014-2015 Axel Heer</copyright>
     <tags>LINQ EF</tags>
     <dependencies>
