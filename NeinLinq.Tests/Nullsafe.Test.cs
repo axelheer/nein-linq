@@ -15,13 +15,13 @@ namespace NeinLinq.Tests.Nullsafe
             {
                 new Dummy
                 {
-                    SomeInteger = 7,
+                    SomeNumeric = 7,
                     OneDay = new DateTime(1977, 05, 25),
-                    SomeOther = new Dummy { SomeInteger = 42 }
+                    SomeOther = new Dummy { SomeNumeric = 42 }
                 },
                 new Dummy
                 {
-                    SomeInteger = 1138,
+                    SomeNumeric = 1138,
                     OneDay = new DateTime(1980, 05, 21),
                     SomeOthers = new[]
                     {
@@ -31,7 +31,7 @@ namespace NeinLinq.Tests.Nullsafe
                 },
                 new Dummy
                 {
-                    SomeInteger = 123456,
+                    SomeNumeric = 123456,
                     OneDay = new DateTime(1983, 05, 25),
                     MoreOthers = new[]
                     {
@@ -41,7 +41,7 @@ namespace NeinLinq.Tests.Nullsafe
                 },
                 new Dummy
                 {
-                    SomeInteger = 654321,
+                    SomeNumeric = 654321,
                     OneDay = new DateTime(2015, 12, 18),
                     EvenLotMoreOthers = new HashSet<Dummy>()
                     {
@@ -69,7 +69,7 @@ namespace NeinLinq.Tests.Nullsafe
             Assert.Equal(5, result.Count);
 
             AssertDummy(result[0]);
-            AssertDummy(result[1], year: 1977, integer: 42);
+            AssertDummy(result[1], year: 1977, numeric: 42);
             AssertDummy(result[2], year: 1980, other: new[] { 3, 6 });
             AssertDummy(result[3], year: 1983, more: new[] { 5, 8 });
             AssertDummy(result[4], year: 2015, lot: new[] { 4, 7 });
@@ -78,11 +78,11 @@ namespace NeinLinq.Tests.Nullsafe
         private static IQueryable<DummyView> Query(IQueryable<Dummy> data)
         {
             return from a in data
-                   orderby a.SomeInteger
+                   orderby a.SomeNumeric
                    select new DummyView
                    {
                        Year = a.OneDay.Year,
-                       Integer = a.SomeOther.SomeInteger,
+                       Numeric = a.SomeOther.SomeNumeric,
                        Other = from b in a.SomeOthers
                                select b.OneDay.Month,
                        More = from c in a.MoreOthers
@@ -94,13 +94,13 @@ namespace NeinLinq.Tests.Nullsafe
 
         private static void AssertDummy(DummyView dummy,
                                         int year = 0,
-                                        int integer = 0,
+                                        int numeric = 0,
                                         int[] other = null,
                                         int[] more = null,
                                         int[] lot = null)
         {
             Assert.Equal(year, dummy.Year);
-            Assert.Equal(integer, dummy.Integer);
+            Assert.Equal(numeric, dummy.Numeric);
             Assert.Equal(other ?? new int[0], dummy.Other);
             Assert.Equal(more ?? new int[0], dummy.More);
             Assert.Equal(lot ?? new int[0], dummy.Lot);

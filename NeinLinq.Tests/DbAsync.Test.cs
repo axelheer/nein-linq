@@ -6,11 +6,11 @@ using Xunit;
 
 namespace NeinLinq.Tests.DbAsync
 {
-    public class Test
+    public class Test : IDisposable
     {
         static Test()
         {
-            Database.SetInitializer<Context>(new DropCreateDatabaseAlways<Context>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<Context>());
         }
 
         private readonly Context db;
@@ -41,6 +41,7 @@ namespace NeinLinq.Tests.DbAsync
                     Number = 3.14m
                 }
             });
+
             db.SaveChanges();
         }
 
@@ -74,6 +75,20 @@ namespace NeinLinq.Tests.DbAsync
             var result = await query.SumAsync(d => d.Number);
 
             Assert.Equal(194.48m, result, 2);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

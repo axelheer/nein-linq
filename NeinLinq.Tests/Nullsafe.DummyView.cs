@@ -7,7 +7,7 @@ namespace NeinLinq.Tests.Nullsafe
     {
         public int Year { get; set; }
 
-        public int Integer { get; set; }
+        public int Numeric { get; set; }
 
         public IEnumerable<int> Other { get; set; }
 
