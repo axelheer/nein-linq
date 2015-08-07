@@ -82,6 +82,12 @@
     <Compile Include="..\NeinLinq.Tests\DbAsync.Test.cs">
       <Link>DbAsync.Test.cs</Link>
     </Compile>
+    <Compile Include="..\NeinLinq.Tests\Dynamic.Dummy.cs">
+      <Link>Dynamic.Dummy.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq.Tests\Dynamic.Test.cs">
+      <Link>Dynamic.Test.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq.Tests\FakeAsync.Dummy.cs">
       <Link>FakeAsync.Dummy.cs</Link>
     </Compile>

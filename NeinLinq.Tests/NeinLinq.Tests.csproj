@@ -65,6 +65,8 @@
     <Compile Include="DbAsync.Dummy.cs" />
     <Compile Include="DbAsync.Rewriter.cs" />
     <Compile Include="DbAsync.Test.cs" />
+    <Compile Include="Dynamic.Dummy.cs" />
+    <Compile Include="Dynamic.Test.cs" />
     <Compile Include="FakeAsync.Dummy.cs" />
     <Compile Include="FakeAsync.Rewriter.cs" />
     <Compile Include="FakeAsync.Test.cs" />

@@ -68,6 +68,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NeinLinq\DynamicCompare.cs">
+      <Link>DynamicCompare.cs</Link>
+    </Compile>
+    <Compile Include="..\NeinLinq\DynamicQuery.cs">
+      <Link>DynamicQuery.cs</Link>
+    </Compile>
     <Compile Include="..\NeinLinq\InjectableQueryBuilder.cs">
       <Link>InjectableQueryBuilder.cs</Link>
     </Compile>

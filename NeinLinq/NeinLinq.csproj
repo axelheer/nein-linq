@@ -51,6 +51,8 @@
     <None Include="Properties\CustomRuleset.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicCompare.cs" />
+    <Compile Include="DynamicQuery.cs" />
     <Compile Include="InjectableQueryBuilder.cs" />
     <Compile Include="InjectableQueryRewriter.cs" />
     <Compile Include="InjectLambdaAttribute.cs" />
