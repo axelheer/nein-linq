@@ -26,9 +26,8 @@ namespace NeinLinq
                 throw new ArgumentOutOfRangeException(nameof(comparer));
 
             var target = Expression.Parameter(typeof(T));
-            var predicate = CreateComparison(target, selector, comparer, value);
 
-            return Expression.Lambda<Func<T, bool>>(predicate, target);
+            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value), target);
         }
 
         /// <summary>
@@ -47,9 +46,8 @@ namespace NeinLinq
                 throw new ArgumentNullException(nameof(comparer));
 
             var target = Expression.Parameter(typeof(T));
-            var predicate = CreateComparison(target, selector, comparer, value);
 
-            return Expression.Lambda<Func<T, bool>>(predicate, target);
+            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value), target);
         }
 
         /// <summary>

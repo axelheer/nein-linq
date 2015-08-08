@@ -29,12 +29,13 @@ namespace NeinLinq.Tests.Dynamic
         [Fact]
         public void CreatePredicateShouldCreateComparison()
         {
-            var equal = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.Equal, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var notEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.NotEqual, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var greaterThan = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.GreaterThan, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var greaterThanOrEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.GreaterThanOrEqual, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var lessThan = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.LessThan, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var lessThanOrEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.LessThanOrEqual, (222.222m).ToString(CultureInfo.CurrentCulture));
+            var value = (222.222m).ToString(CultureInfo.CurrentCulture);
+            var equal = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.Equal, value);
+            var notEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.NotEqual, value);
+            var greaterThan = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.GreaterThan, value);
+            var greaterThanOrEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.GreaterThanOrEqual, value);
+            var lessThan = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.LessThan, value);
+            var lessThanOrEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.LessThanOrEqual, value);
 
             var equalResult = data.Where(equal).Select(d => d.Id).ToArray();
             var notEqualResult = data.Where(notEqual).Select(d => d.Id).ToArray();
@@ -64,12 +65,13 @@ namespace NeinLinq.Tests.Dynamic
         [Fact]
         public void WhereShouldFilterByComparison()
         {
-            var equal = data.Where("Number", DynamicCompare.Equal, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var notEqual = data.Where("Number", DynamicCompare.NotEqual, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var greaterThan = data.Where("Number", DynamicCompare.GreaterThan, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var greaterThanOrEqual = data.Where("Number", DynamicCompare.GreaterThanOrEqual, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var lessThan = data.Where("Number", DynamicCompare.LessThan, (222.222m).ToString(CultureInfo.CurrentCulture));
-            var lessThanOrEqual = data.Where("Number", DynamicCompare.LessThanOrEqual, (222.222m).ToString(CultureInfo.CurrentCulture));
+            var value = (222.222m).ToString(CultureInfo.CurrentCulture);
+            var equal = data.Where("Number", DynamicCompare.Equal, value);
+            var notEqual = data.Where("Number", DynamicCompare.NotEqual, value);
+            var greaterThan = data.Where("Number", DynamicCompare.GreaterThan, value);
+            var greaterThanOrEqual = data.Where("Number", DynamicCompare.GreaterThanOrEqual, value);
+            var lessThan = data.Where("Number", DynamicCompare.LessThan, value);
+            var lessThanOrEqual = data.Where("Number", DynamicCompare.LessThanOrEqual, value);
 
             var equalResult = equal.Select(d => d.Id).ToArray();
             var notEqualResult = notEqual.Select(d => d.Id).ToArray();
@@ -99,11 +101,14 @@ namespace NeinLinq.Tests.Dynamic
         [Fact]
         public void OrderByShouldSortBySelector()
         {
-            var sorted = data.OrderBy("Name.Length").ThenBy("Name", descending: true);
+            var one = data.OrderBy("Name.Length").ThenBy("Name", descending: true);
+            var two = data.OrderBy("Name.Length", descending: true).ThenBy("Name");
 
-            var result = sorted.Select(d => d.Id).ToArray();
+            var oneResult = one.Select(d => d.Id).ToArray();
+            var twoResult = two.Select(d => d.Id).ToArray();
 
-            Assert.Equal(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 }, result);
+            Assert.Equal(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 }, oneResult);
+            Assert.Equal(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, twoResult);
         }
     }
 }
