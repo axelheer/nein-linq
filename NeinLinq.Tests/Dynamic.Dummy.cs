@@ -8,6 +8,6 @@ namespace NeinLinq.Tests.Dynamic
 
         public string Name { get; set; }
 
-        public decimal Number { get; set; }
+        public decimal? Number { get; set; }
     }
 }

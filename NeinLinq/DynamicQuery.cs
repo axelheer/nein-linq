@@ -283,7 +283,9 @@ namespace NeinLinq
         private static ConstantExpression CreateConstant(Expression target, Expression selector, string value)
         {
             var type = Expression.Lambda(selector, (ParameterExpression)target).ReturnType;
-            return Expression.Constant(Convert.ChangeType(value, type, CultureInfo.CurrentCulture), type);
+            var conversionType = Nullable.GetUnderlyingType(type) ?? type;
+
+            return Expression.Constant(Convert.ChangeType(value, conversionType, CultureInfo.CurrentCulture), type);
         }
     }
 }
