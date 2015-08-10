@@ -280,10 +280,13 @@ namespace NeinLinq
             return selector.Split('.').Aggregate(target, (t, n) => Expression.PropertyOrField(t, n));
         }
 
-        private static ConstantExpression CreateConstant(Expression target, Expression selector, string value)
+        private static Expression CreateConstant(Expression target, Expression selector, string value)
         {
             var type = Expression.Lambda(selector, (ParameterExpression)target).ReturnType;
             var conversionType = Nullable.GetUnderlyingType(type) ?? type;
+
+            if (type != conversionType && string.IsNullOrEmpty(value))
+                return Expression.Default(type);
 
             return Expression.Constant(Convert.ChangeType(value, conversionType, CultureInfo.CurrentCulture), type);
         }

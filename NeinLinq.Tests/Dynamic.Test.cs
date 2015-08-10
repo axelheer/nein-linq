@@ -30,6 +30,7 @@ namespace NeinLinq.Tests.Dynamic
         public void CreatePredicateShouldCreateComparison()
         {
             var value = (222.222m).ToString(CultureInfo.CurrentCulture);
+            var empty = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.Equal, null);
             var equal = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.Equal, value);
             var notEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.NotEqual, value);
             var greaterThan = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.GreaterThan, value);
@@ -37,6 +38,7 @@ namespace NeinLinq.Tests.Dynamic
             var lessThan = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.LessThan, value);
             var lessThanOrEqual = DynamicQuery.CreatePredicate<Dummy>("Number", DynamicCompare.LessThanOrEqual, value);
 
+            var emptyResult = data.Where(empty).Select(d => d.Id).ToArray();
             var equalResult = data.Where(equal).Select(d => d.Id).ToArray();
             var notEqualResult = data.Where(notEqual).Select(d => d.Id).ToArray();
             var greaterThanResult = data.Where(greaterThan).Select(d => d.Id).ToArray();
@@ -44,6 +46,7 @@ namespace NeinLinq.Tests.Dynamic
             var lessThanResult = data.Where(lessThan).Select(d => d.Id).ToArray();
             var lessThanOrEqualResult = data.Where(lessThanOrEqual).Select(d => d.Id).ToArray();
 
+            Assert.Equal(0, emptyResult.Length);
             Assert.Equal(new[] { 5 }, equalResult);
             Assert.Equal(new[] { 1, 2, 3, 4, 6, 7, 8, 9 }, notEqualResult);
             Assert.Equal(new[] { 6, 7, 8, 9 }, greaterThanResult);
@@ -66,6 +69,7 @@ namespace NeinLinq.Tests.Dynamic
         public void WhereShouldFilterByComparison()
         {
             var value = (222.222m).ToString(CultureInfo.CurrentCulture);
+            var empty = data.Where("Number", DynamicCompare.Equal, null);
             var equal = data.Where("Number", DynamicCompare.Equal, value);
             var notEqual = data.Where("Number", DynamicCompare.NotEqual, value);
             var greaterThan = data.Where("Number", DynamicCompare.GreaterThan, value);
@@ -73,6 +77,7 @@ namespace NeinLinq.Tests.Dynamic
             var lessThan = data.Where("Number", DynamicCompare.LessThan, value);
             var lessThanOrEqual = data.Where("Number", DynamicCompare.LessThanOrEqual, value);
 
+            var emptyResult = empty.Select(d => d.Id).ToArray();
             var equalResult = equal.Select(d => d.Id).ToArray();
             var notEqualResult = notEqual.Select(d => d.Id).ToArray();
             var greaterThanResult = greaterThan.Select(d => d.Id).ToArray();
@@ -80,6 +85,7 @@ namespace NeinLinq.Tests.Dynamic
             var lessThanResult = lessThan.Select(d => d.Id).ToArray();
             var lessThanOrEqualResult = lessThanOrEqual.Select(d => d.Id).ToArray();
 
+            Assert.Equal(0, emptyResult.Length);
             Assert.Equal(new[] { 5 }, equalResult);
             Assert.Equal(new[] { 1, 2, 3, 4, 6, 7, 8, 9 }, notEqualResult);
             Assert.Equal(new[] { 6, 7, 8, 9 }, greaterThanResult);
