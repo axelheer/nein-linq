@@ -119,7 +119,7 @@ public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
 
 The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
 
-Note: that works with instance methods too.
+*Note:* that works with instance methods too.
 
 Null-safe queries
 -----------------
@@ -253,8 +253,8 @@ db.Courses.Where(finalPredicate)...
 
 In addition to it, no *Invoke* is used to achieve that: many LINQ providers do not support it (*Entity Framework*, i'm looking at you...), so this solution should be quite compatible.
 
-Selector translator (experimental)
-----------------------------------
+Selector translator
+-------------------
 
 As with predicates selectors need some love too. If we've an existing selector for some base type and want to reuse this code for one or more concrete types, we're forced to copy and paste again. Don't do that!
 
@@ -317,12 +317,10 @@ var selectCourseWithAcademy =
 
 *Note:* for parent / child relations the less dynamic but (maybe) more readable *Lambda injection* is also an option: just encapsulate the selector as a nice extension method.
 
-*Attention:* i'm still playing around with this feature, so please beware my fickleness.
-
 Function substitution
 ---------------------
 
-This is a really dead simple one. Maybe i should've started here...
+This is a really dead simple one. Maybe we should've started here...
 
 Just think of helper functions like the `SqlFunctions` class provided by *Entity Framework*. And we need to replace the whole class for unit testing or whatsoever.
 
@@ -342,3 +340,24 @@ Custom query manipulation
 -------------------------
 
 You want more? Okay, you can use the generic rewrite mechanism of this library to intercept LINQ queries with your own *Expression visitor*. The code behind the substitution above should provide a good example.
+
+Dynamic query filtering / sorting
+---------------------------------
+
+At some point it may be necessary to filter / sort an almost ready query based on user input, which is by its nature not type safe but text based. To handle these scenarios as well a (very) simple helper is included.
+
+```csharp
+var query = data.Where("Name.Length", DynamicCompare.GreaterThan, "7")
+                .OrderBy("Name").ThenBy("Number", descending: true);
+```
+
+It's possible to combine this stuff with the predicate translations above.
+
+```csharp
+var p = DynamicQuery.CreatePredicate<Whatever>("Name", "Contains", "p");
+var q = DynamicQuery.CreatePredicate<Whatever>("Name", "Contains", "q");
+
+var query = data.Where(p.Or(q));
+```
+
+*Note:* if you're seeking a possibility to create complex queries based on string manipulation, this won't help. The goal of this library is to stay type safe as long as possible.
