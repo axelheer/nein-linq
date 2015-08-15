@@ -1,14 +1,7 @@
 # User
-*.suo
+*.vs
 *.user
 
 # Build
-bin/
-obj/
-
-# Test
-TestResults/
-
-# NuGet
-packages/*
-!packages/repositories.config
+artifacts/
+*.lock.json

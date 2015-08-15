@@ -41,7 +41,7 @@ namespace NeinLinq
         private static Expression Fallback(Type type)
         {
             // default values for generic collections
-            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            if (type.IsConstructedGenericType())
             {
                 var typeDefinition = type.GetGenericTypeDefinition();
                 if (typeDefinition == typeof(IEnumerable<>) ||

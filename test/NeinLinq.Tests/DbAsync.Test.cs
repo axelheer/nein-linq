@@ -8,11 +8,6 @@ namespace NeinLinq.Tests.DbAsync
 {
     public class Test : IDisposable
     {
-        static Test()
-        {
-            Database.SetInitializer(new DropCreateDatabaseAlways<Context>());
-        }
-
         private readonly Context db;
 
         public Test()

@@ -1,0 +1,32 @@
+﻿{
+  "version": "1.4.0",
+  "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.",
+  "authors": [ "Axel Heer" ],
+  "tags": [ "LINQ", "EF" ],
+  "projectUrl": "http://github.com/axelheer/nein-linq",
+  "licenseUrl": "http://opensource.org/licenses/mit",
+  "copyright": "Copyright © 2014-2015 Axel Heer",
+
+  "releaseNotes": "Added dynamic query helper.",
+
+  "compile": "../NeinLinq/**/*.cs",
+
+  "compilationOptions": {
+    "define": [ "EF6" ],
+    "keyFile": "../NeinLinq/NeinLinq.snk"
+  },
+
+  "dependencies": {
+    "EntityFramework": "6.0.0"
+  },
+
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "mscorlib": "4.0.0.0",
+        "System": "4.0.0.0",
+        "System.Core": "4.0.0.0"
+      }
+    }
+  }
+}

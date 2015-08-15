@@ -87,7 +87,7 @@ namespace NeinLinq
             var config = false;
 
             // configuration over convention, if any
-            var metadata = (InjectLambdaAttribute)Attribute.GetCustomAttribute(call, typeof(InjectLambdaAttribute));
+            var metadata = call.GetCustomAttribute<InjectLambdaAttribute>();
             if (metadata != null)
             {
                 if (metadata.Target != null)
