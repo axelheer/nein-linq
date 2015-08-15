@@ -94,6 +94,8 @@ namespace NeinLinq
     public class RewriteQuery<T> : RewriteQuery, IOrderedQueryable<T>
 #if EF6
         , IDbAsyncEnumerable<T>
+#elif EF7
+        , IAsyncEnumerable<T>
 #endif
     {
         private readonly Lazy<IEnumerable<T>> enumerable;
@@ -125,6 +127,17 @@ namespace NeinLinq
             var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable<T>;
             if (asyncEnumerable != null)
                 return asyncEnumerable.GetAsyncEnumerator();
+            return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
+        }
+
+#elif EF7
+
+        /// <inheritdoc />
+        IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
+        {
+            var asyncEnumerable = enumerable.Value as IAsyncEnumerable<T>;
+            if (asyncEnumerable != null)
+                return asyncEnumerable.GetEnumerator();
             return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
         }
 

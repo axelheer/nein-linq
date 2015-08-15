@@ -5,6 +5,16 @@ using System.Linq.Expressions;
 #if EF6
 
 using System.Data.Entity.Infrastructure;
+
+#elif EF7
+
+using Microsoft.Data.Entity.Query;
+using System.Collections.Generic;
+
+#endif
+
+#if EF6 || EF7
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +27,9 @@ namespace NeinLinq
     /// </summary>
     public class RewriteQueryProvider : IQueryProvider
 #if EF6
-, IDbAsyncQueryProvider
+        , IDbAsyncQueryProvider
+#elif EF7
+        , IEntityQueryProvider
 #endif
     {
         private readonly IQueryProvider provider;
@@ -87,6 +99,28 @@ namespace NeinLinq
             if (asyncProvider != null)
                 return asyncProvider.ExecuteAsync(rewriter.Visit(expression), cancellationToken);
             return Task.FromResult(provider.Execute(rewriter.Visit(expression)));
+        }
+
+#elif EF7
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
+        {
+            // execute query with rewritten expression; async, if possible
+            var asyncProvider = provider as IAsyncQueryProvider;
+            if (asyncProvider != null)
+                return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression));
+            return new EntityQueryable<TResult>(this, rewriter.Visit(expression));
+        }
+
+        /// <inheritdoc />
+        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        {
+            // execute query with rewritten expression; async, if possible
+            var asyncProvider = provider as IAsyncQueryProvider;
+            if (asyncProvider != null)
+                return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression), cancellationToken);
+            return Task.FromResult(provider.Execute<TResult>(rewriter.Visit(expression)));
         }
 
 #endif

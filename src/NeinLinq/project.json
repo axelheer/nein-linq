@@ -7,7 +7,7 @@
   "licenseUrl": "http://opensource.org/licenses/mit",
   "copyright": "Copyright © 2014-2015 Axel Heer",
 
-  "releaseNotes": "Added dynamic query helper. (Use .EF6 package to run EF6 async queries.)",
+  "releaseNotes": "Added dynamic query helper. (Use .EF6 / .EF7 package to run EF6 / EF7 async queries.)",
 
   "compilationOptions": {
     "keyFile": "NeinLinq.snk"

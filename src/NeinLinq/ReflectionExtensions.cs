@@ -5,7 +5,7 @@ namespace NeinLinq
 {
     internal static class ReflectionExtensions
     {
-        public static T GetCustomAttribute<T>(this MemberInfo member)
+        public static T GetAttribute<T>(this MemberInfo member)
             where T : Attribute
         {
 #if DOTNET || NETCORE45 || WPA81
@@ -15,7 +15,7 @@ namespace NeinLinq
 #endif
         }
 
-        public static MethodInfo GetMethod(this Type type, string name, Type[] parameters)
+        public static MethodInfo GetMethodInfo(this Type type, string name, Type[] parameters)
         {
 #if DOTNET || NETCORE45 || WPA81
             return type.GetRuntimeMethod(name, parameters);
@@ -24,7 +24,7 @@ namespace NeinLinq
 #endif
         }
 
-        public static bool IsSubclassOf(this Type type, Type other)
+        public static bool IsInheritorOf(this Type type, Type other)
         {
 #if DOTNET || NETCORE45 || WPA81
             return type.GetTypeInfo().IsSubclassOf(other);
@@ -42,7 +42,7 @@ namespace NeinLinq
 #endif
         }
 
-        public static Type[] GetGenericArguments(this Type type)
+        public static Type[] GetGenericTypeArguments(this Type type)
         {
 #if DOTNET || NETCORE45 || WPA81
             return type.GenericTypeArguments;

@@ -47,14 +47,14 @@ namespace NeinLinq
                 if (typeDefinition == typeof(IEnumerable<>) ||
                     typeDefinition == typeof(ICollection<>))
                 {
-                    var typeArguments = type.GetGenericArguments();
+                    var typeArguments = type.GetGenericTypeArguments();
                     return Expression.Convert(
                         Expression.New(typeof(List<>).MakeGenericType(typeArguments)),
                         type);
                 }
                 if (typeDefinition == typeof(ISet<>))
                 {
-                    var typeArguments = type.GetGenericArguments();
+                    var typeArguments = type.GetGenericTypeArguments();
                     return Expression.Convert(
                         Expression.New(typeof(HashSet<>).MakeGenericType(typeArguments)),
                         type);

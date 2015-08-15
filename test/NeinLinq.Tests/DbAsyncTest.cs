@@ -1,8 +1,17 @@
 ﻿#if EF6
 
+using System.Data.Entity;
+
+#elif EF7
+
+using Microsoft.Data.Entity;
+
+#endif
+
+#if EF6 || EF7
+
 using NeinLinq.Tests.DbAsync;
 using System;
-using System.Data.Entity;
 using Xunit;
 
 namespace NeinLinq.Tests
@@ -14,7 +23,9 @@ namespace NeinLinq.Tests
         public DbAsyncTest()
         {
             db = new Context();
-            db.Database.Initialize(force: true);
+
+            db.Dummies.RemoveRange(db.Dummies);
+            db.SaveChanges();
 
             db.Dummies.AddRange(new[]
             {
@@ -37,7 +48,6 @@ namespace NeinLinq.Tests
                     Number = 3.14m
                 }
             });
-
             db.SaveChanges();
         }
 

@@ -5,6 +5,11 @@ using System.Collections.Generic;
 #if EF6
 
 using System.Data.Entity.Infrastructure;
+
+#endif
+
+#if EF6 || EF7
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +22,7 @@ namespace NeinLinq
     /// </summary>
     public abstract class RewriteQueryEnumerator : IEnumerator, IDisposable
 #if EF6
-, IDbAsyncEnumerator
+        , IDbAsyncEnumerator
 #endif
     {
         private readonly IEnumerator enumerator;
@@ -100,7 +105,9 @@ namespace NeinLinq
     /// </summary>
     public class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IEnumerator<T>
 #if EF6
-, IDbAsyncEnumerator<T>
+        , IDbAsyncEnumerator<T>
+#elif EF7
+        , IAsyncEnumerator<T>
 #endif
     {
         private readonly IEnumerator<T> enumerator;
@@ -123,6 +130,16 @@ namespace NeinLinq
         {
             get { return enumerator.Current; }
         }
+
+#if EF7
+
+        /// <inheritdoc />
+        public Task<bool> MoveNext(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(enumerator.MoveNext());
+        }
+
+#endif
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)

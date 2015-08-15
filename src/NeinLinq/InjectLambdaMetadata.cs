@@ -37,18 +37,18 @@ namespace NeinLinq
             factory = new Lazy<Func<Expression, LambdaExpression>>(() =>
             {
                 // assume method without any parameters
-                var factoryMethod = target.GetMethod(method, new Type[0]);
+                var factoryMethod = target.GetMethodInfo(method, new Type[0]);
                 if (factoryMethod == null)
                     return null;
 
                 // method returns lambda expression?
                 var expressionInfo = factoryMethod.ReturnType;
-                if (expressionInfo.IsSubclassOf(typeof(LambdaExpression)) == false)
+                if (expressionInfo.IsInheritorOf(typeof(LambdaExpression)) == false)
                     return null;
 
                 // lambda signature matches original method's signature?
-                var delegateInfo = expressionInfo.GetGenericArguments()[0];
-                var delegateSignature = delegateInfo.GetMethod("Invoke", args);
+                var delegateInfo = expressionInfo.GetGenericTypeArguments()[0];
+                var delegateSignature = delegateInfo.GetMethodInfo("Invoke", args);
                 if (delegateSignature == null || delegateSignature.ReturnParameter.ParameterType != returns)
                     return null;
 
@@ -87,7 +87,7 @@ namespace NeinLinq
             var config = false;
 
             // configuration over convention, if any
-            var metadata = call.GetCustomAttribute<InjectLambdaAttribute>();
+            var metadata = call.GetAttribute<InjectLambdaAttribute>();
             if (metadata != null)
             {
                 if (metadata.Target != null)
