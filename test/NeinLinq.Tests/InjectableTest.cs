@@ -1,14 +1,15 @@
-﻿using System;
+﻿using NeinLinq.Tests.Injectable;
+using System;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests.Injectable
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class InjectableTest
     {
         private readonly IQueryable<Dummy> data;
 
-        public Test()
+        public InjectableTest()
         {
             data = new[]
             {

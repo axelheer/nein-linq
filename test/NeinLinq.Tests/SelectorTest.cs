@@ -1,16 +1,17 @@
-﻿using System;
+﻿using NeinLinq.Tests.Selector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace NeinLinq.Tests.Selector
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class SelectorTest
     {
         private readonly IQueryable<IDummy> data;
 
-        public Test()
+        public SelectorTest()
         {
             var d = new[]
             {

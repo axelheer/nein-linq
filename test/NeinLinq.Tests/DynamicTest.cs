@@ -1,15 +1,16 @@
-﻿using System;
+﻿using NeinLinq.Tests.Dynamic;
+using System;
 using System.Globalization;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests.Dynamic
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class DynamicTest
     {
         private readonly IQueryable<Dummy> data;
 
-        public Test()
+        public DynamicTest()
         {
             data = new[]
             {

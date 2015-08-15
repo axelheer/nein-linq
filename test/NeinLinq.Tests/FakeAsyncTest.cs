@@ -1,17 +1,18 @@
 ﻿#if EF6
 
+using NeinLinq.Tests.FakeAsync;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests.FakeAsync
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class FakeAsyncTest
     {
         private readonly IQueryable<Dummy> data;
 
-        public Test()
+        public FakeAsyncTest()
         {
             data = new[]
             {

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using NeinLinq.Tests.Nullsafe;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests.Nullsafe
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class NullsafeTest
     {
         private readonly IQueryable<Dummy> data;
 
-        public Test()
+        public NullsafeTest()
         {
             data = new[]
             {

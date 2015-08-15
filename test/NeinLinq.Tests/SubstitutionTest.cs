@@ -1,14 +1,15 @@
-﻿using System;
+﻿using NeinLinq.Tests.Substitution;
+using System;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests.Substitution
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class SubstitutionTest
     {
         private readonly IQueryable<Dummy> data;
 
-        public Test()
+        public SubstitutionTest()
         {
             data = new[]
             {

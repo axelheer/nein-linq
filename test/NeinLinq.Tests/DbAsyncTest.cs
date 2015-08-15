@@ -1,16 +1,17 @@
 ﻿#if EF6
 
+using NeinLinq.Tests.DbAsync;
 using System;
 using System.Data.Entity;
 using Xunit;
 
-namespace NeinLinq.Tests.DbAsync
+namespace NeinLinq.Tests
 {
-    public class Test : IDisposable
+    public class DbAsyncTest : IDisposable
     {
         private readonly Context db;
 
-        public Test()
+        public DbAsyncTest()
         {
             db = new Context();
             db.Database.Initialize(force: true);

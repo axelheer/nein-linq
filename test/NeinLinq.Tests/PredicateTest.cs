@@ -1,15 +1,16 @@
-﻿using System;
+﻿using NeinLinq.Tests.Predicate;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace NeinLinq.Tests.Predicate
+namespace NeinLinq.Tests
 {
-    public class Test
+    public class PredicateTest
     {
         private readonly IQueryable<IDummy> data;
 
-        public Test()
+        public PredicateTest()
         {
             var d = new[]
             {
