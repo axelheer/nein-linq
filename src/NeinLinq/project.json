@@ -30,9 +30,18 @@
     },
     "net4": {
       "frameworkAssemblies": {
-        "mscorlib": "4.0.0.0",
-        "System": "4.0.0.0",
-        "System.Core": "4.0.0.0"
+        "mscorlib": {
+          "type": "build",
+          "version": "4.0.0.0"
+        },
+        "System": {
+          "type": "build",
+          "version": "4.0.0.0"
+        },
+        "System.Core": {
+          "type": "build",
+          "version": "4.0.0.0"
+        }
       }
     },
     "netcore45": {
