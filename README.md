@@ -11,6 +11,10 @@ To run async queries within *Entity Framework 6* use the "special" build (there'
 
     PM> Install-Package NeinLinq.EF6
 
+To run async queries within *Entity Framework 7* use the "special" build (again, there's an extra dependency for that; thus, the extra build).
+
+    PM> Install-Package NeinLinq.EF7
+
 Lambda injection
 ----------------
 
