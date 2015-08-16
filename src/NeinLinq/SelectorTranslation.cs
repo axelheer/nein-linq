@@ -13,7 +13,7 @@ namespace NeinLinq
     /// <remarks>Use <see cref="SelectorTranslator" /> to start a translation.</remarks>
     public class SelectorTranslation<T, U>
     {
-        private readonly Expression<Func<T, U>> selector;
+        readonly Expression<Func<T, U>> selector;
 
         /// <summary>
         /// Starts translation of a given selector.

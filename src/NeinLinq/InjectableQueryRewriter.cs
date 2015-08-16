@@ -14,12 +14,12 @@ namespace NeinLinq
     /// </remarks>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
-        private static readonly object cacheLock = new object();
+        static readonly object cacheLock = new object();
 
-        private static readonly Dictionary<MethodInfo, InjectLambdaMetadata> cache =
+        static readonly Dictionary<MethodInfo, InjectLambdaMetadata> cache =
             new Dictionary<MethodInfo, InjectLambdaMetadata>();
 
-        private readonly Type[] whitelist;
+        readonly Type[] whitelist;
 
         /// <summary>
         /// Creates a new injectable query rewriter.

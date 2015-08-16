@@ -8,7 +8,7 @@ namespace NeinLinq.Tests
 {
     public class NullsafeTest
     {
-        private readonly IQueryable<Dummy> data;
+        readonly IQueryable<Dummy> data;
 
         public NullsafeTest()
         {
@@ -70,13 +70,13 @@ namespace NeinLinq.Tests
             Assert.Equal(5, result.Count);
 
             AssertDummy(result[0]);
-            AssertDummy(result[1], year: 1977, numeric: 42);
-            AssertDummy(result[2], year: 1980, other: new[] { 3, 6 });
-            AssertDummy(result[3], year: 1983, more: new[] { 5, 8 });
-            AssertDummy(result[4], year: 2015, lot: new[] { 4, 7 });
+            AssertDummy(result[1], 1977, 42);
+            AssertDummy(result[2], 1980, other: new[] { 3, 6 });
+            AssertDummy(result[3], 1983, more: new[] { 5, 8 });
+            AssertDummy(result[4], 2015, lot: new[] { 4, 7 });
         }
 
-        private static IQueryable<DummyView> Query(IQueryable<Dummy> data)
+        static IQueryable<DummyView> Query(IQueryable<Dummy> data)
         {
             return from a in data
                    orderby a.SomeNumeric
@@ -93,12 +93,12 @@ namespace NeinLinq.Tests
                    };
         }
 
-        private static void AssertDummy(DummyView dummy,
-                                        int year = 0,
-                                        int numeric = 0,
-                                        int[] other = null,
-                                        int[] more = null,
-                                        int[] lot = null)
+        static void AssertDummy(DummyView dummy,
+                                int year = 0,
+                                int numeric = 0,
+                                int[] other = null,
+                                int[] more = null,
+                                int[] lot = null)
         {
             Assert.Equal(year, dummy.Year);
             Assert.Equal(numeric, dummy.Numeric);

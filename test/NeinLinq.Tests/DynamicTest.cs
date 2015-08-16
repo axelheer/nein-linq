@@ -8,7 +8,7 @@ namespace NeinLinq.Tests
 {
     public class DynamicTest
     {
-        private readonly IQueryable<Dummy> data;
+        readonly IQueryable<Dummy> data;
 
         public DynamicTest()
         {
@@ -108,8 +108,8 @@ namespace NeinLinq.Tests
         [Fact]
         public void OrderByShouldSortBySelector()
         {
-            var one = data.OrderBy("Name.Length").ThenBy("Name", descending: true);
-            var two = data.OrderBy("Name.Length", descending: true).ThenBy("Name");
+            var one = data.OrderBy("Name.Length").ThenBy("Name", true);
+            var two = data.OrderBy("Name.Length", true).ThenBy("Name");
 
             var oneResult = one.Select(d => d.Id).ToArray();
             var twoResult = two.Select(d => d.Id).ToArray();

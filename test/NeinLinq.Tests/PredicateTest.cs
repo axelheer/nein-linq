@@ -8,7 +8,7 @@ namespace NeinLinq.Tests
 {
     public class PredicateTest
     {
-        private readonly IQueryable<IDummy> data;
+        readonly IQueryable<IDummy> data;
 
         public PredicateTest()
         {

@@ -18,7 +18,7 @@ namespace NeinLinq.Tests
 {
     public class DbAsyncTest : IDisposable
     {
-        private readonly Context db;
+        readonly Context db;
 
         public DbAsyncTest()
         {

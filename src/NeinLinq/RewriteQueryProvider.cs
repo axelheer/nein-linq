@@ -32,8 +32,8 @@ namespace NeinLinq
         , IAsyncQueryProvider
 #endif
     {
-        private readonly IQueryProvider provider;
-        private readonly ExpressionVisitor rewriter;
+        readonly IQueryProvider provider;
+        readonly ExpressionVisitor rewriter;
 
         /// <summary>
         /// Create a new rewrite query provider.

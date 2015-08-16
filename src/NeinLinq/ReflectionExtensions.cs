@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace NeinLinq
 {
-    internal static class ReflectionExtensions
+    static class ReflectionExtensions
     {
         public static T GetAttribute<T>(this MemberInfo member)
             where T : Attribute

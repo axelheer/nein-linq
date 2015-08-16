@@ -7,7 +7,7 @@ namespace NeinLinq.Tests
 {
     public class InjectableTest
     {
-        private readonly IQueryable<Dummy> data;
+        readonly IQueryable<Dummy> data;
 
         public InjectableTest()
         {

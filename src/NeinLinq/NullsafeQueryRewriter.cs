@@ -38,7 +38,7 @@ namespace NeinLinq
                 node);
         }
 
-        private static Expression Fallback(Type type)
+        static Expression Fallback(Type type)
         {
             // default values for generic collections
             if (type.IsConstructedGenericType())

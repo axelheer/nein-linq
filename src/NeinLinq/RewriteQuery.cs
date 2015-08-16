@@ -20,10 +20,10 @@ namespace NeinLinq
         , IDbAsyncEnumerable
 #endif
     {
-        private readonly Type elementType;
-        private readonly Expression expression;
-        private readonly IQueryProvider provider;
-        private readonly Lazy<IEnumerable> enumerable;
+        readonly Type elementType;
+        readonly Expression expression;
+        readonly IQueryProvider provider;
+        readonly Lazy<IEnumerable> enumerable;
 
         /// <summary>
         /// Create a new query to rewrite.
@@ -98,7 +98,7 @@ namespace NeinLinq
         , IAsyncEnumerable<T>
 #endif
     {
-        private readonly Lazy<IEnumerable<T>> enumerable;
+        readonly Lazy<IEnumerable<T>> enumerable;
 
         /// <summary>
         /// Create a new query to rewrite.

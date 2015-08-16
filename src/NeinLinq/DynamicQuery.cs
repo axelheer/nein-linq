@@ -210,7 +210,7 @@ namespace NeinLinq
             return (IOrderedQueryable<T>)CreateSortedQuery(query, selector, method);
         }
 
-        private static IQueryable CreateSortedQuery(IQueryable query, string selector, string method)
+        static IQueryable CreateSortedQuery(IQueryable query, string selector, string method)
         {
             var target = Expression.Parameter(query.ElementType);
             var keySelector = Expression.Lambda(CreateMemberAccess(target, selector), target);
@@ -221,7 +221,7 @@ namespace NeinLinq
             return query.Provider.CreateQuery(expression);
         }
 
-        private static IQueryable CreateFilteredQuery(IQueryable query, string selector, DynamicCompare comparer, string value)
+        static IQueryable CreateFilteredQuery(IQueryable query, string selector, DynamicCompare comparer, string value)
         {
             var target = Expression.Parameter(query.ElementType);
             var predicate = Expression.Lambda(CreateComparison(target, selector, comparer, value), target);
@@ -232,7 +232,7 @@ namespace NeinLinq
             return query.Provider.CreateQuery(expression);
         }
 
-        private static IQueryable CreateFilteredQuery(IQueryable query, string selector, string comparer, string value)
+        static IQueryable CreateFilteredQuery(IQueryable query, string selector, string comparer, string value)
         {
             var target = Expression.Parameter(query.ElementType);
             var predicate = Expression.Lambda(CreateComparison(target, selector, comparer, value), target);
@@ -243,7 +243,7 @@ namespace NeinLinq
             return query.Provider.CreateQuery(expression);
         }
 
-        private static Expression CreateComparison(Expression target, string selector, DynamicCompare comparer, string value)
+        static Expression CreateComparison(Expression target, string selector, DynamicCompare comparer, string value)
         {
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value);
@@ -267,7 +267,7 @@ namespace NeinLinq
             throw new InvalidOperationException();
         }
 
-        private static Expression CreateComparison(Expression target, string selector, string comparer, string value)
+        static Expression CreateComparison(Expression target, string selector, string comparer, string value)
         {
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value);
@@ -275,12 +275,12 @@ namespace NeinLinq
             return Expression.Call(memberAccess, comparer, null, actualValue);
         }
 
-        private static Expression CreateMemberAccess(Expression target, string selector)
+        static Expression CreateMemberAccess(Expression target, string selector)
         {
             return selector.Split('.').Aggregate(target, (t, n) => Expression.PropertyOrField(t, n));
         }
 
-        private static Expression CreateConstant(Expression target, Expression selector, string value)
+        static Expression CreateConstant(Expression target, Expression selector, string value)
         {
             var type = Expression.Lambda(selector, (ParameterExpression)target).ReturnType;
             var conversionType = Nullable.GetUnderlyingType(type) ?? type;

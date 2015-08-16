@@ -19,7 +19,7 @@ namespace NeinLinq.Tests
 {
     public class FakeAsyncTest
     {
-        private readonly IQueryable<Dummy> data;
+        readonly IQueryable<Dummy> data;
 
         public FakeAsyncTest()
         {

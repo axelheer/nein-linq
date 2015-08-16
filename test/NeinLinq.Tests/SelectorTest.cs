@@ -9,7 +9,7 @@ namespace NeinLinq.Tests
 {
     public class SelectorTest
     {
-        private readonly IQueryable<IDummy> data;
+        readonly IQueryable<IDummy> data;
 
         public SelectorTest()
         {

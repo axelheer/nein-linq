@@ -7,7 +7,7 @@ namespace NeinLinq.Tests
 {
     public class SubstitutionTest
     {
-        private readonly IQueryable<Dummy> data;
+        readonly IQueryable<Dummy> data;
 
         public SubstitutionTest()
         {

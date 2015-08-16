@@ -9,8 +9,8 @@ namespace NeinLinq
     /// </summary>
     public class ParameterBinder : ExpressionVisitor
     {
-        private readonly ParameterExpression parameter;
-        private readonly Expression replacement;
+        readonly ParameterExpression parameter;
+        readonly Expression replacement;
 
         /// <summary>
         /// Creates a new parameter binder.

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace NeinLinq.Tests.Nullsafe
 {
@@ -12,13 +11,10 @@ namespace NeinLinq.Tests.Nullsafe
 
         public Dummy SomeOther { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public IEnumerable<Dummy> SomeOthers { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<Dummy> MoreOthers { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ISet<Dummy> EvenLotMoreOthers { get; set; }
     }
 }

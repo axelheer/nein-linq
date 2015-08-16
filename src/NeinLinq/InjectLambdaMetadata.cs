@@ -5,30 +5,30 @@ using System.Reflection;
 
 namespace NeinLinq
 {
-    internal sealed class InjectLambdaMetadata
+    sealed class InjectLambdaMetadata
     {
-        private readonly Type target;
+        readonly Type target;
 
         public Type Target
         {
             get { return target; }
         }
 
-        private readonly string method;
+        readonly string method;
 
         public string Method
         {
             get { return method; }
         }
 
-        private readonly bool config;
+        readonly bool config;
 
         public bool Config
         {
             get { return config; }
         }
 
-        private InjectLambdaMetadata(Type target, string method, bool config, Type returns, params Type[] args)
+        InjectLambdaMetadata(Type target, string method, bool config, Type returns, params Type[] args)
         {
             this.target = target;
             this.method = method;
@@ -66,7 +66,7 @@ namespace NeinLinq
             });
         }
 
-        private readonly Lazy<Func<Expression, LambdaExpression>> factory;
+        readonly Lazy<Func<Expression, LambdaExpression>> factory;
 
         public LambdaExpression Replacement(Expression value)
         {

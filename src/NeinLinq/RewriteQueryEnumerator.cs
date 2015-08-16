@@ -25,7 +25,7 @@ namespace NeinLinq
         , IDbAsyncEnumerator
 #endif
     {
-        private readonly IEnumerator enumerator;
+        readonly IEnumerator enumerator;
 
         /// <summary>
         /// Create a new enumerator proxy.
@@ -68,14 +68,6 @@ namespace NeinLinq
         }
 
         /// <summary>
-        /// Destroys the enumerator.
-        /// </summary>
-        ~RewriteQueryEnumerator()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
         /// Releases all resources.
         /// </summary>
         public void Dispose()
@@ -110,7 +102,7 @@ namespace NeinLinq
         , IAsyncEnumerator<T>
 #endif
     {
-        private readonly IEnumerator<T> enumerator;
+        readonly IEnumerator<T> enumerator;
 
         /// <summary>
         /// Create a new enumerator proxy.

@@ -10,7 +10,7 @@ namespace NeinLinq
     /// <remarks>Use <see cref="PredicateTranslator" /> to start a translation.</remarks>
     public class PredicateTranslation<T>
     {
-        private readonly Expression<Func<T, bool>> predicate;
+        readonly Expression<Func<T, bool>> predicate;
 
         /// <summary>
         /// Creates a new predicate translation.
