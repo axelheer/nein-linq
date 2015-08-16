@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -9,7 +10,6 @@ using System.Data.Entity.Infrastructure;
 #elif EF7
 
 using Microsoft.Data.Entity.Query;
-using System.Collections.Generic;
 
 #endif
 
@@ -29,7 +29,7 @@ namespace NeinLinq
 #if EF6
         , IDbAsyncQueryProvider
 #elif EF7
-        , IEntityQueryProvider
+        , IAsyncQueryProvider
 #endif
     {
         private readonly IQueryProvider provider;
@@ -110,7 +110,7 @@ namespace NeinLinq
             var asyncProvider = provider as IAsyncQueryProvider;
             if (asyncProvider != null)
                 return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression));
-            return new EntityQueryable<TResult>(this, rewriter.Visit(expression));
+            return new RewriteQuery<TResult>(provider.CreateQuery<TResult>(expression), rewriter);
         }
 
         /// <inheritdoc />
