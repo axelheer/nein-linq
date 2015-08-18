@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NeinLinq.Tests.FakeAsync
+﻿namespace NeinLinq.Tests.FakeAsync
 {
     public class Dummy
     {

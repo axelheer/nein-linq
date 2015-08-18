@@ -1,7 +1,4 @@
-﻿#if EF6
-
-using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace NeinLinq.Tests.DbAsync
@@ -15,5 +12,3 @@ namespace NeinLinq.Tests.DbAsync
         }
     }
 }
-
-#endif

@@ -1,5 +1,4 @@
 ﻿using NeinLinq.Tests.Substitution;
-using System;
 using System.Linq;
 using Xunit;
 

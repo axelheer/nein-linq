@@ -1,21 +1,4 @@
-﻿#if EF6
-
-using System;
-using System.Data.Entity;
-
-namespace NeinLinq.Tests.DbAsync
-{
-    [DbConfigurationType(typeof(Config))]
-    public class Context : DbContext
-    {
-        public DbSet<Dummy> Dummies { get; set; }
-    }
-}
-
-#elif EF7
-
-using System;
-using Microsoft.Data.Entity;
+﻿using Microsoft.Data.Entity;
 
 namespace NeinLinq.Tests.DbAsync
 {
@@ -29,5 +12,3 @@ namespace NeinLinq.Tests.DbAsync
         }
     }
 }
-
-#endif

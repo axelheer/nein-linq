@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NeinLinq.Tests.Predicate
+﻿namespace NeinLinq.Tests.Predicate
 {
     public interface IDummy
     {

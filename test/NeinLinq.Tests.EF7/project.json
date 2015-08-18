@@ -5,10 +5,6 @@
 
   "compile": "../NeinLinq.Tests/**/*.cs",
 
-  "compilationOptions": {
-    "define": [ "EF7" ]
-  },
-
   "dependencies": {
     "EntityFramework.InMemory": "7.0.0-beta6",
     "NeinLinq.EF7": "1.4.0-beta1",

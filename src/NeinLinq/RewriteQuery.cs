@@ -4,21 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-#if EF6
-
-using System.Data.Entity.Infrastructure;
-
-#endif
+#pragma warning disable RECS0001
 
 namespace NeinLinq
 {
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public abstract class RewriteQuery : IOrderedQueryable
-#if EF6
-        , IDbAsyncEnumerable
-#endif
+    public abstract partial class RewriteQuery : IOrderedQueryable
     {
         readonly Type elementType;
         readonly Expression expression;
@@ -54,21 +47,6 @@ namespace NeinLinq
             return enumerable.Value.GetEnumerator();
         }
 
-#if EF6
-
-        /// <inheritdoc />
-        public IDbAsyncEnumerator GetAsyncEnumerator()
-        {
-            var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable;
-            if (asyncEnumerable != null)
-                return asyncEnumerable.GetAsyncEnumerator();
-            return (RewriteQueryEnumerator)Activator.CreateInstance(
-                    typeof(RewriteQueryEnumerator<>).MakeGenericType(elementType),
-                    enumerable.Value.GetEnumerator());
-        }
-
-#endif
-
         /// <inheritdoc />
         public Type ElementType
         {
@@ -91,12 +69,7 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public class RewriteQuery<T> : RewriteQuery, IOrderedQueryable<T>
-#if EF6
-        , IDbAsyncEnumerable<T>
-#elif EF7
-        , IAsyncEnumerable<T>
-#endif
+    public partial class RewriteQuery<T> : RewriteQuery, IOrderedQueryable<T>
     {
         readonly Lazy<IEnumerable<T>> enumerable;
 
@@ -118,29 +91,7 @@ namespace NeinLinq
         {
             return enumerable.Value.GetEnumerator();
         }
-
-#if EF6
-
-        /// <inheritdoc />
-        public new IDbAsyncEnumerator<T> GetAsyncEnumerator()
-        {
-            var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable<T>;
-            if (asyncEnumerable != null)
-                return asyncEnumerable.GetAsyncEnumerator();
-            return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
-        }
-
-#elif EF7
-
-        /// <inheritdoc />
-        IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
-        {
-            var asyncEnumerable = enumerable.Value as IAsyncEnumerable<T>;
-            if (asyncEnumerable != null)
-                return asyncEnumerable.GetEnumerator();
-            return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
-        }
-
-#endif
     }
 }
+
+#pragma warning restore RECS0001

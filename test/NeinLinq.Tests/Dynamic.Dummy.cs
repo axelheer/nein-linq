@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NeinLinq.Tests.Dynamic
+﻿namespace NeinLinq.Tests.Dynamic
 {
     public class Dummy
     {

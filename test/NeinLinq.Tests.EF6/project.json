@@ -5,10 +5,6 @@
 
   "compile": "../NeinLinq.Tests/**/*.cs",
 
-  "compilationOptions": {
-    "define": [ "EF6" ]
-  },
-
   "dependencies": {
     "NeinLinq.EF6": "1.4.0",
     "xunit": "2.1.0-beta4-*",

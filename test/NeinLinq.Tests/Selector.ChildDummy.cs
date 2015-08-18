@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NeinLinq.Tests.Selector
+﻿namespace NeinLinq.Tests.Selector
 {
     public class ChildDummy : IDummy
     {

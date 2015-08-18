@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NeinLinq.Tests.Substitution
+﻿namespace NeinLinq.Tests.Substitution
 {
     public static class Functions
     {

@@ -1,15 +1,4 @@
-﻿#if EF6
-
-using System.Data.Entity;
-
-#elif EF7
-
-using Microsoft.Data.Entity;
-
-#endif
-
-#if EF6 || EF7
-
+﻿using Microsoft.Data.Entity;
 using NeinLinq.Tests.FakeAsync;
 using System;
 using System.Linq;
@@ -82,5 +71,3 @@ namespace NeinLinq.Tests
         }
     }
 }
-
-#endif

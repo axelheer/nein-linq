@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NeinLinq.Tests.Injectable
+﻿namespace NeinLinq.Tests.Injectable
 {
     public class Dummy
     {

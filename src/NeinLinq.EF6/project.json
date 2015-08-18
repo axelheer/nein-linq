@@ -12,7 +12,6 @@
   "compile": "../NeinLinq/**/*.cs",
 
   "compilationOptions": {
-    "define": [ "EF6" ],
     "keyFile": "../NeinLinq/NeinLinq.snk"
   },
 

@@ -1,36 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-#if EF6
-
-using System.Data.Entity.Infrastructure;
-
-#elif EF7
-
-using Microsoft.Data.Entity.Query;
-
-#endif
-
-#if EF6 || EF7
-
-using System.Threading;
-using System.Threading.Tasks;
-
-#endif
+#pragma warning disable RECS0001
 
 namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query provider.
     /// </summary>
-    public class RewriteQueryProvider : IQueryProvider
-#if EF6
-        , IDbAsyncQueryProvider
-#elif EF7
-        , IAsyncQueryProvider
-#endif
+    public partial class RewriteQueryProvider : IQueryProvider
     {
         readonly IQueryProvider provider;
         readonly ExpressionVisitor rewriter;
@@ -78,51 +57,7 @@ namespace NeinLinq
             // execute query with rewritten expression
             return provider.Execute(rewriter.Visit(expression));
         }
-
-#if EF6
-
-        /// <inheritdoc />
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
-        {
-            // execute query with rewritten expression; async, if possible
-            var asyncProvider = provider as IDbAsyncQueryProvider;
-            if (asyncProvider != null)
-                return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression), cancellationToken);
-            return Task.FromResult(provider.Execute<TResult>(rewriter.Visit(expression)));
-        }
-
-        /// <inheritdoc />
-        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken)
-        {
-            // execute query with rewritten expression; async, if possible
-            var asyncProvider = provider as IDbAsyncQueryProvider;
-            if (asyncProvider != null)
-                return asyncProvider.ExecuteAsync(rewriter.Visit(expression), cancellationToken);
-            return Task.FromResult(provider.Execute(rewriter.Visit(expression)));
-        }
-
-#elif EF7
-
-        /// <inheritdoc />
-        public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
-        {
-            // execute query with rewritten expression; async, if possible
-            var asyncProvider = provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
-                return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression));
-            return new RewriteQuery<TResult>(provider.CreateQuery<TResult>(expression), rewriter);
-        }
-
-        /// <inheritdoc />
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
-        {
-            // execute query with rewritten expression; async, if possible
-            var asyncProvider = provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
-                return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression), cancellationToken);
-            return Task.FromResult(provider.Execute<TResult>(rewriter.Visit(expression)));
-        }
-
-#endif
     }
 }
+
+#pragma warning restore RECS0001
