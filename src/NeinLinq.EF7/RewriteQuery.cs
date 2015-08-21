@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Data.Entity.Query;
+using System.Collections.Generic;
 
 namespace NeinLinq
 {
@@ -7,10 +8,7 @@ namespace NeinLinq
         /// <inheritdoc />
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
         {
-            var asyncEnumerable = enumerable.Value as IAsyncEnumerable<T>;
-            if (asyncEnumerable != null)
-                return asyncEnumerable.GetEnumerator();
-            return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
+            return ((IAsyncQueryProvider)Provider).ExecuteAsync<T>(Expression).GetEnumerator();
         }
     }
 }
