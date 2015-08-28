@@ -17,7 +17,7 @@ namespace NeinLinq
         /// Create a new enumerable proxy.
         /// </summary>
         /// <param name="enumerable">The actual enumerable.</param>
-        public RewriteQueryEnumerable(IEnumerable enumerable)
+        protected RewriteQueryEnumerable(IEnumerable enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
