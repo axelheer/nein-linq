@@ -8,7 +8,7 @@ namespace NeinLinq
         public static T GetAttribute<T>(this MemberInfo member)
             where T : Attribute
         {
-#if DOTNET || NETCORE45 || WPA81
+#if DOTNET
             return member.GetCustomAttribute<T>();
 #else
             return (T)Attribute.GetCustomAttribute(member, typeof(T));
@@ -17,7 +17,7 @@ namespace NeinLinq
 
         public static MethodInfo GetMethodInfo(this Type type, string name, Type[] parameters)
         {
-#if DOTNET || NETCORE45 || WPA81
+#if DOTNET
             return type.GetRuntimeMethod(name, parameters);
 #else
             return type.GetMethod(name, parameters);
@@ -26,7 +26,7 @@ namespace NeinLinq
 
         public static bool IsInheritorOf(this Type type, Type other)
         {
-#if DOTNET || NETCORE45 || WPA81
+#if DOTNET
             return type.GetTypeInfo().IsSubclassOf(other);
 #else
             return type.IsSubclassOf(other);
@@ -35,7 +35,7 @@ namespace NeinLinq
 
         public static bool IsConstructedGenericType(this Type type)
         {
-#if DOTNET || NETCORE45 || WPA81
+#if DOTNET
             return type.IsConstructedGenericType;
 #else
             return type.IsGenericType && !type.IsGenericTypeDefinition;
@@ -44,7 +44,7 @@ namespace NeinLinq
 
         public static Type[] GetGenericTypeArguments(this Type type)
         {
-#if DOTNET || NETCORE45 || WPA81
+#if DOTNET
             return type.GenericTypeArguments;
 #else
             return type.GetGenericArguments();

@@ -19,34 +19,9 @@
   },
 
   "frameworks": {
-    "dotnet": {
-      "dependencies": {
-        "System.Collections": "4.0.11-beta-*",
-        "System.Globalization": "4.0.11-beta-*",
-        "System.Linq": "4.0.1-beta-*",
-        "System.Linq.Expressions": "4.0.11-beta-*",
-        "System.Linq.Queryable": "4.0.1-beta-*",
-        "System.Reflection": "4.1.0-beta-*",
-        "System.Reflection.Extensions": "4.0.1-beta-*",
-        "System.Runtime": "4.0.21-beta-*",
-        "System.Runtime.Extensions": "4.0.11-beta-*",
-        "System.Threading": "4.0.11-beta-*"
-      }
-    },
+    "dotnet": { },
     "net45": {
       "frameworkAssemblies": {
-        "mscorlib": {
-          "type": "build",
-          "version": "4.0.0.0"
-        },
-        "System": {
-          "type": "build",
-          "version": "4.0.0.0"
-        },
-        "System.Core": {
-          "type": "build",
-          "version": "4.0.0.0"
-        },
         "System.Runtime": {
           "type": "build",
           "version": "4.0.0.0"
