@@ -20,21 +20,6 @@
   },
 
   "frameworks": {
-    "net45": {
-      "frameworkAssemblies": {
-        "mscorlib": {
-          "type": "build",
-          "version": "4.0.0.0"
-        },
-        "System": {
-          "type": "build",
-          "version": "4.0.0.0"
-        },
-        "System.Core": {
-          "type": "build",
-          "version": "4.0.0.0"
-        }
-      }
-    }
+    "net45": { }
   }
 }
