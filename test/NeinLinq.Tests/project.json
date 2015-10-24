@@ -6,7 +6,7 @@
   "dependencies": {
     "NeinLinq": "1.4.0",
     "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-beta5a-*"
+    "xunit.runner.dnx": "2.1.0-beta6-*"
   },
 
   "frameworks": {

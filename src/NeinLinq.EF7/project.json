@@ -15,7 +15,7 @@
   },
 
   "dependencies": {
-    "EntityFramework.Core": "7.0.0-beta7"
+    "EntityFramework.Core": "7.0.0-beta8"
   },
 
   "frameworks": {
@@ -24,7 +24,7 @@
       "frameworkAssemblies": {
         "System.Runtime": {
           "type": "build",
-          "version": "4.0.0.0"
+          "version": ""
         }
       }
     }

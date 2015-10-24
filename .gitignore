@@ -1,7 +1,10 @@
 # User
 *.vs
+*.suo
 *.user
 
 # Build
+bin/
+obj/
 artifacts/
 *.lock.json

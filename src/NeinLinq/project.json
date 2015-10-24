@@ -32,15 +32,15 @@
       "frameworkAssemblies": {
         "mscorlib": {
           "type": "build",
-          "version": "4.0.0.0"
+          "version": ""
         },
         "System": {
           "type": "build",
-          "version": "4.0.0.0"
+          "version": ""
         },
         "System.Core": {
           "type": "build",
-          "version": "4.0.0.0"
+          "version": ""
         }
       }
     }
