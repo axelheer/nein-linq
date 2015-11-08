@@ -8,6 +8,10 @@ namespace NeinLinq.Tests.Nullsafe
 
         public int Numeric { get; set; }
 
+        public bool Question { get; set; }
+
+        public string FirstWord { get; set; }
+
         public IEnumerable<int> Other { get; set; }
 
         public IEnumerable<int> More { get; set; }
