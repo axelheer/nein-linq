@@ -28,21 +28,6 @@
         "System.Threading": "4.0.0"
       }
     },
-    "net4": {
-      "frameworkAssemblies": {
-        "mscorlib": {
-          "type": "build",
-          "version": ""
-        },
-        "System": {
-          "type": "build",
-          "version": ""
-        },
-        "System.Core": {
-          "type": "build",
-          "version": ""
-        }
-      }
-    }
+    "net4": { }
   }
 }

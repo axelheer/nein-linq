@@ -12,20 +12,30 @@
   "compile": "../NeinLinq/**/*.cs",
 
   "compilationOptions": {
+    "keyFile": "../NeinLinq/NeinLinq.snk"
   },
 
   "dependencies": {
-    "EntityFramework.Core": "7.0.0-beta8"
+    "EntityFramework.Core": "7.0.0-rc1-final"
   },
 
   "frameworks": {
-    "dotnet": { },
-    "net45": {
+    "dotnet5.4": {
+      "compilationOptions": {
+        "define": [ "DOTNET" ]
+      }
+    },
+    "net451": {
       "frameworkAssemblies": {
         "System.Runtime": {
           "type": "build",
           "version": ""
         }
+      }
+    },
+    "netcore50": {
+      "compilationOptions": {
+        "define": [ "DOTNET" ]
       }
     }
   }
