@@ -4,7 +4,7 @@
   },
 
   "dependencies": {
-    "NeinLinq": "1.4.0",
+    "NeinLinq": "1.4.1",
     "xunit": "2.1.0",
     "xunit.runner.dnx": "2.1.0-rc1-*"
   },
