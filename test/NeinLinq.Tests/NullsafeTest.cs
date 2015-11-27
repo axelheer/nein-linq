@@ -48,7 +48,7 @@ namespace NeinLinq.Tests
                     SomeNumeric = 654321,
                     SomeText = "",
                     OneDay = new DateTime(2015, 12, 18),
-                    EvenLotMoreOthers = new HashSet<Dummy>()
+                    EvenLotMoreOthers = new HashSet<Dummy>
                     {
                         new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 4) } },
                         new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 7) } }

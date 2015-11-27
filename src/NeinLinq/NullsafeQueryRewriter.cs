@@ -72,20 +72,20 @@ namespace NeinLinq
         static Expression Fallback(Type type)
         {
             // default values for generic collections
-            if (type.IsConstructedGenericType())
+            if (type.IsConstructedGenericType)
             {
                 var typeDefinition = type.GetGenericTypeDefinition();
                 if (typeDefinition == typeof(IEnumerable<>) ||
                     typeDefinition == typeof(ICollection<>))
                 {
-                    var typeArguments = type.GetGenericTypeArguments();
+                    var typeArguments = type.GenericTypeArguments;
                     return Expression.Convert(
                         Expression.New(typeof(List<>).MakeGenericType(typeArguments)),
                         type);
                 }
                 if (typeDefinition == typeof(ISet<>))
                 {
-                    var typeArguments = type.GetGenericTypeArguments();
+                    var typeArguments = type.GenericTypeArguments;
                     return Expression.Convert(
                         Expression.New(typeof(HashSet<>).MakeGenericType(typeArguments)),
                         type);

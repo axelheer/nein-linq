@@ -37,18 +37,18 @@ namespace NeinLinq
             factory = new Lazy<Func<Expression, LambdaExpression>>(() =>
             {
                 // assume method without any parameters
-                var factoryMethod = target.GetMethodInfo(method, new Type[0]);
+                var factoryMethod = target.GetRuntimeMethod(method, new Type[0]);
                 if (factoryMethod == null)
                     return null;
 
                 // method returns lambda expression?
                 var expressionInfo = factoryMethod.ReturnType;
-                if (expressionInfo.IsInheritorOf(typeof(LambdaExpression)) == false)
+                if (expressionInfo.GetTypeInfo().IsSubclassOf(typeof(LambdaExpression)) == false)
                     return null;
 
                 // lambda signature matches original method's signature?
-                var delegateInfo = expressionInfo.GetGenericTypeArguments()[0];
-                var delegateSignature = delegateInfo.GetMethodInfo("Invoke", args);
+                var delegateInfo = expressionInfo.GenericTypeArguments[0];
+                var delegateSignature = delegateInfo.GetRuntimeMethod("Invoke", args);
                 if (delegateSignature == null || delegateSignature.ReturnParameter.ParameterType != returns)
                     return null;
 
@@ -58,11 +58,9 @@ namespace NeinLinq
                     return Expression.Lambda<Func<Expression, LambdaExpression>>(
                         Expression.Call(factoryMethod), Expression.Parameter(typeof(Expression))).Compile();
                 }
-                else
-                {
-                    // parameterize actual target value, compiles every time... :-(
-                    return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factoryMethod)).Compile()();
-                }
+
+                // parameterize actual target value, compiles every time... :-(
+                return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factoryMethod)).Compile()();
             });
         }
 
@@ -87,7 +85,7 @@ namespace NeinLinq
             var config = false;
 
             // configuration over convention, if any
-            var metadata = call.GetAttribute<InjectLambdaAttribute>();
+            var metadata = call.GetCustomAttribute<InjectLambdaAttribute>();
             if (metadata != null)
             {
                 if (metadata.Target != null)

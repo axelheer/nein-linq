@@ -14,7 +14,37 @@
   },
 
   "frameworks": {
-    "dotnet": {
+    "dotnet5.0": {
+      "dependencies": {
+        "System.Collections": "4.0.10",
+        "System.Globalization": "4.0.10",
+        "System.Linq": "4.0.0",
+        "System.Linq.Expressions": "4.0.10",
+        "System.Linq.Queryable": "4.0.0",
+        "System.Reflection": "4.0.10",
+        "System.Reflection.Extensions": "4.0.0",
+        "System.Runtime": "4.0.20",
+        "System.Runtime.Extensions": "4.0.10",
+        "System.Threading": "4.0.10"
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System": {
+          "type": "build",
+          "version": ""
+        },
+        "System.Core": {
+          "type": "build",
+          "version": ""
+        },
+        "System.Runtime": {
+          "type": "build",
+          "version": ""
+        }
+      }
+    },
+    "netcore45": {
       "dependencies": {
         "System.Collections": "4.0.0",
         "System.Globalization": "4.0.0",
@@ -27,7 +57,6 @@
         "System.Runtime.Extensions": "4.0.0",
         "System.Threading": "4.0.0"
       }
-    },
-    "net4": { }
+    }
   }
 }

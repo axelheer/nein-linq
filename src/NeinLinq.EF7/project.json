@@ -20,23 +20,23 @@
   },
 
   "frameworks": {
-    "dotnet5.4": {
-      "compilationOptions": {
-        "define": [ "DOTNET" ]
-      }
-    },
+    "dotnet5.4": { },
     "net451": {
       "frameworkAssemblies": {
+        "System": {
+          "type": "build",
+          "version": ""
+        },
+        "System.Core": {
+          "type": "build",
+          "version": ""
+        },
         "System.Runtime": {
           "type": "build",
           "version": ""
         }
       }
     },
-    "netcore50": {
-      "compilationOptions": {
-        "define": [ "DOTNET" ]
-      }
+      "netcore50": { }
     }
-  }
 }
