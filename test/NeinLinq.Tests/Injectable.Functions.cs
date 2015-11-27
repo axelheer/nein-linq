@@ -71,7 +71,7 @@ namespace NeinLinq.Tests.Injectable
         {
             this.digits = digits;
         }
-        
+
         public double Velocity(Dummy value)
         {
             throw new NotSupportedException();

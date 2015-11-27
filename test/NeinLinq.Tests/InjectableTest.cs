@@ -82,6 +82,7 @@ namespace NeinLinq.Tests
             Assert.Throws<InvalidOperationException>(() =>
                 query.ToList());
         }
+
         [Fact]
         public void InjectShouldSucceedWithObject()
         {

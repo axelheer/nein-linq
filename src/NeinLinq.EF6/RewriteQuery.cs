@@ -16,7 +16,7 @@ namespace NeinLinq
                     enumerable.Value.GetEnumerator());
         }
     }
-    
+
     public partial class RewriteQuery<T> : IDbAsyncEnumerable<T>
     {
         /// <inheritdoc />

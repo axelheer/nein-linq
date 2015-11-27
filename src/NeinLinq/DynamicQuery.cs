@@ -252,14 +252,19 @@ namespace NeinLinq
             {
                 case DynamicCompare.Equal:
                     return Expression.Equal(memberAccess, actualValue);
+
                 case DynamicCompare.NotEqual:
                     return Expression.NotEqual(memberAccess, actualValue);
+
                 case DynamicCompare.GreaterThan:
                     return Expression.GreaterThan(memberAccess, actualValue);
+
                 case DynamicCompare.GreaterThanOrEqual:
                     return Expression.GreaterThanOrEqual(memberAccess, actualValue);
+
                 case DynamicCompare.LessThan:
                     return Expression.LessThan(memberAccess, actualValue);
+
                 case DynamicCompare.LessThanOrEqual:
                     return Expression.LessThanOrEqual(memberAccess, actualValue);
             }
