@@ -115,7 +115,7 @@ namespace NeinLinq.Tests
             Expression<Func<ChildDummy, bool>> p = d => d.Name == "Narf";
 
             var r = data.OfType<ChildDummy>().Where(p).Count();
-            var s = data.OfType<ParentDummy>().Where(p.Translate().To<ParentDummy>((b, q) => b.Children.Any(c => q(c)))).Count();
+            var s = data.OfType<ParentDummy>().Where(p.Translate().To<ParentDummy>((b, q) => b.Children.Any(q))).Count();
 
             Assert.Equal(1, r);
             Assert.Equal(2, s);
