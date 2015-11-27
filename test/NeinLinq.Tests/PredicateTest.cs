@@ -36,9 +36,9 @@ namespace NeinLinq.Tests
                 new ChildDummy { Id = 11, Name = "Narf", Parent = p[2] },
                 new ChildDummy { Id = 12, Name = "Qwer", Parent = p[0] }
             };
-            p[0].Childs = new[] { c[0], c[1] };
-            p[1].Childs = new[] { c[1], c[2] };
-            p[2].Childs = new[] { c[0], c[2] };
+            p[0].Children = new[] { c[0], c[1] };
+            p[1].Children = new[] { c[1], c[2] };
+            p[2].Children = new[] { c[0], c[2] };
 
             data = d.Concat<IDummy>(s).Concat(p).Concat(c).AsQueryable();
         }
@@ -115,7 +115,7 @@ namespace NeinLinq.Tests
             Expression<Func<ChildDummy, bool>> p = d => d.Name == "Narf";
 
             var r = data.OfType<ChildDummy>().Where(p).Count();
-            var s = data.OfType<ParentDummy>().Where(p.Translate().To<ParentDummy>((b, q) => b.Childs.Any(c => q(c)))).Count();
+            var s = data.OfType<ParentDummy>().Where(p.Translate().To<ParentDummy>((b, q) => b.Children.Any(c => q(c)))).Count();
 
             Assert.Equal(1, r);
             Assert.Equal(2, s);

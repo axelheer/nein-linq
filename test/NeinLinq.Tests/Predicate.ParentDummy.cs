@@ -8,6 +8,6 @@ namespace NeinLinq.Tests.Predicate
 
         public string Name { get; set; }
 
-        public IEnumerable<ChildDummy> Childs { get; set; }
+        public IEnumerable<ChildDummy> Children { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace NeinLinq.Tests.Selector
 
         public ChildDummyView FirstChild { get; set; }
 
-        public IEnumerable<ChildDummyView> Childs { get; set; }
+        public IEnumerable<ChildDummyView> Children { get; set; }
     }
 }
