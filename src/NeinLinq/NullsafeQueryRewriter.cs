@@ -16,37 +16,34 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node == null || node.Expression == null)
-                return node;
+            if (node != null && node.Expression != null)
+            {
+                return MakeNullsafe(node, node.Expression);
+            }
 
-            var fallback = Fallback(node.Type);
-
-            // check value and insert additional coalesce, if fallback is not default
-            return Expression.Condition(
-                Expression.NotEqual(Visit(node.Expression), Expression.Default(node.Expression.Type)),
-                fallback.NodeType != ExpressionType.Default ? (Expression)Expression.Coalesce(node, fallback) : node,
-                fallback);
+            return base.VisitMember(node);
         }
 
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node == null || node.Method == null)
-                return node;
-
-            // only non static method calls can trigger null reference...
-            if (node.Object != null)
+            if (node != null && node.Object != null)
             {
-                var fallback = Fallback(node.Type);
-
-                // check result and insert additional coalesce, if fallback is not default
-                return Expression.Condition(
-                    Expression.NotEqual(Visit(node.Object), Expression.Default(node.Object.Type)),
-                    fallback.NodeType != ExpressionType.Default ? (Expression)Expression.Coalesce(node, fallback) : node,
-                    fallback);
+                return MakeNullsafe(node, node.Object);
             }
 
             return base.VisitMethodCall(node);
+        }
+
+        Expression MakeNullsafe(Expression node, Expression value)
+        {
+            var fallback = Fallback(node.Type);
+
+            // check value and insert additional coalesce, if fallback is not default
+            return Expression.Condition(
+                Expression.NotEqual(Visit(value), Expression.Default(value.Type)),
+                fallback.NodeType != ExpressionType.Default ? Expression.Coalesce(node, fallback) : node,
+                fallback);
         }
 
         static Expression Fallback(Type type)
@@ -54,19 +51,9 @@ namespace NeinLinq
             // default values for generic collections
             if (type.IsConstructedGenericType && type.GenericTypeArguments.Length == 1)
             {
-                var typeDefinition = type.GetGenericTypeDefinition();
-
-                var listType = typeof(List<>).MakeGenericType(type.GenericTypeArguments);
-                if (type.GetTypeInfo().IsAssignableFrom(listType.GetTypeInfo()))
-                {
-                    return Expression.Convert(Expression.New(listType), type);
-                }
-
-                var hashSetType = typeof(HashSet<>).MakeGenericType(type.GenericTypeArguments);
-                if (type.GetTypeInfo().IsAssignableFrom(hashSetType.GetTypeInfo()))
-                {
-                    return Expression.Convert(Expression.New(hashSetType), type);
-                }
+                return GenericCollectionFallback(typeof(List<>), type)
+                    ?? GenericCollectionFallback(typeof(HashSet<>), type)
+                    ?? Expression.Default(type);
             }
 
             // default value for arrays
@@ -77,6 +64,18 @@ namespace NeinLinq
 
             // default value
             return Expression.Default(type);
+        }
+
+        static Expression GenericCollectionFallback(Type collectionDefinition, Type type)
+        {
+            var collectionType = collectionDefinition.MakeGenericType(type.GenericTypeArguments);
+
+            if (type.GetTypeInfo().IsAssignableFrom(collectionType.GetTypeInfo()))
+            {
+                return Expression.Convert(Expression.New(collectionType), type);
+            }
+
+            return null;
         }
     }
 }

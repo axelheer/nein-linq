@@ -33,34 +33,34 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node == null || node.Method == null)
-                return node;
-
-            // cache "metadata" for performance reasons
-            var data = default(InjectLambdaMetadata);
-            lock (cacheLock)
+            if (node != null && node.Method != null)
             {
-                if (!cache.TryGetValue(node.Method, out data))
+                // cache "metadata" for performance reasons
+                var data = default(InjectLambdaMetadata);
+                lock (cacheLock)
                 {
-                    data = InjectLambdaMetadata.Create(node.Method);
-                    cache.Add(node.Method, data);
+                    if (!cache.TryGetValue(node.Method, out data))
+                    {
+                        data = InjectLambdaMetadata.Create(node.Method);
+                        cache.Add(node.Method, data);
+                    }
                 }
-            }
 
-            // inject only configured or whitelisted targets
-            if (data.Config || whitelist.Contains(data.Target))
-            {
-                var replacement = data.Replacement(node.Object);
-                if (replacement == null)
-                    throw new InvalidOperationException(
-                        string.Concat("Unable to retrieve lambda expression from ",
-                            data.Target.FullName, ".", data.Method, "."));
+                // inject only configured or whitelisted targets
+                if (data.Config || whitelist.Contains(data.Target))
+                {
+                    var replacement = data.Replacement(node.Object);
+                    if (replacement == null)
+                        throw new InvalidOperationException(
+                            string.Concat("Unable to retrieve lambda expression from ",
+                                data.Target.FullName, ".", data.Method, "."));
 
-                // rebind expression parameters for current arguments
-                var binders = replacement.Parameters.Zip(node.Arguments,
-                    (p, a) => new ParameterBinder(p, a));
+                    // rebind expression parameters for current arguments
+                    var binders = replacement.Parameters.Zip(node.Arguments,
+                        (p, a) => new ParameterBinder(p, a));
 
-                return Visit(binders.Aggregate(replacement.Body, (e, b) => b.Visit(e)));
+                    return Visit(binders.Aggregate(replacement.Body, (e, b) => b.Visit(e)));
+                }
             }
 
             return base.VisitMethodCall(node);

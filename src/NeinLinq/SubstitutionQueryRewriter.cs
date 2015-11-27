@@ -34,10 +34,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node == null || node.Method == null)
-                return node;
-
-            if (node.Method.DeclaringType == from)
+            if (node != null && node.Method != null && node.Method.DeclaringType == from)
             {
                 var typeArguments = node.Method.GetGenericArguments();
                 var arguments = node.Arguments.Select(a => Visit(a)).ToArray();

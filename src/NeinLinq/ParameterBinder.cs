@@ -31,11 +31,10 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            if (node == null)
-                return node;
-
             if (node == parameter)
+            {
                 return replacement;
+            }
 
             return base.VisitParameter(node);
         }
@@ -43,10 +42,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitInvocation(InvocationExpression node)
         {
-            if (node == null)
-                return node;
-
-            if (node.Expression == parameter)
+            if (node != null && node.Expression == parameter)
             {
                 var lambda = replacement as LambdaExpression;
                 if (lambda != null)
