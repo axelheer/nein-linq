@@ -42,13 +42,13 @@ namespace NeinLinq
                     return null;
 
                 // method returns lambda expression?
-                var expressionInfo = factoryMethod.ReturnType;
-                if (expressionInfo.GetTypeInfo().IsSubclassOf(typeof(LambdaExpression)) == false)
+                var expressionType = factoryMethod.ReturnType;
+                if (expressionType.GetTypeInfo().IsSubclassOf(typeof(LambdaExpression)) == false)
                     return null;
 
                 // lambda signature matches original method's signature?
-                var delegateInfo = expressionInfo.GenericTypeArguments[0];
-                var delegateSignature = delegateInfo.GetRuntimeMethod("Invoke", args);
+                var delegateType = expressionType.GenericTypeArguments[0];
+                var delegateSignature = delegateType.GetRuntimeMethod("Invoke", args);
                 if (delegateSignature == null || delegateSignature.ReturnParameter.ParameterType != returns)
                     return null;
 

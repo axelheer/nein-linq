@@ -8,6 +8,8 @@ namespace NeinLinq.Tests.Selector
 
         public string Name { get; set; }
 
+        public ChildDummyView FirstChild { get; set; }
+
         public IEnumerable<ChildDummyView> Childs { get; set; }
     }
 }

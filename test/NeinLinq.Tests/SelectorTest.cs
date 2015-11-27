@@ -150,7 +150,21 @@ namespace NeinLinq.Tests
         {
             Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Source<ParentDummy>((d, v) => d.Childs.Select(e => v(e)));
+            var select = s.Translate().Source<ParentDummy>((d, v) => d.Childs.Select(v).First());
+            var result = data.OfType<ParentDummy>().Select(select);
+
+            Assert.Collection(result,
+                v => { Assert.Equal(10, v.Id); Assert.Equal("Asdf", v.Name); },
+                v => { Assert.Equal(11, v.Id); Assert.Equal("Narf", v.Name); },
+                v => { Assert.Equal(12, v.Id); Assert.Equal("Qwer", v.Name); });
+        }
+
+        [Fact]
+        public void SourceTranslationCollectionShouldSubstitute()
+        {
+            Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
+
+            var select = s.Translate().Source<ParentDummy>((d, v) => d.Childs.Select(v));
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,
@@ -170,16 +184,13 @@ namespace NeinLinq.Tests
         {
             Expression<Func<ParentDummy, IEnumerable<ChildDummyView>>> s = d => d.Childs.Select(e => new ChildDummyView { Id = e.Id, Name = e.Name });
 
-            var select = s.Translate().Result((d, v) => new ParentDummyView { Childs = v(d).Take(1) });
+            var select = s.Translate().Result((d, v) => new ParentDummyView { FirstChild = v(d).First() });
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,
-                v => Assert.Collection(v.Childs,
-                    w => { Assert.Equal(10, w.Id); Assert.Equal("Asdf", w.Name); }),
-                v => Assert.Collection(v.Childs,
-                    w => { Assert.Equal(11, w.Id); Assert.Equal("Narf", w.Name); }),
-                v => Assert.Collection(v.Childs,
-                    w => { Assert.Equal(12, w.Id); Assert.Equal("Qwer", w.Name); }));
+                v => { Assert.Equal(10, v.FirstChild.Id); Assert.Equal("Asdf", v.FirstChild.Name); },
+                v => { Assert.Equal(11, v.FirstChild.Id); Assert.Equal("Narf", v.FirstChild.Name); },
+                v => { Assert.Equal(12, v.FirstChild.Id); Assert.Equal("Qwer", v.FirstChild.Name); });
         }
 
         [Fact]
@@ -188,31 +199,28 @@ namespace NeinLinq.Tests
             Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
             Expression<Func<ParentDummy, ParentDummyView>> t = d => new ParentDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Childs.Select(e => v(e))).Apply((d, v) => new ParentDummyView { Childs = v(d).Take(1) }, t);
+            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Childs.Select(v).First()).Apply((d, v) => new ParentDummyView { FirstChild = v(d) }, t);
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,
-                v =>
-                {
-                    Assert.Equal(7, v.Id);
-                    Assert.Equal("Asdf", v.Name);
-                    Assert.Collection(v.Childs,
-                        w => { Assert.Equal(10, w.Id); Assert.Equal("Asdf", w.Name); });
-                },
-                v =>
-                {
-                    Assert.Equal(8, v.Id);
-                    Assert.Equal("Narf", v.Name);
-                    Assert.Collection(v.Childs,
-                        w => { Assert.Equal(11, w.Id); Assert.Equal("Narf", w.Name); });
-                },
-                v =>
-                {
-                    Assert.Equal(9, v.Id);
-                    Assert.Equal("Qwer", v.Name);
-                    Assert.Collection(v.Childs,
-                        w => { Assert.Equal(12, w.Id); Assert.Equal("Qwer", w.Name); });
-                });
+                v => { Assert.Equal(7, v.Id); Assert.Equal("Asdf", v.Name); Assert.Equal(10, v.FirstChild.Id); Assert.Equal("Asdf", v.FirstChild.Name); },
+                v => { Assert.Equal(8, v.Id); Assert.Equal("Narf", v.Name); Assert.Equal(11, v.FirstChild.Id); Assert.Equal("Narf", v.FirstChild.Name); },
+                v => { Assert.Equal(9, v.Id); Assert.Equal("Qwer", v.Name); Assert.Equal(12, v.FirstChild.Id); Assert.Equal("Qwer", v.FirstChild.Name); });
+        }
+
+        [Fact]
+        public void CrossTranslationCollectionApplyShouldSubstitute()
+        {
+            Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
+            Expression<Func<ParentDummy, ParentDummyView>> t = d => new ParentDummyView { Id = d.Id, Name = d.Name };
+
+            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Childs.Select(v)).Apply((d, v) => new ParentDummyView { FirstChild = v(d).First() }, t);
+            var result = data.OfType<ParentDummy>().Select(select);
+
+            Assert.Collection(result,
+                v => { Assert.Equal(7, v.Id); Assert.Equal("Asdf", v.Name); Assert.Equal(10, v.FirstChild.Id); Assert.Equal("Asdf", v.FirstChild.Name); },
+                v => { Assert.Equal(8, v.Id); Assert.Equal("Narf", v.Name); Assert.Equal(11, v.FirstChild.Id); Assert.Equal("Narf", v.FirstChild.Name); },
+                v => { Assert.Equal(9, v.Id); Assert.Equal("Qwer", v.Name); Assert.Equal(12, v.FirstChild.Id); Assert.Equal("Qwer", v.FirstChild.Name); });
         }
     }
 }

@@ -71,6 +71,27 @@ namespace NeinLinq
         /// <param name="translation">The translation from the desired type to the given type,
         /// using the initially given selector to be injected into a new selector.</param>
         /// <returns>A translated selector expression.</returns>
+        public Expression<Func<V, U>> Source<V>(Expression<Func<V, Func<T, U>, U>> translation)
+        {
+            if (translation == null)
+                throw new ArgumentNullException(nameof(translation));
+
+            var v = translation.Parameters[0];
+            var s = translation.Parameters[1];
+
+            var binder = new ParameterBinder(s, selector);
+
+            return Expression.Lambda<Func<V, U>>(
+                binder.Visit(translation.Body), v);
+        }
+
+        /// <summary>
+        /// Translates a given selector for a given related type using it's source parameter.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <param name="translation">The translation from the desired type to the given type,
+        /// using the initially given selector to be injected into a new selector.</param>
+        /// <returns>A translated selector expression.</returns>
         public Expression<Func<V, IEnumerable<U>>> Source<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
             if (translation == null)
@@ -169,7 +190,19 @@ namespace NeinLinq
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<V, U> Cross<V>(Expression<Func<V, T>> path)
         {
-            return Source<V>(path).Translate();
+            return Source(path).Translate();
+        }
+
+        /// <summary>
+        /// Continues translation of a given selector for a given related type using it's source parameter.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <param name="translation">The translation from the desired type to the given type,
+        /// using the initially given selector to be injected into a new selector.</param>
+        /// <returns>Another translation object for the given selector.</returns>
+        public SelectorTranslation<V, U> Cross<V>(Expression<Func<V, Func<T, U>, U>> translation)
+        {
+            return Source(translation).Translate();
         }
 
         /// <summary>
@@ -181,7 +214,7 @@ namespace NeinLinq
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<V, IEnumerable<U>> Cross<V>(Expression<Func<V, Func<T, U>, IEnumerable<U>>> translation)
         {
-            return Source<V>(translation).Translate();
+            return Source(translation).Translate();
         }
 
         /// <summary>
@@ -207,7 +240,7 @@ namespace NeinLinq
         /// <returns>A single translated and combined selector expression.</returns>
         public Expression<Func<T, V>> Apply<V>(Expression<Func<V, U>> path, Expression<Func<T, V>> value)
         {
-            return Result<V>(path).Apply(value);
+            return Result(path).Apply(value);
         }
 
         /// <summary>
@@ -221,7 +254,7 @@ namespace NeinLinq
         /// <returns>A single translated and combined selector expression.</returns>
         public Expression<Func<T, V>> Apply<V>(Expression<Func<T, Func<T, U>, V>> translation, Expression<Func<T, V>> value)
         {
-            return Result<V>(translation).Apply(value);
+            return Result(translation).Apply(value);
         }
     }
 }
