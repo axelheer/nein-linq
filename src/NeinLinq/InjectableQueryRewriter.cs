@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,10 +14,8 @@ namespace NeinLinq
     /// </remarks>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
-        static readonly object cacheLock = new object();
-
-        static readonly Dictionary<MethodInfo, InjectLambdaMetadata> cache =
-            new Dictionary<MethodInfo, InjectLambdaMetadata>();
+        static readonly ConcurrentDictionary<MethodInfo, InjectLambdaMetadata> cache =
+            new ConcurrentDictionary<MethodInfo, InjectLambdaMetadata>();
 
         readonly Type[] whitelist;
 
@@ -36,15 +34,7 @@ namespace NeinLinq
             if (node != null && node.Method != null)
             {
                 // cache "metadata" for performance reasons
-                var data = default(InjectLambdaMetadata);
-                lock (cacheLock)
-                {
-                    if (!cache.TryGetValue(node.Method, out data))
-                    {
-                        data = InjectLambdaMetadata.Create(node.Method);
-                        cache.Add(node.Method, data);
-                    }
-                }
+                var data = cache.GetOrAdd(node.Method, InjectLambdaMetadata.Create);
 
                 // inject only configured or whitelisted targets
                 if (data.Config || whitelist.Contains(data.Target))
