@@ -14,7 +14,7 @@
   },
 
   "frameworks": {
-    "dotnet5.0": {
+    "dotnet5.1": {
       "dependencies": {
         "System.Collections": "4.0.0",
         "System.Collections.Concurrent": "4.0.0",
