@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,6 +14,9 @@ namespace NeinLinq
     /// </remarks>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
+        static readonly ConcurrentDictionary<Type, Expression> cache =
+            new ConcurrentDictionary<Type, Expression>();
+
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
@@ -37,7 +41,8 @@ namespace NeinLinq
 
         Expression MakeNullsafe(Expression node, Expression value)
         {
-            var fallback = Fallback(node.Type);
+            // cache "fallback expression" for performance reasons
+            var fallback = cache.GetOrAdd(node.Type, NodeFallback);
 
             // check value and insert additional coalesce, if fallback is not default
             return Expression.Condition(
@@ -46,7 +51,7 @@ namespace NeinLinq
                 fallback);
         }
 
-        static Expression Fallback(Type type)
+        static Expression NodeFallback(Type type)
         {
             // default values for generic collections
             if (type.IsConstructedGenericType && type.GenericTypeArguments.Length == 1)
@@ -70,6 +75,7 @@ namespace NeinLinq
         {
             var collectionType = collectionDefinition.MakeGenericType(type.GenericTypeArguments);
 
+            // try if an instance of this collection would suffice
             if (type.GetTypeInfo().IsAssignableFrom(collectionType.GetTypeInfo()))
             {
                 return Expression.Convert(Expression.New(collectionType), type);
