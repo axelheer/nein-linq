@@ -20,21 +20,6 @@
   },
 
   "frameworks": {
-    "net45": {
-      "frameworkAssemblies": {
-        "System": {
-          "type": "build",
-          "version": ""
-        },
-        "System.Core": {
-          "type": "build",
-          "version": ""
-        },
-        "System.Runtime": {
-          "type": "build",
-          "version": ""
-        }
-      }
-    }
+    "net45": { }
   }
 }

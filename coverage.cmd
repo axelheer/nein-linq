@@ -10,8 +10,8 @@ set reportgenerator=%UserProfile%\.dnx\packages\ReportGenerator\2.3.5\tools\Repo
 
 if not exist coverage mkdir coverage
 
-"%opencover%" -target:"%dnx%" -targetargs:"--lib \"%artifacts%\bin\NeinLinq\Release\net45\" --project \"%test%\NeinLinq.Tests\" test" -output:"%coverage%\coverage.xml" -register:user -filter:+[NeinLinq]*
-"%opencover%" -target:"%dnx%" -targetargs:"--lib \"%artifacts%\bin\NeinLinq.EF6\Release\net45\" --project \"%test%\NeinLinq.Tests.EF6\" test" -output:"%coverage%\coverage.EF6.xml" -register:user -filter:+[NeinLinq.EF6]*
-"%opencover%" -target:"%dnx%" -targetargs:"--lib \"%artifacts%\bin\NeinLinq.EF7\Release\net451\" --project \"%test%\NeinLinq.Tests.EF7\" test" -output:"%coverage%\coverage.EF7.xml" -register:user -filter:+[NeinLinq.EF7]*
+"%opencover%" -target:"%dnx%" -targetargs:"--lib \"%artifacts%\bin\NeinLinq\Release\net45\" --project \"%test%\NeinLinq.Tests\" test" -output:"%coverage%\NeinLinq.xml" -register:user -filter:+[NeinLinq]*
+"%opencover%" -target:"%dnx%" -targetargs:"--lib \"%artifacts%\bin\NeinLinq.EF6\Release\net45\" --project \"%test%\NeinLinq.Tests.EF6\" test" -output:"%coverage%\NeinLinq.EF6.xml" -register:user -filter:+[NeinLinq.EF6]*
+"%opencover%" -target:"%dnx%" -targetargs:"--lib \"%artifacts%\bin\NeinLinq.EF7\Release\net451\" --project \"%test%\NeinLinq.Tests.EF7\" test" -output:"%coverage%\NeinLinq.EF7.xml" -register:user -filter:+[NeinLinq.EF7]*
 
-"%reportgenerator%" -reports:"%coverage%\coverage.xml;%coverage%\coverage.EF6.xml;%coverage%\coverage.EF7.xml" -targetdir:"%coverage%\report"
+"%reportgenerator%" -reports:"%coverage%\NeinLinq.xml;%coverage%\NeinLinq.EF6.xml;%coverage%\NeinLinq.EF7.xml" -targetdir:"%coverage%\report"

@@ -14,7 +14,8 @@
   },
 
   "frameworks": {
-    "dotnet5.1": {
+    "net45": { },
+    "netcore45": {
       "dependencies": {
         "System.Collections": "4.0.0",
         "System.Collections.Concurrent": "4.0.0",
@@ -28,23 +29,7 @@
         "System.Runtime.Extensions": "4.0.0"
       }
     },
-    "net45": {
-      "frameworkAssemblies": {
-        "System": {
-          "type": "build",
-          "version": ""
-        },
-        "System.Core": {
-          "type": "build",
-          "version": ""
-        },
-        "System.Runtime": {
-          "type": "build",
-          "version": ""
-        }
-      }
-    },
-    "netcore45": {
+    "dotnet5.1": {
       "dependencies": {
         "System.Collections": "4.0.0",
         "System.Collections.Concurrent": "4.0.0",

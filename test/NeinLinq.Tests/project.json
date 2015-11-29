@@ -12,7 +12,33 @@
   },
 
   "frameworks": {
-    "dnx46": { },
-    "dnxcore50": { }
+    "dnx46": {
+      "frameworkAssemblies": {
+        "System.Collections": "",
+        "System.Collections.Concurrent": "",
+        "System.Globalization": "",
+        "System.Linq": "",
+        "System.Linq.Expressions": "",
+        "System.Linq.Queryable": "",
+        "System.Reflection": "",
+        "System.Reflection.Extensions": "",
+        "System.Runtime": "",
+        "System.Runtime.Extensions": ""
+      }
+    },
+    "dnxcore50": {
+      "dependencies": {
+        "System.Collections": "4.0.0",
+        "System.Collections.Concurrent": "4.0.0",
+        "System.Globalization": "4.0.0",
+        "System.Linq": "4.0.0",
+        "System.Linq.Expressions": "4.0.0",
+        "System.Linq.Queryable": "4.0.0",
+        "System.Reflection": "4.0.0",
+        "System.Reflection.Extensions": "4.0.0",
+        "System.Runtime": "4.0.0",
+        "System.Runtime.Extensions": "4.0.0"
+      }
+    }
   }
 }

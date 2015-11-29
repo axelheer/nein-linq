@@ -20,23 +20,15 @@
   },
 
   "frameworks": {
-    "dotnet5.4": { },
     "net451": {
       "frameworkAssemblies": {
-        "System": {
-          "type": "build",
-          "version": ""
-        },
-        "System.Core": {
-          "type": "build",
-          "version": ""
-        },
         "System.Runtime": {
           "type": "build",
           "version": ""
         }
       }
     },
-      "netcore50": { }
-    }
+    "netcore50": { },
+    "dotnet5.4": { }
+  }
 }
