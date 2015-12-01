@@ -267,9 +267,10 @@ namespace NeinLinq
 
                 case DynamicCompare.LessThanOrEqual:
                     return Expression.LessThanOrEqual(memberAccess, actualValue);
-            }
 
-            throw new InvalidOperationException();
+                default:
+                    return Expression.Constant(false);
+            }
         }
 
         static Expression CreateComparison(Expression target, string selector, string comparer, string value)

@@ -66,7 +66,7 @@ namespace NeinLinq
 
         readonly Lazy<Func<Expression, LambdaExpression>> factory;
 
-        public LambdaExpression Replacement(Expression value)
+        internal LambdaExpression Replacement(Expression value)
         {
             if (factory.Value == null)
                 return null;
@@ -74,11 +74,8 @@ namespace NeinLinq
             return factory.Value(value);
         }
 
-        public static InjectLambdaMetadata Create(MethodInfo call)
+        internal static InjectLambdaMetadata Create(MethodInfo call)
         {
-            if (call == null)
-                throw new ArgumentNullException(nameof(call));
-
             // inject by convention
             var target = call.DeclaringType;
             var method = call.Name;
