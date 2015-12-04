@@ -1,15 +1,13 @@
 ﻿using NeinLinq.Tests.RewriteQueryData;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NeinLinq.Tests
 {
     public class RewriteQueryBuilderTest
     {
-        readonly IOrderedQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void RewriteShouldHandleInvalidArguments()
@@ -30,6 +28,12 @@ namespace NeinLinq.Tests
             var actual = ((IQueryable)query).Rewrite(new Rewriter());
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -38,6 +42,12 @@ namespace NeinLinq.Tests
             var actual = ((IQueryable<Dummy>)query).Rewrite(new Rewriter());
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -46,6 +56,12 @@ namespace NeinLinq.Tests
             var actual = ((IOrderedQueryable)query).Rewrite(new Rewriter());
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -54,6 +70,12 @@ namespace NeinLinq.Tests
             var actual = ((IOrderedQueryable<Dummy>)query).Rewrite(new Rewriter());
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

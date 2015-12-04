@@ -106,7 +106,7 @@ namespace NeinLinq.Tests
 
             Assert.Throws<NotSupportedException>(() => s.Translate().Result<SuperDummyView>());
 
-            s = _ => new DummyView(1) { Name = "Narf" } ;
+            s = _ => new DummyView(1) { Name = "Narf" };
 
             Assert.Throws<NotSupportedException>(() => s.Translate().Result<SuperDummyView>());
         }

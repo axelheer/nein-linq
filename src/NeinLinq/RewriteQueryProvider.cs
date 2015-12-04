@@ -15,6 +15,22 @@ namespace NeinLinq
         readonly ExpressionVisitor rewriter;
 
         /// <summary>
+        /// Actual query provider.
+        /// </summary>
+        public IQueryProvider Provider
+        {
+            get { return provider; }
+        }
+
+        /// <summary>
+        /// Rewriter to rewrite the query.
+        /// </summary>
+        public ExpressionVisitor Rewriter
+        {
+            get { return rewriter; }
+        }
+
+        /// <summary>
         /// Create a new rewrite query provider.
         /// </summary>
         /// <param name="provider">The actual query provider.</param>

@@ -6,7 +6,7 @@ namespace NeinLinq.Tests
 {
     public class InjectableQueryBuilderTest
     {
-        readonly IOrderedQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ToInjectableShouldRewriteUntypedQueryable()
@@ -14,6 +14,12 @@ namespace NeinLinq.Tests
             var actual = ((IQueryable)query).ToInjectable();
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -22,6 +28,12 @@ namespace NeinLinq.Tests
             var actual = ((IQueryable<Dummy>)query).ToInjectable();
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -30,6 +42,12 @@ namespace NeinLinq.Tests
             var actual = ((IOrderedQueryable)query).ToInjectable();
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -38,6 +56,12 @@ namespace NeinLinq.Tests
             var actual = ((IOrderedQueryable<Dummy>)query).ToInjectable();
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

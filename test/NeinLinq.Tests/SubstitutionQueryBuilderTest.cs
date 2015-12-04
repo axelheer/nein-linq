@@ -7,7 +7,7 @@ namespace NeinLinq.Tests
 {
     public class SubstitutionQueryBuilderTest
     {
-        readonly IOrderedQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ToSubstitutionShouldHandleInvalidArguments()
@@ -28,6 +28,12 @@ namespace NeinLinq.Tests
             var actual = ((IQueryable)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -36,6 +42,12 @@ namespace NeinLinq.Tests
             var actual = ((IQueryable<Dummy>)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -44,6 +56,12 @@ namespace NeinLinq.Tests
             var actual = ((IOrderedQueryable)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]
@@ -52,6 +70,12 @@ namespace NeinLinq.Tests
             var actual = ((IOrderedQueryable<Dummy>)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             Assert.IsType<RewriteQuery<Dummy>>(actual);
+            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+
+            var actualProvider = (RewriteQueryProvider)actual.Provider;
+
+            Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
+            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

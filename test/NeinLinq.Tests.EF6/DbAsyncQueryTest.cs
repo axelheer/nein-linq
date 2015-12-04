@@ -1,6 +1,10 @@
 ﻿using NeinLinq.Tests.DbAsyncQueryData;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using Xunit;
 
 namespace NeinLinq.Tests
@@ -70,6 +74,30 @@ namespace NeinLinq.Tests
             var result = await query.SumAsync(d => d.Number);
 
             Assert.Equal(194.48m, result, 2);
+        }
+
+        [Fact]
+        public async void UntypedEnumeratorShouldSucceed()
+        {
+            var query = db.Dummies.Rewrite(new Rewriter());
+
+            var enumerator = ((IDbAsyncEnumerable)query).GetAsyncEnumerator();
+
+            var result = await enumerator.MoveNextAsync(CancellationToken.None);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async void UntypedExecuteShouldSucceed()
+        {
+            var query = db.Dummies.Rewrite(new Rewriter());
+
+            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
+
+            var result = await ((IDbAsyncQueryProvider)query.Provider).ExecuteAsync(expression, CancellationToken.None);
+
+            Assert.Equal(3, (int)result);
         }
 
         protected virtual void Dispose(bool disposing)

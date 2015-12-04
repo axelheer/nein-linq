@@ -70,9 +70,6 @@ namespace NeinLinq
         public RewriteQueryEnumerable(IEnumerable<T> enumerable)
             : base(enumerable)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
             this.enumerable = enumerable;
         }
 
