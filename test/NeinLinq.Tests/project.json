@@ -4,7 +4,7 @@
   },
 
   "dependencies": {
-    "NeinLinq": "1.4.1",
+    "NeinLinq": "1.5.0",
     "OpenCover": "4.6.166",
     "ReportGenerator": "2.3.5",
     "xunit": "2.1.0",

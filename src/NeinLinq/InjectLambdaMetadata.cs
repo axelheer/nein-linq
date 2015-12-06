@@ -39,18 +39,17 @@ namespace NeinLinq
                 // assume method without any parameters
                 var factoryMethod = target.GetRuntimeMethod(method, new Type[0]);
                 if (factoryMethod == null)
-                    return null;
+                    return _ => null;
 
                 // method returns lambda expression?
-                var expressionType = factoryMethod.ReturnType;
-                if (expressionType.GetTypeInfo().IsSubclassOf(typeof(LambdaExpression)) == false)
-                    return null;
+                var factoryType = factoryMethod.ReturnType;
+                if (!factoryType.IsConstructedGenericType || factoryType.GetGenericTypeDefinition() != typeof(Expression<>))
+                    return _ => null;
 
                 // lambda signature matches original method's signature?
-                var delegateType = expressionType.GenericTypeArguments[0];
-                var delegateSignature = delegateType.GetRuntimeMethod("Invoke", args);
-                if (delegateSignature == null || delegateSignature.ReturnParameter.ParameterType != returns)
-                    return null;
+                var factorySignature = factoryType.GenericTypeArguments[0].GetRuntimeMethod("Invoke", args);
+                if (factorySignature == null || factorySignature.ReturnParameter.ParameterType != returns)
+                    return _ => null;
 
                 if (factoryMethod.IsStatic)
                 {
@@ -68,9 +67,6 @@ namespace NeinLinq
 
         internal LambdaExpression Replacement(Expression value)
         {
-            if (factory.Value == null)
-                return null;
-
             return factory.Value(value);
         }
 

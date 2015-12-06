@@ -7,7 +7,7 @@
 
   "dependencies": {
     "EntityFramework.InMemory": "7.0.0-rc1-final ",
-    "NeinLinq.EF7": "1.4.1-rc1",
+    "NeinLinq.EF7": "1.5.0-rc1",
     "OpenCover": "4.6.166",
     "ReportGenerator": "2.3.5",
     "xunit": "2.1.0",
