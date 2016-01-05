@@ -28,7 +28,7 @@ namespace NeinLinq
             get { return config; }
         }
 
-        InjectLambdaMetadata(Type target, string method, bool config, Type returns, params Type[] args)
+        InjectLambdaMetadata(Type target, string method, bool config, bool instance, Type[] args, Type result)
         {
             this.target = target;
             this.method = method;
@@ -36,30 +36,47 @@ namespace NeinLinq
 
             factory = new Lazy<Func<Expression, LambdaExpression>>(() =>
             {
-                // assume method without any parameters
-                var factoryMethod = target.GetRuntimeMethod(method, new Type[0]);
-                if (factoryMethod == null)
-                    return _ => null;
-
-                // method returns lambda expression?
-                var factoryType = factoryMethod.ReturnType;
-                if (!factoryType.IsConstructedGenericType || factoryType.GetGenericTypeDefinition() != typeof(Expression<>))
-                    return _ => null;
-
-                // lambda signature matches original method's signature?
-                var factorySignature = factoryType.GenericTypeArguments[0].GetRuntimeMethod("Invoke", args);
-                if (factorySignature == null || factorySignature.ReturnParameter.ParameterType != returns)
-                    return _ => null;
-
-                if (factoryMethod.IsStatic)
+                if (!instance)
                 {
-                    // compile factory call for performance reasons
+                    // retrieve validated factory method
+                    var factoryMethod = FactoryMethod(target, method, args, result);
+                    if (factoryMethod == null)
+                        return _ => null;
+
+                    // compile factory call for performance reasons :-)
                     return Expression.Lambda<Func<Expression, LambdaExpression>>(
                         Expression.Call(factoryMethod), Expression.Parameter(typeof(Expression))).Compile();
                 }
 
-                // parameterize actual target value, compiles every time... :-(
-                return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factoryMethod)).Compile()();
+                return value =>
+                {
+                    // retrieve actual target object, compiles every time... :-(
+                    var actualTarget = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
+                    if (actualTarget == null)
+                        return null;
+
+                    var actualTargetType = actualTarget.GetType();
+
+                    // actual method may provide different information (freaks)
+                    var actualMethod = actualTargetType.GetRuntimeMethod(method, args);
+                    if (actualMethod == null)
+                        return null;
+
+                    var actualMethodName = actualMethod.Name;
+
+                    // configuration over convention, if any (again)
+                    var metadata = actualMethod.GetCustomAttribute<InjectLambdaAttribute>();
+                    if (metadata != null && !string.IsNullOrEmpty(metadata.Method))
+                        actualMethodName = metadata.Method;
+
+                    // retrieve validated factory method
+                    var factoryMethod = FactoryMethod(actualTargetType, actualMethodName, args, result);
+                    if (factoryMethod == null)
+                        return null;
+
+                    // finally call lambda factory *uff*
+                    return (LambdaExpression)factoryMethod.Invoke(actualTarget, null);
+                };
             });
         }
 
@@ -89,10 +106,32 @@ namespace NeinLinq
             }
 
             // retrieve method's signature
-            var returns = call.ReturnParameter.ParameterType;
+            var result = call.ReturnParameter.ParameterType;
             var args = call.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            return new InjectLambdaMetadata(target, method, config, returns, args);
+            return new InjectLambdaMetadata(target, method, config, !call.IsStatic, args, result);
+        }
+
+        static readonly Type[] emptyTypes = new Type[0];
+
+        static MethodInfo FactoryMethod(Type target, string method, Type[] args, Type result)
+        {
+            // assume method without any parameters
+            var factoryMethod = target.GetRuntimeMethod(method, emptyTypes);
+            if (factoryMethod == null)
+                return null;
+
+            // method returns lambda expression?
+            var factoryType = factoryMethod.ReturnType;
+            if (!factoryType.IsConstructedGenericType || factoryType.GetGenericTypeDefinition() != typeof(Expression<>))
+                return null;
+
+            // lambda signature matches original method's signature?
+            var factorySignature = factoryType.GenericTypeArguments[0].GetRuntimeMethod("Invoke", args);
+            if (factorySignature == null || factorySignature.ReturnParameter.ParameterType != result)
+                return null;
+
+            return factoryMethod;
         }
     }
 }

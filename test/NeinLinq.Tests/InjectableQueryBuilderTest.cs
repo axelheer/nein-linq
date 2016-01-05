@@ -1,4 +1,5 @@
 ﻿using NeinLinq.Tests.InjectableQueryData;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -7,6 +8,19 @@ namespace NeinLinq.Tests
     public class InjectableQueryBuilderTest
     {
         readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+
+        [Fact]
+        public void ToInjectableShouldHandleInvalidArguments()
+        {
+            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable)query).ToInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable<Dummy>)query).ToInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable)query).ToInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable<Dummy>)query).ToInjectable(null, null));
+        }
 
         [Fact]
         public void ToInjectableShouldRewriteUntypedQueryable()

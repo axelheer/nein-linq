@@ -17,7 +17,7 @@ namespace NeinLinq
         static readonly ConcurrentDictionary<MethodInfo, InjectLambdaMetadata> cache =
             new ConcurrentDictionary<MethodInfo, InjectLambdaMetadata>();
 
-        readonly Type[] whitelist;
+        readonly TypeInfo[] whitelist;
 
         /// <summary>
         /// Creates a new injectable query rewriter.
@@ -25,7 +25,12 @@ namespace NeinLinq
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         public InjectableQueryRewriter(params Type[] whitelist)
         {
-            this.whitelist = whitelist ?? new Type[0];
+            if (whitelist == null)
+                throw new ArgumentNullException(nameof(whitelist));
+            if (whitelist.Contains(null))
+                throw new ArgumentOutOfRangeException(nameof(whitelist));
+
+            this.whitelist = whitelist.Select(t => t.GetTypeInfo()).ToArray();
         }
 
         /// <inheritdoc />
@@ -33,11 +38,9 @@ namespace NeinLinq
         {
             if (node != null && node.Method != null)
             {
-                // cache "metadata" for performance reasons
+                // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(node.Method, InjectLambdaMetadata.Create);
-
-                // inject only configured or whitelisted targets
-                if (data.Config || whitelist.Contains(data.Target))
+                if (MayInject(data))
                 {
                     var replacement = data.Replacement(node.Object);
                     if (replacement == null)
@@ -54,6 +57,17 @@ namespace NeinLinq
             }
 
             return base.VisitMethodCall(node);
+        }
+
+        bool MayInject(InjectLambdaMetadata value)
+        {
+            // inject only configured...
+            if (value.Config)
+                return true;
+
+            // ...or white-listed targets
+            var info = value.Target.GetTypeInfo();
+            return whitelist.Any(t => info.IsAssignableFrom(t));
         }
     }
 }

@@ -31,35 +31,25 @@ namespace NeinLinq.Tests.InjectableQueryData
             return v => v.Distance / v.Time;
         }
 
-        [InjectLambda(typeof(Functions), nameof(Narf))]
+        [InjectLambda(typeof(OtherFunctions), nameof(OtherFunctions.Narf))]
         public static double VelocityWithTypeAndMethodMetadata(this Dummy value)
         {
             throw new NotSupportedException();
         }
 
-        public static Expression<Func<Dummy, double>> Narf()
-        {
-            return v => v.Distance / v.Time;
-        }
-
-        [InjectLambda(typeof(Functions))]
+        [InjectLambda(typeof(OtherFunctions))]
         public static double VelocityWithTypeMetadata(this Dummy value)
         {
             throw new NotSupportedException();
         }
 
-        public static Expression<Func<Dummy, double>> VelocityWithTypeMetadata()
-        {
-            return v => v.Distance / v.Time;
-        }
-
-        [InjectLambda(nameof(OtherNarf))]
+        [InjectLambda(nameof(Narf))]
         public static double VelocityWithMethodMetadata(this Dummy value)
         {
             throw new NotSupportedException();
         }
 
-        public static Expression<Func<Dummy, double>> OtherNarf()
+        public static Expression<Func<Dummy, double>> Narf()
         {
             return v => v.Distance / v.Time;
         }
@@ -85,23 +75,16 @@ namespace NeinLinq.Tests.InjectableQueryData
         }
     }
 
-    public class ParameterizedFunctions
+    public static class OtherFunctions
     {
-        readonly int digits;
-
-        public ParameterizedFunctions(int digits)
+        public static Expression<Func<Dummy, double>> Narf()
         {
-            this.digits = digits;
+            return v => v.Distance / v.Time;
         }
 
-        public double Velocity(Dummy value)
+        public static Expression<Func<Dummy, double>> VelocityWithTypeMetadata()
         {
-            throw new NotSupportedException();
-        }
-
-        public Expression<Func<Dummy, double>> Velocity()
-        {
-            return v => Math.Round(v.Distance / v.Time, digits);
+            return v => v.Distance / v.Time;
         }
     }
 }

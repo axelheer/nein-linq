@@ -7,6 +7,8 @@ namespace NeinLinq.Tests
 {
     public class InjectableQueryTest
     {
+        readonly IParameterizedFunctions functions = new ParameterizedFunctionsWithExpression(1);
+
         readonly IQueryable<Dummy> data;
 
         public InjectableQueryTest()
@@ -21,7 +23,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldFailWithoutSibling()
+        public void InjectStaticShouldFailWithoutSibling()
         {
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithoutSibling();
@@ -31,7 +33,41 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldSucceedWithConvention()
+        public void InjectInterfaceShouldFailWithoutSibling()
+        {
+            var query = from d in data.ToInjectable(typeof(IParameterizedFunctions))
+                        select functions.VelocityWithoutSibling(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectBaseShouldFailWithoutSibling()
+        {
+            var baseFunctions = (ParameterizedFunctions)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctions))
+                        select baseFunctions.VelocityWithoutSibling(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectConcreteShouldFailWithoutSibling()
+        {
+            var concreteFunctions = (ParameterizedFunctionsWithExpression)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctionsWithExpression))
+                        select concreteFunctions.VelocityWithoutSibling(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectStaticShouldSucceedWithConvention()
         {
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithConvention();
@@ -42,7 +78,44 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldSucceedWithMetadata()
+        public void InjectInterfaceShouldSucceedWithConvention()
+        {
+            var query = from d in data.ToInjectable(typeof(IParameterizedFunctions))
+                        select functions.VelocityWithConvention(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectBaseShouldSucceedWithConvention()
+        {
+            var baseFunctions = (ParameterizedFunctions)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctions))
+                        select baseFunctions.VelocityWithConvention(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectConcreteShouldSucceedWithConvention()
+        {
+            var concreteFunctions = (ParameterizedFunctionsWithExpression)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctionsWithExpression))
+                        select concreteFunctions.VelocityWithConvention(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectStaticShouldSucceedWithMetadata()
         {
             var query = from d in data.ToInjectable()
                         select d.VelocityWithMetadata();
@@ -53,7 +126,44 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldSucceedWithTypeAndMethodMetadata()
+        public void InjectInterfaceShouldSucceedWithMetadata()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithMetadata(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectBaseShouldSucceedWithMetadata()
+        {
+            var baseFunctions = (ParameterizedFunctions)functions;
+
+            var query = from d in data.ToInjectable()
+                        select baseFunctions.VelocityWithMetadata(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectConcreteShouldSucceedWithMetadata()
+        {
+            var concreteFunctions = (ParameterizedFunctionsWithExpression)functions;
+
+            var query = from d in data.ToInjectable()
+                        select concreteFunctions.VelocityWithMetadata(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectStaticShouldSucceedWithTypeAndMethodMetadata()
         {
             var query = from d in data.ToInjectable()
                         select d.VelocityWithTypeAndMethodMetadata();
@@ -64,7 +174,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldSucceedWithTypeMetadata()
+        public void InjectStaticShouldSucceedWithTypeMetadata()
         {
             var query = from d in data.ToInjectable()
                         select d.VelocityWithTypeMetadata();
@@ -75,7 +185,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldSucceedWithMethodMetadata()
+        public void InjectStaticShouldSucceedWithMethodMetadata()
         {
             var query = from d in data.ToInjectable()
                         select d.VelocityWithMethodMetadata();
@@ -86,7 +196,44 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldFailWithInvalidSiblingResult()
+        public void InjectInterfaceShouldSucceedWithMethodMetadata()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithMethodMetadata(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectBaseShouldSucceedWithMethodMetadata()
+        {
+            var baseFunctions = (ParameterizedFunctions)functions;
+
+            var query = from d in data.ToInjectable()
+                        select baseFunctions.VelocityWithMethodMetadata(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectConcreteShouldSucceedWithMethodMetadata()
+        {
+            var concreteFunctions = (ParameterizedFunctionsWithExpression)functions;
+
+            var query = from d in data.ToInjectable()
+                        select concreteFunctions.VelocityWithMethodMetadata(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void InjectStaticShouldFailWithInvalidSiblingResult()
         {
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithInvalidSiblingResult();
@@ -96,7 +243,41 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldFailWithInvalidSiblingSignature()
+        public void InjectInterfaceShouldFailWithInvalidSiblingResult()
+        {
+            var query = from d in data.ToInjectable(typeof(IParameterizedFunctions))
+                        select functions.VelocityWithInvalidSiblingResult(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectBaseShouldFailWithInvalidSiblingResult()
+        {
+            var baseFunctions = (ParameterizedFunctions)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctions))
+                        select baseFunctions.VelocityWithInvalidSiblingResult(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectConcreteShouldFailWithInvalidSiblingResult()
+        {
+            var concreteFunctions = (ParameterizedFunctionsWithExpression)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctionsWithExpression))
+                        select concreteFunctions.VelocityWithInvalidSiblingResult(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectStaticShouldFailWithInvalidSiblingSignature()
         {
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithInvalidSiblingSignature();
@@ -106,15 +287,37 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void InjectShouldSucceedWithObject()
+        public void InjectInterfaceShouldFailWithInvalidSiblingSignature()
         {
-            var functions = new ParameterizedFunctions(1);
+            var query = from d in data.ToInjectable(typeof(IParameterizedFunctions))
+                        select functions.VelocityWithInvalidSiblingSignature(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectBaseShouldFailWithInvalidSiblingSignature()
+        {
+            var baseFunctions = (ParameterizedFunctions)functions;
+
             var query = from d in data.ToInjectable(typeof(ParameterizedFunctions))
-                        select functions.Velocity(d);
+                        select baseFunctions.VelocityWithInvalidSiblingSignature(d);
 
-            var result = query.ToList();
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
 
-            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        [Fact]
+        public void InjectConcreteShouldFailWithInvalidSiblingSignature()
+        {
+            var concreteFunctions = (ParameterizedFunctionsWithExpression)functions;
+
+            var query = from d in data.ToInjectable(typeof(ParameterizedFunctionsWithExpression))
+                        select concreteFunctions.VelocityWithInvalidSiblingSignature(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
         }
     }
 }
