@@ -94,14 +94,20 @@ namespace NeinLinq
             var method = call.Name;
             var config = false;
 
+            // special treatment for instance methods
+            var instance = !call.IsStatic;
+
             // configuration over convention, if any
             var metadata = call.GetCustomAttribute<InjectLambdaAttribute>();
             if (metadata != null)
             {
-                if (metadata.Target != null)
-                    target = metadata.Target;
-                if (!string.IsNullOrEmpty(metadata.Method))
-                    method = metadata.Method;
+                if (!instance)
+                {
+                    if (metadata.Target != null)
+                        target = metadata.Target;
+                    if (!string.IsNullOrEmpty(metadata.Method))
+                        method = metadata.Method;
+                }
                 config = true;
             }
 
@@ -109,7 +115,7 @@ namespace NeinLinq
             var result = call.ReturnParameter.ParameterType;
             var args = call.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            return new InjectLambdaMetadata(target, method, config, !call.IsStatic, args, result);
+            return new InjectLambdaMetadata(target, method, config, instance, args, result);
         }
 
         static readonly Type[] emptyTypes = new Type[0];

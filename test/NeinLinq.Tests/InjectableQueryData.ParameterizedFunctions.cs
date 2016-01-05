@@ -50,7 +50,7 @@ namespace NeinLinq.Tests.InjectableQueryData
             throw new NotSupportedException();
         }
 
-        [InjectLambda]
+        [InjectLambda("ignore-me")]
         public virtual double VelocityWithMethodMetadata(Dummy value)
         {
             throw new NotSupportedException();
