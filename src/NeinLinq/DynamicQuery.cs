@@ -243,7 +243,7 @@ namespace NeinLinq
             return query.Provider.CreateQuery(expression);
         }
 
-        static Expression CreateComparison(Expression target, string selector, DynamicCompare comparer, string value)
+        static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value)
         {
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value);
@@ -273,7 +273,7 @@ namespace NeinLinq
             }
         }
 
-        static Expression CreateComparison(Expression target, string selector, string comparer, string value)
+        static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value)
         {
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value);
@@ -286,9 +286,9 @@ namespace NeinLinq
             return selector.Split('.').Aggregate(target, (t, n) => Expression.PropertyOrField(t, n));
         }
 
-        static Expression CreateConstant(Expression target, Expression selector, string value)
+        static Expression CreateConstant(ParameterExpression target, Expression selector, string value)
         {
-            var type = Expression.Lambda(selector, (ParameterExpression)target).ReturnType;
+            var type = Expression.Lambda(selector, target).ReturnType;
             var conversionType = Nullable.GetUnderlyingType(type) ?? type;
 
             if (type != conversionType && string.IsNullOrEmpty(value))
