@@ -71,13 +71,12 @@ namespace NeinLinq.Tests
         {
             var result = Query(data.ToNullsafe()).ToList();
 
-            Assert.Equal(5, result.Count);
-
-            AssertDummy(result[0]);
-            AssertDummy(result[1], 1977, 42, firstWord: "Narf");
-            AssertDummy(result[2], 1980, question: true, firstWord: "What", other: new[] { 3, 6 });
-            AssertDummy(result[3], 1983, more: new[] { 5, 8 });
-            AssertDummy(result[4], 2015, firstWord: "", lot: new[] { 4, 7 });
+            Assert.Collection(result,
+                r => AssertDummy(r),
+                r => AssertDummy(r, 1977, 42, firstWord: "Narf"),
+                r => AssertDummy(r, 1980, question: true, firstWord: "What", other: new[] { 3, 6 }),
+                r => AssertDummy(r, 1983, more: new[] { 5, 8 }),
+                r => AssertDummy(r, 2015, firstWord: "", lot: new[] { 4, 7 }));
         }
 
         static IQueryable<DummyView> Query(IQueryable<Dummy> data)

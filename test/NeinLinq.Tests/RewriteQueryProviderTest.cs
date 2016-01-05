@@ -22,13 +22,7 @@ namespace NeinLinq.Tests
         {
             var actual = new RewriteQueryProvider(query.Provider, new Rewriter()).CreateQuery(query.Expression);
 
-            Assert.IsType<RewriteQuery<Dummy>>(actual);
-            Assert.IsType<RewriteQueryProvider>(actual.Provider);
-
-            var actualProvider = (RewriteQueryProvider)actual.Provider;
-
-            Assert.IsType<Rewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            AssertQuery(actual);
         }
 
         [Fact]
@@ -36,6 +30,11 @@ namespace NeinLinq.Tests
         {
             var actual = new RewriteQueryProvider(query.Provider, new Rewriter()).CreateQuery<Dummy>(query.Expression);
 
+            AssertQuery(actual);
+        }
+
+        static void AssertQuery(IQueryable actual)
+        {
             Assert.IsType<RewriteQuery<Dummy>>(actual);
             Assert.IsType<RewriteQueryProvider>(actual.Provider);
 

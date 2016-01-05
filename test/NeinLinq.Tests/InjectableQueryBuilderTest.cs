@@ -27,13 +27,7 @@ namespace NeinLinq.Tests
         {
             var actual = ((IQueryable)query).ToInjectable();
 
-            Assert.IsType<RewriteQuery<Dummy>>(actual);
-            Assert.IsType<RewriteQueryProvider>(actual.Provider);
-
-            var actualProvider = (RewriteQueryProvider)actual.Provider;
-
-            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            AssertQuery(actual);
         }
 
         [Fact]
@@ -41,13 +35,7 @@ namespace NeinLinq.Tests
         {
             var actual = ((IQueryable<Dummy>)query).ToInjectable();
 
-            Assert.IsType<RewriteQuery<Dummy>>(actual);
-            Assert.IsType<RewriteQueryProvider>(actual.Provider);
-
-            var actualProvider = (RewriteQueryProvider)actual.Provider;
-
-            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            AssertQuery(actual);
         }
 
         [Fact]
@@ -55,13 +43,7 @@ namespace NeinLinq.Tests
         {
             var actual = ((IOrderedQueryable)query).ToInjectable();
 
-            Assert.IsType<RewriteQuery<Dummy>>(actual);
-            Assert.IsType<RewriteQueryProvider>(actual.Provider);
-
-            var actualProvider = (RewriteQueryProvider)actual.Provider;
-
-            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            AssertQuery(actual);
         }
 
         [Fact]
@@ -69,6 +51,11 @@ namespace NeinLinq.Tests
         {
             var actual = ((IOrderedQueryable<Dummy>)query).ToInjectable();
 
+            AssertQuery(actual);
+        }
+
+        static void AssertQuery(IQueryable actual)
+        {
             Assert.IsType<RewriteQuery<Dummy>>(actual);
             Assert.IsType<RewriteQueryProvider>(actual.Provider);
 
