@@ -7,18 +7,18 @@ To install *NeinLinq*, run the following command in the [NuGet Package Manager C
 
     PM> Install-Package NeinLinq
 
-To run async queries within *Entity Framework 6* use the "special" build (there's an extra dependency for that; thus, the extra build).
+To run async queries within *Entity Framework 6* applications use the "special" build (there's an extra dependency for that; thus, the extra build).
 
     PM> Install-Package NeinLinq.EF6
 
-To run async queries within *Entity Framework 7* use the "special" build (again, there's an extra dependency for that; thus, the extra build).
+To run async queries within *Entity Framework 7* applications use the "special" build (again, there's an extra dependency for that; thus, the extra build).
 
     PM> Install-Package NeinLinq.EF7
 
 Lambda injection
 ----------------
 
-Many LINQ providers can only support a very minor subset of .NET functionality, they cannot even support our own "functions". Say, we implement a simple method `LimitText` and use it within an ordinary LINQ query, which will get translated to SQL through *Entity Framework*...
+Many LINQ providers can only support a very minor subset of .NET functionality, they even cannot support our own "functions". Say, we implement a simple method `LimitText` and use it within an ordinary LINQ query, which will get translated to SQL through *Entity Framework*...
 
 > *LINQ to Entities does not recognize the method 'System.String LimitText(System.String, Int32)' method, and this method cannot be translated into a store expression.*
 
@@ -50,7 +50,7 @@ select new
 }
 ```
 
-If a query is marked as "injectable" (`ToInjectable()`) and a function within this query is marked as "inject here" (`[InjectLambda]`), the rewrite engine of *NeinLinq* replaces the method call with the matching lambda expression, which can get translate to SQL or whatever. Thus, we are able to encapsulate unsupported .NET functionality and even create our own. Bazinga!
+If a query is marked as "injectable" (`ToInjectable()`) and a function used within this query is marked as "inject here" (`[InjectLambda]`), the rewrite engine of *NeinLinq* replaces the method call with the matching lambda expression, which can get translate to SQL or whatever. Thus, we are able to encapsulate unsupported .NET functionality and even create our own. Yay.
 
 ```csharp
 [InjectLambda]
@@ -71,7 +71,7 @@ where d.Name.Like("%na_f%")
 select ...
 ```
 
-This is an example how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions to run our code *without* touching `SqlFunctions` too...
+This is an example of how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our query code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions to run our code *without* touching `SqlFunctions` too...
 
 Finally, let us look at this query using *Entity Framework* or the like:
 
@@ -121,16 +121,63 @@ public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
 }
 ```
 
-The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic...
+The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic.
 
-*Note:* that works with instance methods too.
+**New:** that works with instance methods too (Version `1.3.1`), so the actual expression code is finally able to retrieve additional data. Since Version `1.5.1` even interfaces and / or base classes can be used to abstract all the things. Thus, we can declare an interface / base class without expressions, but provide the expression to inject using inheritance.
+
+```csharp
+public class ParameterizedFunctions
+{
+    readonly int narf;
+
+    public ParameterizedFunctions(int narf)
+    {
+        this.narf = narf;
+    }
+
+    [InjectLambda]
+    public string Foo()
+    {
+        ...
+    }
+
+    public Expression<Func<string>> Foo()
+    {
+        ... // use the narf!
+    }
+}
+
+// -------------------------------------------------------------------
+
+public interface IFunctions
+{
+    [InjectLambda]
+    string Foo(Entity value); // use abstraction for queries
+}
+
+public class Functions : IFunctions
+{
+    public string Foo(Entity value)
+    {
+        ...
+    }
+
+    public Expression<Func<Entity, string>> Foo()
+    {
+        ...
+    }
+}
+
+```
+
+*Note*: injecting instance methods is not as efficient as injecting static methods. Just don't use the former ones, if not really necessary (okay, nothing new to say here).
 
 Null-safe queries
 -----------------
 
-We are writing the year 2015 and still have to worry about null values.
+We are writing the year 2016 and still have to worry about null values.
 
-Howsoever, we got used to it and we are fine. But writing queries in C# loaded with null checks doesn't feel right, it just looks awful, the translated SQL even gets worse. A LINQ query just for SQL dbs can spare these null checks, a LINQ query just for in-memory calculations must include them. And a LINQ query for both has a problem, which *NeinLinq* tries to solve.
+Howsoever, we got used to it and we are fine. But writing queries in C# loaded with null checks doesn't feel right, it just looks awful, the translated SQL even gets worse. A LINQ query just for SQL dbs can spare these null checks, a LINQ query just for in-memory calculations must include them. And a LINQ query for both has a problem (unit testing?), which *NeinLinq* tries to solve.
 
 The following query may trigger null references:
 
@@ -220,10 +267,10 @@ We now can translate a (combined) predicate for a parent entity...
 Expression<Func<Lecture, bool>> p = l => ...
 
 db.Courses.Where(p.Translate()
-                  .To<Course>((c, q) => c.Lectures.Any(l => q(l))))...
+                  .To<Course>((c, q) => c.Lectures.Any(q)))...
 ```
 
-..and even for child entities. Awesome!
+..and even for child entities.
 
 Let us use all of this as a windup:
 
@@ -246,7 +293,7 @@ var coursePredicateForCourse =
     singlePredicateForCourse; // the hard one ^^
 var lecturePredicateForCourse =
     singlePredicateForLecture.Translate()
-                             .To<Course>((c, p) => c.Lectures.Any(l => p(l)));
+                             .To<Course>((c, p) => c.Lectures.Any(p));
 
 var finalPredicate =
     academyPredicateForCourse.And(coursePredicateForCourse)
@@ -280,7 +327,7 @@ db.Academies.OfType<SuperAcademy>()
                      .Apply(t));
 ```
 
-Although there're more options, the common scenario can look that way: reuse the base selector, start it's translation (type inference!), say where to start (no type inference), and finally apply the additional selector (type inference again!).
+Although there're more options, the common scenario can look that way: reuse the base selector, start it's translation (type inference), say where to start (no type inference), and finally apply the additional selector (type inference, again).
 
 Now let us consider parent / child relations (Academy and Course).
 
@@ -324,7 +371,7 @@ var selectCourseWithAcademy =
 Function substitution
 ---------------------
 
-This is a really dead simple one. Maybe we should've started here...
+This is a really dead simple one. Maybe we should've started here.
 
 Just think of helper functions like the `SqlFunctions` class provided by *Entity Framework*. And we need to replace the whole class for unit testing or whatsoever.
 
@@ -343,7 +390,7 @@ That's it.
 Custom query manipulation
 -------------------------
 
-You want more? Okay, you can use the generic rewrite mechanism of this library to intercept LINQ queries with your own *Expression visitor*. The code behind the substitution above should provide a good example.
+Okay, you can use the generic rewrite mechanism of this library to intercept LINQ queries with your own *Expression visitor*. The code behind the substitution above should provide a good example.
 
 Dynamic query filtering / sorting
 ---------------------------------
