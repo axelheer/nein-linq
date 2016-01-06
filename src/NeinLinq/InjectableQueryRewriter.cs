@@ -40,33 +40,37 @@ namespace NeinLinq
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(node.Method, InjectLambdaMetadata.Create);
-                if (MayInject(data))
+
+                if (ShouldInject(node, data))
                 {
-                    var replacement = data.Replacement(node.Object);
-                    if (replacement == null)
+                    var lambda = data.Lambda(node.Object);
+                    if (lambda == null)
                         throw new InvalidOperationException(
-                            string.Concat("Unable to retrieve lambda expression from ",
-                                data.Target.FullName, ".", data.Method, "."));
+                            string.Concat("Unable to retrieve lambda expression for ",
+                                node.Method.DeclaringType.FullName, ".", node.Method.Name, "."));
 
                     // rebind expression parameters for current arguments
-                    var binders = replacement.Parameters.Zip(node.Arguments,
+                    var binders = lambda.Parameters.Zip(node.Arguments,
                         (p, a) => new ParameterBinder(p, a));
 
-                    return Visit(binders.Aggregate(replacement.Body, (e, b) => b.Visit(e)));
+                    return Visit(binders.Aggregate(lambda.Body, (e, b) => b.Visit(e)));
                 }
             }
 
             return base.VisitMethodCall(node);
         }
 
-        bool MayInject(InjectLambdaMetadata value)
+        bool ShouldInject(MethodCallExpression node, InjectLambdaMetadata value)
         {
             // inject only configured...
             if (value.Config)
                 return true;
 
+            if (whitelist.Length == 0)
+                return false;
+
             // ...or white-listed targets
-            var info = value.Target.GetTypeInfo();
+            var info = node.Method.DeclaringType.GetTypeInfo();
             return whitelist.Any(t => info.IsAssignableFrom(t));
         }
     }
