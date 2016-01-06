@@ -21,7 +21,7 @@ namespace NeinLinq.Tests.InjectableQueryData
         }
 
         [InjectLambda(nameof(Narf))]
-        public override double VelocityWithMethodMetadata(Dummy value)
+        public new double VelocityWithMethodMetadata(Dummy value)
         {
             throw new NotSupportedException();
         }

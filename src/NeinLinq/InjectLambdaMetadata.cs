@@ -28,7 +28,7 @@ namespace NeinLinq
             get { return config; }
         }
 
-        InjectLambdaMetadata(Type target, string method, bool config, bool instance, Type[] args, Type result)
+        InjectLambdaMetadata(Type target, string method, bool config, bool instance, bool abstraction, Type[] args, Type result)
         {
             this.target = target;
             this.method = method;
@@ -36,21 +36,27 @@ namespace NeinLinq
 
             factory = new Lazy<Func<Expression, LambdaExpression>>(() =>
             {
-                if (!instance)
+                if (!instance || !abstraction)
                 {
-                    // retrieve validated factory method
+                    // retrieve validated factory method once
                     var factoryMethod = FactoryMethod(target, method, args, result);
                     if (factoryMethod == null)
                         return _ => null;
 
-                    // compile factory call for performance reasons :-)
-                    return Expression.Lambda<Func<Expression, LambdaExpression>>(
-                        Expression.Call(factoryMethod), Expression.Parameter(typeof(Expression))).Compile();
+                    if (!instance)
+                    {
+                        // compile factory call for performance reasons :-)
+                        return Expression.Lambda<Func<Expression, LambdaExpression>>(
+                            Expression.Call(factoryMethod), Expression.Parameter(typeof(Expression))).Compile();
+                    }
+
+                    // call actual target object, compiles every time during execution... :-|
+                    return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factoryMethod)).Compile()();
                 }
 
                 return value =>
                 {
-                    // retrieve actual target object, compiles every time... :-(
+                    // retrieve actual target object, compiles every time and needs reflection too... :-(
                     var actualTarget = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
                     if (actualTarget == null)
                         return null;
@@ -94,14 +100,15 @@ namespace NeinLinq
             var method = call.Name;
             var config = false;
 
-            // special treatment for instance methods
+            // special treatment for abstractions and instance methods
+            var abstraction = !target.GetTypeInfo().IsSealed;
             var instance = !call.IsStatic;
 
             // configuration over convention, if any
             var metadata = call.GetCustomAttribute<InjectLambdaAttribute>();
             if (metadata != null)
             {
-                if (!instance)
+                if (!instance || !abstraction)
                 {
                     if (metadata.Target != null)
                         target = metadata.Target;
@@ -115,7 +122,7 @@ namespace NeinLinq
             var result = call.ReturnParameter.ParameterType;
             var args = call.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            return new InjectLambdaMetadata(target, method, config, instance, args, result);
+            return new InjectLambdaMetadata(target, method, config, instance, abstraction, args, result);
         }
 
         static readonly Type[] emptyTypes = new Type[0];
