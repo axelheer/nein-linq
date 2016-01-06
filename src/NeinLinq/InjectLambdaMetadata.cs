@@ -42,19 +42,17 @@ namespace NeinLinq
             var args = call.GetParameters().Select(p => p.ParameterType).ToArray();
             var result = call.ReturnParameter.ParameterType;
 
-            // special treatment for abstractions and instance methods
-            var instance = !call.IsStatic;
-            var open = !call.DeclaringType.GetTypeInfo().IsSealed;
-
-            if (!instance || !open)
+            // special ultra-fast treatment for static methods and sealed classes
+            if (call.IsStatic || call.DeclaringType.GetTypeInfo().IsSealed)
             {
-                return FixedLambdaFactory(call, metadata, instance, args, result);
+                return FixedLambdaFactory(call, metadata, args, result);
             }
 
+            // dynamic but not that fast treatment for other stuff
             return DynamicLambdaFactory(call, args, result);
         }
 
-        static Func<Expression, LambdaExpression> FixedLambdaFactory(MethodInfo call, InjectLambdaAttribute metadata, bool instance, Type[] args, Type result)
+        static Func<Expression, LambdaExpression> FixedLambdaFactory(MethodInfo call, InjectLambdaAttribute metadata, Type[] args, Type result)
         {
             // inject by convention
             var target = call.DeclaringType;
@@ -74,7 +72,7 @@ namespace NeinLinq
             if (factory == null)
                 return _ => null;
 
-            if (!instance)
+            if (call.IsStatic)
             {
                 // compile factory call for performance reasons :-)
                 return Expression.Lambda<Func<Expression, LambdaExpression>>(
