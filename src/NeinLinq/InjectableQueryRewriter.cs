@@ -44,10 +44,6 @@ namespace NeinLinq
                 if (ShouldInject(node, data))
                 {
                     var lambda = data.Lambda(node.Object);
-                    if (lambda == null)
-                        throw new InvalidOperationException(
-                            string.Concat("Unable to retrieve lambda expression for ",
-                                node.Method.DeclaringType.FullName, ".", node.Method.Name, "."));
 
                     // rebind expression parameters for current arguments
                     var binders = lambda.Parameters.Zip(node.Arguments,

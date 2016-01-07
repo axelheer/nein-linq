@@ -69,8 +69,6 @@ namespace NeinLinq
 
             // retrieve validated factory method once
             var factory = FactoryMethod(target, method, args, result);
-            if (factory == null)
-                return _ => null;
 
             if (call.IsStatic)
             {
@@ -90,26 +88,24 @@ namespace NeinLinq
                 // retrieve actual target object, compiles every time and needs reflection too... :-(
                 var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
                 if (targetObject == null)
-                    return null;
+                    throw new InvalidOperationException($"Unable to retrieve object from '{value}': expression evaluates to null.");
 
                 var target = targetObject.GetType();
 
-                // actual method may provide different information (freaks)
+                // actual method may provide different information
                 var concreteCall = target.GetRuntimeMethod(call.Name, args);
                 if (concreteCall == null)
-                    return null;
+                    throw new InvalidOperationException($"Unable to retrieve lambda meta-data from {target.FullName}.{call.Name}: what evil treachery is this?");
 
                 var method = concreteCall.Name;
 
-                // configuration over convention, if any (again)
+                // configuration over convention, if any
                 var metadata = concreteCall.GetCustomAttribute<InjectLambdaAttribute>();
                 if (metadata != null && !string.IsNullOrEmpty(metadata.Method))
                     method = metadata.Method;
 
                 // retrieve validated factory method
                 var factory = FactoryMethod(target, method, args, result);
-                if (factory == null)
-                    return null;
 
                 // finally call lambda factory *uff*
                 return (LambdaExpression)factory.Invoke(targetObject, null);
@@ -123,17 +119,17 @@ namespace NeinLinq
             // assume method without any parameters
             var factory = target.GetRuntimeMethod(method, emptyTypes);
             if (factory == null)
-                return null;
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless method found.");
 
             // method returns lambda expression?
             var returns = factory.ReturnType;
             if (!returns.IsConstructedGenericType || returns.GetGenericTypeDefinition() != typeof(Expression<>))
-                return null;
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method does not return generic lambda expression.");
 
             // lambda signature matches original method's signature?
             var signature = returns.GenericTypeArguments[0].GetRuntimeMethod("Invoke", args);
             if (signature == null || signature.ReturnParameter.ParameterType != result)
-                return null;
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns lambda expression with non matching signature.");
 
             return factory;
         }
