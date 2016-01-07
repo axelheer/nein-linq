@@ -30,7 +30,7 @@ namespace NeinLinq
             if (whitelist.Contains(null))
                 throw new ArgumentOutOfRangeException(nameof(whitelist));
 
-            this.whitelist = whitelist.Select(t => t.GetTypeInfo()).ToArray();
+            this.whitelist = whitelist.Length != 0 ? whitelist.Select(t => t.GetTypeInfo()).ToArray() : null;
         }
 
         /// <inheritdoc />
@@ -56,13 +56,13 @@ namespace NeinLinq
             return base.VisitMethodCall(node);
         }
 
-        bool ShouldInject(MethodCallExpression node, InjectLambdaMetadata value)
+        bool ShouldInject(MethodCallExpression node, InjectLambdaMetadata data)
         {
             // inject only configured...
-            if (value.Config)
+            if (data.Config)
                 return true;
 
-            if (whitelist.Length == 0)
+            if (whitelist == null)
                 return false;
 
             // ...or white-listed targets
