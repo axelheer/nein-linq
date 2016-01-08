@@ -157,6 +157,7 @@ public interface IFunctions
 
 public class Functions : IFunctions
 {
+    [InjectLambda]
     public string Foo(Entity value)
     {
         ...
@@ -342,7 +343,7 @@ db.Courses.Select(s.Translate()
                    .Apply(c => c.Academy, t));
 
 db.Academies.Select(t.Translate()
-                     .Cross<Academy>((a, v) => a.Courses.Select(c => v(c)))
+                     .Cross<Academy>((a, v) => a.Courses.Select(v))
                      .Apply(a => a.Courses, s));
 ```
 
@@ -364,6 +365,22 @@ var selectCourseWithAcademy =
                      Id = a.Id,
                      Name = a.Name
                  });
+```
+
+**New:** to be less verbose "Source translation" / "Result translation" can be used within a single bloated statement, if appropriate (Version `1.6.0`):
+
+```csharp
+Expression<Func<Course, CourseView>> selectCourse =
+    c => new CourseView { Id = c.Id, Name = c.Name };
+
+var selectAcademyWithCourses =
+    selectCourse.Translate()
+                .To<Academy, AcademyView>((a, v) => new AcademyView
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Courses = a.Courses.Select(v)
+                })
 ```
 
 *Note:* for parent / child relations the less dynamic but (maybe) more readable *Lambda injection* is also an option: just encapsulate the selector as a nice extension method.
