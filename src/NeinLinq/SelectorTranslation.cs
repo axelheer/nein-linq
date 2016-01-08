@@ -256,5 +256,61 @@ namespace NeinLinq
         {
             return Result(translation).Apply(value);
         }
+
+        /// <summary>
+        /// Translates a given selector for given subtypes using it's source and result parameter
+        /// and combines it with another given selector by merging their member bindings.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <typeparam name="W">The type of the translated selector's result parameter.</typeparam>
+        /// <param name="value">The additional selector expression to combine.</param>
+        /// <returns>A single translated and combined selector expression.</returns>
+        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, W>> value)
+            where V : T
+            where W : U
+        {
+            return Cross<V>().Apply(value);
+        }
+
+        /// <summary>
+        /// Translates a given selector for a given related type using it's source and result parameter
+        /// and combines it with another given selector by merging their member bindings.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <typeparam name="W">The type of the translated selector's result parameter.</typeparam>
+        /// <param name="sourcePath">The path from the desired source type to the given type.</param>
+        /// <param name="resultPath">The path from the desired result type to the given type.</param>
+        /// <param name="value">The additional selector expression to combine.</param>
+        /// <returns>A single translated and combined selector expression.</returns>
+        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, T>> sourcePath, Expression<Func<W, U>> resultPath, Expression<Func<V, W>> value)
+        {
+            return Cross(sourcePath).Apply(resultPath, value);
+        }
+
+        /// <summary>
+        /// Translates a given selector for a given related type using it's source and result parameter
+        /// and combines it with another given selector by merging their member bindings.
+        /// </summary>
+        /// <typeparam name="V">The type of the translated selector's source parameter.</typeparam>
+        /// <typeparam name="W">The type of the translated selector's result parameter.</typeparam>
+        /// <param name="translation">The translation from the desired type to the given type,
+        /// using the initially given selector to be injected into a new selector.</param>
+        /// <param name="value">The additional selector expression to combine.</param>
+        /// <returns>A single translated and combined selector expression.</returns>
+        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, Func<T, U>, W>> translation, Expression<Func<V, W>> value)
+        {
+            if (translation == null)
+                throw new ArgumentNullException(nameof(translation));
+
+            var v = translation.Parameters[0];
+            var s = translation.Parameters[1];
+
+            var binder = new ParameterBinder(s, selector);
+
+            var result = Expression.Lambda<Func<V, W>>(
+                binder.Visit(translation.Body), v);
+
+            return result.Apply(value);
+        }
     }
 }
