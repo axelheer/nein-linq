@@ -265,11 +265,13 @@ namespace NeinLinq
         /// <typeparam name="W">The type of the translated selector's result parameter.</typeparam>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, W>> value)
+        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, W>> value = null)
             where V : T
             where W : U
         {
-            return Cross<V>().Apply(value);
+            var result = Cross<V>().Result<W>();
+
+            return value != null ? result.Apply(value) : result;
         }
 
         /// <summary>
@@ -282,9 +284,11 @@ namespace NeinLinq
         /// <param name="resultPath">The path from the desired result type to the given type.</param>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, T>> sourcePath, Expression<Func<W, U>> resultPath, Expression<Func<V, W>> value)
+        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, T>> sourcePath, Expression<Func<W, U>> resultPath, Expression<Func<V, W>> value = null)
         {
-            return Cross(sourcePath).Apply(resultPath, value);
+            var result = Cross(sourcePath).Result(resultPath);
+
+            return value != null ? result.Apply(value) : result;
         }
 
         /// <summary>
@@ -297,7 +301,7 @@ namespace NeinLinq
         /// using the initially given selector to be injected into a new selector.</param>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, Func<T, U>, W>> translation, Expression<Func<V, W>> value)
+        public Expression<Func<V, W>> To<V, W>(Expression<Func<V, Func<T, U>, W>> translation, Expression<Func<V, W>> value = null)
         {
             if (translation == null)
                 throw new ArgumentNullException(nameof(translation));
@@ -310,7 +314,7 @@ namespace NeinLinq
             var result = Expression.Lambda<Func<V, W>>(
                 binder.Visit(translation.Body), v);
 
-            return result.Apply(value);
+            return value != null ? result.Apply(value) : result;
         }
     }
 }
