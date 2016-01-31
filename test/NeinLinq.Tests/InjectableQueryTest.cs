@@ -319,5 +319,27 @@ namespace NeinLinq.Tests
             Assert.Throws<InvalidOperationException>(() =>
                 query.ToList());
         }
+
+        [Fact]
+        public void InjectStaticToInstanceShouldFail()
+        {
+            var query = from d in data.ToInjectable(typeof(MixedFunctions))
+                        select MixedFunctions.VelocityStaticToInstance(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
+
+        [Fact]
+        public void InjectInstanceToStaticShouldFail()
+        {
+            var mixedFunctions = new MixedFunctions(1);
+
+            var query = from d in data.ToInjectable(typeof(MixedFunctions))
+                        select mixedFunctions.VelocityInstanceToStatic(d);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                query.ToList());
+        }
     }
 }

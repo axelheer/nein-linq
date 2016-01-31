@@ -68,7 +68,7 @@ namespace NeinLinq
             }
 
             // retrieve validated factory method once
-            var factory = FactoryMethod(target, method, args, result);
+            var factory = FactoryMethod(target, method, args, result, !call.IsStatic);
 
             if (call.IsStatic)
             {
@@ -105,7 +105,7 @@ namespace NeinLinq
                     method = metadata.Method;
 
                 // retrieve validated factory method
-                var factory = FactoryMethod(target, method, args, result);
+                var factory = FactoryMethod(target, method, args, result, !call.IsStatic);
 
                 // finally call lambda factory *uff*
                 return (LambdaExpression)factory.Invoke(targetObject, null);
@@ -114,12 +114,18 @@ namespace NeinLinq
 
         static readonly Type[] emptyTypes = new Type[0];
 
-        static MethodInfo FactoryMethod(Type target, string method, Type[] args, Type result)
+        static MethodInfo FactoryMethod(Type target, string method, Type[] args, Type result, bool instance)
         {
             // assume method without any parameters
             var factory = target.GetRuntimeMethod(method, emptyTypes);
             if (factory == null)
                 throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless method found.");
+
+            // mixed static and instance methods?
+            if (!instance && !factory.IsStatic)
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: static implementation expected.");
+            if (instance && factory.IsStatic)
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: non-static implementation expected.");
 
             // method returns lambda expression?
             var returns = factory.ReturnType;
