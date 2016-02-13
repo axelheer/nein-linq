@@ -67,7 +67,9 @@ namespace NeinLinq
             if (!Enum.IsDefined(typeof(DynamicCompare), comparer))
                 throw new ArgumentOutOfRangeException(nameof(comparer));
 
-            return CreateFilteredQuery(query, selector, comparer, value);
+            var target = Expression.Parameter(query.ElementType);
+
+            return query.Provider.CreateQuery(CreateWhereClause(target, query.Expression, selector, comparer, value));
         }
 
         /// <summary>
@@ -88,7 +90,9 @@ namespace NeinLinq
             if (!Enum.IsDefined(typeof(DynamicCompare), comparer))
                 throw new ArgumentOutOfRangeException(nameof(comparer));
 
-            return (IQueryable<T>)CreateFilteredQuery(query, selector, comparer, value);
+            var target = Expression.Parameter(typeof(T));
+
+            return query.Provider.CreateQuery<T>(CreateWhereClause(target, query.Expression, selector, comparer, value));
         }
 
         /// <summary>
@@ -108,7 +112,9 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(comparer))
                 throw new ArgumentNullException(nameof(comparer));
 
-            return CreateFilteredQuery(query, selector, comparer, value);
+            var target = Expression.Parameter(query.ElementType);
+
+            return query.Provider.CreateQuery(CreateWhereClause(target, query.Expression, selector, comparer, value));
         }
 
         /// <summary>
@@ -129,7 +135,9 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(comparer))
                 throw new ArgumentNullException(nameof(comparer));
 
-            return (IQueryable<T>)CreateFilteredQuery(query, selector, comparer, value);
+            var target = Expression.Parameter(typeof(T));
+
+            return query.Provider.CreateQuery<T>(CreateWhereClause(target, query.Expression, selector, comparer, value));
         }
 
         /// <summary>
@@ -146,9 +154,10 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
 
+            var target = Expression.Parameter(query.ElementType);
             var method = descending ? nameof(Queryable.OrderByDescending) : nameof(Queryable.OrderBy);
 
-            return (IOrderedQueryable)CreateSortedQuery(query, selector, method);
+            return (IOrderedQueryable)query.Provider.CreateQuery(CreateOrderClause(target, query.Expression, selector, method));
         }
 
         /// <summary>
@@ -166,9 +175,10 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
 
+            var target = Expression.Parameter(typeof(T));
             var method = descending ? nameof(Queryable.OrderByDescending) : nameof(Queryable.OrderBy);
 
-            return (IOrderedQueryable<T>)CreateSortedQuery(query, selector, method);
+            return (IOrderedQueryable<T>)query.Provider.CreateQuery<T>(CreateOrderClause(target, query.Expression, selector, method));
         }
 
         /// <summary>
@@ -185,9 +195,10 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
 
+            var target = Expression.Parameter(query.ElementType);
             var method = descending ? nameof(Queryable.ThenByDescending) : nameof(Queryable.ThenBy);
 
-            return (IOrderedQueryable)CreateSortedQuery(query, selector, method);
+            return (IOrderedQueryable)query.Provider.CreateQuery(CreateOrderClause(target, query.Expression, selector, method));
         }
 
         /// <summary>
@@ -205,42 +216,34 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
 
+            var target = Expression.Parameter(typeof(T));
             var method = descending ? nameof(Queryable.ThenByDescending) : nameof(Queryable.ThenBy);
 
-            return (IOrderedQueryable<T>)CreateSortedQuery(query, selector, method);
+            return (IOrderedQueryable<T>)query.Provider.CreateQuery<T>(CreateOrderClause(target, query.Expression, selector, method));
         }
 
-        static IQueryable CreateSortedQuery(IQueryable query, string selector, string method)
+        static Expression CreateOrderClause(ParameterExpression target, Expression expression, string selector, string method)
         {
-            var target = Expression.Parameter(query.ElementType);
             var keySelector = Expression.Lambda(CreateMemberAccess(target, selector), target);
 
-            var expression = Expression.Call(typeof(Queryable), method, new[] { target.Type, keySelector.ReturnType },
-                query.Expression, Expression.Quote(keySelector));
-
-            return query.Provider.CreateQuery(expression);
+            return Expression.Call(typeof(Queryable), method, new[] { target.Type, keySelector.ReturnType },
+                expression, Expression.Quote(keySelector));
         }
 
-        static IQueryable CreateFilteredQuery(IQueryable query, string selector, DynamicCompare comparer, string value)
+        static Expression CreateWhereClause(ParameterExpression target, Expression expression, string selector, DynamicCompare comparer, string value)
         {
-            var target = Expression.Parameter(query.ElementType);
             var predicate = Expression.Lambda(CreateComparison(target, selector, comparer, value), target);
 
-            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Where), new[] { target.Type },
-                query.Expression, Expression.Quote(predicate));
-
-            return query.Provider.CreateQuery(expression);
+            return Expression.Call(typeof(Queryable), nameof(Queryable.Where), new[] { target.Type },
+                expression, Expression.Quote(predicate));
         }
 
-        static IQueryable CreateFilteredQuery(IQueryable query, string selector, string comparer, string value)
+        static Expression CreateWhereClause(ParameterExpression target, Expression expression, string selector, string comparer, string value)
         {
-            var target = Expression.Parameter(query.ElementType);
             var predicate = Expression.Lambda(CreateComparison(target, selector, comparer, value), target);
 
-            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Where), new[] { target.Type },
-                query.Expression, Expression.Quote(predicate));
-
-            return query.Provider.CreateQuery(expression);
+            return Expression.Call(typeof(Queryable), nameof(Queryable.Where), new[] { target.Type },
+                expression, Expression.Quote(predicate));
         }
 
         static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value)
