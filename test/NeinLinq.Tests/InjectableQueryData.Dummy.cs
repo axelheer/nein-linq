@@ -1,4 +1,7 @@
-﻿namespace NeinLinq.Tests.InjectableQueryData
+﻿using System;
+using System.Linq.Expressions;
+
+namespace NeinLinq.Tests.InjectableQueryData
 {
     public class Dummy
     {
@@ -9,5 +12,28 @@
         public double Distance { get; set; }
 
         public double Time { get; set; }
+
+        [InjectLambda(nameof(InjectVelocityInternal))]
+        public double VelocityInternal { get; }
+
+        public double VelocityInternalWithGetter
+        {
+            [InjectLambda(nameof(InjectVelocityInternal))]
+            get { throw new NotSupportedException(); }
+        }
+
+        [InjectLambda(typeof(DummyExtensions))]
+        public double VelocityExternal { get; }
+
+        public double VelocityExternalWithGetter
+        {
+            [InjectLambda(typeof(DummyExtensions), nameof(DummyExtensions.VelocityExternal))]
+            get { throw new NotSupportedException(); }
+        }
+
+        public static Expression<Func<Dummy, double>> InjectVelocityInternal()
+        {
+            return v => v.Distance / v.Time;
+        }
     }
 }

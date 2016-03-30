@@ -14,8 +14,8 @@ namespace NeinLinq
     /// </remarks>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
-        static readonly ConcurrentDictionary<MethodInfo, InjectLambdaMetadata> cache =
-            new ConcurrentDictionary<MethodInfo, InjectLambdaMetadata>();
+        static readonly ConcurrentDictionary<MemberInfo, InjectLambdaMetadata> cache =
+            new ConcurrentDictionary<MemberInfo, InjectLambdaMetadata>();
 
         readonly TypeInfo[] whitelist;
 
@@ -33,15 +33,44 @@ namespace NeinLinq
             this.whitelist = whitelist.Length != 0 ? whitelist.Select(t => t.GetTypeInfo()).ToArray() : null;
         }
 
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            if (node != null && node.Member != null)
+            {
+                var property = node.Member as PropertyInfo;
+
+                if (property != null && property.GetMethod != null)
+                {
+                    // cache "meta-data" for performance reasons
+                    var data = cache.GetOrAdd(property, p => InjectLambdaMetadata.Create((PropertyInfo)p));
+
+                    if (ShouldInject(property, data))
+                    {
+                        var lambda = data.Lambda(null);
+
+                        // only one parameter for property getter
+                        var argument = lambda.Parameters.Single();
+
+                        // rebind expression for single (!) lambda argument
+                        var binder = new ParameterBinder(argument, node.Expression);
+
+                        return Visit(binder.Visit(lambda.Body));
+                    }
+                }
+            }
+
+            return base.VisitMember(node);
+        }
+
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (node != null && node.Method != null)
             {
                 // cache "meta-data" for performance reasons
-                var data = cache.GetOrAdd(node.Method, InjectLambdaMetadata.Create);
+                var data = cache.GetOrAdd(node.Method, m => InjectLambdaMetadata.Create((MethodInfo)m));
 
-                if (ShouldInject(node, data))
+                if (ShouldInject(node.Method, data))
                 {
                     var lambda = data.Lambda(node.Object);
 
@@ -56,7 +85,7 @@ namespace NeinLinq
             return base.VisitMethodCall(node);
         }
 
-        bool ShouldInject(MethodCallExpression node, InjectLambdaMetadata data)
+        bool ShouldInject(MemberInfo member, InjectLambdaMetadata data)
         {
             // inject only configured...
             if (data.Config)
@@ -65,8 +94,11 @@ namespace NeinLinq
             if (whitelist == null)
                 return false;
 
+            if (member is PropertyInfo)
+                return false;
+
             // ...or white-listed targets
-            var info = node.Method.DeclaringType.GetTypeInfo();
+            var info = member.DeclaringType.GetTypeInfo();
             return whitelist.Any(info.IsAssignableFrom);
         }
     }

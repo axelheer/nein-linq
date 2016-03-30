@@ -30,6 +30,17 @@ namespace NeinLinq
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
         }
 
+        public static InjectLambdaMetadata Create(PropertyInfo property)
+        {
+            var metadata = property.GetCustomAttribute<InjectLambdaAttribute>()
+                ?? property.GetMethod.GetCustomAttribute<InjectLambdaAttribute>();
+
+            var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() => LambdaFactory(property, metadata));
+
+            return new InjectLambdaMetadata(metadata != null, lambdaFactory);
+
+        }
+
         static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo call, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
@@ -39,19 +50,25 @@ namespace NeinLinq
             // special ultra-fast treatment for static methods and sealed classes
             if (call.IsStatic || call.DeclaringType.GetTypeInfo().IsSealed)
             {
-                return FixedLambdaFactory(call, metadata, args, result);
+                return FixedLambdaFactory(metadata, call.DeclaringType, call.Name, args, result, !call.IsStatic);
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(call, args, result);
+            return DynamicLambdaFactory(call.Name, args, result);
         }
 
-        static Func<Expression, LambdaExpression> FixedLambdaFactory(MethodInfo call, InjectLambdaAttribute metadata, Type[] args, Type result)
+        static Func<Expression, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
-            // inject by convention
-            var target = call.DeclaringType;
-            var method = call.Name;
+            // retrieve method's signature
+            var args = new[] { property.DeclaringType };
+            var result = property.PropertyType;
 
+            // special treatment for super-heroic property getters
+            return FixedLambdaFactory(metadata, property.DeclaringType, property.Name, args, result, false);
+        }
+
+        static Func<Expression, LambdaExpression> FixedLambdaFactory(InjectLambdaAttribute metadata, Type target, string method, Type[] args, Type result, bool instance)
+        {
             // apply configuration, if any
             if (metadata != null)
             {
@@ -62,7 +79,7 @@ namespace NeinLinq
             }
 
             // retrieve validated factory method once
-            var factory = FactoryMethod(target, method, args, result, !call.IsStatic);
+            var factory = FactoryMethod(target, method, args, result, instance);
 
             if (factory.IsStatic)
             {
@@ -75,7 +92,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        static Func<Expression, LambdaExpression> DynamicLambdaFactory(MethodInfo call, Type[] args, Type result)
+        static Func<Expression, LambdaExpression> DynamicLambdaFactory(string methodName, Type[] args, Type result)
         {
             return value =>
             {
@@ -87,9 +104,9 @@ namespace NeinLinq
                 var target = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteCall = target.GetRuntimeMethod(call.Name, args);
+                var concreteCall = target.GetRuntimeMethod(methodName, args);
                 if (concreteCall == null)
-                    throw new InvalidOperationException($"Unable to retrieve lambda meta-data from {target.FullName}.{call.Name}: what evil treachery is this?");
+                    throw new InvalidOperationException($"Unable to retrieve lambda meta-data from {target.FullName}.{methodName}: what evil treachery is this?");
 
                 var method = concreteCall.Name;
 
@@ -99,7 +116,7 @@ namespace NeinLinq
                     method = metadata.Method;
 
                 // retrieve validated factory method
-                var factory = FactoryMethod(target, method, args, result, !call.IsStatic);
+                var factory = FactoryMethod(target, method, args, result, true);
 
                 // finally call lambda factory *uff*
                 return (LambdaExpression)factory.Invoke(targetObject, null);

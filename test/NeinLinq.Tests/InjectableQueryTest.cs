@@ -341,5 +341,49 @@ namespace NeinLinq.Tests
             Assert.Throws<InvalidOperationException>(() =>
                 query.ToList());
         }
+
+        [Fact]
+        public void InjectPropertyShouldSucceedWithInternalMethod()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityInternal;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void InjectPropertyShouldSucceedWithInternalMethodWithGetter()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityInternalWithGetter;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void InjectPropertyShouldSucceedWithExternalMethod()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityExternal;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void InjectPropertyShouldSucceedWithExternalMethodWithGetter()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityExternalWithGetter;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace NeinLinq
     /// <summary>
     /// Marks a method as injectable.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = false)]
     public sealed class InjectLambdaAttribute : Attribute
     {
         /// <summary>
