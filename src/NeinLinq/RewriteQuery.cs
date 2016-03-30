@@ -42,28 +42,16 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IEnumerator GetEnumerator()
-        {
-            return enumerable.Value.GetEnumerator();
-        }
+        public IEnumerator GetEnumerator() => enumerable.Value.GetEnumerator();
 
         /// <inheritdoc />
-        public Type ElementType
-        {
-            get { return elementType; }
-        }
+        public Type ElementType => elementType;
 
         /// <inheritdoc />
-        public Expression Expression
-        {
-            get { return expression; }
-        }
+        public Expression Expression => expression;
 
         /// <inheritdoc />
-        public IQueryProvider Provider
-        {
-            get { return provider; }
-        }
+        public IQueryProvider Provider => provider;
     }
 
     /// <summary>
@@ -87,10 +75,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public new IEnumerator<T> GetEnumerator()
-        {
-            return enumerable.Value.GetEnumerator();
-        }
+        public new IEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
     }
 }
 

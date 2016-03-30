@@ -26,10 +26,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IEnumerator GetEnumerator()
-        {
-            return enumerable.GetEnumerator();
-        }
+        public IEnumerator GetEnumerator() => enumerable.GetEnumerator();
 
         /// <summary>
         /// Releases all resources.
@@ -74,16 +71,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public new IEnumerator<T> GetEnumerator()
-        {
-            return enumerable.GetEnumerator();
-        }
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
+        public new IEnumerator<T> GetEnumerator() => enumerable.GetEnumerator();
     }
 }
 

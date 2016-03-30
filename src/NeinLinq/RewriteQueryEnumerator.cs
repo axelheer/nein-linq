@@ -26,22 +26,13 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public object Current
-        {
-            get { return enumerator.Current; }
-        }
+        public object Current => enumerator.Current;
 
         /// <inheritdoc />
-        public bool MoveNext()
-        {
-            return enumerator.MoveNext();
-        }
+        public bool MoveNext() => enumerator.MoveNext();
 
         /// <inheritdoc />
-        public void Reset()
-        {
-            enumerator.Reset();
-        }
+        public void Reset() => enumerator.Reset();
 
         /// <summary>
         /// Releases all resources.
@@ -86,16 +77,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public new T Current
-        {
-            get { return enumerator.Current; }
-        }
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
+        public new T Current => enumerator.Current;
     }
 }
 

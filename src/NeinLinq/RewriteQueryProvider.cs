@@ -17,18 +17,12 @@ namespace NeinLinq
         /// <summary>
         /// Actual query provider.
         /// </summary>
-        public IQueryProvider Provider
-        {
-            get { return provider; }
-        }
+        public IQueryProvider Provider => provider;
 
         /// <summary>
         /// Rewriter to rewrite the query.
         /// </summary>
-        public ExpressionVisitor Rewriter
-        {
-            get { return rewriter; }
-        }
+        public ExpressionVisitor Rewriter => rewriter;
 
         /// <summary>
         /// Create a new rewrite query provider.

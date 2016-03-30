@@ -11,7 +11,7 @@ namespace NeinLinq.Tests.InjectableQueryData
             get { return digits; }
         }
 
-        public FunctionsBase(int digits)
+        protected FunctionsBase(int digits)
         {
             this.digits = digits;
         }

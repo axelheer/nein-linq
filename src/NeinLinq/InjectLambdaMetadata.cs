@@ -9,17 +9,11 @@ namespace NeinLinq
     {
         readonly bool config;
 
-        public bool Config
-        {
-            get { return config; }
-        }
+        public bool Config => config;
 
         readonly Lazy<Func<Expression, LambdaExpression>> lambda;
 
-        public LambdaExpression Lambda(Expression value)
-        {
-            return lambda.Value(value);
-        }
+        public LambdaExpression Lambda(Expression value) => lambda.Value(value);
 
         InjectLambdaMetadata(bool config, Lazy<Func<Expression, LambdaExpression>> lambda)
         {
@@ -70,7 +64,7 @@ namespace NeinLinq
             // retrieve validated factory method once
             var factory = FactoryMethod(target, method, args, result, !call.IsStatic);
 
-            if (call.IsStatic)
+            if (factory.IsStatic)
             {
                 // compile factory call for performance reasons :-)
                 return Expression.Lambda<Func<Expression, LambdaExpression>>(

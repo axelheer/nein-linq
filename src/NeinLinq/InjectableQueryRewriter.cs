@@ -67,7 +67,7 @@ namespace NeinLinq
 
             // ...or white-listed targets
             var info = node.Method.DeclaringType.GetTypeInfo();
-            return whitelist.Any(t => info.IsAssignableFrom(t));
+            return whitelist.Any(info.IsAssignableFrom);
         }
     }
 }
