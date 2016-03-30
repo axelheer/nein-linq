@@ -21,11 +21,11 @@ namespace NeinLinq
             this.lambda = lambda;
         }
 
-        public static InjectLambdaMetadata Create(MethodInfo call)
+        public static InjectLambdaMetadata Create(MethodInfo method)
         {
-            var metadata = call.GetCustomAttribute<InjectLambdaAttribute>();
+            var metadata = method.GetCustomAttribute<InjectLambdaAttribute>();
 
-            var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() => LambdaFactory(call, metadata));
+            var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() => LambdaFactory(method, metadata));
 
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
         }
@@ -41,20 +41,20 @@ namespace NeinLinq
 
         }
 
-        static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo call, InjectLambdaAttribute metadata)
+        static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
-            var args = call.GetParameters().Select(p => p.ParameterType).ToArray();
-            var result = call.ReturnParameter.ParameterType;
+            var args = method.GetParameters().Select(p => p.ParameterType).ToArray();
+            var result = method.ReturnParameter.ParameterType;
 
             // special ultra-fast treatment for static methods and sealed classes
-            if (call.IsStatic || call.DeclaringType.GetTypeInfo().IsSealed)
+            if (method.IsStatic || method.DeclaringType.GetTypeInfo().IsSealed)
             {
-                return FixedLambdaFactory(metadata, call.DeclaringType, call.Name, args, result, !call.IsStatic);
+                return FixedLambdaFactory(metadata, method.DeclaringType, method.Name, args, result, !method.IsStatic);
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(call.Name, args, result);
+            return DynamicLambdaFactory(method.Name, args, result);
         }
 
         static Func<Expression, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
@@ -92,7 +92,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        static Func<Expression, LambdaExpression> DynamicLambdaFactory(string methodName, Type[] args, Type result)
+        static Func<Expression, LambdaExpression> DynamicLambdaFactory(string name, Type[] args, Type result)
         {
             return value =>
             {
@@ -104,14 +104,14 @@ namespace NeinLinq
                 var target = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteCall = target.GetRuntimeMethod(methodName, args);
-                if (concreteCall == null)
-                    throw new InvalidOperationException($"Unable to retrieve lambda meta-data from {target.FullName}.{methodName}: what evil treachery is this?");
+                var concreteMethod = target.GetRuntimeMethod(name, args);
+                if (concreteMethod == null)
+                    throw new InvalidOperationException($"Unable to retrieve lambda meta-data from {target.FullName}.{name}: what evil treachery is this?");
 
-                var method = concreteCall.Name;
+                var method = concreteMethod.Name;
 
                 // configuration over convention, if any
-                var metadata = concreteCall.GetCustomAttribute<InjectLambdaAttribute>();
+                var metadata = concreteMethod.GetCustomAttribute<InjectLambdaAttribute>();
                 if (metadata != null && !string.IsNullOrEmpty(metadata.Method))
                     method = metadata.Method;
 
