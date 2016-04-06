@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
 
+#pragma warning disable RECS0154
+
 namespace NeinLinq.Tests.InjectableQueryData
 {
     public static class Functions
@@ -75,3 +77,5 @@ namespace NeinLinq.Tests.InjectableQueryData
         }
     }
 }
+
+#pragma warning restore RECS0154

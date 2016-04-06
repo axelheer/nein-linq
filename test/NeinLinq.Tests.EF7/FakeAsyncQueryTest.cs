@@ -2,6 +2,7 @@
 using NeinLinq.Tests.FakeAsyncQueryData;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace NeinLinq.Tests
@@ -37,14 +38,14 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public async void ToListAsyncShouldFail()
+        public async Task ToListAsyncShouldFail()
         {
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 data.ToListAsync());
         }
 
         [Fact]
-        public async void ToListAsyncShouldSucceed()
+        public async Task ToListAsyncShouldSucceed()
         {
             var query = data.Rewrite(new Rewriter());
 
@@ -54,14 +55,14 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public async void SumAsyncShouldFail()
+        public async Task SumAsyncShouldFail()
         {
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 data.SumAsync(d => d.Number));
         }
 
         [Fact]
-        public async void SumAsyncShouldSucceed()
+        public async Task SumAsyncShouldSucceed()
         {
             var query = data.Rewrite(new Rewriter());
 

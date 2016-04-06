@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Entity;
 using NeinLinq.Tests.DbAsyncQueryData;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace NeinLinq.Tests
@@ -41,13 +42,13 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public async void ToListAsyncShouldWork()
+        public async Task ToListAsyncShouldWork()
         {
             await db.Dummies.ToListAsync();
         }
 
         [Fact]
-        public async void ToListAsyncShouldSucceed()
+        public async Task ToListAsyncShouldSucceed()
         {
             var query = db.Dummies.Rewrite(new Rewriter());
 
@@ -57,13 +58,13 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public async void SumAsyncShouldWork()
+        public async Task SumAsyncShouldWork()
         {
             await db.Dummies.SumAsync(d => d.Number);
         }
 
         [Fact]
-        public async void SumAsyncShouldSucceed()
+        public async Task SumAsyncShouldSucceed()
         {
             var query = db.Dummies.Rewrite(new Rewriter());
 

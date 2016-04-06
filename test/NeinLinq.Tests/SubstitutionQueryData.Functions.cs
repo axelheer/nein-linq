@@ -1,4 +1,6 @@
-﻿namespace NeinLinq.Tests.SubstitutionQueryData
+﻿#pragma warning disable RECS0154
+
+namespace NeinLinq.Tests.SubstitutionQueryData
 {
     public static class Functions
     {
@@ -11,3 +13,5 @@
         }
     }
 }
+
+#pragma warning restore RECS0154
