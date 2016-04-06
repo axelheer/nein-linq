@@ -7,10 +7,7 @@ namespace NeinLinq.Tests.RewriteQueryData
     {
         public Dummy Current { get; set; }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
 
         public bool DisposeCalled { get; set; }
 

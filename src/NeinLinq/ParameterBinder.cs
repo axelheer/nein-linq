@@ -42,7 +42,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitInvocation(InvocationExpression node)
         {
-            if (node != null && node.Expression == parameter)
+            if (node?.Expression == parameter)
             {
                 var lambda = replacement as LambdaExpression;
                 if (lambda != null)

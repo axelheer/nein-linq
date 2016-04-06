@@ -112,7 +112,7 @@ namespace NeinLinq
 
                 // configuration over convention, if any
                 var metadata = concreteMethod.GetCustomAttribute<InjectLambdaAttribute>();
-                if (metadata != null && !string.IsNullOrEmpty(metadata.Method))
+                if (!string.IsNullOrEmpty(metadata?.Method))
                     method = metadata.Method;
 
                 // retrieve validated factory method

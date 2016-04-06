@@ -6,10 +6,7 @@ namespace NeinLinq.Tests.InjectableQueryData
     {
         readonly int digits;
 
-        public int Digits
-        {
-            get { return digits; }
-        }
+        public int Digits => digits;
 
         protected FunctionsBase(int digits)
         {

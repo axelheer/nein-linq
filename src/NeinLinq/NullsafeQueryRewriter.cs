@@ -20,7 +20,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node != null && node.Expression != null)
+            if (node?.Expression != null)
             {
                 return MakeNullsafe(node, node.Expression);
             }
@@ -31,7 +31,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node != null && node.Object != null)
+            if (node?.Object != null)
             {
                 return MakeNullsafe(node, node.Object);
             }

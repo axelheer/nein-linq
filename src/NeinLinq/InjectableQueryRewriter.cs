@@ -35,27 +35,24 @@ namespace NeinLinq
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node != null && node.Member != null)
+            var property = node?.Member as PropertyInfo;
+
+            if (property?.GetMethod != null)
             {
-                var property = node.Member as PropertyInfo;
+                // cache "meta-data" for performance reasons
+                var data = cache.GetOrAdd(property, p => InjectLambdaMetadata.Create((PropertyInfo)p));
 
-                if (property != null && property.GetMethod != null)
+                if (ShouldInject(property, data))
                 {
-                    // cache "meta-data" for performance reasons
-                    var data = cache.GetOrAdd(property, p => InjectLambdaMetadata.Create((PropertyInfo)p));
+                    var lambda = data.Lambda(null);
 
-                    if (ShouldInject(property, data))
-                    {
-                        var lambda = data.Lambda(null);
+                    // only one parameter for property getter
+                    var argument = lambda.Parameters.Single();
 
-                        // only one parameter for property getter
-                        var argument = lambda.Parameters.Single();
+                    // rebind expression for single (!) lambda argument
+                    var binder = new ParameterBinder(argument, node.Expression);
 
-                        // rebind expression for single (!) lambda argument
-                        var binder = new ParameterBinder(argument, node.Expression);
-
-                        return Visit(binder.Visit(lambda.Body));
-                    }
+                    return Visit(binder.Visit(lambda.Body));
                 }
             }
 
@@ -65,7 +62,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node != null && node.Method != null)
+            if (node?.Method != null)
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(node.Method, m => InjectLambdaMetadata.Create((MethodInfo)m));
