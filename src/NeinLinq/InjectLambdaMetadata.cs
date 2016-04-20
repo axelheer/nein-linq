@@ -33,7 +33,7 @@ namespace NeinLinq
         public static InjectLambdaMetadata Create(PropertyInfo property)
         {
             var metadata = property.GetCustomAttribute<InjectLambdaAttribute>()
-                ?? property.GetMethod.GetCustomAttribute<InjectLambdaAttribute>();
+                ?? property.GetMethod().GetCustomAttribute<InjectLambdaAttribute>();
 
             var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() => LambdaFactory(property, metadata));
 
@@ -140,11 +140,11 @@ namespace NeinLinq
 
             // method returns lambda expression?
             var returns = factory.ReturnType;
-            if (!returns.IsConstructedGenericType || returns.GetGenericTypeDefinition() != typeof(Expression<>))
+            if (!returns.IsConstructedGenericType() || returns.GetGenericTypeDefinition() != typeof(Expression<>))
                 throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method does not return generic lambda expression.");
 
             // lambda signature matches original method's signature?
-            var signature = returns.GenericTypeArguments[0].GetRuntimeMethod("Invoke", args);
+            var signature = returns.GenericTypeArguments()[0].GetRuntimeMethod("Invoke", args);
             if (signature == null || signature.ReturnParameter.ParameterType != result)
                 throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns lambda expression with non matching signature.");
 

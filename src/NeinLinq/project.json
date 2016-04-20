@@ -14,6 +14,7 @@
   },
 
   "frameworks": {
+    "net40": { },
     "net45": { },
     "netcore45": {
       "dependencies": {

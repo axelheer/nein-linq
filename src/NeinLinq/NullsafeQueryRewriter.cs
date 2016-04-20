@@ -54,7 +54,7 @@ namespace NeinLinq
         static Expression NodeFallback(Type type)
         {
             // default values for generic collections
-            if (type.IsConstructedGenericType && type.GenericTypeArguments.Length == 1)
+            if (type.IsConstructedGenericType() && type.GenericTypeArguments().Length == 1)
             {
                 return GenericCollectionFallback(typeof(List<>), type)
                     ?? GenericCollectionFallback(typeof(HashSet<>), type)
@@ -73,7 +73,7 @@ namespace NeinLinq
 
         static Expression GenericCollectionFallback(Type collectionDefinition, Type type)
         {
-            var collectionType = collectionDefinition.MakeGenericType(type.GenericTypeArguments);
+            var collectionType = collectionDefinition.MakeGenericType(type.GenericTypeArguments());
 
             // try if an instance of this collection would suffice
             if (type.GetTypeInfo().IsAssignableFrom(collectionType.GetTypeInfo()))
