@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Entity.Query.Internal;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Collections.Generic;
 
 namespace NeinLinq

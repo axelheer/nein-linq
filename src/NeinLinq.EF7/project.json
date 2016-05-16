@@ -2,33 +2,36 @@
   "version": "1.5.0-rc1",
   "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.",
   "authors": [ "Axel Heer" ],
-  "tags": [ "LINQ", "EF" ],
-  "projectUrl": "http://github.com/axelheer/nein-linq",
-  "licenseUrl": "http://opensource.org/licenses/mit",
   "copyright": "Copyright © 2014-2016 Axel Heer",
 
-  "releaseNotes": "Additional selector translation. General improvements.",
+  "buildOptions": {
+    "compile": {
+      "exclude": "../NeinLinq/obj",
+      "include": "../NeinLinq/**/*.cs"
+    },
+    "keyFile": "../NeinLinq/NeinLinq.snk",
+    "xmlDoc": true
+  },
 
-  "compile": "../NeinLinq/**/*.cs",
+  "packOptions": {
+    "tags": [ "LINQ", "EF" ],
+    "projectUrl": "http://github.com/axelheer/nein-linq",
+    "licenseUrl": "http://opensource.org/licenses/mit",
 
-  "compilationOptions": {
-    "keyFile": "../NeinLinq/NeinLinq.snk"
+    "releaseNotes": "Additional selector translation. General improvements."
   },
 
   "dependencies": {
-    "EntityFramework.Core": "7.0.0-rc1-final"
+    "Microsoft.EntityFrameworkCore": "1.0.0-rc2-final"
   },
 
   "frameworks": {
-    "net451": {
-      "frameworkAssemblies": {
-        "System.Runtime": {
-          "type": "build",
-          "version": ""
-        }
-      }
-    },
+    "net451": { },
     "netcore50": { },
-    "dotnet5.4": { }
+    "netstandard1.3": {
+      "imports": [
+        "portable-net452+win81"
+      ]
+    }
   }
 }

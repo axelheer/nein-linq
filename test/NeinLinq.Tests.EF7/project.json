@@ -1,21 +1,32 @@
 ﻿{
-  "commands": {
-    "test": "xunit.runner.dnx"
+  "testRunner": "xunit",
+
+  "buildOptions": {
+    "compile": {
+      "exclude": "../NeinLinq.Tests/obj",
+      "include": "../NeinLinq.Tests/**/*.cs"
+    }
   },
 
-  "compile": "../NeinLinq.Tests/**/*.cs",
-
   "dependencies": {
-    "EntityFramework.InMemory": "7.0.0-rc1-final ",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-rc2-*"
+    },
+    "Microsoft.EntityFrameworkCore.InMemory": "1.0.0-rc2-final ",
     "NeinLinq.EF7": "1.5.0-rc1",
     "OpenCover": "4.6.166",
     "ReportGenerator": "2.3.5",
     "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-rc1-*"
+    "dotnet-test-xunit": "1.0.0-rc2-*"
   },
 
   "frameworks": {
-    "dnx46": { },
-    "dnxcore50": { }
+    "netcoreapp1.0": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
+    }
   }
 }

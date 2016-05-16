@@ -7,5 +7,3 @@
 # Build
 bin/
 obj/
-artifacts/
-coverage/

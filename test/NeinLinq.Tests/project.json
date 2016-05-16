@@ -1,44 +1,22 @@
 ﻿{
-  "commands": {
-    "test": "xunit.runner.dnx"
-  },
+  "testRunner": "xunit",
 
   "dependencies": {
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-rc2-*"
+    },
     "NeinLinq": "1.5.0",
-    "OpenCover": "4.6.166",
-    "ReportGenerator": "2.3.5",
     "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-rc1-*"
+    "dotnet-test-xunit": "1.0.0-rc2-*"
   },
 
   "frameworks": {
-    "dnx46": {
-      "frameworkAssemblies": {
-        "System.Collections": "",
-        "System.Collections.Concurrent": "",
-        "System.Globalization": "",
-        "System.Linq": "",
-        "System.Linq.Expressions": "",
-        "System.Linq.Queryable": "",
-        "System.Reflection": "",
-        "System.Reflection.Extensions": "",
-        "System.Runtime": "",
-        "System.Runtime.Extensions": ""
-      }
-    },
-    "dnxcore50": {
-      "dependencies": {
-        "System.Collections": "4.0.0",
-        "System.Collections.Concurrent": "4.0.0",
-        "System.Globalization": "4.0.0",
-        "System.Linq": "4.0.0",
-        "System.Linq.Expressions": "4.0.0",
-        "System.Linq.Queryable": "4.0.0",
-        "System.Reflection": "4.0.0",
-        "System.Reflection.Extensions": "4.0.0",
-        "System.Runtime": "4.0.0",
-        "System.Runtime.Extensions": "4.0.0"
-      }
+    "netcoreapp1.0": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
     }
   }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using NeinLinq.Tests.DbAsyncQueryData;
 using System;
 using System.Threading.Tasks;

@@ -39,6 +39,7 @@ namespace NeinLinq
             this.whitelist = whitelist.Length != 0 ? whitelist.Select(t => t.GetTypeInfo()).ToArray() : null;
         }
 
+        /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
             var property = node?.Member as PropertyInfo;

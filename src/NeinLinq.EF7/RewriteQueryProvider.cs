@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Entity.Query.Internal;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
