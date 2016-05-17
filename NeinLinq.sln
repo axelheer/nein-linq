@@ -22,9 +22,9 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.EF6", "src\NeinLin
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.EF6", "test\NeinLinq.Tests.EF6\NeinLinq.Tests.EF6.xproj", "{90E0D617-A265-4D79-B629-001E4DC1917E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.EF7", "src\NeinLinq.EF7\NeinLinq.EF7.xproj", "{E6D06134-2F31-478E-8336-140F993DFCA1}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.EFCore", "src\NeinLinq.EFCore\NeinLinq.EFCore.xproj", "{E6D06134-2F31-478E-8336-140F993DFCA1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.EF7", "test\NeinLinq.Tests.EF7\NeinLinq.Tests.EF7.xproj", "{BE23D24E-58F6-4844-89FE-D55F077B5A78}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.EFCore", "test\NeinLinq.Tests.EFCore\NeinLinq.Tests.EFCore.xproj", "{BE23D24E-58F6-4844-89FE-D55F077B5A78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
