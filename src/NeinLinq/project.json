@@ -34,18 +34,18 @@
         "System.Runtime.Extensions": "4.0.0"
       }
     },
-    "netstandard1.3": {
+    "netstandard1.1": {
       "dependencies": {
-        "System.Collections": "4.0.10",
+        "System.Collections": "4.0.0",
         "System.Collections.Concurrent": "4.0.0",
         "System.Globalization": "4.0.0",
         "System.Linq": "4.0.0",
-        "System.Linq.Expressions": "4.0.10",
+        "System.Linq.Expressions": "4.0.0",
         "System.Linq.Queryable": "4.0.0",
-        "System.Reflection": "4.0.10",
+        "System.Reflection": "4.0.0",
         "System.Reflection.Extensions": "4.0.0",
-        "System.Runtime": "4.0.20",
-        "System.Runtime.Extensions": "4.0.10"
+        "System.Runtime": "4.0.0",
+        "System.Runtime.Extensions": "4.0.0"
       },
       "imports": "dotnet"
     }
