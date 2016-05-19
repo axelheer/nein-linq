@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.",
   "authors": [ "Axel Heer" ],
   "copyright": "Copyright © 2014-2016 Axel Heer",
@@ -18,7 +18,7 @@
     "projectUrl": "http://github.com/axelheer/nein-linq",
     "licenseUrl": "http://opensource.org/licenses/mit",
 
-    "releaseNotes": "Additional selector translation. General improvements."
+    "releaseNotes": "Improved lambda injection for instance methods and interfaces. Additional selector translation."
   },
 
   "dependencies": {

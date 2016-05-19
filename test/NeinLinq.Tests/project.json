@@ -6,7 +6,9 @@
       "type": "platform",
       "version": "1.0.0-rc2-*"
     },
-    "NeinLinq": "1.5.0",
+    "NeinLinq": {
+      "target": "project"
+    },
     "xunit": "2.1.0",
     "dotnet-test-xunit": "1.0.0-rc2-*",
     "OpenCover": "4.6.519",
