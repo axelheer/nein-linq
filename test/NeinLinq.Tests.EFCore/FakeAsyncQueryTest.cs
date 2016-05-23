@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using NeinLinq.Tests.FakeAsyncQueryData;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -47,10 +49,12 @@ namespace NeinLinq.Tests
         [Fact]
         public async Task ToListAsyncShouldSucceed()
         {
-            var query = data.Rewrite(new Rewriter());
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
 
             var result = await query.ToListAsync();
 
+            Assert.True(rewriter.VisitCalled);
             Assert.Equal(3, result.Count);
         }
 
@@ -64,11 +68,27 @@ namespace NeinLinq.Tests
         [Fact]
         public async Task SumAsyncShouldSucceed()
         {
-            var query = data.Rewrite(new Rewriter());
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
 
             var result = await query.SumAsync(d => d.Number);
 
+            Assert.True(rewriter.VisitCalled);
             Assert.Equal(194.48m, result, 2);
+        }
+
+        [Fact]
+        public async Task ExecuteAsyncShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
+
+            var enumerator = ((IAsyncQueryProvider)query.Provider).ExecuteAsync<Dummy>(query.Expression).GetEnumerator();
+
+            var result = await enumerator.MoveNext(CancellationToken.None);
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.True(result);
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using NeinLinq.Tests.FakeAsyncQueryData;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -47,10 +50,12 @@ namespace NeinLinq.Tests
         [Fact]
         public async Task ToListAsyncShouldSucceed()
         {
-            var query = data.Rewrite(new Rewriter());
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
 
             var result = await query.ToListAsync();
 
+            Assert.True(rewriter.VisitCalled);
             Assert.Equal(3, result.Count);
         }
 
@@ -64,11 +69,41 @@ namespace NeinLinq.Tests
         [Fact]
         public async Task SumAsyncShouldSucceed()
         {
-            var query = data.Rewrite(new Rewriter());
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
 
             var result = await query.SumAsync(d => d.Number);
 
+            Assert.True(rewriter.VisitCalled);
             Assert.Equal(194.48m, result, 2);
+        }
+
+        [Fact]
+        public async Task AsyncEnumeratorShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
+
+            var enumerator = ((IDbAsyncEnumerable)query).GetAsyncEnumerator();
+
+            var result = await enumerator.MoveNextAsync(CancellationToken.None);
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task ExecuteAsyncShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = data.Rewrite(rewriter);
+
+            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
+
+            var result = await ((IDbAsyncQueryProvider)query.Provider).ExecuteAsync(expression, CancellationToken.None);
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.Equal(3, (int)result);
         }
     }
 }
