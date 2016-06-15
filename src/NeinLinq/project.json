@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.6.0",
+  "version": "1.6.1-*",
   "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.",
   "authors": [ "Axel Heer" ],
   "copyright": "Copyright © 2014-2016 Axel Heer",
@@ -14,12 +14,11 @@
     "projectUrl": "http://github.com/axelheer/nein-linq",
     "licenseUrl": "http://opensource.org/licenses/mit",
 
-    "releaseNotes": "Improved lambda injection for instance methods and interfaces. Additional selector translation. (Use .EF6 / .EFCore package instead to run EF6 / EFCore async queries.)"
+    "releaseNotes": "Updated for final .NET Standard version. (Use .EF6 / .EFCore package instead to run EF6 / EFCore async queries.)"
   },
 
   "frameworks": {
     "net40": { },
-    "net45": { },
     "netcore45": {
       "dependencies": {
         "System.Collections": "4.0.0",
@@ -36,18 +35,17 @@
     },
     "netstandard1.1": {
       "dependencies": {
-        "System.Collections": "4.0.0",
-        "System.Collections.Concurrent": "4.0.0",
-        "System.Globalization": "4.0.0",
-        "System.Linq": "4.0.0",
-        "System.Linq.Expressions": "4.0.0",
-        "System.Linq.Queryable": "4.0.0",
-        "System.Reflection": "4.0.0",
-        "System.Reflection.Extensions": "4.0.0",
-        "System.Runtime": "4.0.0",
-        "System.Runtime.Extensions": "4.0.0"
-      },
-      "imports": "dotnet"
+        "System.Collections": "4.0.11-rc2-24027",
+        "System.Collections.Concurrent": "4.0.12-rc2-24027",
+        "System.Globalization": "4.0.11-rc2-24027",
+        "System.Linq": "4.1.0-rc2-24027",
+        "System.Linq.Expressions": "4.0.11-rc2-24027",
+        "System.Linq.Queryable": "4.0.1-rc2-24027",
+        "System.Reflection": "4.1.0-rc2-24027",
+        "System.Reflection.Extensions": "4.0.1-rc2-24027",
+        "System.Runtime": "4.1.0-rc2-24027",
+        "System.Runtime.Extensions": "4.1.0-rc2-24027"
+      }
     }
   }
 }
