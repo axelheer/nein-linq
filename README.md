@@ -1,6 +1,9 @@
 ﻿NeinLinq
 ========
 
+[![AppVeyor](https://img.shields.io/appveyor/ci/AxelHeer/nein-linq.svg)](https://ci.appveyor.com/project/AxelHeer/nein-linq)
+[![NuGet](https://img.shields.io/nuget/v/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
+
 *NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
 
 To install *NeinLinq*, run the following command in the [NuGet Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console).

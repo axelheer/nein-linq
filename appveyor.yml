@@ -4,3 +4,4 @@ test_script:
 - cmd: test
 artifacts:
 - path: '**\*.nupkg'
+- path: TestResults
