@@ -1,0 +1,6 @@
+build_script:
+- cmd: build
+test_script:
+- cmd: test
+artifacts:
+- path: '**\*.nupkg'
