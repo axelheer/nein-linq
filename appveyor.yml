@@ -1,3 +1,4 @@
+version: 1.6.1-ci{build}
 build_script:
 - cmd: build
 test_script:
