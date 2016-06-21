@@ -1,8 +1,10 @@
 ﻿NeinLinq
 ========
 
-[![AppVeyor](https://img.shields.io/appveyor/ci/AxelHeer/nein-linq.svg)](https://ci.appveyor.com/project/AxelHeer/nein-linq)
-[![NuGet](https://img.shields.io/nuget/v/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
+[![Latest package](https://img.shields.io/nuget/v/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
+[![Build status](https://ci.appveyor.com/api/projects/status/gf99b6nr8lu6fv30/branch/master?svg=true)](https://ci.appveyor.com/project/AxelHeer/nein-linq/branch/master)
+[![Line coverage](https://ci.appveyor.com/api/projects/AxelHeer/nein-linq/artifacts/TestResults/report/badge_linecoverage.svg?branch=master)](https://ci.appveyor.com/api/projects/AxelHeer/nein-linq/artifacts/TestResults.zip?branch=master)
+[![Branch coverage](https://ci.appveyor.com/api/projects/AxelHeer/nein-linq/artifacts/TestResults/report/badge_branchcoverage.svg?branch=master)](https://ci.appveyor.com/api/projects/AxelHeer/nein-linq/artifacts/TestResults.zip?branch=master)
 
 *NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
 
@@ -10,11 +12,11 @@ To install *NeinLinq*, run the following command in the [NuGet Package Manager C
 
     PM> Install-Package NeinLinq
 
-To run async queries within *Entity Framework 6* applications use the "special" build (there's an extra dependency for that; thus, the extra build).
+To run async queries within *Entity Framework 6* applications use the "special" build instead (there's an extra dependency for that; thus, the extra build).
 
     PM> Install-Package NeinLinq.EF6
 
-To run async queries within *Entity Framework Core* applications use the "special" build (again, there's an extra dependency for that; thus, the extra build).
+To run async queries within *Entity Framework Core* applications use the "special" build instead (again, there's an extra dependency for that; thus, the extra build).
 
     PM> Install-Package NeinLinq.EFCore
 
