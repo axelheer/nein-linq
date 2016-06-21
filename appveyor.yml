@@ -1,6 +1,4 @@
 version: 1.6.1-ci{build}
-init:
-- cmd: init
 build_script:
 - cmd: build
 test_script:
