@@ -1,9 +1,30 @@
 version: 1.6.1-ci{build}
+
 build_script:
 - cmd: build
+
 test_script:
 - cmd: test
+
 artifacts:
 - path: '**\*.nupkg'
 - path: '**\badge_*'
 - path: TestResults
+
+deploy:
+  - provider: AzureBlob
+    storage_account_name: axelheer
+    storage_access_key:
+      secure: kfCmTv/7G7yx6LwrFzJXuH4O1i+8fQ4OdrYA0S7rDVyoyI+Iba1u5dBhwOdKSxBzb2iIK2y9NVmdhtlW7jGI1UPbC21M3FZJT5iV8B63C0+ZO4saSxTchIJ/h0pBH+Lm
+    set_content_type: true
+    container: github
+    folder: nein-linq
+    on:
+      branch: master
+  - provider: NuGet
+    api_key:
+      secure: WcXviHlDSrgoea3uNF0IGHJwU1WHXCIR2OT+KTf9kcCQX3eH3Oots5NpK0+KylFr
+    skip_symbols: false
+    on:
+      branch: master
+      appveyor_repo_tag: true
