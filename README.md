@@ -2,9 +2,9 @@
 ========
 
 [![Latest package](https://img.shields.io/nuget/v/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/axelheer/nein-linq?branch=master&svg=true)](https://ci.appveyor.com/project/AxelHeer/nein-linq/branch/master)
-[![Line coverage](https://axelheer.blob.core.windows.net/github/nein-linq/TestResults/report/badge_linecoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/TestResults.zip)
-[![Branch coverage](https://axelheer.blob.core.windows.net/github/nein-linq/TestResults/report/badge_branchcoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/TestResults.zip)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/axelheer/nein-linq?branch=master&svg=true)](https://ci.appveyor.com/project/axelheer/nein-linq/branch/master)
+[![Line coverage](https://axelheer.blob.core.windows.net/github/nein-linq/report/badge_linecoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/report/index.htm)
+[![Branch coverage](https://axelheer.blob.core.windows.net/github/nein-linq/report/badge_branchcoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/report/index.htm)
 
 *NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
 
