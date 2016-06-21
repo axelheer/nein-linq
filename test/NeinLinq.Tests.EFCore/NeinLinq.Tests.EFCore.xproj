@@ -8,8 +8,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>be23d24e-58f6-4844-89fe-d55f077b5a78</ProjectGuid>
     <RootNamespace>NeinLinq.Tests</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
