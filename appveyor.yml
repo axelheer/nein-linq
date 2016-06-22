@@ -1,5 +1,7 @@
 version: 1.6.1-ci{build}
 
+skip_tags: true
+
 build_script:
 - cmd: build
 
@@ -11,21 +13,11 @@ artifacts:
 - path: TestResults
 
 deploy:
-  - provider: AzureBlob
-    storage_account_name: axelheer
-    storage_access_key:
-      secure: kfCmTv/7G7yx6LwrFzJXuH4O1i+8fQ4OdrYA0S7rDVyoyI+Iba1u5dBhwOdKSxBzb2iIK2y9NVmdhtlW7jGI1UPbC21M3FZJT5iV8B63C0+ZO4saSxTchIJ/h0pBH+Lm
-    set_content_type: true
-    container: github
-    folder: nein-linq
-    artifact: TestResults.zip
-    unzip: true
+  - provider: Environment
+    name: blob.core.windows.net
     on:
       branch: master
-  - provider: NuGet
-    api_key:
-      secure: WcXviHlDSrgoea3uNF0IGHJwU1WHXCIR2OT+KTf9kcCQX3eH3Oots5NpK0+KylFr
-    skip_symbols: false
-    artifact: /.*\.nupkg/
+  - provider: Environment
+    name: nuget.org
     on:
-      appveyor_repo_tag: true
+      branch: release
