@@ -1,14 +1,14 @@
 @echo off
 
-dotnet --info
+dotnet --info || goto :eof
 
-dotnet restore
+dotnet restore || goto :eof
 
-if not defined build_options call init.cmd
+if not defined build_options call init.cmd || goto :eof
 
-dotnet build **\*\project.json %build_options:Release=Debug%
-dotnet build **\*\project.json %build_options%
+dotnet build **\*\project.json %build_options:Release=Debug% || goto :eof
+dotnet build **\*\project.json %build_options% || goto :eof
 
-dotnet pack src\NeinLinq %build_options%
-dotnet pack src\NeinLinq.EF6 %build_options%
-dotnet pack src\NeinLinq.EFCore %build_options%
+dotnet pack src\NeinLinq %build_options% || goto :eof
+dotnet pack src\NeinLinq.EF6 %build_options% || goto :eof
+dotnet pack src\NeinLinq.EFCore %build_options% || goto :eof
