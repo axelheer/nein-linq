@@ -3,14 +3,17 @@ version: 1.6.2-ci{build}
 skip_tags: true
 
 build_script:
-- cmd: build
+  - cmd: build
 
 test_script:
-- cmd: test
+  - cmd: test
 
 artifacts:
-- path: '**\*.nupkg'
-- path: TestResults
+  - path: '**\*.nupkg'
+  - path: TestResults
+
+cache:
+  - '%UserProfile%\.nuget'
 
 deploy:
   - provider: Environment
