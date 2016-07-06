@@ -12,9 +12,6 @@ artifacts:
   - path: '**\*.nupkg'
   - path: TestResults
 
-cache:
-  - '%UserProfile%\.nuget'
-
 deploy:
   - provider: Environment
     name: blob.core.windows.net
