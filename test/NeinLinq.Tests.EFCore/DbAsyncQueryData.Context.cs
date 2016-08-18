@@ -8,7 +8,7 @@ namespace NeinLinq.Tests.DbAsyncQueryData
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase();
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NeinLinq.EFCore; Integrated Security=true;");
         }
     }
 }

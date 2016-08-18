@@ -16,6 +16,7 @@ namespace NeinLinq.Tests
         {
             db = new Context();
 
+            db.Database.EnsureCreated();
             db.Dummies.RemoveRange(db.Dummies);
             db.SaveChanges();
 
@@ -23,19 +24,16 @@ namespace NeinLinq.Tests
             {
                 new Dummy
                 {
-                    Id = 1,
                     Name = "Asdf",
                     Number = 123.45m
                 },
                 new Dummy
                 {
-                    Id = 2,
                     Name = "Qwer",
                     Number = 67.89m
                 },
                 new Dummy
                 {
-                    Id = 3,
                     Name = "Narf",
                     Number = 3.14m
                 }

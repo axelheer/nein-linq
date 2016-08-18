@@ -6,5 +6,9 @@ namespace NeinLinq.Tests.DbAsyncQueryData
     public class Context : DbContext
     {
         public DbSet<Dummy> Dummies { get; set; }
+
+        public Context () : base("NeinLinq.EF6")
+        {
+        }
     }
 }
