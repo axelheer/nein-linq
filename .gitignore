@@ -2,6 +2,7 @@
 *.vs
 *.suo
 *.user
+*.vscode
 *.lock.json
 
 # Build
