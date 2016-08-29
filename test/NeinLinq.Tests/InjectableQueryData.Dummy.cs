@@ -35,5 +35,9 @@ namespace NeinLinq.Tests.InjectableQueryData
         {
             return v => v.Distance / v.Time;
         }
+
+        public double VelocityWithConvention => -1;
+
+        public static Expression<Func<Dummy, double>> VelocityWithConventionExpr => v => v.Distance / v.Time;
     }
 }

@@ -385,5 +385,16 @@ namespace NeinLinq.Tests
 
             Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
+
+        [Fact]
+        public void InjectPropertyShouldSucceedWithConvention()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.VelocityWithConvention;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
     }
 }

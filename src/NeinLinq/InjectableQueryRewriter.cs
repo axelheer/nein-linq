@@ -44,7 +44,7 @@ namespace NeinLinq
         {
             var property = node?.Member as PropertyInfo;
 
-            if (property?.GetMethod() != null)
+            if (property?.GetMethod() != null && property?.SetMethod() == null)
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(property, p => InjectLambdaMetadata.Create((PropertyInfo)p));
@@ -96,9 +96,6 @@ namespace NeinLinq
                 return true;
 
             if (whitelist == null)
-                return false;
-
-            if (member is PropertyInfo)
                 return false;
 
             // ...or white-listed targets

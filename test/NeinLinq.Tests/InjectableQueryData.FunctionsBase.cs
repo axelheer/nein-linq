@@ -4,13 +4,11 @@ namespace NeinLinq.Tests.InjectableQueryData
 {
     public abstract class FunctionsBase : IFunctions
     {
-        readonly int digits;
-
-        public int Digits => digits;
+        public int Digits { get; set; }
 
         protected FunctionsBase(int digits)
         {
-            this.digits = digits;
+            Digits = digits;
         }
 
         public double VelocityWithoutSibling(Dummy value)

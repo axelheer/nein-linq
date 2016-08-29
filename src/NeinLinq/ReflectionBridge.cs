@@ -24,9 +24,19 @@ namespace NeinLinq
             return type.GetMethod(name, parameters);
         }
 
+        public static PropertyInfo GetRuntimeProperty(this Type type, string name)
+        {
+            return type.GetProperty(name);
+        }
+
         public static MethodInfo GetMethod(this PropertyInfo element)
         {
             return element.GetGetMethod(true);
+        }
+
+        public static MethodInfo SetMethod(this PropertyInfo element)
+        {
+            return element.GetSetMethod(true);
         }
 
         public static bool IsConstructedGenericType(this Type type)
@@ -44,6 +54,11 @@ namespace NeinLinq
         public static MethodInfo GetMethod(this PropertyInfo element)
         {
             return element.GetMethod;
+        }
+
+        public static MethodInfo SetMethod(this PropertyInfo element)
+        {
+            return element.SetMethod;
         }
 
         public static bool IsConstructedGenericType(this Type type)
