@@ -396,5 +396,16 @@ namespace NeinLinq.Tests
 
             Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
+
+        [Fact]
+        public void InjectPropertyShouldSucceedWithMetadata()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityWithMetadata;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
     }
 }

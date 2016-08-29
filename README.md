@@ -178,6 +178,24 @@ public class Functions : IFunctions
 
 *Note*: injecting instance methods is not as efficient as injecting static methods. Just don't use the former ones, if not really necessary. Furthermore, injecting instance methods of a sealed type reduces the overhead a bit, since there are more things that only need to be done once. Okay, nothing new to say here.
 
+**New:** to be more hacky and use less extension method ceremony, it's now (Version `1.6.2`) possible to inject properties directly whithin in models.
+
+```csharp
+public class Model
+{
+    public double Time { get; set; }
+
+    public double Distance { get; set; }
+
+    [InjectLambda]
+    public double Velocity => Distance / Time;
+
+    public static Expression<Func<Dummy, double>> VelocityExpr => v => v.Distance / v.Time;
+}
+```
+
+Again, instead of placing `[InjectLambda]` on everything it's possible to add all the models to the white-list while calling `ToInjectable`.
+
 Null-safe queries
 -----------------
 
