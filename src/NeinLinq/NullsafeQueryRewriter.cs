@@ -2,7 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+
+#if !NET40
+
 using System.Reflection;
+
+#endif
 
 namespace NeinLinq
 {
