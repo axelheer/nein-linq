@@ -44,5 +44,15 @@ namespace NeinLinq.Tests.InjectableQuery
         public double VelocityWithMetadata { get; }
 
         public static Expression<Func<Dummy, double>> VelocityWithMetadataExpr => v => v.Distance / v.Time;
+
+        public double VelocityWithoutSibling { get; }
+
+        public double VelocityWithInvalidSiblingResult { get; }
+
+        public static Func<Dummy, double> VelocityWithInvalidSiblingResultExpr => v => v.Distance / v.Time;
+
+        public double VelocityWithInvalidSiblingSignature { get; }
+
+        public static Expression<Func<double, double, double>> VelocityWithInvalidSiblingSignatureExpr => (d, t) => d / t;
     }
 }

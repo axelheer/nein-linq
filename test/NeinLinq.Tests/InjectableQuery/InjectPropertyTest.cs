@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Xunit;
 
@@ -6,6 +7,15 @@ namespace NeinLinq.Tests.InjectableQuery
     public class InjectPropertyTest
     {
         readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+
+        [Fact]
+        public void ShouldFailWithoutSibling()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.VelocityWithoutSibling;
+
+            Assert.Throws<InvalidOperationException>(() => query.ToList());
+        }
 
         [Fact]
         public void ShouldSucceedWithConvention()
@@ -71,6 +81,24 @@ namespace NeinLinq.Tests.InjectableQuery
             var result = query.ToList();
 
             Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void ShouldFailWithInvalidSiblingResult()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.VelocityWithInvalidSiblingResult;
+
+            Assert.Throws<InvalidOperationException>(() => query.ToList());
+        }
+
+        [Fact]
+        public void ShouldFailWithInvalidSiblingSignature()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.VelocityWithInvalidSiblingSignature;
+
+            Assert.Throws<InvalidOperationException>(() => query.ToList());
         }
     }
 }
