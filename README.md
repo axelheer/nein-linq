@@ -178,7 +178,7 @@ public class Functions : IFunctions
 
 *Note*: injecting instance methods is not as efficient as injecting static methods. Just don't use the former ones, if not really necessary. Furthermore, injecting instance methods of a sealed type reduces the overhead a bit, since there are more things that only need to be done once. Okay, nothing new to say here.
 
-**New:** to be more hacky and use less extension method ceremony, it's now (Version `1.6.2`) possible to inject properties directly whithin in models.
+**New:** to be more hacky and use less extension method ceremony, it's now (Version `1.7.0`) possible to inject properties directly whithin in models.
 
 ```csharp
 public class Model
