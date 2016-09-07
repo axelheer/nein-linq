@@ -18,7 +18,7 @@
     "projectUrl": "http://github.com/axelheer/nein-linq",
     "licenseUrl": "http://opensource.org/licenses/mit",
 
-    "releaseNotes": "Updated for final .NET Standard version."
+    "releaseNotes": "Added lambda injection for read-only properties."
   },
 
   "dependencies": {
