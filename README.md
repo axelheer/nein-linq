@@ -190,7 +190,7 @@ public class Model
     [InjectLambda]
     public double Velocity => Distance / Time;
 
-    public static Expression<Func<Dummy, double>> VelocityExpr => v => v.Distance / v.Time;
+    public static Expression<Func<Model, double>> VelocityExpr => v => v.Distance / v.Time;
 }
 ```
 
