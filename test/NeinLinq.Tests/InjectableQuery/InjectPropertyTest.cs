@@ -9,6 +9,17 @@ namespace NeinLinq.Tests.InjectableQuery
         readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
 
         [Fact]
+        public void ShouldIgnoreOrdinaryProperty()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.Name;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { "Asdf", "Narf", "Qwer" }, result);
+        }
+
+        [Fact]
         public void ShouldFailWithoutSibling()
         {
             var query = from d in data.ToInjectable(typeof(Dummy))
