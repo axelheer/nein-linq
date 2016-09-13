@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.7.0-*",
+  "version": "1.7.1-*",
   "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors. (Use .EF6 / .EFCore package instead to run EF6 / EFCore async queries!)",
   "authors": [ "Axel Heer" ],
   "copyright": "Copyright © 2014-2016 Axel Heer",
