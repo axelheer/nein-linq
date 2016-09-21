@@ -22,7 +22,7 @@
   },
 
   "dependencies": {
-    "Microsoft.EntityFrameworkCore": "1.0.0"
+    "Microsoft.EntityFrameworkCore": "1.0.1"
   },
 
   "frameworks": {

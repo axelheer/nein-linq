@@ -22,7 +22,7 @@
   },
 
   "dependencies": {
-    "EntityFramework": "6.0.0"
+    "EntityFramework": "6.1.3"
   },
 
   "frameworks": {
