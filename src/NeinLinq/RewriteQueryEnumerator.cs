@@ -8,7 +8,7 @@ using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
 
-#elif IX
+#elif EFCORE
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,7 +90,7 @@ namespace NeinLinq
     public class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IEnumerator<T>
 #if EF
         , IDbAsyncEnumerator<T>
-#elif IX
+#elif EFCORE
         , IAsyncEnumerator<T>
 #endif
     {
@@ -109,7 +109,7 @@ namespace NeinLinq
         /// <inheritdoc />
         public new T Current => enumerator.Current;
 
-#if IX
+#if EFCORE
 
         /// <inheritdoc />
         public Task<bool> MoveNext(CancellationToken cancellationToken)

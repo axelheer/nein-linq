@@ -10,8 +10,7 @@
       "include": "../NeinLinq/**/*.cs"
     },
     "define": [
-      "EFCORE",
-      "IX"
+      "EFCORE"
     ],
     "keyFile": "../NeinLinq/NeinLinq.snk",
     "xmlDoc": true

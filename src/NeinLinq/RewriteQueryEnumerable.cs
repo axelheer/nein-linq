@@ -55,7 +55,7 @@ namespace NeinLinq
     /// Proxy for query enumerable.
     /// </summary>
     public class RewriteQueryEnumerable<T> : RewriteQueryEnumerable, IEnumerable<T>
-#if IX
+#if EFCORE
         , IAsyncEnumerable<T>
 #endif
     {
@@ -74,7 +74,7 @@ namespace NeinLinq
         /// <inheritdoc />
         public new IEnumerator<T> GetEnumerator() => enumerable.GetEnumerator();
 
-#if IX
+#if EFCORE
 
         /// <inheritdoc />
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()

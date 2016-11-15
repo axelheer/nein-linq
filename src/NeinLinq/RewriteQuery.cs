@@ -83,7 +83,7 @@ namespace NeinLinq
     public class RewriteQuery<T> : RewriteQuery, IOrderedQueryable<T>
 #if EF
         , IDbAsyncEnumerable<T>
-#elif IX
+#elif EFCORE
         , IAsyncEnumerable<T>
 #endif
     {
@@ -116,7 +116,7 @@ namespace NeinLinq
             return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
         }
 
-#elif IX
+#elif EFCORE
 
         /// <inheritdoc />
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
