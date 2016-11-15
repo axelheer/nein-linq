@@ -2,14 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 
-#pragma warning disable RECS0001
+#if EF
+
+using System.Data.Entity.Infrastructure;
+using System.Threading;
+using System.Threading.Tasks;
+
+#elif IX
+
+using System.Threading;
+using System.Threading.Tasks;
+
+#endif
 
 namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query enumerator.
     /// </summary>
-    public abstract partial class RewriteQueryEnumerator : IEnumerator, IDisposable
+    public abstract class RewriteQueryEnumerator : IEnumerator, IDisposable
+#if EF
+        , IDbAsyncEnumerator
+#endif
     {
         readonly IEnumerator enumerator;
 
@@ -57,12 +71,28 @@ namespace NeinLinq
                     disposable.Dispose();
             }
         }
+
+#if EF
+
+        /// <inheritdoc />
+        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(enumerator.MoveNext());
+        }
+
+#endif
+
     }
 
     /// <summary>
     /// Proxy for query enumerator.
     /// </summary>
-    public partial class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IEnumerator<T>
+    public class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IEnumerator<T>
+#if EF
+        , IDbAsyncEnumerator<T>
+#elif IX
+        , IAsyncEnumerator<T>
+#endif
     {
         readonly IEnumerator<T> enumerator;
 
@@ -78,7 +108,16 @@ namespace NeinLinq
 
         /// <inheritdoc />
         public new T Current => enumerator.Current;
+
+#if IX
+
+        /// <inheritdoc />
+        public Task<bool> MoveNext(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(enumerator.MoveNext());
+        }
+
+#endif
+
     }
 }
-
-#pragma warning restore RECS0001

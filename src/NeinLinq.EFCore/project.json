@@ -9,6 +9,10 @@
       "exclude": "../NeinLinq/obj",
       "include": "../NeinLinq/**/*.cs"
     },
+    "define": [
+      "EFCORE",
+      "IX"
+    ],
     "keyFile": "../NeinLinq/NeinLinq.snk",
     "xmlDoc": true
   },

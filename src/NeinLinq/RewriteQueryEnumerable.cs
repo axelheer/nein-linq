@@ -2,14 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-#pragma warning disable RECS0001
-
 namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query enumerable.
     /// </summary>
-    public abstract partial class RewriteQueryEnumerable : IEnumerable, IDisposable
+    public abstract class RewriteQueryEnumerable : IEnumerable, IDisposable
     {
         readonly IEnumerable enumerable;
 
@@ -56,7 +54,10 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for query enumerable.
     /// </summary>
-    public partial class RewriteQueryEnumerable<T> : RewriteQueryEnumerable, IEnumerable<T>
+    public class RewriteQueryEnumerable<T> : RewriteQueryEnumerable, IEnumerable<T>
+#if IX
+        , IAsyncEnumerable<T>
+#endif
     {
         readonly IEnumerable<T> enumerable;
 
@@ -72,7 +73,15 @@ namespace NeinLinq
 
         /// <inheritdoc />
         public new IEnumerator<T> GetEnumerator() => enumerable.GetEnumerator();
+
+#if IX
+
+        /// <inheritdoc />
+        IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
+        {
+            return new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
+        }
+
+#endif
     }
 }
-
-#pragma warning restore RECS0001
