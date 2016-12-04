@@ -5,7 +5,10 @@
     "compile": {
       "exclude": "../NeinLinq.Tests/obj",
       "include": "../NeinLinq.Tests/**/*.cs"
-    }
+    },
+    "define": [
+      "EFCore"
+    ]
   },
 
   "dependencies": {

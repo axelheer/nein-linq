@@ -1,21 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using System;
+﻿using System;
+
+#if EF
+
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+
+#elif EFCore
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+
+#endif
 
 namespace NeinLinq.Tests.DbAsyncQuery
 {
     public class Test : IDisposable
     {
+
+#if EF || EFCore
+
         readonly Context db;
 
         public Test()
         {
             db = new Context();
 
-            db.Database.EnsureCreated();
             db.Dummies.RemoveRange(db.Dummies);
             db.SaveChanges();
 
@@ -76,6 +95,40 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(194.48m, result, 2);
         }
 
+#endif
+
+#if EF
+
+        [Fact]
+        public async Task AsyncEnumeratorShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = db.Dummies.Rewrite(rewriter);
+
+            var enumerator = ((IDbAsyncEnumerable)query).GetAsyncEnumerator();
+
+            var result = await enumerator.MoveNextAsync(CancellationToken.None);
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task ExecuteAsyncShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = db.Dummies.Rewrite(rewriter);
+
+            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
+
+            var result = await ((IDbAsyncQueryProvider)query.Provider).ExecuteAsync(expression, CancellationToken.None);
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.Equal(3, (int)result);
+        }
+
+#elif EFCore
+
         [Fact]
         public async Task ExecuteAsyncShouldSucceed()
         {
@@ -90,12 +143,20 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.True(result);
         }
 
+#endif
+
         protected virtual void Dispose(bool disposing)
         {
+
+#if EF || EFCore
+
             if (disposing)
             {
                 db.Dispose();
             }
+
+#endif
+
         }
 
         public void Dispose()
