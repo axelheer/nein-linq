@@ -1,7 +1,7 @@
 @echo off
 
 set opencover=%UserProfile%\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe
-set reportgenerator=%UserProfile%\.nuget\packages\ReportGenerator\2.4.5\tools\ReportGenerator.exe
+set reportgenerator=%UserProfile%\.nuget\packages\ReportGenerator\2.5.1\tools\ReportGenerator.exe
 
 if not exist TestResults mkdir TestResults || goto :eof
 
