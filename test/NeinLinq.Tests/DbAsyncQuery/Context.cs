@@ -12,6 +12,12 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public Context () : base("NeinLinq.EF6")
         {
         }
+
+        public void ResetDatabase()
+        {
+            Dummies.RemoveRange(Dummies);
+            SaveChanges();
+        }
     }
 }
 
@@ -30,10 +36,10 @@ namespace NeinLinq.Tests.DbAsyncQuery
             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NeinLinq.EFCore; Integrated Security=true;");
         }
 
-        public override int SaveChanges()
+        public void ResetDatabase()
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
-            return base.SaveChanges();
         }
     }
 }

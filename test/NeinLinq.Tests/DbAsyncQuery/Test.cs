@@ -34,9 +34,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public Test()
         {
             db = new Context();
-
-            db.Dummies.RemoveRange(db.Dummies);
-            db.SaveChanges();
+            db.ResetDatabase();
 
             db.Dummies.AddRange(new[]
             {
