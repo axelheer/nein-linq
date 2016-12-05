@@ -124,7 +124,7 @@ namespace NeinLinq
             var asyncEnumerable = enumerable.Value as IAsyncEnumerable<T>;
             if (asyncEnumerable != null)
                 return asyncEnumerable.GetEnumerator();
-            return new RewriteQueryEnumerator<T>(enumerable.Value.GetEnumerator());
+            return new RewriteAsyncQueryEnumerator<T>(enumerable.Value.GetEnumerator());
         }
 
 #endif

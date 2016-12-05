@@ -21,7 +21,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
     }
 }
 
-#elif EFCore
+#elif EFCORE
 
 using Microsoft.EntityFrameworkCore;
 

@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-#elif EFCore
+#elif EFCORE
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -55,7 +55,7 @@ namespace NeinLinq.Tests.FakeAsyncQuery
             .AsQueryable();
         }
 
-#if EF || EFCore
+#if EF || EFCORE
 
         [Fact]
         public async Task ToListAsyncShouldFail()
@@ -127,7 +127,7 @@ namespace NeinLinq.Tests.FakeAsyncQuery
             Assert.Equal(3, (int)result);
         }
 
-#elif EFCore
+#elif EFCORE
 
         [Fact]
         public async Task ExecuteAsyncShouldSucceed()

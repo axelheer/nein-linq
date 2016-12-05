@@ -8,11 +8,6 @@ using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
 
-#elif EFCORE
-
-using System.Threading;
-using System.Threading.Tasks;
-
 #endif
 
 namespace NeinLinq
@@ -90,8 +85,6 @@ namespace NeinLinq
     public class RewriteQueryEnumerator<T> : RewriteQueryEnumerator, IEnumerator<T>
 #if EF
         , IDbAsyncEnumerator<T>
-#elif EFCORE
-        , IAsyncEnumerator<T>
 #endif
     {
         readonly IEnumerator<T> enumerator;
@@ -108,16 +101,5 @@ namespace NeinLinq
 
         /// <inheritdoc />
         public new T Current => enumerator.Current;
-
-#if EFCORE
-
-        /// <inheritdoc />
-        public Task<bool> MoveNext(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(enumerator.MoveNext());
-        }
-
-#endif
-
     }
 }

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-#elif EFCore
+#elif EFCORE
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -27,7 +27,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
     public class Test : IDisposable
     {
 
-#if EF || EFCore
+#if EF || EFCORE
 
         readonly Context db;
 
@@ -125,7 +125,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(3, (int)result);
         }
 
-#elif EFCore
+#elif EFCORE
 
         [Fact]
         public async Task ExecuteAsyncShouldSucceed()
@@ -146,7 +146,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
         protected virtual void Dispose(bool disposing)
         {
 
-#if EF || EFCore
+#if EF || EFCORE
 
             if (disposing)
             {

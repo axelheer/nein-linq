@@ -7,7 +7,7 @@
       "include": "../NeinLinq.Tests/**/*.cs"
     },
     "define": [
-      "EFCore"
+      "EFCORE"
     ]
   },
 

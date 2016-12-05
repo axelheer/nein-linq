@@ -1,21 +1,24 @@
-﻿using System;
-using System.Collections;
+#if EFCORE || IX
+
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NeinLinq
 {
     /// <summary>
-    /// Proxy for query enumerable.
+    /// Proxy for async query enumerable.
     /// </summary>
-    public abstract class RewriteQueryEnumerable : IEnumerable, IDisposable
+    public class RewriteAsyncQueryEnumerable<T> : IAsyncEnumerable<T>, IDisposable
     {
-        readonly IEnumerable enumerable;
+        readonly IEnumerable<T> enumerable;
 
         /// <summary>
         /// Create a new enumerable proxy.
         /// </summary>
         /// <param name="enumerable">The actual enumerable.</param>
-        protected RewriteQueryEnumerable(IEnumerable enumerable)
+        public RewriteAsyncQueryEnumerable(IEnumerable<T> enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -24,7 +27,10 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IEnumerator GetEnumerator() => enumerable.GetEnumerator();
+        public IAsyncEnumerator<T> GetEnumerator()
+        {
+            return new RewriteAsyncQueryEnumerator<T>(enumerable.GetEnumerator());
+        }
 
         /// <summary>
         /// Releases all resources.
@@ -50,25 +56,6 @@ namespace NeinLinq
             }
         }
     }
-
-    /// <summary>
-    /// Proxy for query enumerable.
-    /// </summary>
-    public class RewriteQueryEnumerable<T> : RewriteQueryEnumerable, IEnumerable<T>
-    {
-        readonly IEnumerable<T> enumerable;
-
-        /// <summary>
-        /// Create a new enumerable proxy.
-        /// </summary>
-        /// <param name="enumerable">The actual enumerable.</param>
-        public RewriteQueryEnumerable(IEnumerable<T> enumerable)
-            : base(enumerable)
-        {
-            this.enumerable = enumerable;
-        }
-
-        /// <inheritdoc />
-        public new IEnumerator<T> GetEnumerator() => enumerable.GetEnumerator();
-    }
 }
+
+#endif

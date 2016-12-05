@@ -117,7 +117,7 @@ namespace NeinLinq
             var asyncProvider = provider as IAsyncQueryProvider;
             if (asyncProvider != null)
                 return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression));
-            return new RewriteQueryEnumerable<TResult>(provider.CreateQuery<TResult>(rewriter.Visit(expression)));
+            return new RewriteAsyncQueryEnumerable<TResult>(provider.CreateQuery<TResult>(rewriter.Visit(expression)));
         }
 
         /// <inheritdoc />
