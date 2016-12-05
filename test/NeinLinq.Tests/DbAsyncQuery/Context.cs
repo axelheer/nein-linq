@@ -9,7 +9,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
     {
         public DbSet<Dummy> Dummies { get; set; }
 
-        public Context () : base("NeinLinq.EF6")
+        public Context () : base("NeinLinq.EF")
         {
         }
 

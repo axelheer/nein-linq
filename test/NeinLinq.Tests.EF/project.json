@@ -12,7 +12,7 @@
   },
 
   "dependencies": {
-    "NeinLinq.EF6": {
+    "NeinLinq.EF": {
       "target": "project"
     },
     "EntityFramework": "6.1.3",

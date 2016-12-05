@@ -18,9 +18,9 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests", "test\Nein
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{04669A11-CB48-4BC2-B74A-96993A3766F0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.EF6", "src\NeinLinq.EF6\NeinLinq.EF6.xproj", "{D12F03DC-B5B1-4661-8B46-5091BE45A145}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.EF", "src\NeinLinq.EF\NeinLinq.EF.xproj", "{D12F03DC-B5B1-4661-8B46-5091BE45A145}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.EF6", "test\NeinLinq.Tests.EF6\NeinLinq.Tests.EF6.xproj", "{90E0D617-A265-4D79-B629-001E4DC1917E}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.EF", "test\NeinLinq.Tests.EF\NeinLinq.Tests.EF.xproj", "{90E0D617-A265-4D79-B629-001E4DC1917E}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.EFCore", "src\NeinLinq.EFCore\NeinLinq.EFCore.xproj", "{E6D06134-2F31-478E-8336-140F993DFCA1}"
 EndProject

@@ -12,9 +12,9 @@ To install *NeinLinq*, run the following command in the [NuGet Package Manager C
 
     PM> Install-Package NeinLinq
 
-To run async queries within *Entity Framework 6* applications use the "special" build instead (there's an extra dependency for that; thus, the extra build).
+To run async queries within *Entity Framework* applications use the "special" build instead (there's an extra dependency for that; thus, the extra build).
 
-    PM> Install-Package NeinLinq.EF6
+    PM> Install-Package NeinLinq.EF
 
 To run async queries within *Entity Framework Core* applications use the "special" build instead (again, there's an extra dependency for that; thus, the extra build).
 
