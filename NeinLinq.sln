@@ -28,7 +28,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.EFCore", "te
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.IX", "src\NeinLinq.IX\NeinLinq.IX.xproj", "{4AD66343-4DF0-4F80-9335-03E898850FDE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.IX", "test\NeinLinq.Tests.IXEFCore\NeinLinq.Tests.IX.xproj", "{31E09502-6F42-4931-87C2-C0F6430DE919}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NeinLinq.Tests.IX", "test\NeinLinq.Tests.IX\NeinLinq.Tests.IX.xproj", "{31E09502-6F42-4931-87C2-C0F6430DE919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
