@@ -17,11 +17,11 @@
   },
 
   "packOptions": {
-    "tags": [ "LINQ", "EF" ],
+    "tags": [ "LINQ", "IX" ],
     "projectUrl": "http://github.com/axelheer/nein-linq",
     "licenseUrl": "http://opensource.org/licenses/mit",
 
-    "releaseNotes": "Added lambda injection for read-only properties."
+    "releaseNotes": "Added support for Interactive Extensions (Ix)."
   },
 
   "dependencies": {
