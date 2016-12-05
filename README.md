@@ -20,6 +20,10 @@ To run async queries within *Entity Framework Core* applications use the "specia
 
     PM> Install-Package NeinLinq.EFCore
 
+To run async queries within *Interactive Extensions (Ix)* applications use the "special" build instead (and again, there's an extra dependency for that; thus, the extra build).
+
+    PM> Install-Package NeinLinq.IX
+
 Lambda injection
 ----------------
 
