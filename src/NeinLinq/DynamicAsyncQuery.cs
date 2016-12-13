@@ -74,7 +74,7 @@ namespace NeinLinq
                 throw new ArgumentNullException(nameof(selector));
 
             var target = Expression.Parameter(typeof(T));
-            var method = descending ? nameof(Queryable.OrderByDescending) : nameof(Queryable.OrderBy);
+            var method = descending ? nameof(AsyncQueryable.OrderByDescending) : nameof(AsyncQueryable.OrderBy);
 
             return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, method));
         }
@@ -95,7 +95,7 @@ namespace NeinLinq
                 throw new ArgumentNullException(nameof(selector));
 
             var target = Expression.Parameter(typeof(T));
-            var method = descending ? nameof(Queryable.ThenByDescending) : nameof(Queryable.ThenBy);
+            var method = descending ? nameof(AsyncQueryable.ThenByDescending) : nameof(AsyncQueryable.ThenBy);
 
             return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, method));
         }
