@@ -18,14 +18,14 @@
     "net461": {
       "dependencies": {
         "NeinLinq.EntityFramework": "2.0.0-*",
-        "Microsoft.NETCore.Platforms": "1.0.2"
+        "Microsoft.NETCore.Platforms": "1.0.1"
       }
     },
     "netcoreapp1.0": {
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.3"
+          "version": "1.0.1"
         }
       }
     }
