@@ -14,9 +14,6 @@ namespace NeinLinq
     /// <summary>
     /// Expression visitor for making member access null-safe.
     /// </summary>
-    /// <remarks>
-    /// Use <see cref="NullsafeQueryBuilder" /> to make a query null-safe.
-    /// </remarks>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
         static readonly ConcurrentDictionary<Type, Expression> cache =

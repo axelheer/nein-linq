@@ -1,0 +1,12 @@
+﻿{
+  "version": "2.0.0-*",
+
+  "dependencies": {
+    "NeinLinq": "2.0.0-*"
+  },
+
+  "frameworks": {
+    "net40": { },
+    "netstandard1.1": { }
+  }
+}

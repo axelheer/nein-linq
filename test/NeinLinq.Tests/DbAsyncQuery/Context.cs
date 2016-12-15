@@ -1,5 +1,6 @@
-﻿#if EF
+﻿#if NET461
 
+using NeinLinq.Fakes.DbAsyncQuery;
 using System.Data.Entity;
 
 namespace NeinLinq.Tests.DbAsyncQuery
@@ -9,7 +10,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
     {
         public DbSet<Dummy> Dummies { get; set; }
 
-        public Context () : base("NeinLinq.EF")
+        public Context () : base("NeinLinq.EntityFramework")
         {
         }
 
@@ -17,29 +18,6 @@ namespace NeinLinq.Tests.DbAsyncQuery
         {
             Dummies.RemoveRange(Dummies);
             SaveChanges();
-        }
-    }
-}
-
-#elif EFCORE
-
-using Microsoft.EntityFrameworkCore;
-
-namespace NeinLinq.Tests.DbAsyncQuery
-{
-    public class Context : DbContext
-    {
-        public DbSet<Dummy> Dummies { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NeinLinq.EFCore; Integrated Security=true;");
-        }
-
-        public void ResetDatabase()
-        {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
         }
     }
 }

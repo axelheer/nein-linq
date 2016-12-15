@@ -1,4 +1,4 @@
-﻿#if EF
+﻿#if NET461
 
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;

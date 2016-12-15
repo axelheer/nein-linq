@@ -1,36 +1,27 @@
 ﻿{
-  "version": "1.7.1-*",
-  "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.",
+  "version": "2.0.0-*",
+  "description": "NeinLinq provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.\r\n\r\nTo support different LINQ implementations, the following flavours are available. Choose at least one.\r\n- Use NeinLinq.Queryable for classic LINQ queries.\r\n- Use NeinLinq.Interactive for interactive LINQ queries.\r\n- Use NeinLinq.EntityFramework for classic Entity Framework LINQ queries.\r\n- Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries.",
   "authors": [ "Axel Heer" ],
   "copyright": "Copyright © 2014-2016 Axel Heer",
 
   "buildOptions": {
-    "keyFile": "NeinLinq.snk",
+    "keyFile": "../NeinLinq.snk",
     "xmlDoc": true
   },
 
   "packOptions": {
-    "tags": [ "LINQ", "EF" ],
+    "tags": [ "LINQ", "EF", "IX" ],
     "projectUrl": "http://github.com/axelheer/nein-linq",
     "licenseUrl": "http://opensource.org/licenses/mit",
 
-    "releaseNotes": "Added support for Interactive Extensions (Ix)."
+    "releaseNotes": "Reorganized code to better support different LINQ implementations."
   },
 
   "frameworks": {
     "net40": { },
     "netstandard1.1": {
       "dependencies": {
-        "System.Collections": "4.3.0",
-        "System.Collections.Concurrent": "4.3.0",
-        "System.Globalization": "4.3.0",
-        "System.Linq": "4.3.0",
-        "System.Linq.Expressions": "4.3.0",
-        "System.Linq.Queryable": "4.3.0",
-        "System.Reflection": "4.3.0",
-        "System.Reflection.Extensions": "4.3.0",
-        "System.Runtime": "4.3.0",
-        "System.Runtime.Extensions": "4.3.0"
+        "NETStandard.Library": "1.6.0"
       }
     }
   }

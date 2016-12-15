@@ -7,7 +7,6 @@ namespace NeinLinq
     /// Represents a translation of a given predicate.
     /// </summary>
     /// <typeparam name="T">The type of the predicate's parameter.</typeparam>
-    /// <remarks>Use <see cref="PredicateTranslator" /> to start a translation.</remarks>
     public class PredicateTranslation<T>
     {
         readonly Expression<Func<T, bool>> predicate;

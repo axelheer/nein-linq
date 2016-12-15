@@ -1,5 +1,5 @@
-#if IX
-
+using NeinLinq.Fakes.DynamicQuery;
+using NeinLinq.Interactive;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -57,5 +57,3 @@ namespace NeinLinq.Tests.DynamicQuery
         }
     }
 }
-
-#endif

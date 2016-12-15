@@ -8,21 +8,23 @@
 
 *NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
 
-To install *NeinLinq*, run the following command in the [NuGet Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console).
+To support different LINQ implementations, the following flavours are available. Choose at least one.
 
-    PM> Install-Package NeinLinq
+Use *NeinLinq.Queryable* for classic LINQ queries:
 
-To run async queries within *Entity Framework* applications use the "special" build instead (there's an extra dependency for that; thus, the extra build).
+    PM> Install-Package NeinLinq.Queryable
 
-    PM> Install-Package NeinLinq.EF
+Use *NeinLinq.Interactive* for interactive LINQ queries:
 
-To run async queries within *Entity Framework Core* applications use the "special" build instead (again, there's an extra dependency for that; thus, the extra build).
+    PM> Install-Package NeinLinq.Interactive
 
-    PM> Install-Package NeinLinq.EFCore
+Use *NeinLinq.EntityFramework* for classic *Entity Framework* LINQ queries:
 
-To run async queries within *Interactive Extensions (Ix)* applications use the "special" build instead (and again, there's an extra dependency for that; thus, the extra build).
+    PM> Install-Package NeinLinq.EntityFramework
 
-    PM> Install-Package NeinLinq.IX
+Use *NeinLinq.EntityFrameworkCore* for *Entity Framework Core* LINQ queries:
+
+    PM> Install-Package NeinLinq.EntityFramework
 
 Lambda injection
 ----------------

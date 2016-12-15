@@ -7,9 +7,6 @@ namespace NeinLinq
     /// <summary>
     /// Expression visitor for replacing method types.
     /// </summary>
-    /// <remarks>
-    /// Use <see cref="SubstitutionQueryBuilder" /> to make a query substitution.
-    /// </remarks>
     public class SubstitutionQueryRewriter : ExpressionVisitor
     {
         readonly Type from;

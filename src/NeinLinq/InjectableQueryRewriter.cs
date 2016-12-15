@@ -15,9 +15,6 @@ namespace NeinLinq
     /// <summary>
     /// Expression visitor for injecting lambda expressions.
     /// </summary>
-    /// <remarks>
-    /// Use <see cref="InjectableQueryBuilder" /> to inject lambda expressions.
-    /// </remarks>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
         static readonly ConcurrentDictionary<MemberInfo, InjectLambdaMetadata> cache =

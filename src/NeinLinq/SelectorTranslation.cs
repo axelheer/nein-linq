@@ -10,7 +10,6 @@ namespace NeinLinq
     /// </summary>
     /// <typeparam name="T">The type of the selector's source parameter.</typeparam>
     /// <typeparam name="U">The type of the selector's result parameter.</typeparam>
-    /// <remarks>Use <see cref="SelectorTranslator" /> to start a translation.</remarks>
     public class SelectorTranslation<T, U>
     {
         readonly Expression<Func<T, U>> selector;
