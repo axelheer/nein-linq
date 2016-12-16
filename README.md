@@ -24,7 +24,7 @@ Use *NeinLinq.EntityFramework* for classic *Entity Framework* LINQ queries:
 
 Use *NeinLinq.EntityFrameworkCore* for *Entity Framework Core* LINQ queries:
 
-    PM> Install-Package NeinLinq.EntityFramework
+    PM> Install-Package NeinLinq.EntityFrameworkCore
 
 Lambda injection
 ----------------
