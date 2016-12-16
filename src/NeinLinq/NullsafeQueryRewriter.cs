@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -16,8 +15,7 @@ namespace NeinLinq
     /// </summary>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
-        static readonly ConcurrentDictionary<Type, Expression> cache =
-            new ConcurrentDictionary<Type, Expression>();
+        static readonly ObjectCache<Type, Expression> cache = new ObjectCache<Type, Expression>();
 
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)

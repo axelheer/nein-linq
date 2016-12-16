@@ -7,6 +7,6 @@
 
   "frameworks": {
     "net40": { },
-    "netstandard1.1": { }
+    "netstandard1.0": { }
   }
 }
