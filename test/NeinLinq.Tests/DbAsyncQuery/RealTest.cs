@@ -12,11 +12,11 @@ using Xunit;
 
 namespace NeinLinq.Tests.DbAsyncQuery
 {
-    public class QueryTest : IDisposable
+    public class RealTest : IDisposable
     {
         readonly Context db;
 
-        public QueryTest()
+        public RealTest()
         {
             db = new Context();
             db.ResetDatabase();

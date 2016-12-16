@@ -6,7 +6,7 @@ namespace NeinLinq.EntityFrameworkCore
     /// <summary>
     /// Replaces method types.
     /// </summary>
-    public static class SubstitutionQueryBuilder
+    public static class SubstitutionEntityQueryBuilder
     {
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
