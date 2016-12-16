@@ -9,7 +9,6 @@ namespace NeinLinq.Tests.DbAsyncQuery
     {
         public Config()
         {
-            SetDatabaseInitializer(new DropCreateDatabaseAlways<Context>());
             SetDefaultConnectionFactory(new LocalDbConnectionFactory("MSSQLLocalDB"));
         }
     }

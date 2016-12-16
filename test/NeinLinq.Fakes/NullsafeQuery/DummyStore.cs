@@ -5,7 +5,7 @@ namespace NeinLinq.Fakes.NullsafeQuery
 {
     public static class DummyStore
     {
-        public static IList<Dummy> Data { get; } = new[]
+        public static IEnumerable<Dummy> Data { get; } = new[]
         {
             new Dummy
             {

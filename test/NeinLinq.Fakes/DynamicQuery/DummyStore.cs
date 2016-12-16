@@ -4,7 +4,7 @@ namespace NeinLinq.Fakes.DynamicQuery
 {
     public static class DummyStore
     {
-        public static IList<Dummy> Data { get; } = new[]
+        public static IEnumerable<Dummy> Data { get; } = new[]
         {
             new Dummy { Id = 1, Name = "aaaa", Number = 11.11m },
             new Dummy { Id = 2, Name = "bbbb", Number = 22.22m },
