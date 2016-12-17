@@ -3,22 +3,24 @@
   "testRunner": "xunit",
 
   "dependencies": {
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "NeinLinq.Fakes": "2.0.0-*",
     "NeinLinq.Queryable": "2.0.0-*",
     "NeinLinq.Interactive": "2.0.0-*",
     "NeinLinq.EntityFrameworkCore": "2.0.0-*",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
-    "xunit": "2.2.0-beta4-build3444",
-    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "System.Interactive.Async.Providers": "3.1.1",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
     "OpenCover": "4.6.519",
-    "ReportGenerator": "2.5.1"
+    "ReportGenerator": "2.5.1",
+    "xunit": "2.2.0-beta4-build3444"
   },
 
   "frameworks": {
     "net461": {
       "dependencies": {
+        "Microsoft.NETCore.Platforms": "1.1.0",
         "NeinLinq.EntityFramework": "2.0.0-*",
-        "Microsoft.NETCore.Platforms": "1.0.1"
+        "EntityFramework": "6.1.3"
       }
     },
     "netcoreapp1.0": {
@@ -26,7 +28,8 @@
         "Microsoft.NETCore.App": {
           "type": "platform",
           "version": "1.0.1"
-        }
+        },
+        "System.Linq.Queryable": "4.3.0"
       }
     }
   }
