@@ -10,9 +10,12 @@
     "NeinLinq.EntityFrameworkCore": "2.0.0-*",
     "System.Interactive.Async.Providers": "3.1.1",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
-    "OpenCover": "4.6.519",
-    "ReportGenerator": "2.5.1",
     "xunit": "2.2.0-beta4-build3444"
+  },
+
+  "tools": {
+    "OpenCover": "4.6.519",
+    "ReportGenerator": "2.5.1"
   },
 
   "frameworks": {
@@ -28,8 +31,7 @@
         "Microsoft.NETCore.App": {
           "type": "platform",
           "version": "1.0.1"
-        },
-        "System.Linq.Queryable": "4.3.0"
+        }
       }
     }
   }
