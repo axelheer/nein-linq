@@ -1,4 +1,4 @@
-version: 1.7.1-ci{build}
+version: 2.0.0-ci{build}
 
 skip_tags: true
 
