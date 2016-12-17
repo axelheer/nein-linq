@@ -13,6 +13,12 @@
     "tags": [ "LINQ", "EF", "IX" ],
     "projectUrl": "http://github.com/axelheer/nein-linq",
     "licenseUrl": "http://opensource.org/licenses/mit",
+    "iconUrl": "http://home.heer.eu/media/axel.png",
+
+    "repository": {
+      "type": "git",
+      "url": "http://github.com/axelheer/nein-linq"
+    },
 
     "releaseNotes": "Reorganized code to better support different LINQ implementations."
   },
