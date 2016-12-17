@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Xunit;
+
 using static NeinLinq.DynamicQuery;
 
 namespace NeinLinq.Tests.DynamicQuery

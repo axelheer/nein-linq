@@ -1,5 +1,4 @@
 using NeinLinq.Fakes.DynamicQuery;
-using NeinLinq.Interactive;
 using System;
 using System.Globalization;
 using System.Linq;

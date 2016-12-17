@@ -1,5 +1,4 @@
 using NeinLinq.Fakes.DynamicQuery;
-using NeinLinq.Queryable;
 using System;
 using System.Linq;
 using Xunit;

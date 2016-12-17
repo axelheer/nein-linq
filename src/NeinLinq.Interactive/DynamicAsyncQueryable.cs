@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NeinLinq.Interactive
+namespace NeinLinq
 {
     /// <summary>
     /// Helps building dynamic async queries.
     /// </summary>
-    public static class DynamicAsyncQueryBuilder
+    public static class DynamicAsyncQueryable
     {
         /// <summary>
         /// Create a dynamic where clause for a given property selector, comparison method and reference value.
