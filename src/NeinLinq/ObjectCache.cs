@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace NeinLinq
 {
-    class ObjectCache<TKey, TValue> : IDisposable
+    sealed class ObjectCache<TKey, TValue> : IDisposable
     {
         readonly Dictionary<TKey, TValue> cache = new Dictionary<TKey, TValue>();
 
@@ -47,16 +47,7 @@ namespace NeinLinq
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                cacheLock.Dispose();
-            }
+            cacheLock.Dispose();
         }
     }
 }

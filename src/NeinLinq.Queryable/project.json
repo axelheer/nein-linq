@@ -24,7 +24,11 @@
   },
 
   "dependencies": {
-    "NeinLinq": "2.0.0-*"
+    "NeinLinq": "2.0.0-*",
+    "RefactoringEssentials": {
+      "version": "4.4.0",
+      "type": "build"
+    }
   },
 
   "frameworks": {

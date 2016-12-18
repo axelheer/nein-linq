@@ -23,6 +23,13 @@
     "releaseNotes": "Reorganized code to better support different LINQ implementations."
   },
 
+  "dependencies": {
+    "RefactoringEssentials": {
+      "version": "4.4.0",
+      "type": "build"
+    }
+  },
+
   "frameworks": {
     "net40": { },
     "netstandard1.0": {
