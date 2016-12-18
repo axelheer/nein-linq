@@ -12,24 +12,24 @@ namespace NeinLinq
         /// <summary>
         /// Starts translation of a given selector.
         /// </summary>
-        /// <typeparam name="T">The type of the selector's source parameter.</typeparam>
-        /// <typeparam name="U">The type of the selector's result parameter.</typeparam>
+        /// <typeparam name="TSource">The type of the selector's source parameter.</typeparam>
+        /// <typeparam name="TResult">The type of the selector's result parameter.</typeparam>
         /// <param name="selector">The selector expression to translate.</param>
         /// <returns>A translation object for the given selector.</returns>
-        public static SelectorTranslation<T, U> Translate<T, U>(this Expression<Func<T, U>> selector)
+        public static SelectorTranslation<TSource, TResult> Translate<TSource, TResult>(this Expression<Func<TSource, TResult>> selector)
         {
-            return new SelectorTranslation<T, U>(selector);
+            return new SelectorTranslation<TSource, TResult>(selector);
         }
 
         /// <summary>
         /// Combines two given selectors by merging their member bindings.
         /// </summary>
-        /// <typeparam name="T">The type of the selector's source parameter.</typeparam>
-        /// <typeparam name="U">The type of the selector's result parameter.</typeparam>
+        /// <typeparam name="TSource">The type of the selector's source parameter.</typeparam>
+        /// <typeparam name="TResult">The type of the selector's result parameter.</typeparam>
         /// <param name="left">The first selector expression to combine.</param>
         /// <param name="right">The second selector expression to combine.</param>
         /// <returns>A single combined selector expression.</returns>
-        public static Expression<Func<T, U>> Apply<T, U>(this Expression<Func<T, U>> left, Expression<Func<T, U>> right)
+        public static Expression<Func<TSource, TResult>> Apply<TSource, TResult>(this Expression<Func<TSource, TResult>> left, Expression<Func<TSource, TResult>> right)
         {
             if (left == null)
                 throw new ArgumentNullException(nameof(left));
@@ -50,8 +50,8 @@ namespace NeinLinq
             var binder = new ParameterBinder(l, r);
             var bindings = leftInit.Bindings.Concat(rightInit.Bindings);
 
-            return Expression.Lambda<Func<T, U>>(
-                binder.Visit(Expression.MemberInit(Expression.New(typeof(U)), bindings)), r);
+            return Expression.Lambda<Func<TSource, TResult>>(
+                binder.Visit(Expression.MemberInit(Expression.New(typeof(TResult)), bindings)), r);
         }
     }
 }
