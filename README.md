@@ -26,6 +26,8 @@ Use *NeinLinq.EntityFrameworkCore* for *Entity Framework Core* LINQ queries:
 
     PM> Install-Package NeinLinq.EntityFrameworkCore
 
+*Note:* when using one of the *Entity Framework* versions, it's generally a good idea to include the *Queryable* edition too, since non *EF specific* stuff like `DynamicQuery` can only be found there.
+
 Lambda injection
 ----------------
 
