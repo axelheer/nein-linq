@@ -20,7 +20,10 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node?.Expression != null)
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.Expression != null)
             {
                 return MakeNullsafe(node, node.Expression);
             }
@@ -31,7 +34,10 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node?.Object != null)
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.Object != null)
             {
                 return MakeNullsafe(node, node.Object);
             }

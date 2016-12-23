@@ -37,9 +37,12 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            var property = node?.Member as PropertyInfo;
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
 
-            if (property?.GetMethod() != null && property?.SetMethod() == null)
+            var property = node.Member as PropertyInfo;
+
+            if (property?.GetMethod() != null && property.SetMethod() == null)
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));
@@ -64,7 +67,10 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node?.Method != null)
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.Method != null)
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(node.Method, _ => InjectLambdaMetadata.Create(node.Method));
