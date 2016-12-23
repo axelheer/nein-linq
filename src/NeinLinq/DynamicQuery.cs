@@ -96,12 +96,15 @@ namespace NeinLinq
         internal static Expression CreateConstant(ParameterExpression target, Expression selector, string value)
         {
             var type = Expression.Lambda(selector, target).ReturnType;
-            var conversionType = Nullable.GetUnderlyingType(type) ?? type;
 
-            if (type != conversionType && string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 return Expression.Default(type);
 
-            return Expression.Constant(Convert.ChangeType(value, conversionType, CultureInfo.CurrentCulture), type);
+            var conversionType = Nullable.GetUnderlyingType(type) ?? type;
+            var convertedValue = conversionType == typeof(Guid) ? Guid.Parse(value) :
+                Convert.ChangeType(value, conversionType, CultureInfo.CurrentCulture);
+
+            return Expression.Constant(convertedValue, type);
         }
     }
 }

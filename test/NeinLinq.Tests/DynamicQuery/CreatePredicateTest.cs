@@ -53,5 +53,17 @@ namespace NeinLinq.Tests.DynamicQuery
 
             Assert.Equal(new[] { 2, 5, 8 }, containsResult);
         }
+
+        [Fact]
+        public void ShouldSupportGuidsToo()
+        {
+            var expected = data.First().Reference;
+
+            var predicate = CreatePredicate<Dummy>("Reference", DynamicCompare.Equal, expected.ToString());
+
+            var actual = data.Where(predicate).Select(d => d.Reference).ToArray();
+
+            Assert.Equal(new[] { expected }, actual);
+        }
     }
 }

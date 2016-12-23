@@ -1,4 +1,6 @@
-﻿namespace NeinLinq.Fakes.DynamicQuery
+﻿using System;
+
+namespace NeinLinq.Fakes.DynamicQuery
 {
     public class Dummy
     {
@@ -7,5 +9,7 @@
         public string Name { get; set; }
 
         public decimal? Number { get; set; }
+
+        public Guid Reference { get; set; }
     }
 }
