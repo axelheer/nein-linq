@@ -3,6 +3,12 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 
+#if !NET40
+
+using System.Reflection;
+
+#endif
+
 namespace NeinLinq
 {
     /// <summary>
@@ -93,18 +99,40 @@ namespace NeinLinq
             return selector.Split('.').Aggregate(target, (t, n) => Expression.PropertyOrField(t, n));
         }
 
-        internal static Expression CreateConstant(ParameterExpression target, Expression selector, string value)
+        static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
+
+        static Expression CreateConstant(ParameterExpression target, Expression selector, string value)
         {
             var type = Expression.Lambda(selector, target).ReturnType;
 
             if (string.IsNullOrEmpty(value))
                 return Expression.Default(type);
 
-            var conversionType = Nullable.GetUnderlyingType(type) ?? type;
-            var convertedValue = conversionType == typeof(Guid) ? Guid.Parse(value) :
-                Convert.ChangeType(value, conversionType, CultureInfo.CurrentCulture);
+            var converter = cache.GetOrAdd(type, CreateConverter);
+            var convertedValue = converter(value, CultureInfo.CurrentCulture);
 
             return Expression.Constant(convertedValue, type);
+        }
+
+        static Func<string, IFormatProvider, object> CreateConverter(Type type)
+        {
+            type = Nullable.GetUnderlyingType(type) ?? type;
+
+            var target = Expression.Parameter(typeof(string));
+            var format = Expression.Parameter(typeof(IFormatProvider));
+
+            var expression = (Expression)target;
+
+            var cultureParse = type.GetRuntimeMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+            if (cultureParse != null)
+                expression = Expression.Call(cultureParse, target, format);
+
+            var ordinalParse = type.GetRuntimeMethod("Parse", new[] { typeof(string) });
+            if (ordinalParse != null)
+                expression = Expression.Call(ordinalParse, target);
+
+            return Expression.Lambda<Func<string, IFormatProvider, object>>(
+                Expression.Convert(expression, typeof(object)), target, format).Compile();
         }
     }
 }
