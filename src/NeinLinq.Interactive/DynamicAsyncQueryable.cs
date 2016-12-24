@@ -17,8 +17,9 @@ namespace NeinLinq
         /// <param name="selector">The property selector to parse.</param>
         /// <param name="comparer">The comparison method to use.</param>
         /// <param name="value">The reference value to compare with.</param>
+        /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, DynamicCompare comparer, string value)
+        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -29,7 +30,9 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            return query.Provider.CreateQuery<T>(CreateAsyncWhereClause(target, query.Expression, selector, comparer, value));
+            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+
+            return query.Provider.CreateQuery<T>(CreateAsyncWhereClause(target, query.Expression, comparison));
         }
 
         /// <summary>
@@ -40,8 +43,9 @@ namespace NeinLinq
         /// <param name="selector">The property selector to parse.</param>
         /// <param name="comparer">The comparison method to use.</param>
         /// <param name="value">The reference value to compare with.</param>
+        /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, string comparer, string value)
+        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, string comparer, string value, IFormatProvider provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -52,7 +56,9 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            return query.Provider.CreateQuery<T>(CreateAsyncWhereClause(target, query.Expression, selector, comparer, value));
+            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+
+            return query.Provider.CreateQuery<T>(CreateAsyncWhereClause(target, query.Expression, comparison));
         }
 
         /// <summary>
@@ -71,9 +77,8 @@ namespace NeinLinq
                 throw new ArgumentNullException(nameof(selector));
 
             var target = Expression.Parameter(typeof(T));
-            var method = descending ? nameof(System.Linq.AsyncQueryable.OrderByDescending) : nameof(System.Linq.AsyncQueryable.OrderBy);
 
-            return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, method));
+            return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, true, descending));
         }
 
         /// <summary>
@@ -92,30 +97,26 @@ namespace NeinLinq
                 throw new ArgumentNullException(nameof(selector));
 
             var target = Expression.Parameter(typeof(T));
-            var method = descending ? nameof(System.Linq.AsyncQueryable.ThenByDescending) : nameof(System.Linq.AsyncQueryable.ThenBy);
 
-            return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, method));
+            return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, false, descending));
         }
 
-        static Expression CreateAsyncOrderClause(ParameterExpression target, Expression expression, string selector, string method)
+        static Expression CreateAsyncOrderClause(ParameterExpression target, Expression expression, string selector, bool initial, bool descending)
         {
             var keySelector = Expression.Lambda(DynamicQuery.CreateMemberAccess(target, selector), target);
+
+            var method = initial ? (descending ? nameof(System.Linq.AsyncQueryable.OrderByDescending)
+                                               : nameof(System.Linq.AsyncQueryable.OrderBy))
+                                 : (descending ? nameof(System.Linq.AsyncQueryable.ThenByDescending)
+                                               : nameof(System.Linq.AsyncQueryable.ThenBy));
 
             return Expression.Call(typeof(System.Linq.AsyncQueryable), method, new[] { target.Type, keySelector.ReturnType },
                 expression, Expression.Quote(keySelector));
         }
 
-        static Expression CreateAsyncWhereClause(ParameterExpression target, Expression expression, string selector, DynamicCompare comparer, string value)
+        static Expression CreateAsyncWhereClause(ParameterExpression target, Expression expression, Expression comparison)
         {
-            var predicate = Expression.Lambda(DynamicQuery.CreateComparison(target, selector, comparer, value), target);
-
-            return Expression.Call(typeof(System.Linq.AsyncQueryable), nameof(System.Linq.AsyncQueryable.Where), new[] { target.Type },
-                expression, Expression.Quote(predicate));
-        }
-
-        static Expression CreateAsyncWhereClause(ParameterExpression target, Expression expression, string selector, string comparer, string value)
-        {
-            var predicate = Expression.Lambda(DynamicQuery.CreateComparison(target, selector, comparer, value), target);
+            var predicate = Expression.Lambda(comparison, target);
 
             return Expression.Call(typeof(System.Linq.AsyncQueryable), nameof(System.Linq.AsyncQueryable.Where), new[] { target.Type },
                 expression, Expression.Quote(predicate));

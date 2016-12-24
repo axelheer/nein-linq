@@ -31,10 +31,10 @@ namespace NeinLinq.Tests.DynamicQuery
         [InlineData(DynamicCompare.LessThanOrEqual, new[] { 1, 2, 3, 4, 5 })]
         public async Task ShouldFilterByComparison(DynamicCompare comparison, int[] result)
         {
-            var value = (222.222m).ToString(CultureInfo.CurrentCulture);
+            var culture = new CultureInfo("de-AT");
 
             var empty = data.Where("Number", comparison, null);
-            var compare = data.Where("Number", comparison, value);
+            var compare = data.Where("Number", comparison, "222,222", culture);
 
             var emptyResult = await empty.Select(d => d.Id).ToArray();
             var compareResult = await compare.Select(d => d.Id).ToArray();

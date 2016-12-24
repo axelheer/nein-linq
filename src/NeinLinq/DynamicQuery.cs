@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -23,8 +22,9 @@ namespace NeinLinq
         /// <param name="selector">The property selector to parse.</param>
         /// <param name="comparer">The comparison method to use.</param>
         /// <param name="value">The reference value to compare with.</param>
+        /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The dynamic predicate.</returns>
-        public static Expression<Func<T, bool>> CreatePredicate<T>(string selector, DynamicCompare comparer, string value)
+        public static Expression<Func<T, bool>> CreatePredicate<T>(string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
         {
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -33,7 +33,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value), target);
+            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value, provider), target);
         }
 
         /// <summary>
@@ -43,8 +43,9 @@ namespace NeinLinq
         /// <param name="selector">The property selector to parse.</param>
         /// <param name="comparer">The comparison method to use.</param>
         /// <param name="value">The reference value to compare with.</param>
+        /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The dynamic predicate.</returns>
-        public static Expression<Func<T, bool>> CreatePredicate<T>(string selector, string comparer, string value)
+        public static Expression<Func<T, bool>> CreatePredicate<T>(string selector, string comparer, string value, IFormatProvider provider = null)
         {
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -53,13 +54,13 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value), target);
+            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value, provider), target);
         }
 
-        internal static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value)
+        internal static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider provider)
         {
             var memberAccess = CreateMemberAccess(target, selector);
-            var actualValue = CreateConstant(target, memberAccess, value);
+            var actualValue = CreateConstant(target, memberAccess, value, provider);
 
             switch (comparer)
             {
@@ -86,10 +87,10 @@ namespace NeinLinq
             }
         }
 
-        internal static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value)
+        internal static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider provider)
         {
             var memberAccess = CreateMemberAccess(target, selector);
-            var actualValue = CreateConstant(target, memberAccess, value);
+            var actualValue = CreateConstant(target, memberAccess, value, provider);
 
             return Expression.Call(memberAccess, comparer, null, actualValue);
         }
@@ -101,7 +102,7 @@ namespace NeinLinq
 
         static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
 
-        static Expression CreateConstant(ParameterExpression target, Expression selector, string value)
+        static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)
         {
             var type = Expression.Lambda(selector, target).ReturnType;
 
@@ -109,7 +110,7 @@ namespace NeinLinq
                 return Expression.Default(type);
 
             var converter = cache.GetOrAdd(type, CreateConverter);
-            var convertedValue = converter(value, CultureInfo.CurrentCulture);
+            var convertedValue = converter(value, provider);
 
             return Expression.Constant(convertedValue, type);
         }
@@ -123,13 +124,13 @@ namespace NeinLinq
 
             var expression = (Expression)target;
 
-            var cultureParse = type.GetRuntimeMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
-            if (cultureParse != null)
-                expression = Expression.Call(cultureParse, target, format);
-
             var ordinalParse = type.GetRuntimeMethod("Parse", new[] { typeof(string) });
             if (ordinalParse != null)
                 expression = Expression.Call(ordinalParse, target);
+
+            var cultureParse = type.GetRuntimeMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+            if (cultureParse != null)
+                expression = Expression.Call(cultureParse, target, format);
 
             return Expression.Lambda<Func<string, IFormatProvider, object>>(
                 Expression.Convert(expression, typeof(object)), target, format).Compile();

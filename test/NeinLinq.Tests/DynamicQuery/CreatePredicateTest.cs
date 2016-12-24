@@ -30,10 +30,10 @@ namespace NeinLinq.Tests.DynamicQuery
         [InlineData(DynamicCompare.LessThanOrEqual, new[] { 1, 2, 3, 4, 5 })]
         public void ShouldCreateComparison(DynamicCompare comparison, int[] result)
         {
-            var value = (222.222m).ToString(CultureInfo.CurrentCulture);
+            var culture = new CultureInfo("de-AT");
 
             var empty = CreatePredicate<Dummy>("Number", comparison, null);
-            var compare = CreatePredicate<Dummy>("Number", comparison, value);
+            var compare = CreatePredicate<Dummy>("Number", comparison, "222,222", culture);
 
             var emptyResult = data.Where(empty).Select(d => d.Id).ToArray();
             var compareResult = data.Where(compare).Select(d => d.Id).ToArray();
