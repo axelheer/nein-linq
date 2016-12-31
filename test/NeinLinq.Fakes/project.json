@@ -2,7 +2,7 @@
   "version": "2.0.0-*",
 
   "buildOptions": {
-    "debugType": "portable"
+    "debugType": "full"
   },
 
   "dependencies": {
