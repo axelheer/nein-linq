@@ -13,6 +13,8 @@ namespace NeinLinq.Fakes.InjectableQuery
 
         public double Time { get; set; }
 
+        public double Velocity => Distance / Time;
+
         [InjectLambda(nameof(InjectVelocityInternal))]
         public double VelocityInternal { get; }
 
