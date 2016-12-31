@@ -4,19 +4,11 @@ using System.Linq.Expressions;
 
 namespace NeinLinq
 {
-    /// <summary>
-    /// Rebinds a parameter or a parameterized lambda expression.
-    /// </summary>
-    public class ParameterBinder : ExpressionVisitor
+    sealed class ParameterBinder : ExpressionVisitor
     {
         readonly ParameterExpression parameter;
         readonly Expression replacement;
 
-        /// <summary>
-        /// Creates a new parameter binder.
-        /// </summary>
-        /// <param name="parameter">The parameter to search for.</param>
-        /// <param name="replacement">The expression to replace with.</param>
         public ParameterBinder(ParameterExpression parameter, Expression replacement)
         {
             if (parameter == null)
@@ -28,7 +20,6 @@ namespace NeinLinq
             this.replacement = replacement;
         }
 
-        /// <inheritdoc />
         protected override Expression VisitParameter(ParameterExpression node)
         {
             if (node == parameter)
@@ -39,7 +30,6 @@ namespace NeinLinq
             return base.VisitParameter(node);
         }
 
-        /// <inheritdoc />
         protected override Expression VisitInvocation(InvocationExpression node)
         {
             if (node == null)
