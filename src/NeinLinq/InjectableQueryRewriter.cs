@@ -70,21 +70,18 @@ namespace NeinLinq
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (node.Method != null)
+            // cache "meta-data" for performance reasons
+            var data = cache.GetOrAdd(node.Method, _ => InjectLambdaMetadata.Create(node.Method));
+
+            if (ShouldInject(node.Method, data))
             {
-                // cache "meta-data" for performance reasons
-                var data = cache.GetOrAdd(node.Method, _ => InjectLambdaMetadata.Create(node.Method));
+                var lambda = data.Lambda(node.Object);
 
-                if (ShouldInject(node.Method, data))
-                {
-                    var lambda = data.Lambda(node.Object);
+                // rebind expression parameters for current arguments
+                var binders = lambda.Parameters.Zip(node.Arguments,
+                    (p, a) => new ParameterBinder(p, a));
 
-                    // rebind expression parameters for current arguments
-                    var binders = lambda.Parameters.Zip(node.Arguments,
-                        (p, a) => new ParameterBinder(p, a));
-
-                    return Visit(binders.Aggregate(lambda.Body, (e, b) => b.Visit(e)));
-                }
+                return Visit(binders.Aggregate(lambda.Body, (e, b) => b.Visit(e)));
             }
 
             return base.VisitMethodCall(node);

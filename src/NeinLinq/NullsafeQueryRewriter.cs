@@ -23,12 +23,7 @@ namespace NeinLinq
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (node.Expression != null)
-            {
-                return MakeNullsafe(node, node.Expression);
-            }
-
-            return base.VisitMember(node);
+            return MakeNullsafe(node, node.Expression);
         }
 
         /// <inheritdoc />

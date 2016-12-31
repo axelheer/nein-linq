@@ -12,11 +12,6 @@ namespace NeinLinq
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (valueFactory == null)
-                throw new ArgumentNullException(nameof(valueFactory));
-
             cacheLock.EnterUpgradeableReadLock();
 
             try
