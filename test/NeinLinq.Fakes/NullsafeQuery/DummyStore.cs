@@ -12,7 +12,8 @@ namespace NeinLinq.Fakes.NullsafeQuery
                 SomeNumeric = 7,
                 SomeText = "Narf",
                 OneDay = new DateTime(1977, 05, 25),
-                SomeOther = new Dummy { SomeNumeric = 42 }
+                SomeOther = new Dummy { SomeNumeric = 42 },
+                DaNullable = 2017
             },
             new Dummy
             {

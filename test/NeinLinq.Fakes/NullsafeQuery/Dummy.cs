@@ -13,6 +13,8 @@ namespace NeinLinq.Fakes.NullsafeQuery
 
         public Dummy SomeOther { get; set; }
 
+        public int? DaNullable { get; set; }
+
         public IEnumerable<Dummy> SomeOthers { get; set; }
 
         public ICollection<Dummy> MoreOthers { get; set; }
