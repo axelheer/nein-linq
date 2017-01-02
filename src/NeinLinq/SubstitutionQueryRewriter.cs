@@ -37,7 +37,7 @@ namespace NeinLinq
             if (node.Method.DeclaringType == from)
             {
                 var typeArguments = node.Method.GetGenericArguments();
-                var arguments = node.Arguments.Select(a => Visit(a)).ToArray();
+                var arguments = node.Arguments.Select(Visit).ToArray();
 
                 // assume equivalent method signature
                 return Expression.Call(to, node.Method.Name, typeArguments, arguments);

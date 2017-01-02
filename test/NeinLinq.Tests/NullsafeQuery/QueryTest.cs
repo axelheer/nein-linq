@@ -23,7 +23,7 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Equal(0, r.Year),
+                r => Assert.Equal(1, r.Year),
                 r => Assert.Equal(1977, r.Year),
                 r => Assert.Equal(1980, r.Year),
                 r => Assert.Equal(1983, r.Year),
@@ -83,10 +83,10 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Equal(null, r.FirstWord),
+                r => Assert.Equal("", r.FirstWord),
                 r => Assert.Equal("Narf", r.FirstWord),
                 r => Assert.Equal("What", r.FirstWord),
-                r => Assert.Equal(null, r.FirstWord),
+                r => Assert.Equal("", r.FirstWord),
                 r => Assert.Equal("", r.FirstWord));
         }
 
