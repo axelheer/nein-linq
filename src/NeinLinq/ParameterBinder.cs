@@ -11,12 +11,20 @@ namespace NeinLinq
 
         public ParameterBinder(ParameterExpression parameter, Expression replacement)
         {
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+            if (replacement == null)
+                throw new ArgumentNullException(nameof(replacement));
+
             this.parameter = parameter;
             this.replacement = replacement;
         }
 
         protected override Expression VisitParameter(ParameterExpression node)
         {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
             if (node == parameter)
             {
                 return replacement;

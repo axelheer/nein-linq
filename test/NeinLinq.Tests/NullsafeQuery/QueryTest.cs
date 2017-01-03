@@ -77,7 +77,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            FirstWord = a.SomeText.Split(' ').FirstOrDefault()
+                            FirstWord = a.SomeText.Split(' ')[0]
                         };
 
             var result = query.ToList();
