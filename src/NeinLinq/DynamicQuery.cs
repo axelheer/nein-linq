@@ -15,6 +15,8 @@ namespace NeinLinq
     /// </summary>
     public static class DynamicQuery
     {
+        static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
+
         /// <summary>
         /// Create a dynamic predicate for a given property selector, comparison method and reference value.
         /// </summary>
@@ -100,8 +102,6 @@ namespace NeinLinq
             return selector.Split('.').Aggregate(target, (t, n) => Expression.PropertyOrField(t, n));
         }
 
-        static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
-
         static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)
         {
             var type = Expression.Lambda(selector, target).ReturnType;
@@ -117,18 +117,18 @@ namespace NeinLinq
 
         static Func<string, IFormatProvider, object> CreateConverter(Type type)
         {
-            type = Nullable.GetUnderlyingType(type) ?? type;
+            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
 
             var target = Expression.Parameter(typeof(string));
             var format = Expression.Parameter(typeof(IFormatProvider));
 
             var expression = (Expression)target;
 
-            var ordinalParse = type.GetRuntimeMethod("Parse", new[] { typeof(string) });
+            var ordinalParse = underlyingType.GetRuntimeMethod("Parse", new[] { typeof(string) });
             if (ordinalParse != null)
                 expression = Expression.Call(ordinalParse, target);
 
-            var cultureParse = type.GetRuntimeMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+            var cultureParse = underlyingType.GetRuntimeMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
             if (cultureParse != null)
                 expression = Expression.Call(cultureParse, target, format);
 
