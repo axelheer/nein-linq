@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-
-#if !NET40
-
-using System.Reflection;
-
-#endif
 
 namespace NeinLinq
 {
@@ -15,8 +8,6 @@ namespace NeinLinq
     /// </summary>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
-        static readonly ObjectCache<Type, Expression> cache = new ObjectCache<Type, Expression>();
-
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
@@ -25,7 +16,13 @@ namespace NeinLinq
 
             var result = (MemberExpression)base.VisitMember(node);
 
-            return MakeNullsafe(result, result.Expression);
+            if (!IsSafe(result.Expression))
+            {
+                // insert null-check before accessing property or field
+                return BeSafe(result, result.Expression);
+            }
+
+            return result;
         }
 
         /// <inheritdoc />
@@ -36,100 +33,40 @@ namespace NeinLinq
 
             var result = (MethodCallExpression)base.VisitMethodCall(node);
 
-            return MakeNullsafe(result, result.Object);
+            if (!IsSafe(result.Object))
+            {
+                // insert null-check before invoking instance method
+                return BeSafe(result, result.Object);
+            }
+
+            if (result.Method.IsExtensionMethod() && !IsSafe(result.Arguments[0]))
+            {
+                // insert null-check before invoking extension method
+                return BeSafe(result, result.Arguments[0]);
+            }
+
+            return result;
         }
 
-        static Expression MakeNullsafe(Expression node, Expression target)
+        static Expression BeSafe(Expression expression, Expression target)
         {
-            var fallback = cache.GetOrAdd(node.Type, TypeFallback);
+            // target can be null, which is why we are actually here...
+            var targetFallback = Expression.Constant(null, target.Type);
 
-            // coalesce to avoid too much conditions, if possible
-            if (!IsNull(node.Type, fallback) && !IsDefault(node.Type, fallback))
-            {
-                node = Expression.Coalesce(node, fallback);
-            }
+            // expression can be default or null, which is basically the same...
+            var expressionFallback = !expression.Type.IsNullableOrReferenceType()
+                ? (Expression)Expression.Default(expression.Type) : Expression.Constant(null, expression.Type);
 
-            if (target != null)
-            {
-                var targetFallback = cache.GetOrAdd(target.Type, TypeFallback);
-
-                // include condition, if null reference is possible
-                if (IsNull(target.Type, targetFallback))
-                {
-                    node = Expression.Condition(Expression.NotEqual(target, targetFallback), node, fallback);
-                }
-            }
-
-            return node;
+            return Expression.Condition(Expression.Equal(target, targetFallback), expressionFallback, expression);
         }
 
-        static Expression TypeFallback(Type type)
+        static bool IsSafe(Expression expression)
         {
-            // default values for generic collections
-            if (type.IsConstructedGenericType() && type.GenericTypeArguments().Length == 1)
-            {
-                var listFallback = GenericCollectionFallback(typeof(List<>), type);
-                if (listFallback != null)
-                    return listFallback;
-
-                var hashSetFallback = GenericCollectionFallback(typeof(HashSet<>), type);
-                if (hashSetFallback != null)
-                    return hashSetFallback;
-            }
-
-            // default value for nullables
-            var underlyingType = Nullable.GetUnderlyingType(type);
-            if (underlyingType != null)
-            {
-                return Expression.Convert(Expression.Default(underlyingType), type);
-            }
-
-            // default value for strings
-            if (type == typeof(string))
-            {
-                return Expression.Constant(string.Empty, typeof(string));
-            }
-
-            // default value for arrays
-            if (type.IsArray)
-            {
-                return Expression.NewArrayInit(type.GetElementType());
-            }
-
-            // default value for references
-            if (!type.GetTypeInfo().IsValueType)
-            {
-                return Expression.Constant(null, type);
-            }
-
-            // default value
-            return Expression.Default(type);
-        }
-
-        static Expression GenericCollectionFallback(Type collectionDefinition, Type type)
-        {
-            var collectionType = collectionDefinition.MakeGenericType(type.GenericTypeArguments());
-
-            // try if an instance of this collection would suffice
-            if (type.GetTypeInfo().IsAssignableFrom(collectionType.GetTypeInfo()))
-            {
-                return Expression.Convert(Expression.New(collectionType), type);
-            }
-
-            return null;
-        }
-
-        static bool IsDefault(Type type, Expression value)
-        {
-            return value.Type == type &&
-                value.NodeType == ExpressionType.Default;
-        }
-
-        static bool IsNull(Type type, Expression value)
-        {
-            return value.Type == type &&
-                value.NodeType == ExpressionType.Constant &&
-                ((ConstantExpression)value).Value == null;
+            // in method call results and constant values we trust to avoid too much conditions...
+            return expression == null
+                || expression.NodeType == ExpressionType.Call
+                || expression.NodeType == ExpressionType.Constant
+                || !expression.Type.IsNullableOrReferenceType();
         }
     }
 }

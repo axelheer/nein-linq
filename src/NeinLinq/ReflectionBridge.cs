@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace NeinLinq
 {
@@ -73,5 +74,14 @@ namespace NeinLinq
 
 #endif
 
+        public static bool IsExtensionMethod(this MethodInfo element)
+        {
+            return element.IsDefined(typeof(ExtensionAttribute), false);
+        }
+
+        public static bool IsNullableOrReferenceType(this Type type)
+        {
+            return !type.GetTypeInfo().IsValueType || Nullable.GetUnderlyingType(type) != null;
+        }
     }
 }
