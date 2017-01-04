@@ -21,7 +21,7 @@
       "url": "http://github.com/axelheer/nein-linq"
     },
 
-    "releaseNotes": "Reorganized code to better support different LINQ implementations."
+    "releaseNotes": "- Reorganized code to better support different LINQ implementations.\r\n- Added support for interactive LINQ queries (ReactiveX).\r\n- Added custom format provider to dynamic query.\r\n- Improved null-safety to be less intrusive."
   },
 
   "dependencies": {
