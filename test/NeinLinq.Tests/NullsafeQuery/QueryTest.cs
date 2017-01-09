@@ -77,7 +77,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            FirstWord = a.SomeText.Split(' ').First()
+                            FirstWord = a.SomeText.Split(' ').FirstOrDefault()
                         };
 
             var result = query.ToList();
@@ -104,11 +104,11 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Null(r.Other),
-                r => Assert.Null(r.Other),
+                r => Assert.Empty(r.Other),
+                r => Assert.Empty(r.Other),
                 r => Assert.Equal(new[] { 3, 6 }, r.Other),
-                r => Assert.Null(r.Other),
-                r => Assert.Null(r.Other));
+                r => Assert.Empty(r.Other),
+                r => Assert.Empty(r.Other));
         }
 
         [Fact]
@@ -125,11 +125,11 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Null(r.More),
-                r => Assert.Null(r.More),
-                r => Assert.Null(r.More),
+                r => Assert.Empty(r.More),
+                r => Assert.Empty(r.More),
+                r => Assert.Empty(r.More),
                 r => Assert.Equal(new[] { 5, 8 }, r.More),
-                r => Assert.Null(r.More));
+                r => Assert.Empty(r.More));
         }
 
         [Fact]
@@ -146,10 +146,10 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Null(r.Lot),
-                r => Assert.Null(r.Lot),
-                r => Assert.Null(r.Lot),
-                r => Assert.Null(r.Lot),
+                r => Assert.Empty(r.Lot),
+                r => Assert.Empty(r.Lot),
+                r => Assert.Empty(r.Lot),
+                r => Assert.Empty(r.Lot),
                 r => Assert.Equal(new[] { 4, 7}, r.Lot));
         }
 
