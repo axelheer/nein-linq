@@ -22,6 +22,7 @@ namespace NeinLinq.Fakes.NullsafeQuery
                 OneDay = new DateTime(1980, 05, 21),
                 SomeOthers = new[]
                 {
+                    null,
                     new Dummy { OneDay = new DateTime(2000, 3, 1) },
                     new Dummy { OneDay = new DateTime(2000, 6, 1) }
                 }
@@ -33,6 +34,8 @@ namespace NeinLinq.Fakes.NullsafeQuery
                 OneDay = new DateTime(1983, 05, 25),
                 MoreOthers = new[]
                 {
+                    null,
+                    new Dummy(),
                     new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 5) } },
                     new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 8) } }
                 }
@@ -44,6 +47,8 @@ namespace NeinLinq.Fakes.NullsafeQuery
                 OneDay = new DateTime(2015, 12, 18),
                 EvenLotMoreOthers = new HashSet<Dummy>
                 {
+                    null,
+                    new Dummy(),
                     new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 4) } },
                     new Dummy { SomeOther = new Dummy { OneDay = new DateTime(2000, 1, 7) } }
                 }

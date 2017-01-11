@@ -106,7 +106,7 @@ namespace NeinLinq.Tests.NullsafeQuery
             Assert.Collection(result,
                 r => Assert.Empty(r.Other),
                 r => Assert.Empty(r.Other),
-                r => Assert.Equal(new[] { 3, 6 }, r.Other),
+                r => Assert.Equal(new[] { 1, 3, 6 }, r.Other),
                 r => Assert.Empty(r.Other),
                 r => Assert.Empty(r.Other));
         }
@@ -128,7 +128,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                 r => Assert.Empty(r.More),
                 r => Assert.Empty(r.More),
                 r => Assert.Empty(r.More),
-                r => Assert.Equal(new[] { 5, 8 }, r.More),
+                r => Assert.Equal(new[] { 1, 1, 5, 8 }, r.More),
                 r => Assert.Empty(r.More));
         }
 
@@ -150,7 +150,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                 r => Assert.Empty(r.Lot),
                 r => Assert.Empty(r.Lot),
                 r => Assert.Empty(r.Lot),
-                r => Assert.Equal(new[] { 4, 7}, r.Lot));
+                r => Assert.Equal(new[] { 1, 1, 4, 7}, r.Lot));
         }
 
         [Fact]
@@ -186,6 +186,24 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Equal(3, result.Count);
+        }
+
+        [Fact]
+        public void ShouldBeNice()
+        {
+            var query = from a in data.ToNullsafe()
+                        let x = a.SomeOthers.FirstOrDefault()
+                        let y = a.MoreOthers.FirstOrDefault()
+                        let z = a.EvenLotMoreOthers.FirstOrDefault()
+                        orderby a.SomeNumeric
+                        select new DummyView
+                        {
+                            Year = x.OneDay.Year,
+                            Numeric = y.SomeOther.SomeNumeric,
+                            Question = z.SomeText.Contains("?")
+                        };
+
+            var result = query.ToList();
         }
     }
 }

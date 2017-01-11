@@ -23,15 +23,15 @@ namespace NeinLinq
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            var result = (MemberExpression)base.VisitMember(node);
+            var target = Visit(node.Expression);
 
-            if (!IsSafe(result.Expression))
+            if (!IsSafe(target))
             {
                 // insert null-check before accessing property or field
-                return BeSafe(result, result.Expression, result.Update);
+                return BeSafe(node, target, node.Update);
             }
 
-            return result;
+            return node.Update(target);
         }
 
         /// <inheritdoc />
@@ -40,28 +40,30 @@ namespace NeinLinq
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            var result = (MethodCallExpression)base.VisitMethodCall(node);
+            var target = Visit(node.Object);
 
-            if (!IsSafe(result.Object))
+            if (!IsSafe(target))
             {
                 // insert null-check before invoking instance method
-                return BeSafe(result, result.Object, fallback => result.Update(fallback, result.Arguments));
+                return BeSafe(node, target, fallback => node.Update(fallback, node.Arguments));
             }
 
-            if (result.Method.IsExtensionMethod() && !IsSafe(result.Arguments[0]))
+            var arguments = Visit(node.Arguments);
+
+            if (node.Method.IsExtensionMethod() && !IsSafe(arguments[0]))
             {
                 // insert null-check before invoking extension method
-                return BeSafe(result, result.Arguments[0], fallback =>
+                return BeSafe(node, arguments[0], fallback =>
                 {
-                    var arguments = new Expression[result.Arguments.Count];
-                    result.Arguments.CopyTo(arguments, 0);
-                    arguments[0] = fallback;
+                    var args = new Expression[arguments.Count];
+                    arguments.CopyTo(args, 0);
+                    args[0] = fallback;
 
-                    return result.Update(result.Object, arguments);
+                    return node.Update(null, args);
                 });
             }
 
-            return result;
+            return node.Update(target, arguments);
         }
 
         static Expression BeSafe(Expression expression, Expression target, Func<Expression, Expression> update)
