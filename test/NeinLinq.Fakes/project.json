@@ -6,7 +6,9 @@
   },
 
   "dependencies": {
-    "NeinLinq": "2.0.0-*"
+    "NeinLinq": {
+      "target": "project"
+    }
   },
 
   "frameworks": {

@@ -25,7 +25,9 @@
   },
 
   "dependencies": {
-    "NeinLinq": "2.0.0-*",
+    "NeinLinq": {
+      "target": "project"
+    },
     "System.Interactive.Async.Providers": "3.0.0",
     "RefactoringEssentials": {
       "version": "4.4.0",
