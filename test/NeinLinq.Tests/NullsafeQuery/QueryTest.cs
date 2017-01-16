@@ -174,6 +174,19 @@ namespace NeinLinq.Tests.NullsafeQuery
         }
 
         [Fact]
+        public void ShouldResolveNestedExtensions()
+        {
+            var query = from a in data.ToNullsafe()
+                        group a by a.MoreOthers.Count() into g
+                        where g.Key > 0
+                        select g.Sum(b => b.MoreOthers.Sum(c => c.SomeOther.OneDay.Month));
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 4 }, result);
+        }
+
+        [Fact]
         public void ShouldIgnoreStaticMember()
         {
             var query = from _ in Enumerable.Range(1, 3).AsQueryable().ToNullsafe()
