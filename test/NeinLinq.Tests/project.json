@@ -22,7 +22,7 @@
     },
     "System.Interactive.Async.Providers": "3.1.1",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
-    "xunit": "2.2.0-beta4-build3444"
+    "xunit": "2.2.0-rc2-build3523"
   },
 
   "tools": {

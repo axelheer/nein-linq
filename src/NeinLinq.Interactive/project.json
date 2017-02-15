@@ -28,11 +28,7 @@
     "NeinLinq": {
       "target": "project"
     },
-    "System.Interactive.Async.Providers": "3.0.0",
-    "RefactoringEssentials": {
-      "version": "4.4.0",
-      "type": "build"
-    }
+    "System.Interactive.Async.Providers": "3.0.0"
   },
 
   "frameworks": {

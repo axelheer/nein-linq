@@ -28,11 +28,7 @@
     "NeinLinq": {
       "target": "project"
     },
-    "EntityFramework": "6.0.0",
-    "RefactoringEssentials": {
-      "version": "4.4.0",
-      "type": "build"
-    }
+    "EntityFramework": "6.0.0"
   },
 
   "frameworks": {
