@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\NeinLinq.props" />
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFrameworks>net40;netstandard1.0</TargetFrameworks>
+  </PropertyGroup>
+
+</Project>

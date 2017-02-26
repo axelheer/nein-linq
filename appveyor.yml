@@ -2,6 +2,13 @@ version: 2.0.1-ci{build}
 
 skip_tags: true
 
+install:
+  - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.ps1" -OutFile ".\dotnet-install.ps1"
+  - ps: $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetcli"
+  - ps: '& .\dotnet-install.ps1 -InstallDir "$env:DOTNET_INSTALL_DIR" -Version 1.0.0-rc4-004771 -NoPath'
+  - ps: $env:PATH = "$env:DOTNET_INSTALL_DIR;$env:PATH"
+  - ps: $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "true"
+
 build_script:
   - cmd: build
 
@@ -9,7 +16,7 @@ test_script:
   - cmd: test
 
 artifacts:
-  - path: '**\*.nupkg'
+  - path: 'src\**\*.nupkg'
   - path: TestResults
 
 deploy:

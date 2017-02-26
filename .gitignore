@@ -3,7 +3,6 @@
 *.suo
 *.user
 *.vscode
-*.lock.json
 
 # Build
 bin/
