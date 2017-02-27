@@ -1,4 +1,4 @@
-using NeinLinq.Fakes.NullsafeQuery;
+﻿using NeinLinq.Fakes.NullsafeQuery;
 using NeinLinq.Interactive;
 using System.Linq;
 using Xunit;

@@ -1,4 +1,4 @@
-using NeinLinq.Fakes.InjectableQuery;
+﻿using NeinLinq.Fakes.InjectableQuery;
 using NeinLinq.Queryable;
 using System;
 using System.Linq;

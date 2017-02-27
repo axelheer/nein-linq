@@ -1,4 +1,4 @@
-using NeinLinq.Fakes.SelectorTranslator;
+﻿using NeinLinq.Fakes.SelectorTranslator;
 using System;
 using Xunit;
 

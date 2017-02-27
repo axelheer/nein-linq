@@ -1,4 +1,4 @@
-using NeinLinq.Fakes.RewriteQuery;
+﻿using NeinLinq.Fakes.RewriteQuery;
 using NeinLinq.Interactive;
 using System;
 using System.Threading;

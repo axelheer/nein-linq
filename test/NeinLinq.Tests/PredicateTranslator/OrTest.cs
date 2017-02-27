@@ -1,4 +1,4 @@
-using NeinLinq.Fakes.PredicateTranslator;
+﻿using NeinLinq.Fakes.PredicateTranslator;
 using System;
 using System.Linq;
 using System.Linq.Expressions;

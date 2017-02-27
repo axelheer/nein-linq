@@ -1,4 +1,4 @@
-using NeinLinq.Interactive;
+﻿using NeinLinq.Interactive;
 using NeinLinq.Fakes.SubstitutionQuery;
 using System;
 using System.Linq;
