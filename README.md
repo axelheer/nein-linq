@@ -136,6 +136,27 @@ public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
 
 The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic.
 
+*Note:* code duplication should not be necessary. The ordinary method can just compile the expression, ideally only once. A straightforward solution can look like the following code sample (it's possible to encapsulate / organize this stuff however sophisticated it seems fit, *NeinLinq* has no specific requirements; feel free to build some kind of "Expression Cache"...):
+
+```csharp
+static Func<string, int, string> limitText = LimitText().Compile();
+
+[InjectLambda]
+public static string LimitText(this string value, int maxLength)
+{
+    return limitText(value, maxLength);
+}
+
+// -------------------------------------------------------------------
+
+[InjectLambda]
+public static string LimitText(this string value, int maxLength)
+{
+    // for the lazy (compiles every time...)
+    return LimitText().Compile()(value, maxLength);
+}
+```
+
 **New:** that works with instance methods too (Version `1.3.1`), so the actual expression code is finally able to retrieve additional data. Since Version `1.5.1` even interfaces and / or base classes can be used to abstract all the things. Thus, we can declare an interface / base class without expressions, but provide the expression to inject using inheritance.
 
 ```csharp
