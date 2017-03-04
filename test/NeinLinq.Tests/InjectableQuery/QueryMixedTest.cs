@@ -16,7 +16,9 @@ namespace NeinLinq.Tests.InjectableQuery
             var query = from d in data.ToInjectable(typeof(MixedFunctions))
                         select MixedFunctions.VelocityStaticToInstance(d);
 
-            Assert.Throws<InvalidOperationException>(() => query.ToList());
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.MixedFunctions.VelocityStaticToInstance: static implementation expected.", error.Message);
         }
 
         [Fact]
@@ -27,7 +29,9 @@ namespace NeinLinq.Tests.InjectableQuery
             var query = from d in data.ToInjectable(typeof(MixedFunctions))
                         select functions.VelocityInstanceToStatic(d);
 
-            Assert.Throws<InvalidOperationException>(() => query.ToList());
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.MixedFunctions.VelocityInstanceToStatic: non-static implementation expected.", error.Message);
         }
     }
 }

@@ -130,7 +130,7 @@ namespace NeinLinq
             // assume method without any parameters
             var factory = target.GetRuntimeMethod(method, emptyTypes) ?? target.GetRuntimeProperty(method + "Expr")?.GetMethod();
             if (factory == null)
-                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless method found.");
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless member found.");
 
             // mixed static and instance methods?
             if (!instance && !factory.IsStatic)
@@ -141,12 +141,12 @@ namespace NeinLinq
             // method returns lambda expression?
             var returns = factory.ReturnType;
             if (!returns.IsConstructedGenericType() || returns.GetGenericTypeDefinition() != typeof(Expression<>))
-                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method does not return generic lambda expression.");
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns no lambda expression.");
 
             // lambda signature matches original method's signature?
             var signature = returns.GenericTypeArguments()[0].GetRuntimeMethod("Invoke", args);
             if (signature == null || signature.ReturnParameter.ParameterType != result)
-                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns lambda expression with non matching signature.");
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns non-matching expression.");
 
             return factory;
         }

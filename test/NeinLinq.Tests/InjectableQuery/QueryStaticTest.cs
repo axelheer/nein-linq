@@ -16,7 +16,9 @@ namespace NeinLinq.Tests.InjectableQuery
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithoutSibling();
 
-            Assert.Throws<InvalidOperationException>(() => query.ToList());
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithoutSibling: no parameterless member found.", error.Message);
         }
 
         [Fact]
@@ -80,7 +82,9 @@ namespace NeinLinq.Tests.InjectableQuery
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithInvalidSiblingResult();
 
-            Assert.Throws<InvalidOperationException>(() => query.ToList());
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidSiblingResult: method returns no lambda expression.", error.Message);
         }
 
         [Fact]
@@ -89,7 +93,9 @@ namespace NeinLinq.Tests.InjectableQuery
             var query = from d in data.ToInjectable(typeof(Functions))
                         select d.VelocityWithInvalidSiblingSignature();
 
-            Assert.Throws<InvalidOperationException>(() => query.ToList());
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidSiblingSignature: method returns non-matching expression.", error.Message);
         }
     }
 }
