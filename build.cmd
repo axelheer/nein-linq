@@ -1,15 +1,18 @@
 @echo off
 
 if [%appveyor_repo_branch%]==[release] (
-  set build_options=--configuration Release
+  set build_options=/p:VersionSuffix=
 ) else if defined appveyor_build_number (
-  set build_options=--configuration Release --version-suffix ci%appveyor_build_number%
+  set build_options=/p:VersionSuffix=ci%appveyor_build_number%
 ) else (
-  set build_options=--configuration Release --version-suffix yolo
+  set build_options=/p:VersionSuffix=yolo
 )
 
 dotnet --info || goto :eof
-dotnet restore || goto :eof
-dotnet build %build_options% || goto :eof
-dotnet build %build_options:Release=Debug% || goto :eof
-dotnet pack --include-symbols %build_options% || goto :eof
+
+dotnet restore %build_options% || goto :eof
+
+dotnet build --configuration Debug %build_options% || goto :eof
+dotnet build --configuration Release %build_options% || goto :eof
+
+dotnet pack --configuration Release --include-symbols %build_options% || goto :eof

@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\NeinLinq.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
