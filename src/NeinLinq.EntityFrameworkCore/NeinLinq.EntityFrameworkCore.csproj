@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

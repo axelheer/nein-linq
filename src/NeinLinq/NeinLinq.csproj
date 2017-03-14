@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TargetFrameworks>net40;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;net40</TargetFrameworks>
   </PropertyGroup>
 
 </Project>
