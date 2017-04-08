@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -71,6 +72,7 @@ namespace NeinLinq.EntityFrameworkCore
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope", Justification = "Returning that object.")]
         public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
         {
             // execute query with rewritten expression; async, if possible

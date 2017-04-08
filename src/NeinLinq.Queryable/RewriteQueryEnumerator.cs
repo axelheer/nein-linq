@@ -76,5 +76,11 @@ namespace NeinLinq.Queryable
 
         /// <inheritdoc />
         public new T Current => enumerator.Current;
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }

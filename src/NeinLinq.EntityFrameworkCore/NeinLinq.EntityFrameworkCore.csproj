@@ -2,6 +2,8 @@
 
   <Import Project="..\..\NeinLinq.props" />
 
+  <Import Project="..\..\CodeAnalysis.props" />
+
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>

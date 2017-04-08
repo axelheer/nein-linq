@@ -1,0 +1,13 @@
+﻿<Project>
+
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\..\CodeAnalysis.xml" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+
+</Project>

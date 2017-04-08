@@ -84,5 +84,11 @@ namespace NeinLinq.EntityFrameworkCore
         {
             return Task.FromResult(enumerator.MoveNext());
         }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }
