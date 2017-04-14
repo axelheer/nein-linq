@@ -1,0 +1,15 @@
+language: csharp
+
+dist: trusty
+
+mono: none
+
+dotnet: 1.0.1
+
+script:
+  - dotnet --info
+  - dotnet restore
+  - dotnet build src/NeinLinq.Queryable/NeinLinq.Queryable.csproj --configuration Release --framework netstandard1.0
+  - dotnet build src/NeinLinq.Interactive/NeinLinq.Interactive.csproj --configuration Release --framework netstandard1.0
+  - dotnet build src/NeinLinq.EntityFrameworkCore/NeinLinq.EntityFrameworkCore.csproj --configuration Release --framework netstandard1.3
+  - dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp1.1

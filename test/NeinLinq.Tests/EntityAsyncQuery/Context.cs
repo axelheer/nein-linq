@@ -1,5 +1,6 @@
 ﻿using NeinLinq.Fakes.DbAsyncQuery;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace NeinLinq.Tests.EntityAsyncQuery
 {
@@ -9,7 +10,14 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NeinLinq.EntityFrameworkCore; Integrated Security=true;");
+            if (Environment.GetEnvironmentVariable("OS") == "Windows_NT")
+            {
+                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NeinLinq.EntityFrameworkCore; Integrated Security=true;");
+            }
+            else
+            {
+                optionsBuilder.UseInMemoryDatabase("NeinLinq.EntityFrameworkCore");
+            }
         }
 
         public void ResetDatabase()
