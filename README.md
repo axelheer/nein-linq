@@ -7,7 +7,7 @@
 [![Line coverage](https://axelheer.blob.core.windows.net/github/nein-linq/report/badge_linecoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/report/index.htm)
 [![Branch coverage](https://axelheer.blob.core.windows.net/github/nein-linq/report/badge_branchcoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/report/index.htm)
 
-*NeinLinq* provides helpful extensions for using LINQ providers supporting only a minor subset of .NET functions (like Entity Framework), reusing functions, rewriting queries (even making them null-safe), and building dynamic queries using (translatable) predicates / selectors.
+*NeinLinq* provides helpful extensions for using LINQ providers such as Entity Framework that support only a minor subset of .NET functions, reusing functions, rewriting queries, even making them null-safe, and building dynamic queries using translatable predicates and selectors.
 
 To support different LINQ implementations, the following flavours are available. Choose at least one.
 
