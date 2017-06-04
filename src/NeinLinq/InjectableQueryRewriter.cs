@@ -3,12 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-#if NET40
-
-using TypeInfo = System.Type;
-
-#endif
-
 namespace NeinLinq
 {
     /// <summary>
@@ -42,7 +36,7 @@ namespace NeinLinq
 
             var property = node.Member as PropertyInfo;
 
-            if (property?.GetMethod() != null && property.SetMethod() == null)
+            if (property?.GetMethod != null && property.SetMethod == null)
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));

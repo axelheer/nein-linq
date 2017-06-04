@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-
-#if !NET40
-
 using System.Reflection;
-
-#endif
 
 namespace NeinLinq
 {

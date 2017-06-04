@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-
-#if !NET40
-
 using System.Reflection;
-
-#endif
+using System.Runtime.CompilerServices;
 
 namespace NeinLinq
 {
@@ -50,7 +46,7 @@ namespace NeinLinq
 
             var arguments = Visit(node.Arguments);
 
-            if (node.Method.IsExtensionMethod() && !IsSafe(arguments[0]))
+            if (IsExtensionMethod(node.Method) && !IsSafe(arguments[0]))
             {
                 // insert null-check before invoking extension method
                 return BeSafe(arguments[0], node.Update(null, arguments), fallback =>
@@ -80,7 +76,7 @@ namespace NeinLinq
             var targetFallback = Expression.Constant(null, target.Type);
 
             // expression can be default or null, which is basically the same...
-            var expressionFallback = !expression.Type.IsNullableOrReferenceType()
+            var expressionFallback = !IsNullableOrReferenceType(expression.Type)
                 ? (Expression)Expression.Default(expression.Type) : Expression.Constant(null, expression.Type);
 
             return Expression.Condition(Expression.Equal(target, targetFallback), expressionFallback, expression);
@@ -92,13 +88,13 @@ namespace NeinLinq
             return expression == null
                 || expression.NodeType == ExpressionType.Call
                 || expression.NodeType == ExpressionType.Constant
-                || !expression.Type.IsNullableOrReferenceType();
+                || !IsNullableOrReferenceType(expression.Type);
         }
 
         static Expression Fallback(Type type)
         {
             // default values for generic collections
-            if (type.IsConstructedGenericType() && type.GenericTypeArguments().Length == 1)
+            if (type.IsConstructedGenericType && type.GenericTypeArguments.Length == 1)
             {
                 return CollectionFallback(typeof(List<>), type)
                     ?? CollectionFallback(typeof(HashSet<>), type);
@@ -115,7 +111,7 @@ namespace NeinLinq
 
         static Expression CollectionFallback(Type definition, Type type)
         {
-            var collection = definition.MakeGenericType(type.GenericTypeArguments());
+            var collection = definition.MakeGenericType(type.GenericTypeArguments);
 
             // try if an instance of this collection would suffice
             if (type.GetTypeInfo().IsAssignableFrom(collection.GetTypeInfo()))
@@ -124,6 +120,16 @@ namespace NeinLinq
             }
 
             return null;
+        }
+
+        static bool IsExtensionMethod(MethodInfo element)
+        {
+            return element.IsDefined(typeof(ExtensionAttribute), false);
+        }
+
+        static bool IsNullableOrReferenceType(Type type)
+        {
+            return !type.GetTypeInfo().IsValueType || Nullable.GetUnderlyingType(type) != null;
         }
     }
 }

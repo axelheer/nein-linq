@@ -2,11 +2,7 @@
 
   <PropertyGroup>
     <DebugType>full</DebugType>
-    <VersionPrefix>2.0.1</VersionPrefix>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <VersionPrefix>2.1.0</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup>
