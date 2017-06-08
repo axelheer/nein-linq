@@ -44,5 +44,15 @@ namespace NeinLinq.Tests.SelectorTranslator
                 v => { Assert.Equal(2, v.Id); Assert.Equal("Narf", v.Name); },
                 v => { Assert.Equal(3, v.Id); Assert.Equal("Qwer", v.Name); });
         }
+
+        [Fact]
+        public void ShouldNotThrowOnEmptyNewExpression()
+        {
+            Expression<Func<Dummy, DummyView>> s = d => new DummyView();
+            Expression<Func<Dummy, DummyView>> t = d => new DummyView();
+
+            var select = s.Apply(t);
+            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+        }
     }
 }
