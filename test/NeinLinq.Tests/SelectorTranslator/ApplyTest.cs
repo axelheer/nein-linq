@@ -53,6 +53,51 @@ namespace NeinLinq.Tests.SelectorTranslator
 
             var select = s.Apply(t);
             var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+
+            Assert.Collection(result,
+                v => { Assert.Equal(0, v.Id); Assert.Null(v.Name); },
+                v => { Assert.Equal(0, v.Id); Assert.Null(v.Name); },
+                v => { Assert.Equal(0, v.Id); Assert.Null(v.Name); });
+        }
+
+        [Fact]
+        public void ShouldNotLoseBindingsOnMixedExpressions()
+        {
+            Expression<Func<Dummy, DummyView>> s = d => new DummyView();
+            Expression<Func<Dummy, DummyView>> t = d => new DummyView
+            {
+                Id = d.Id + 5,
+                Name = d.Name
+            };
+
+            var select = s.Apply(t);
+            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+
+            Assert.Collection(result,
+                v => { Assert.Equal(6, v.Id); Assert.Equal("Asdf", v.Name); },
+                v => { Assert.Equal(7, v.Id); Assert.Equal("Narf", v.Name); },
+                v => { Assert.Equal(8, v.Id); Assert.Equal("Qwer", v.Name); }
+            );
+        }
+
+        [Fact]
+        public void ShouldNotLoseBindingsOnMixedExpressionsReversed()
+        {
+            Expression<Func<Dummy, DummyView>> s = d => new DummyView();
+            Expression<Func<Dummy, DummyView>> t = d => new DummyView
+            {
+                Id = d.Id + 5,
+                Name = d.Name
+            };
+
+            var select = t.Apply(s);
+            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+
+            Assert.Collection(result,
+                v => { Assert.Equal(6, v.Id); Assert.Equal("Asdf", v.Name); },
+                v => { Assert.Equal(7, v.Id); Assert.Equal("Narf", v.Name); },
+                v => { Assert.Equal(8, v.Id); Assert.Equal("Qwer", v.Name); }
+            );
         }
     }
 }

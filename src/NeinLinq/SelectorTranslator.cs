@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -42,15 +43,18 @@ namespace NeinLinq
             var leftNew = left.Body as NewExpression ?? leftInit?.NewExpression;
             var rightNew = right.Body as NewExpression ?? rightInit?.NewExpression;
 
-            var bindings = Enumerable.Empty<MemberBinding>();
+            var bindings = new List<MemberBinding>();
 
             if (leftNew != null && rightNew != null)
             {
                 if (leftNew.Arguments.Any() || rightNew.Arguments.Any())
                     throw new NotSupportedException("Only parameterless constructors are supported yet.");
 
-                if (leftInit != null && rightInit != null)
-                    bindings = leftInit.Bindings.Concat(rightInit.Bindings);
+                if (leftInit != null)
+                    bindings.AddRange(leftInit.Bindings);
+
+                if (rightInit != null)
+                    bindings.AddRange(rightInit.Bindings);
             }
             else
                 throw new NotSupportedException("Only member init expressions and new expressions are supported yet.");
