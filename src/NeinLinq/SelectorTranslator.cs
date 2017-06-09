@@ -39,19 +39,24 @@ namespace NeinLinq
             var leftInit = left.Body as MemberInitExpression;
             var rightInit = right.Body as MemberInitExpression;
 
-            if (leftInit == null || rightInit == null)
-                throw new NotSupportedException("Only member init expressions are supported yet.");
-            if (leftInit.NewExpression.Arguments.Any() || rightInit.NewExpression.Arguments.Any())
+            var leftNew = left.Body as NewExpression ?? leftInit?.NewExpression;
+            var rightNew = right.Body as NewExpression ?? rightInit?.NewExpression;
+
+            if (leftNew == null || rightNew == null)
+                throw new NotSupportedException("Only member init expressions and new expressions are supported yet.");
+            if (leftNew.Arguments.Any() || rightNew.Arguments.Any())
                 throw new NotSupportedException("Only parameterless constructors are supported yet.");
+
+            var leftBindings = leftInit?.Bindings ?? Enumerable.Empty<MemberBinding>();
+            var rightBindings = rightInit?.Bindings ?? Enumerable.Empty<MemberBinding>();
 
             var l = left.Parameters[0];
             var r = right.Parameters[0];
 
             var binder = new ParameterBinder(l, r);
-            var bindings = leftInit.Bindings.Concat(rightInit.Bindings);
 
             return Expression.Lambda<Func<TSource, TResult>>(
-                binder.Visit(Expression.MemberInit(Expression.New(typeof(TResult)), bindings)), r);
+                binder.Visit(Expression.MemberInit(Expression.New(typeof(TResult)), leftBindings.Concat(rightBindings))), r);
         }
     }
 }
