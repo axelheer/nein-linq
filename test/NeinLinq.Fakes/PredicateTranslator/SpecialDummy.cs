@@ -1,6 +1,6 @@
 ﻿namespace NeinLinq.Fakes.PredicateTranslator
 {
-    public class SuperDummy : Dummy
+    public class SpecialDummy : Dummy
     {
         public string Description { get; set; }
     }

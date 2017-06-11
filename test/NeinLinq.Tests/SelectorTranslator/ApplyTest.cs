@@ -37,7 +37,7 @@ namespace NeinLinq.Tests.SelectorTranslator
             Expression<Func<Dummy, DummyView>> t = d => new DummyView { Name = d.Name };
 
             var select = s.Apply(t);
-            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+            var result = data.OfType<Dummy>().Except(data.OfType<SpecialDummy>()).Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(1, v.Id); Assert.Equal("Asdf", v.Name); },
@@ -52,7 +52,7 @@ namespace NeinLinq.Tests.SelectorTranslator
             Expression<Func<Dummy, DummyView>> t = d => new DummyView();
 
             var select = s.Apply(t);
-            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+            var result = data.OfType<Dummy>().Except(data.OfType<SpecialDummy>()).Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(0, v.Id); Assert.Null(v.Name); },
@@ -71,7 +71,7 @@ namespace NeinLinq.Tests.SelectorTranslator
             };
 
             var select = s.Apply(t);
-            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+            var result = data.OfType<Dummy>().Except(data.OfType<SpecialDummy>()).Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(6, v.Id); Assert.Equal("Asdf", v.Name); },
@@ -91,7 +91,7 @@ namespace NeinLinq.Tests.SelectorTranslator
             };
 
             var select = t.Apply(s);
-            var result = data.OfType<Dummy>().Except(data.OfType<SuperDummy>()).Select(select);
+            var result = data.OfType<Dummy>().Except(data.OfType<SpecialDummy>()).Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(6, v.Id); Assert.Equal("Asdf", v.Name); },

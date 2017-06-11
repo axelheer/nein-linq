@@ -18,9 +18,9 @@ namespace NeinLinq.Fakes.SelectorTranslator
 
             var s = new[]
             {
-                new SuperDummy { Id = 4, Name = "Asdf", Description = "Asdf" },
-                new SuperDummy { Id = 5, Name = "Narf", Description = "Narf" },
-                new SuperDummy { Id = 6, Name = "Qwer", Description = "Qwer" }
+                new SpecialDummy { Id = 4, Name = "Asdf", Description = "Asdf" },
+                new SpecialDummy { Id = 5, Name = "Narf", Description = "Narf" },
+                new SpecialDummy { Id = 6, Name = "Qwer", Description = "Qwer" }
             };
 
             var p = new[]

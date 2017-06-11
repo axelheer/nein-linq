@@ -16,7 +16,7 @@ namespace NeinLinq.Tests.PredicateTranslator
             Expression<Func<Dummy, bool>> p = d => d.Name == "Narf";
 
             var r = data.OfType<Dummy>().Where(p).Count();
-            var s = data.OfType<SuperDummy>().Where(p.Translate().To<SuperDummy>()).Count();
+            var s = data.OfType<SpecialDummy>().Where(p.Translate().To<SpecialDummy>()).Count();
 
             Assert.Equal(2, r);
             Assert.Equal(1, s);

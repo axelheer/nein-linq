@@ -18,9 +18,9 @@ namespace NeinLinq.Fakes.PredicateTranslator
 
             var s = new[]
             {
-                new SuperDummy { Id = 4, Name = "Asdf" },
-                new SuperDummy { Id = 5, Name = "Narf" },
-                new SuperDummy { Id = 6, Name = "Qwer" }
+                new SpecialDummy { Id = 4, Name = "Asdf" },
+                new SpecialDummy { Id = 5, Name = "Narf" },
+                new SpecialDummy { Id = 6, Name = "Qwer" }
             };
 
             var p = new[]

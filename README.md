@@ -363,21 +363,21 @@ Selector translator
 
 As with predicates selectors need some love too. If we've an existing selector for some base type and want to reuse this code for one or more concrete types, we're forced to copy and paste again. Don't do that!
 
-Let us think of two entities (Academy and SuperAcademy) with according Contracts / ViewModels / DTOs / Whatever (AcademyView and SuperAcademyView).
+Let us think of two entities (Academy and SpecialAcademy) with according Contracts / ViewModels / DTOs / Whatever (AcademyView and SpecialAcademyView).
 
 ```csharp
 Expression<Func<Academy, AcademyView>> s =
     a => new AcademyView { Id = a.Id, Name = a.Name };
-Expression<Func<SuperAcademy, SuperAcademyView>> t =
-    a => new SuperAcademyView { Narf = a.Narf };
+Expression<Func<SpecialAcademy, SpecialAcademyView>> t =
+    a => new SpecialAcademyView { Narf = a.Narf };
 ```
 
 Note that we omit the *Member bindings* of the first selector within the second one. Don't repeat yourself, remember?
 
 ```csharp
-db.Academies.OfType<SuperAcademy>()
+db.Academies.OfType<SpecialAcademy>()
             .Select(s.Translate()
-                     .Cross<SuperAcademy>()
+                     .Cross<SpecialAcademy>()
                      .Apply(t));
 ```
 

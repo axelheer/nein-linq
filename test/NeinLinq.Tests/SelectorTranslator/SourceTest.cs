@@ -16,8 +16,8 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<Dummy, DummyView>> s = d => new DummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Source<SuperDummy>();
-            var result = data.OfType<SuperDummy>().Select(select);
+            var select = s.Translate().Source<SpecialDummy>();
+            var result = data.OfType<SpecialDummy>().Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(4, v.Id); Assert.Equal("Asdf", v.Name); },

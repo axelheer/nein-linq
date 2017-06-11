@@ -14,22 +14,22 @@ namespace NeinLinq.Tests.SelectorTranslator
         [Fact]
         public void SubtypeShouldHandleInvalidArguments()
         {
-            Expression<Func<SuperDummy, DummyView>> s = _ => null;
+            Expression<Func<SpecialDummy, DummyView>> s = _ => null;
 
-            Assert.Throws<NotSupportedException>(() => s.Translate().Result<SuperDummyView>());
+            Assert.Throws<NotSupportedException>(() => s.Translate().Result<SpecialDummyView>());
 
             s = _ => new DummyView(1) { Name = "Narf" };
 
-            Assert.Throws<NotSupportedException>(() => s.Translate().Result<SuperDummyView>());
+            Assert.Throws<NotSupportedException>(() => s.Translate().Result<SpecialDummyView>());
         }
 
         [Fact]
         public void SubtypeShouldSubstitute()
         {
-            Expression<Func<SuperDummy, DummyView>> s = d => new DummyView { Id = d.Id, Name = d.Name };
+            Expression<Func<SpecialDummy, DummyView>> s = d => new DummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Result<SuperDummyView>();
-            var result = data.OfType<SuperDummy>().Select(select);
+            var select = s.Translate().Result<SpecialDummyView>();
+            var result = data.OfType<SpecialDummy>().Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(4, v.Id); Assert.Equal("Asdf", v.Name); Assert.Null(v.Description); },

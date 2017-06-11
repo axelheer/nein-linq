@@ -14,10 +14,10 @@ namespace NeinLinq.Tests.SelectorTranslator
         public void SubtypeShouldSubstitute()
         {
             Expression<Func<Dummy, DummyView>> s = d => new DummyView { Id = d.Id, Name = d.Name };
-            Expression<Func<SuperDummy, SuperDummyView>> t = d => new SuperDummyView { Description = d.Description };
+            Expression<Func<SpecialDummy, SpecialDummyView>> t = d => new SpecialDummyView { Description = d.Description };
 
             var select = s.Translate().To(t);
-            var result = data.OfType<SuperDummy>().Select(select);
+            var result = data.OfType<SpecialDummy>().Select(select);
 
             Assert.Collection(result,
                 v => { Assert.Equal(4, v.Id); Assert.Equal("Asdf", v.Name); Assert.Equal("Asdf", v.Description); },

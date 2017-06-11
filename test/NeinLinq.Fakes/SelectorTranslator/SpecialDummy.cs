@@ -1,6 +1,6 @@
 ﻿namespace NeinLinq.Fakes.SelectorTranslator
 {
-    public class SuperDummyView : DummyView
+    public class SpecialDummy : Dummy
     {
         public string Description { get; set; }
     }
