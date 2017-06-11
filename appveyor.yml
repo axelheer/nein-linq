@@ -1,9 +1,9 @@
-version: 2.1.0-ci{build}
+version: 2.1.1-ci.{build}
 
 image: Visual Studio 2017
 
 build_script:
-  - cmd: set build_options=/p:VersionSuffix=ci%appveyor_build_number%
+  - cmd: set build_options=/p:VersionSuffix=ci.%appveyor_build_number%
   - cmd: if [%appveyor_repo_branch%]==[release] set build_options=/p:VersionSuffix=
   - cmd: dotnet --info
   - cmd: dotnet restore %build_options%
