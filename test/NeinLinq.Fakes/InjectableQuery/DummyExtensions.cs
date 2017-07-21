@@ -9,5 +9,7 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return v => v.Distance / v.Time;
         }
+
+        public static Expression<Func<Dummy, double>> VelocityExternalPropertyGetter => v => v.Distance / v.Time;
     }
 }

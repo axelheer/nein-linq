@@ -128,7 +128,14 @@ namespace NeinLinq
         static MethodInfo FactoryMethod(Type target, string method, Type[] args, Type result, bool instance)
         {
             // assume method without any parameters
-            var factory = target.GetRuntimeMethod(method, emptyTypes) ?? target.GetRuntimeProperty(method + "Expr")?.GetMethod;
+            var factory = target.GetRuntimeMethod(method, emptyTypes)
+                          ?? target.GetRuntimeProperty(method + "Expr")?.GetMethod
+                          
+                          //try resolving a property getter from type different to injection-target
+                          ?? (target != args[0] 
+                            ? target.GetRuntimeProperty(method)?.GetMethod 
+                            : null);
+
             if (factory == null)
                 throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless member found.");
 
