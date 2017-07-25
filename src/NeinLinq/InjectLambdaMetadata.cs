@@ -63,8 +63,11 @@ namespace NeinLinq
             var args = new[] { property.DeclaringType };
             var result = property.PropertyType;
 
+            // apply "Expr" convention for property "overloading"
+            var method = metadata?.Target == null ? property.Name + "Expr" : property.Name;
+
             // special treatment for super-heroic property getters
-            return FixedLambdaFactory(metadata, property.DeclaringType, property.Name, args, result, false);
+            return FixedLambdaFactory(metadata, property.DeclaringType, method, args, result, false);
         }
 
         static Func<Expression, LambdaExpression> FixedLambdaFactory(InjectLambdaAttribute metadata, Type target, string method, Type[] args, Type result, bool instance)
@@ -128,7 +131,10 @@ namespace NeinLinq
         static MethodInfo FactoryMethod(Type target, string method, Type[] args, Type result, bool instance)
         {
             // assume method without any parameters
-            var factory = target.GetRuntimeMethod(method, emptyTypes) ?? target.GetRuntimeProperty(method + "Expr")?.GetMethod;
+            var factory = target.GetRuntimeMethod(method, emptyTypes)
+                ?? target.GetRuntimeProperty(method)?.GetMethod;
+            
+
             if (factory == null)
                 throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless member found.");
 

@@ -38,6 +38,9 @@ namespace NeinLinq.Fakes.InjectableQuery
             get { throw new NotSupportedException(); }
         }
 
+        [InjectLambda(typeof(DummyExtensions), nameof(DummyExtensions.VelocityExternalPropertyGetter))]
+        public double VelocityExternalPropertyGetter { get; }
+
         public double VelocityWithConvention { get; }
 
         public static Expression<Func<Dummy, double>> VelocityWithConventionExpr => v => v.Distance / v.Time;
