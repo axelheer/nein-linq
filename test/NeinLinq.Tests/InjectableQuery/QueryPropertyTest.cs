@@ -110,10 +110,21 @@ namespace NeinLinq.Tests.InjectableQuery
         }
 
         [Fact]
-        public void ShouldSucceedWithExternalPropertyGetterWithGetter()
+        public void ShouldSucceedWithInternalProperty()
         {
             var query = from d in data.ToInjectable()
-                        select d.VelocityExternalPropertyGetter;
+                        select d.VelocityInternalProperty;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithExternalProperty()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityExternalProperty;
 
             var result = query.ToList();
 

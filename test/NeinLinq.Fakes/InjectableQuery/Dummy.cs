@@ -24,10 +24,7 @@ namespace NeinLinq.Fakes.InjectableQuery
             get { throw new NotSupportedException(); }
         }
 
-        public static Expression<Func<Dummy, double>> InjectVelocityInternal()
-        {
-            return v => v.Distance / v.Time;
-        }
+        public static Expression<Func<Dummy, double>> InjectVelocityInternal() => v => v.Distance / v.Time;
 
         [InjectLambda(typeof(DummyExtensions))]
         public double VelocityExternal { get; }
@@ -38,8 +35,13 @@ namespace NeinLinq.Fakes.InjectableQuery
             get { throw new NotSupportedException(); }
         }
 
-        [InjectLambda(typeof(DummyExtensions), nameof(DummyExtensions.VelocityExternalPropertyGetter))]
-        public double VelocityExternalPropertyGetter { get; }
+        [InjectLambda(nameof(InjectVelocityInternalProperty))]
+        public double VelocityInternalProperty { get; }
+
+        public static Expression<Func<Dummy, double>> InjectVelocityInternalProperty => v => v.Distance / v.Time;
+
+        [InjectLambda(typeof(DummyExtensions))]
+        public double VelocityExternalProperty { get; }
 
         public double VelocityWithConvention { get; }
 

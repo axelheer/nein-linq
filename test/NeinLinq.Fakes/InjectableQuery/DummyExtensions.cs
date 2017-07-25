@@ -5,11 +5,8 @@ namespace NeinLinq.Fakes.InjectableQuery
 {
     public static class DummyExtensions
     {
-        public static Expression<Func<Dummy, double>> VelocityExternal()
-        {
-            return v => v.Distance / v.Time;
-        }
+        public static Expression<Func<Dummy, double>> VelocityExternal() => v => v.Distance / v.Time;
 
-        public static Expression<Func<Dummy, double>> VelocityExternalPropertyGetter => v => v.Distance / v.Time;
+        public static Expression<Func<Dummy, double>> VelocityExternalProperty => v => v.Distance / v.Time;
     }
 }
