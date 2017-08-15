@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62384529-4A89-45AA-9241-6C41D736333C}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		NeinLinq.props = NeinLinq.props
 		NeinLinq.snk = NeinLinq.snk
+		NuGet.Config = NuGet.Config
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -80,5 +81,8 @@ Global
 		{7811E94D-E9CA-4944-847C-427D2491545F} = {DC57719B-6A66-4F54-B935-C206C91DA09D}
 		{C1599DA1-F5BB-4A9A-9CB7-0E3A95BB7E3E} = {F79B7C9C-7883-4D8C-AF41-1E155CAF01A9}
 		{9D6EE79A-734A-4212-A802-1CA2D9746C82} = {F79B7C9C-7883-4D8C-AF41-1E155CAF01A9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D419C18-657C-44EB-B17F-2C181F8E4CE0}
 	EndGlobalSection
 EndGlobal

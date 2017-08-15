@@ -2,20 +2,29 @@ version: 2.1.1-ci.{build}
 
 image: Visual Studio 2017
 
-build_script:
-  - cmd: set build_options=/p:VersionSuffix=ci.%appveyor_build_number%
-  - cmd: if [%appveyor_repo_branch%]==[release] set build_options=/p:VersionSuffix=
-  - cmd: dotnet --info
-  - cmd: dotnet restore %build_options%
-  - cmd: dotnet build --configuration Release %build_options%
-  - cmd: dotnet pack --configuration Release --include-symbols %build_options%
+before_build:
+  - cmd: set build_options=--configuration Release --version-suffix ci.%appveyor_build_number%
+  - cmd: if [%appveyor_repo_branch%]==[release] set build_options=--configuration Release
 
-test_script:
+build_script:
+  - cmd: dotnet --info
+  - cmd: dotnet build %build_options%
+  - cmd: dotnet pack %build_options% --include-symbols
+
+before_test:
   - cmd: if not exist TestResults mkdir TestResults
   - cmd: set OpenCover=%UserProfile%\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe
-  - cmd: set ReportGenerator=%UserProfile%\.nuget\packages\ReportGenerator\2.5.8\tools\ReportGenerator.exe
-  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"test test\NeinLinq.Tests\NeinLinq.Tests.csproj --configuration Release --framework net461" -searchdirs:test\NeinLinq.Tests\bin\Release\net461 -output:TestResults\NeinLinq.netframework.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
-  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"test test\NeinLinq.Tests\NeinLinq.Tests.csproj --configuration Release --framework netcoreapp1.1" -searchdirs:test\NeinLinq.Tests\bin\Release\netcoreapp1.1 -output:TestResults\NeinLinq.netcoreapp.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
+  - cmd: set ReportGenerator=%UserProfile%\.nuget\packages\ReportGenerator\2.5.10\tools\ReportGenerator.exe
+
+test_script:
+  - cmd: dotnet clean --configuration Release
+  - cmd: dotnet build %build_options% /p:DebugType=Full
+  - cmd: cd test\NeinLinq.Tests
+  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"xunit -configuration Release -framework net452 -nobuild -xml ..\..\TestResults\NeinLinq.netframework45.xml" -searchdirs:bin\Release\net452 -output:..\..\TestResults\NeinLinq.netframework45.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
+  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"xunit -configuration Release -framework net461 -nobuild -xml ..\..\TestResults\NeinLinq.netframework46.xml" -searchdirs:bin\Release\net461 -output:..\..\TestResults\NeinLinq.netframework46.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
+  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"xunit -configuration Release -framework netcoreapp1.1 -nobuild -xml ..\..\TestResults\NeinLinq.netcore1.xml" -searchdirs:bin\Release\netcoreapp1.1 -output:..\..\TestResults\NeinLinq.netcore1.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
+  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"xunit -configuration Release -framework netcoreapp2.0 -nobuild -xml ..\..\TestResults\NeinLinq.netcore2.xml" -searchdirs:bin\Release\netcoreapp2.0 -output:..\..\TestResults\NeinLinq.netcore2.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
+  - cmd: cd ..\..
   - cmd: '"%ReportGenerator%" -reports:TestResults\*.report.xml -targetdir:TestResults\report -reporttypes:Badges;Html'
 
 artifacts:

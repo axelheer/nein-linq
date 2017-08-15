@@ -1,4 +1,4 @@
-﻿#if NET461
+﻿#if NETFRAMEWORK
 
 using NeinLinq.Fakes.DbAsyncQuery;
 using System.Data.Entity;

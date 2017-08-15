@@ -1,4 +1,4 @@
-﻿#if NET461
+﻿#if NETFRAMEWORK
 
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;

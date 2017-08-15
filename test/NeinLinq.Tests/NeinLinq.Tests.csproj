@@ -4,36 +4,52 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <TargetFrameworks>netcoreapp1.1;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;netcoreapp1.1;net461;net452</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'net461' ">
+    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq.Fakes\NeinLinq.Fakes.csproj" />
-    <ProjectReference Include="..\..\src\NeinLinq.Queryable\NeinLinq.Queryable.csproj" />
-    <ProjectReference Include="..\..\src\NeinLinq.Interactive\NeinLinq.Interactive.csproj" />
     <ProjectReference Include="..\..\src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\NeinLinq.Interactive\NeinLinq.Interactive.csproj" />
+    <ProjectReference Include="..\..\src\NeinLinq.Queryable\NeinLinq.Queryable.csproj" />
+    <ProjectReference Include="..\NeinLinq.Fakes\NeinLinq.Fakes.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'net461' ">
     <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
     <PackageReference Include="EntityFramework" Version="6.1.3" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'netcoreapp1.1' ">
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' Or '$(TargetFramework)' == 'netcoreapp2.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="xunit" Version="2.3.0-beta5-build3746" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta5-build3746" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="OpenCover" Version="4.6.519" PrivateAssets="All" />
-    <PackageReference Include="ReportGenerator" Version="2.5.8" PrivateAssets="All" />
+    <PackageReference Include="ReportGenerator" Version="2.5.10" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta5-build3746" />
   </ItemGroup>
 
 </Project>

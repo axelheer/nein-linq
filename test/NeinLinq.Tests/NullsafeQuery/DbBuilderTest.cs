@@ -1,4 +1,4 @@
-﻿#if NET461
+﻿#if NETFRAMEWORK
 
 using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.NullsafeQuery;

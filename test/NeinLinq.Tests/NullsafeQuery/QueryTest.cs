@@ -63,11 +63,11 @@ namespace NeinLinq.Tests.NullsafeQuery
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Equal(false, r.Question),
-                r => Assert.Equal(false, r.Question),
-                r => Assert.Equal(true, r.Question),
-                r => Assert.Equal(false, r.Question),
-                r => Assert.Equal(false, r.Question));
+                r => Assert.False(r.Question),
+                r => Assert.False(r.Question),
+                r => Assert.True(r.Question),
+                r => Assert.False(r.Question),
+                r => Assert.False(r.Question));
         }
 
         [Fact]
@@ -77,16 +77,16 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            FirstWord = a.SomeText.Split(' ').FirstOrDefault()
+                            FirstWord = a.SomeText.Split(new[] { ' ' }).FirstOrDefault()
                         };
 
             var result = query.ToList();
 
             Assert.Collection(result,
-                r => Assert.Equal(null, r.FirstWord),
+                r => Assert.Null(r.FirstWord),
                 r => Assert.Equal("Narf", r.FirstWord),
                 r => Assert.Equal("What", r.FirstWord),
-                r => Assert.Equal(null, r.FirstWord),
+                r => Assert.Null(r.FirstWord),
                 r => Assert.Equal("", r.FirstWord));
         }
 
