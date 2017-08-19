@@ -144,12 +144,12 @@ namespace NeinLinq
             // method returns lambda expression?
             var returns = factory.ReturnType;
             if (!returns.IsConstructedGenericType || returns.GetGenericTypeDefinition() != typeof(Expression<>))
-                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns no lambda expression.");
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: returns no lambda expression.");
 
             // lambda signature matches original method's signature?
             var signature = returns.GenericTypeArguments[0].GetRuntimeMethod("Invoke", args);
             if (signature == null || signature.ReturnParameter.ParameterType != result)
-                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: method returns non-matching expression.");
+                throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: returns non-matching expression.");
 
             return factory;
         }

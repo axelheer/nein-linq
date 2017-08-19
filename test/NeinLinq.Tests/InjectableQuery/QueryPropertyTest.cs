@@ -139,7 +139,7 @@ namespace NeinLinq.Tests.InjectableQuery
 
             var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
-            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Dummy.VelocityWithInvalidSiblingResultExpr: method returns no lambda expression.", error.Message);
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Dummy.VelocityWithInvalidSiblingResultExpr: returns no lambda expression.", error.Message);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace NeinLinq.Tests.InjectableQuery
 
             var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
-            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Dummy.VelocityWithInvalidSiblingSignatureExpr: method returns non-matching expression.", error.Message);
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Dummy.VelocityWithInvalidSiblingSignatureExpr: returns non-matching expression.", error.Message);
         }
     }
 }
