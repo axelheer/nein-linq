@@ -1,26 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="All Rules, except a few ones" ToolsVersion="15.0">
-    <IncludeAll Action="Error" />
-    <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
-        <!-- Nested generics -->
-        <Rule Id="CA1006" Action="None" />
-        <!-- Non-generic base -->
+<RuleSet Name="Code Analysis" ToolsVersion="15.3">
+    <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+        <!-- Collections should implement generic interface -->
         <Rule Id="CA1010" Action="None" />
-        <!-- Argument base -->
-        <Rule Id="CA1011" Action="None" />
-        <!-- CLS compliant -->
-        <Rule Id="CA1014" Action="None" />
-        <!-- COM visibility -->
-        <Rule Id="CA1017" Action="None" />
-        <!-- Merge namespaces -->
-        <Rule Id="CA1020" Action="None" />
-        <!-- Default arguments -->
-        <Rule Id="CA1026" Action="None" />
-        <!-- Default culture -->
-        <Rule Id="CA1305" Action="None" />
-        <!-- COM visibility -->
-        <Rule Id="CA1405" Action="None" />
-        <!-- Collection naming -->
+        <!-- Identifiers should have correct suffix -->
         <Rule Id="CA1710" Action="None" />
     </Rules>
 </RuleSet>

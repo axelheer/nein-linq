@@ -1,13 +1,20 @@
 ﻿<Project>
 
+  <PropertyGroup>
+    <!-- for analyzers (beta) -->
+    <Features>IOperation</Features>
+  </PropertyGroup>
+
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\CodeAnalysis.xml" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.3.0-beta1" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
