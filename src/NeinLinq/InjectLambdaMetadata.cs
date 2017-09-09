@@ -44,17 +44,18 @@ namespace NeinLinq
         static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
+            var types = method.GetGenericArguments();
             var args = method.GetParameters().Select(p => p.ParameterType).ToArray();
             var result = method.ReturnParameter.ParameterType;
 
             // special ultra-fast treatment for static methods and sealed classes
             if (method.IsStatic || method.DeclaringType.GetTypeInfo().IsSealed)
             {
-                return FixedLambdaFactory(metadata, method.DeclaringType, method.Name, args, result, !method.IsStatic);
+                return FixedLambdaFactory(metadata, method.DeclaringType, method.Name, types, args, result, !method.IsStatic);
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(method.Name, args, result);
+            return DynamicLambdaFactory(method.Name, types, args, result);
         }
 
         static Func<Expression, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
@@ -67,10 +68,10 @@ namespace NeinLinq
             var method = metadata?.Target == null ? property.Name + "Expr" : property.Name;
 
             // special treatment for super-heroic property getters
-            return FixedLambdaFactory(metadata, property.DeclaringType, method, args, result, false);
+            return FixedLambdaFactory(metadata, property.DeclaringType, method, emptyTypes, args, result, false);
         }
 
-        static Func<Expression, LambdaExpression> FixedLambdaFactory(InjectLambdaAttribute metadata, Type target, string method, Type[] args, Type result, bool instance)
+        static Func<Expression, LambdaExpression> FixedLambdaFactory(InjectLambdaAttribute metadata, Type target, string method, Type[] types, Type[] args, Type result, bool instance)
         {
             // apply configuration, if any
             if (metadata != null)
@@ -82,7 +83,7 @@ namespace NeinLinq
             }
 
             // retrieve validated factory method once
-            var factory = FactoryMethod(target, method, args, result, instance);
+            var factory = FactoryMethod(target, method, types, args, result, instance);
 
             if (factory.IsStatic)
             {
@@ -95,7 +96,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        static Func<Expression, LambdaExpression> DynamicLambdaFactory(string name, Type[] args, Type result)
+        static Func<Expression, LambdaExpression> DynamicLambdaFactory(string name, Type[] types, Type[] args, Type result)
         {
             return value =>
             {
@@ -119,7 +120,7 @@ namespace NeinLinq
                     method = metadata.Method;
 
                 // retrieve validated factory method
-                var factory = FactoryMethod(target, method, args, result, true);
+                var factory = FactoryMethod(target, method, types, args, result, true);
 
                 // finally call lambda factory *uff*
                 return (LambdaExpression)factory.Invoke(targetObject, null);
@@ -128,12 +129,20 @@ namespace NeinLinq
 
         static readonly Type[] emptyTypes = new Type[0];
 
-        static MethodInfo FactoryMethod(Type target, string method, Type[] args, Type result, bool instance)
+        static MethodInfo FactoryMethod(Type target, string method, Type[] types, Type[] args, Type result, bool instance)
         {
             // assume method without any parameters
             var factory = target.GetRuntimeMethod(method, emptyTypes) ?? target.GetRuntimeProperty(method)?.GetMethod;
             if (factory == null)
                 throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: no parameterless member found.");
+
+            // apply type arguments, if any
+            if (types.Length > 0)
+            {
+                if (!factory.IsGenericMethodDefinition)
+                    throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: generic implementation expected.");
+                factory = factory.MakeGenericMethod(types);
+            }
 
             // mixed static and instance methods?
             if (!instance && !factory.IsStatic)
