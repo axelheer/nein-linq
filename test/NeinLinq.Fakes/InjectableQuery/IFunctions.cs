@@ -15,5 +15,11 @@
         double VelocityWithInvalidSiblingResult(Dummy value);
 
         double VelocityWithInvalidSiblingSignature(Dummy value);
+
+        double VelocityWithGenericArguments<TDummy>(TDummy value)
+            where TDummy : IDummy;
+
+        double VelocityWithInvalidGenericArguments<TDummy>(TDummy value)
+            where TDummy : IDummy;
     }
 }

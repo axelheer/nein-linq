@@ -42,5 +42,16 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return (d, t) => Math.Round(d / t, digits);
         }
+
+        public Expression<Func<TDummy, double>> VelocityWithGenericArguments<TDummy>()
+            where TDummy : IDummy
+        {
+            return v => v.Distance / v.Time;
+        }
+
+        public Expression<Func<Dummy, double>> VelocityWithInvalidGenericArguments()
+        {
+            return v => v.Distance / v.Time;
+        }
     }
 }

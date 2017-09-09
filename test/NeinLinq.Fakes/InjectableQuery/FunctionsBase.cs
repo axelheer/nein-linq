@@ -35,5 +35,17 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             throw new NotSupportedException();
         }
+
+        public double VelocityWithGenericArguments<TDummy>(TDummy value)
+            where TDummy : IDummy
+        {
+            throw new NotImplementedException();
+        }
+
+        public double VelocityWithInvalidGenericArguments<TDummy>(TDummy value)
+            where TDummy : IDummy
+        {
+            throw new NotImplementedException();
+        }
     }
 }

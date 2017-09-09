@@ -97,5 +97,27 @@ namespace NeinLinq.Tests.InjectableQuery
 
             Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidSiblingSignature: returns non-matching expression.", error.Message);
         }
+
+        [Fact]
+        public void ShouldSucceedWithGenericArguments()
+        {
+            var query = from d in data.ToInjectable(typeof(Functions))
+                        select d.VelocityWithGenericArguments();
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void ShouldFailWithInvalidGenericArguments()
+        {
+            var query = from d in data.ToInjectable(typeof(Functions))
+                        select d.VelocityWithInvalidGenericArguments();
+
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidGenericArguments: generic implementation expected.", error.Message);
+        }
     }
 }

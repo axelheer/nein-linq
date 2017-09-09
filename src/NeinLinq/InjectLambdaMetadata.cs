@@ -108,7 +108,7 @@ namespace NeinLinq
                 var target = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteMethod = target.GetRuntimeMethod(name, args);
+                var concreteMethod = target.GetRuntimeMethod(name, args) ?? FindGenericMethod(target, name, types, args);
                 if (concreteMethod == null)
                     throw new InvalidOperationException($"Unable to retrieve lambda meta-data from {target.FullName}.{name}: what evil treachery is this?");
 
@@ -125,6 +125,24 @@ namespace NeinLinq
                 // finally call lambda factory *uff*
                 return (LambdaExpression)factory.Invoke(targetObject, null);
             };
+        }
+
+        static MethodInfo FindGenericMethod(Type target, string name, Type[] types, Type[] args)
+        {
+            foreach (var method in target.GetRuntimeMethods())
+            {
+                if (method.Name != name)
+                    continue;
+                if (method.GetGenericArguments().Length != types.Length)
+                    continue;
+                if (method.GetParameters().Length != args.Length)
+                    continue;
+
+                // TODO: be less heuristic!
+                return method;
+            }
+
+            return null;
         }
 
         static readonly Type[] emptyTypes = new Type[0];
