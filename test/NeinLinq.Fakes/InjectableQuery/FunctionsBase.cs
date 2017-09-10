@@ -36,6 +36,27 @@ namespace NeinLinq.Fakes.InjectableQuery
             throw new NotSupportedException();
         }
 
+        [InjectLambda("fail-me")]
+        public double VelocityWithGenericArguments<TDummy, TOther>(TDummy value, TOther other)
+            where TDummy : IDummy
+        {
+            throw new NotImplementedException();
+        }
+
+        [InjectLambda("fail-me")]
+        public double VelocityWithGenericArguments<TDummy>(TDummy value, object other)
+            where TDummy : IDummy
+        {
+            throw new NotImplementedException();
+        }
+
+        [InjectLambda("fail-me")]
+        public double VelocityWithGenericArguments<TDummy>(object other)
+            where TDummy : IDummy
+        {
+            throw new NotImplementedException();
+        }
+
         public double VelocityWithGenericArguments<TDummy>(TDummy value)
             where TDummy : IDummy
         {
