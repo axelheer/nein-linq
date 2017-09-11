@@ -93,7 +93,7 @@ namespace NeinLinq
                 var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
 
                 // retrieve actual target type at runtime, whatever it may be
-                var target = targetObject?.GetType() ?? typeof(object);
+                var target = targetObject != null ? targetObject.GetType() : typeof(object);
 
                 // actual method may provide different information
                 var concreteMethod = signature.FindMatch(target, method);
