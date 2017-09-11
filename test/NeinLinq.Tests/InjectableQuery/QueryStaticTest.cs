@@ -18,7 +18,7 @@ namespace NeinLinq.Tests.InjectableQuery
 
             var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
-            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithoutSibling: no parameterless member found.", error.Message);
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithoutSibling: no matching parameterless member found.", error.Message);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace NeinLinq.Tests.InjectableQuery
 
             var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
-            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidGenericArguments: generic implementation expected.", error.Message);
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidGenericArguments: no matching parameterless member found.", error.Message);
         }
     }
 }
