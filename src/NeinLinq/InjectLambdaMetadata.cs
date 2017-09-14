@@ -93,13 +93,13 @@ namespace NeinLinq
                 var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
 
                 // retrieve actual target type at runtime, whatever it may be
-                var target = targetObject != null ? targetObject.GetType() : typeof(object);
+                var target = targetObject.GetType();
 
                 // actual method may provide different information
                 var concreteMethod = signature.FindMatch(target, method);
 
                 // configuration over convention, if any
-                var metadata = concreteMethod?.GetCustomAttribute<InjectLambdaAttribute>() ?? InjectLambdaAttribute.None;
+                var metadata = concreteMethod.GetCustomAttribute<InjectLambdaAttribute>() ?? InjectLambdaAttribute.None;
 
                 // retrieve validated factory method
                 var factory = signature.FindFactory(target, metadata.Method ?? method);

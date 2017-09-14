@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace NeinLinq.Fakes.InjectableQuery
@@ -33,9 +34,19 @@ namespace NeinLinq.Fakes.InjectableQuery
             return v => Math.Round(v.Distance / v.Time, digits);
         }
 
+        public IEnumerable<Func<Dummy, double>> VelocityWithStupidSiblingResult()
+        {
+            yield return v => Math.Round(v.Distance / v.Time, digits);
+        }
+
         public Func<Dummy, double> VelocityWithInvalidSiblingResult()
         {
             return v => Math.Round(v.Distance / v.Time, digits);
+        }
+
+        public Expression<Func<Dummy, float>> VelocityWithStupidSiblingSignature()
+        {
+            return v => (float)Math.Round(v.Distance / v.Time, digits);
         }
 
         public Expression<Func<double, double, double>> VelocityWithInvalidSiblingSignature()
@@ -46,18 +57,18 @@ namespace NeinLinq.Fakes.InjectableQuery
         public Expression<Func<TDummy, TOther, double>> VelocityWithGenericArguments<TDummy, TOther>()
             where TDummy : IDummy
         {
-            return (v, _) => v.Distance / v.Time;
+            return (v, _) => Math.Round(v.Distance / v.Time, digits);
         }
 
         public Expression<Func<TDummy, double>> VelocityWithGenericArguments<TDummy>()
             where TDummy : IDummy
         {
-            return v => v.Distance / v.Time;
+            return v => Math.Round(v.Distance / v.Time, digits);
         }
 
         public Expression<Func<Dummy, double>> VelocityWithInvalidGenericArguments()
         {
-            return v => v.Distance / v.Time;
+            return v => Math.Round(v.Distance / v.Time, digits);
         }
     }
 }

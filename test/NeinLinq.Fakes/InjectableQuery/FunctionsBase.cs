@@ -26,7 +26,17 @@ namespace NeinLinq.Fakes.InjectableQuery
             throw new NotSupportedException();
         }
 
+        public double VelocityWithStupidSiblingResult(Dummy value)
+        {
+            throw new NotSupportedException();
+        }
+
         public double VelocityWithInvalidSiblingResult(Dummy value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public double VelocityWithStupidSiblingSignature(Dummy value)
         {
             throw new NotSupportedException();
         }
@@ -40,33 +50,33 @@ namespace NeinLinq.Fakes.InjectableQuery
         public double VelocityWithGenericArguments<TDummy, TOther>(TDummy value, TOther other)
             where TDummy : IDummy
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         [InjectLambda("fail-me")]
         public double VelocityWithGenericArguments<TDummy>(TDummy value, object other)
             where TDummy : IDummy
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         [InjectLambda("fail-me")]
         public double VelocityWithGenericArguments<TDummy>(object other)
             where TDummy : IDummy
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public double VelocityWithGenericArguments<TDummy>(TDummy value)
             where TDummy : IDummy
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public double VelocityWithInvalidGenericArguments<TDummy>(TDummy value)
             where TDummy : IDummy
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

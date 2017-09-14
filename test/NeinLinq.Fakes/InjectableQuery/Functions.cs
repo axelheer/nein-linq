@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace NeinLinq.Fakes.InjectableQuery
@@ -54,6 +55,16 @@ namespace NeinLinq.Fakes.InjectableQuery
             return v => v.Distance / v.Time;
         }
 
+        public static double VelocityWithStupidSiblingResult(this Dummy value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public static IEnumerable<Func<Dummy, double>> VelocityWithStupidSiblingResult()
+        {
+            yield return v => v.Distance / v.Time;
+        }
+
         public static double VelocityWithInvalidSiblingResult(this Dummy value)
         {
             throw new NotSupportedException();
@@ -62,6 +73,16 @@ namespace NeinLinq.Fakes.InjectableQuery
         public static Func<Dummy, double> VelocityWithInvalidSiblingResult()
         {
             return v => v.Distance / v.Time;
+        }
+
+        public static double VelocityWithStupidSiblingSignature(this Dummy value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public static Expression<Func<Dummy, float>> VelocityWithStupidSiblingSignature()
+        {
+            return v => (float)(v.Distance / v.Time);
         }
 
         public static double VelocityWithInvalidSiblingSignature(this Dummy value)

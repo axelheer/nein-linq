@@ -57,6 +57,17 @@ namespace NeinLinq.Tests.InjectableQuery
         }
 
         [Fact]
+        public void ShouldFailWithStupidSiblingResult()
+        {
+            var query = from d in data.ToInjectable(typeof(IFunctions))
+                        select functions.VelocityWithStupidSiblingResult(d);
+
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.ConcreteFunctions.VelocityWithStupidSiblingResult: returns no lambda expression.", error.Message);
+        }
+
+        [Fact]
         public void ShouldFailWithInvalidSiblingResult()
         {
             var query = from d in data.ToInjectable(typeof(IFunctions))
@@ -65,6 +76,17 @@ namespace NeinLinq.Tests.InjectableQuery
             var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
             Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.ConcreteFunctions.VelocityWithInvalidSiblingResult: returns no lambda expression.", error.Message);
+        }
+
+        [Fact]
+        public void ShouldFailWithStupidSiblingSignature()
+        {
+            var query = from d in data.ToInjectable(typeof(IFunctions))
+                        select functions.VelocityWithStupidSiblingSignature(d);
+
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.ConcreteFunctions.VelocityWithStupidSiblingSignature: returns non-matching expression.", error.Message);
         }
 
         [Fact]
@@ -86,7 +108,7 @@ namespace NeinLinq.Tests.InjectableQuery
 
             var result = query.ToList();
 
-            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
         }
 
         [Fact]

@@ -54,9 +54,17 @@ namespace NeinLinq.Fakes.InjectableQuery
 
         public double VelocityWithoutSibling { get; }
 
+        public double VelocityWithStupidSiblingResult { get; }
+
+        public static Lazy<Func<Dummy, double>> VelocityWithStupidSiblingResultExpr => new Lazy<Func<Dummy, double>>(() => v => v.Distance / v.Time);
+
         public double VelocityWithInvalidSiblingResult { get; }
 
         public static Func<Dummy, double> VelocityWithInvalidSiblingResultExpr => v => v.Distance / v.Time;
+
+        public double VelocityWithStupidSiblingSignature { get; }
+
+        public static Expression<Func<Dummy, float>> VelocityWithStupidSiblingSignatureExpr => v => (float)(v.Distance / v.Time);
 
         public double VelocityWithInvalidSiblingSignature { get; }
 

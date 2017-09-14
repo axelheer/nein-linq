@@ -12,7 +12,11 @@
         [InjectLambda("ignore-me")]
         double VelocityWithMethodMetadata(Dummy value);
 
+        double VelocityWithStupidSiblingResult(Dummy value);
+
         double VelocityWithInvalidSiblingResult(Dummy value);
+
+        double VelocityWithStupidSiblingSignature(Dummy value);
 
         double VelocityWithInvalidSiblingSignature(Dummy value);
 
