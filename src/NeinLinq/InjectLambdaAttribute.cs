@@ -8,6 +8,8 @@ namespace NeinLinq
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = false)]
     public sealed class InjectLambdaAttribute : Attribute
     {
+        internal static InjectLambdaAttribute None = new InjectLambdaAttribute();
+
         /// <summary>
         /// The target type for the method's expression. The current type, if null.
         /// </summary>
@@ -31,6 +33,9 @@ namespace NeinLinq
         /// <param name="target">The target type for the method's expression.</param>
         public InjectLambdaAttribute(Type target)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
             Target = target;
         }
 
@@ -41,6 +46,11 @@ namespace NeinLinq
         /// <param name="method">The method's name for creating the method's expression.</param>
         public InjectLambdaAttribute(Type target, string method)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+            if (string.IsNullOrEmpty(method))
+                throw new ArgumentNullException(nameof(method));
+
             Target = target;
             Method = method;
         }
@@ -51,6 +61,9 @@ namespace NeinLinq
         /// <param name="method">The method's name for creating the method's expression.</param>
         public InjectLambdaAttribute(string method)
         {
+            if (string.IsNullOrEmpty(method))
+                throw new ArgumentNullException(nameof(method));
+
             Method = method;
         }
     }

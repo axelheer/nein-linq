@@ -73,5 +73,28 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return (d, t) => d / t;
         }
+
+        public static double VelocityWithGenericArguments<TDummy>(this TDummy value)
+            where TDummy : IDummy
+        {
+            throw new NotSupportedException();
+        }
+
+        public static Expression<Func<TDummy, double>> VelocityWithGenericArguments<TDummy>()
+            where TDummy : IDummy
+        {
+            return v => v.Distance / v.Time;
+        }
+
+        public static double VelocityWithInvalidGenericArguments<TDummy>(this TDummy value)
+            where TDummy : IDummy
+        {
+            throw new NotSupportedException();
+        }
+
+        public static Expression<Func<Dummy, double>> VelocityWithInvalidGenericArguments()
+        {
+            return v => v.Distance / v.Time;
+        }
     }
 }
