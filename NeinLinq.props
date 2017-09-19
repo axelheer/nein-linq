@@ -1,7 +1,7 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <VersionPrefix>2.2.0</VersionPrefix>
+    <VersionPrefix>2.2.1</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,7 +27,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIconUrl>https://secure.gravatar.com/avatar/f99247b7f16efbe7c4e896da2415a789?s=128</PackageIconUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/mit</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
-    <PackageReleaseNotes>Added lambda-injection for generic methods.</PackageReleaseNotes>
+    <PackageReleaseNotes>.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
