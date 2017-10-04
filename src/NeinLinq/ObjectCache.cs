@@ -12,31 +12,35 @@ namespace NeinLinq
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
-            cacheLock.EnterUpgradeableReadLock();
+            var value = default(TValue);
+
+            cacheLock.EnterReadLock();
 
             try
             {
-                var value = default(TValue);
                 if (cache.TryGetValue(key, out value))
                     return value;
-
-                cacheLock.EnterWriteLock();
-
-                try
-                {
-                    value = valueFactory(key);
-                    cache.Add(key, value);
-
-                    return value;
-                }
-                finally
-                {
-                    cacheLock.ExitWriteLock();
-                }
             }
             finally
             {
-                cacheLock.ExitUpgradeableReadLock();
+                cacheLock.ExitReadLock();
+            }
+
+            cacheLock.EnterWriteLock();
+
+            try
+            {
+                if (cache.TryGetValue(key, out value))
+                    return value;
+
+                value = valueFactory(key);
+                cache.Add(key, value);
+
+                return value;
+            }
+            finally
+            {
+                cacheLock.ExitWriteLock();
             }
         }
 
