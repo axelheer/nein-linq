@@ -38,17 +38,12 @@ namespace NeinLinq
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (node.Expression == parameter)
+            if (node.Expression == parameter && replacement is LambdaExpression lambda)
             {
-                var lambda = replacement as LambdaExpression;
+                var binders = lambda.Parameters.Zip(node.Arguments,
+                    (p, a) => new ParameterBinder(p, a));
 
-                if (lambda != null)
-                {
-                    var binders = lambda.Parameters.Zip(node.Arguments,
-                        (p, a) => new ParameterBinder(p, a));
-
-                    return binders.Aggregate(lambda.Body, (e, b) => b.Visit(e));
-                }
+                return binders.Aggregate(lambda.Body, (e, b) => b.Visit(e));
             }
 
             return base.VisitInvocation(node);

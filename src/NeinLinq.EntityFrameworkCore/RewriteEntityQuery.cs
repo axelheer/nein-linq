@@ -78,8 +78,7 @@ namespace NeinLinq.EntityFrameworkCore
         /// <inheritdoc />
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
         {
-            var asyncEnumerable = enumerable.Value as IAsyncEnumerable<T>;
-            if (asyncEnumerable != null)
+            if (enumerable.Value is IAsyncEnumerable<T> asyncEnumerable)
                 return asyncEnumerable.GetEnumerator();
             return new RewriteEntityQueryEnumerator<T>(enumerable.Value.GetEnumerator());
         }

@@ -53,8 +53,7 @@ namespace NeinLinq.EntityFramework
         {
             if (disposing)
             {
-                var disposable = enumerator as IDisposable;
-                if (disposable != null)
+                if (enumerator is IDisposable disposable)
                     disposable.Dispose();
             }
         }

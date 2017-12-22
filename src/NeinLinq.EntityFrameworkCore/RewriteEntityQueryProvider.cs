@@ -74,8 +74,7 @@ namespace NeinLinq.EntityFrameworkCore
         public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
         {
             // execute query with rewritten expression; async, if possible
-            var asyncProvider = provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (provider is IAsyncQueryProvider asyncProvider)
                 return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression));
             return new RewriteEntityQueryEnumerable<TResult>(provider.CreateQuery<TResult>(rewriter.Visit(expression)));
         }
@@ -84,8 +83,7 @@ namespace NeinLinq.EntityFrameworkCore
         public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
         {
             // execute query with rewritten expression; async, if possible
-            var asyncProvider = provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (provider is IAsyncQueryProvider asyncProvider)
                 return asyncProvider.ExecuteAsync<TResult>(rewriter.Visit(expression), cancellationToken);
             return Task.FromResult(provider.Execute<TResult>(rewriter.Visit(expression)));
         }

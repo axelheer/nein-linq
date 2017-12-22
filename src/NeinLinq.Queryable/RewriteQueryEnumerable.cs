@@ -44,8 +44,7 @@ namespace NeinLinq.Queryable
         {
             if (disposing)
             {
-                var disposable = enumerable as IDisposable;
-                if (disposable != null)
+                if (enumerable is IDisposable disposable)
                     disposable.Dispose();
             }
         }

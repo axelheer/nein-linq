@@ -51,8 +51,7 @@ namespace NeinLinq.Interactive
         {
             if (disposing)
             {
-                var disposable = enumerator as IDisposable;
-                if (disposable != null)
+                if (enumerator is IDisposable disposable)
                     disposable.Dispose();
             }
         }

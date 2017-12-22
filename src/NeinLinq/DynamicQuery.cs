@@ -94,7 +94,7 @@ namespace NeinLinq
 
         internal static Expression CreateMemberAccess(Expression target, string selector)
         {
-            return selector.Split('.').Aggregate(target, (t, n) => Expression.PropertyOrField(t, n));
+            return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
         }
 
         static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)

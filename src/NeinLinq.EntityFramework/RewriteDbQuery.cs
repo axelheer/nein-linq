@@ -55,8 +55,7 @@ namespace NeinLinq.EntityFramework
         /// <inheritdoc />
         public IDbAsyncEnumerator GetAsyncEnumerator()
         {
-            var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable;
-            if (asyncEnumerable != null)
+            if (enumerable.Value is IDbAsyncEnumerable asyncEnumerable)
                 return asyncEnumerable.GetAsyncEnumerator();
             return (RewriteDbQueryEnumerator)Activator.CreateInstance(
                     typeof(RewriteDbQueryEnumerator<>).MakeGenericType(elementType),
@@ -90,8 +89,7 @@ namespace NeinLinq.EntityFramework
         /// <inheritdoc />
         public new IDbAsyncEnumerator<T> GetAsyncEnumerator()
         {
-            var asyncEnumerable = enumerable.Value as IDbAsyncEnumerable<T>;
-            if (asyncEnumerable != null)
+            if (enumerable.Value is IDbAsyncEnumerable<T> asyncEnumerable)
                 return asyncEnumerable.GetAsyncEnumerator();
             return new RewriteDbQueryEnumerator<T>(enumerable.Value.GetEnumerator());
         }
