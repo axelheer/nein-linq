@@ -1,5 +1,5 @@
 language: csharp
-dotnet: 2.1.3
+dotnet: 2.1.4
 dist: trusty
 mono: none
 
@@ -9,8 +9,8 @@ addons:
     - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
       key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
     packages:
-    - dotnet-sharedframework-microsoft.netcore.app-1.1.5
+    - dotnet-sharedframework-microsoft.netcore.app-1.1.6
 
 script:
-  - dotnet test test/NeinLinq.Tests --configuration Release --framework netcoreapp1.1
-  - dotnet test test/NeinLinq.Tests --configuration Release --framework netcoreapp2.0
+  - dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp1.1
+  - dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.0

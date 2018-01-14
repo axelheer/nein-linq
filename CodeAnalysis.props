@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\..\CodeAnalysis.xml" />
+    <CodeAnalysisDictionary Include="$(MSBuildThisFileDirectory)CodeAnalysis.xml" />
   </ItemGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

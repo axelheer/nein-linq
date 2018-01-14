@@ -12,21 +12,19 @@ build_script:
   - cmd: dotnet pack %build_options% --include-symbols
 
 before_test:
-  - cmd: if not exist TestResults mkdir TestResults
-  - cmd: set OpenCover=%UserProfile%\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe
-  - cmd: set ReportGenerator=%UserProfile%\.nuget\packages\ReportGenerator\3.1.0\tools\ReportGenerator.exe
+  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:Clean;Build /p:Configuration=Release;DebugType=Full
 
 test_script:
-  - cmd: dotnet clean --configuration Release
-  - cmd: dotnet build %build_options% /p:DebugType=Full
-  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"test test\NeinLinq.Tests\NeinLinq.Tests.csproj --configuration Release --framework net452 --logger trx;LogFileName=NeinLinq.netframework45.trx --no-build --results-directory ..\..\TestResults" -searchdirs:test\NeinLinq.Tests\bin\Release\net452 -output:TestResults\NeinLinq.netframework45.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
-  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"test test\NeinLinq.Tests\NeinLinq.Tests.csproj --configuration Release --framework net461 --logger trx;LogFileName=NeinLinq.netframework46.trx --no-build --results-directory ..\..\TestResults" -searchdirs:test\NeinLinq.Tests\bin\Release\net461 -output:TestResults\NeinLinq.netframework46.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
-  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"test test\NeinLinq.Tests\NeinLinq.Tests.csproj --configuration Release --framework netcoreapp1.1 --logger trx;LogFileName=NeinLinq.netcore1.trx --no-build --results-directory ..\..\TestResults" -searchdirs:test\NeinLinq.Tests\bin\Release\netcoreapp1.1 -output:TestResults\NeinLinq.netcore1.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
-  - cmd: '"%OpenCover%" -target:dotnet.exe -targetargs:"test test\NeinLinq.Tests\NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.0 --logger trx;LogFileName=NeinLinq.netcore2.trx --no-build --results-directory ..\..\TestResults" -searchdirs:test\NeinLinq.Tests\bin\Release\netcoreapp2.0 -output:TestResults\NeinLinq.netcore2.report.xml -register:user -filter:"+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*" -returntargetcode -oldstyle'
-  - cmd: '"%ReportGenerator%" -reports:TestResults\*.report.xml -targetdir:TestResults\report -reporttypes:Badges;Html'
+  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=net452
+  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=net461
+  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=netcoreapp1.1
+  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=netcoreapp2.0
+
+after_test:
+  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:ReportGenerator
 
 artifacts:
-  - path: 'src\**\*.nupkg'
+  - path: src\**\*.nupkg
   - path: TestResults
 
 deploy:
