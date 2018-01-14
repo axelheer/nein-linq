@@ -46,8 +46,8 @@
     </PropertyGroup>
     <PropertyGroup>
       <ReportGeneratorExec>&quot;$(ReportGeneratorPath)&quot;</ReportGeneratorExec>
-      <ReportGeneratorExec>$(ReportGeneratorExec) -reports:$(TestResultsDir)*.xml</ReportGeneratorExec>
-      <ReportGeneratorExec>$(ReportGeneratorExec) -targetdir:$(TestResultsDir)report</ReportGeneratorExec>
+      <ReportGeneratorExec>$(ReportGeneratorExec) -reports:&quot;$(TestResultsDir)*.xml&quot;</ReportGeneratorExec>
+      <ReportGeneratorExec>$(ReportGeneratorExec) -targetdir:&quot;$(TestResultsDir)report&quot;</ReportGeneratorExec>
       <ReportGeneratorExec>$(ReportGeneratorExec) -reporttypes:Badges;Html</ReportGeneratorExec>
     </PropertyGroup>
     <Exec Command="$(ReportGeneratorExec)" WorkingDirectory="$(ProjectDir)" />
