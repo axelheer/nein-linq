@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Code Analysis" ToolsVersion="15.3">
+<RuleSet Name="Code Analysis" ToolsVersion="10.0">
+    <IncludeAll Action="Error" />
     <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
         <!-- Collections should implement generic interface -->
         <Rule Id="CA1010" Action="None" />
