@@ -5,19 +5,15 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.0.0" />
+    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
   </ItemGroup>
 
 </Project>

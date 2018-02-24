@@ -1,4 +1,4 @@
-version: 2.2.2-ci.{build}
+version: 2.3.0-ci.{build}
 
 image: Visual Studio 2017
 
@@ -15,9 +15,7 @@ before_test:
   - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:Clean;Build /p:Configuration=Release;DebugType=Full
 
 test_script:
-  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=net452
   - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=net461
-  - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=netcoreapp1.1
   - cmd: dotnet msbuild test\NeinLinq.Tests\NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=netcoreapp2.0
 
 after_test:

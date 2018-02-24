@@ -13,11 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
+    <PackageReference Include="System.Interactive.Async.Providers" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Interactive.Async.Providers" Version="3.0.0" />
+    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
   </ItemGroup>
 
 </Project>

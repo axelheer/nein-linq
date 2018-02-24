@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
+    <PackageReference Include="EntityFramework" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.0.0" />
+    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
   </ItemGroup>
 
 </Project>
