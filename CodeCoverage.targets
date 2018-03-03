@@ -1,15 +1,5 @@
 ﻿<Project>
 
-  <ItemGroup>
-    <PackageReference Include="OpenCover" Version="4.6.519" PrivateAssets="All" />
-    <PackageReference Include="ReportGenerator" Version="3.1.2" PrivateAssets="All" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <TestResultsDir>$(MSBuildThisFileDirectory)TestResults\</TestResultsDir>
-    <OpenCoverFilter>+[NeinLinq*]* -[NeinLinq.Fakes]* -[NeinLinq.Tests]*</OpenCoverFilter>
-  </PropertyGroup>
-
   <Target Name="OpenCover">
     <ItemGroup>
       <OpenCoverPackage Include="@(PackageReference->WithMetadataValue('Identity', 'OpenCover'))" />

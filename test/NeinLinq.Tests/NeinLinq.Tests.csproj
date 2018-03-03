@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\NeinLinq.props" />
+  <Import Project="..\..\CodeCoverage.props" />
   <Import Project="..\..\CodeCoverage.targets" />
 
   <PropertyGroup>
