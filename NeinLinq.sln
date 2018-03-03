@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62384529-4A89-45AA-9241-6C41D736333C}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CodeAnalysis.props = CodeAnalysis.props
 		CodeAnalysis.ruleset = CodeAnalysis.ruleset
 		CodeAnalysis.xml = CodeAnalysis.xml
+		CodeCoverage.props = CodeCoverage.props
 		CodeCoverage.targets = CodeCoverage.targets
 		LICENSE = LICENSE
 		NeinLinq.props = NeinLinq.props
