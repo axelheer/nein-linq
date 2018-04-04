@@ -1,5 +1,5 @@
 language: csharp
-dotnet: 2.1.4
+dotnet: 2.1.103
 dist: trusty
 mono: none
 
