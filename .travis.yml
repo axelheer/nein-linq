@@ -2,4 +2,4 @@ language: csharp
 dotnet: 2.1.300
 
 script:
-  - dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.0
+  - dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.1
