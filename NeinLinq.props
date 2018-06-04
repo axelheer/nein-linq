@@ -10,6 +10,12 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix' ">
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net45' ">/usr/lib/mono/4.5-api</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net461' ">/usr/lib/mono/4.6.1-api</FrameworkPathOverride>
+    <EnableFrameworkPathOverride>true</EnableFrameworkPathOverride>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Authors>Axel Heer</Authors>
     <Copyright>Copyright © 2014-2018 Axel Heer</Copyright>

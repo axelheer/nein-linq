@@ -3,10 +3,8 @@
 
 [![Latest package](https://img.shields.io/nuget/v/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
 [![Download tracker](https://img.shields.io/nuget/dt/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
-[![Travis status](https://travis-ci.org/axelheer/nein-linq.svg?branch=master)](https://travis-ci.org/axelheer/nein-linq)
 [![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/axelheer/nein-linq?branch=master&svg=true)](https://ci.appveyor.com/project/axelheer/nein-linq/branch/master)
 [![Line coverage](https://axelheer.blob.core.windows.net/github/nein-linq/report/badge_linecoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/report/index.htm)
-[![Branch coverage](https://axelheer.blob.core.windows.net/github/nein-linq/report/badge_branchcoverage.svg)](https://axelheer.blob.core.windows.net/github/nein-linq/report/index.htm)
 
 *NeinLinq* provides helpful extensions for using LINQ providers such as Entity Framework that support only a minor subset of .NET functions, reusing functions, rewriting queries, even making them null-safe, and building dynamic queries using translatable predicates and selectors.
 

@@ -9,10 +9,6 @@
     <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
