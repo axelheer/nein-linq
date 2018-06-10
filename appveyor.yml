@@ -11,16 +11,12 @@ build_script:
   - ps: 'if ($env:APPVEYOR_REPO_BRANCH -eq "release") { dotnet pack --configuration Release --include-symbols }'
   - ps: 'if ($env:APPVEYOR_REPO_BRANCH -ne "release") { dotnet pack --configuration Release --version-suffix "ci.$env:APPVEYOR_BUILD_NUMBER" --include-symbols }'
 
-before_test:
-  - cmd: dotnet msbuild test/NeinLinq.Tests/NeinLinq.Tests.csproj /t:Clean;Build /p:Configuration=Release;DebugType=Full
-
 test_script:
-  - cmd: dotnet msbuild test/NeinLinq.Tests/NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=net461
-  - cmd: dotnet msbuild test/NeinLinq.Tests/NeinLinq.Tests.csproj /t:OpenCover /p:Configuration=Release;TargetFramework=netcoreapp2.1
-  - sh: dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.1
+  - ps: 'if ($env:OS -eq "Windows_NT") { dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework net461 }'
+  - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.1 /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutputDirectory="$PWD/TestResults" /p:Exclude="[NeinLinq.Fakes]*"'
 
 after_test:
-  - cmd: dotnet msbuild test/NeinLinq.Tests/NeinLinq.Tests.csproj /t:ReportGenerator
+  - cmd: '"%UserProfile%\.nuget\packages\ReportGenerator\3.1.2\tools\ReportGenerator.exe" -reports:TestResults\coverage.xml -targetdir:TestResults\report -reporttypes:Badges;Html'
 
 artifacts:
   - path: src/**/*.nupkg
