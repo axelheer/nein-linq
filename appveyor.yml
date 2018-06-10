@@ -27,9 +27,9 @@ deploy:
     name: blob.core.windows.net
     on:
       branch: master
-      image: Visual Studio 2017
+      ci_windows: true
   - provider: Environment
     name: nuget.org
     on:
       branch: release
-      image: Visual Studio 2017
+      ci_windows: true
