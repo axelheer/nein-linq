@@ -1,8 +1,8 @@
 version: 2.3.0-ci.{build}
 
 image:
-- Visual Studio 2017
-- Ubuntu
+  - Visual Studio 2017
+  - Ubuntu
 
 before_build:
   - ps: dotnet --info
