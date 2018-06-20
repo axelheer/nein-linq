@@ -7,8 +7,6 @@ namespace NeinLinq
 {
     sealed class InjectLambdaSignature
     {
-        static readonly Type[] emptyTypes = new Type[0];
-
         readonly Type[] genericArguments;
 
         readonly Type[] parameterTypes;
@@ -27,7 +25,7 @@ namespace NeinLinq
 
         public InjectLambdaSignature(PropertyInfo property)
         {
-            genericArguments = emptyTypes;
+            genericArguments = Type.EmptyTypes;
             parameterTypes = new[] { property.DeclaringType };
             returnType = property.PropertyType;
             isStatic = true;
@@ -36,7 +34,7 @@ namespace NeinLinq
         public MethodInfo FindFactory(Type target, string method)
         {
             // assume method without any parameters
-            var factory = FindMatch(target, method, genericArguments, emptyTypes)
+            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes)
                 ?? target.GetRuntimeProperty(method)?.GetMethod;
             if (factory == null)
                 throw FailFactory(target, method, "no matching parameterless member found");

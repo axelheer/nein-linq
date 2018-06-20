@@ -114,7 +114,7 @@ namespace NeinLinq
             var collection = definition.MakeGenericType(type.GenericTypeArguments);
 
             // try if an instance of this collection would suffice
-            if (type.GetTypeInfo().IsAssignableFrom(collection.GetTypeInfo()))
+            if (type.IsAssignableFrom(collection))
             {
                 return Expression.Convert(Expression.New(collection), type);
             }
@@ -129,7 +129,7 @@ namespace NeinLinq
 
         static bool IsNullableOrReferenceType(Type type)
         {
-            return !type.GetTypeInfo().IsValueType || Nullable.GetUnderlyingType(type) != null;
+            return !type.IsValueType || Nullable.GetUnderlyingType(type) != null;
         }
     }
 }

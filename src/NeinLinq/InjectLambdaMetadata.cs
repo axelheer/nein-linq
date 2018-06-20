@@ -48,7 +48,7 @@ namespace NeinLinq
             var signature = new InjectLambdaSignature(method);
 
             // special ultra-fast treatment for static methods and sealed classes
-            if (method.IsStatic || method.DeclaringType.GetTypeInfo().IsSealed)
+            if (method.IsStatic || method.DeclaringType.IsSealed)
             {
                 return FixedLambdaFactory(metadata.Target ?? method.DeclaringType, metadata.Method ?? method.Name, signature);
             }

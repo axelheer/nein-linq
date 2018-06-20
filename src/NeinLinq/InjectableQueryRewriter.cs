@@ -12,7 +12,7 @@ namespace NeinLinq
     {
         static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> cache = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
 
-        readonly TypeInfo[] whitelist;
+        readonly Type[] whitelist;
 
         /// <summary>
         /// Creates a new injectable query rewriter.
@@ -25,7 +25,7 @@ namespace NeinLinq
             if (whitelist.Contains(null))
                 throw new ArgumentOutOfRangeException(nameof(whitelist));
 
-            this.whitelist = whitelist.Length != 0 ? whitelist.Select(t => t.GetTypeInfo()).ToArray() : null;
+            this.whitelist = whitelist;
         }
 
         /// <inheritdoc />
@@ -87,12 +87,8 @@ namespace NeinLinq
             if (data.Config)
                 return true;
 
-            if (whitelist == null)
-                return false;
-
             // ...or white-listed targets
-            var info = member.DeclaringType.GetTypeInfo();
-            return whitelist.Any(info.IsAssignableFrom);
+            return whitelist.Any(member.DeclaringType.IsAssignableFrom);
         }
     }
 }
