@@ -10,23 +10,25 @@
 
 To support different LINQ implementations, the following flavours are available. Choose at least one.
 
-Use *NeinLinq.Queryable* for classic LINQ queries:
+Use *NeinLinq.Queryable* for plain LINQ queries:
 
     PM> Install-Package NeinLinq.Queryable
 
-Use *NeinLinq.Interactive* for interactive LINQ queries:
+Use *NeinLinq.Interactive* for [interactive](https://github.com/dotnet/reactive/) LINQ queries:
 
     PM> Install-Package NeinLinq.Interactive
 
-Use *NeinLinq.EntityFramework* for classic *Entity Framework* LINQ queries:
+Use *NeinLinq.EntityFramework* for classic [Entity Framework 6](https://github.com/aspnet/EntityFramework6) LINQ queries:
 
     PM> Install-Package NeinLinq.EntityFramework
 
-Use *NeinLinq.EntityFrameworkCore* for *Entity Framework Core* LINQ queries:
+Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore) LINQ queries:
 
     PM> Install-Package NeinLinq.EntityFrameworkCore
 
 *Note:* when using one of the *Entity Framework* versions, it's generally a good idea to include the *Queryable* edition too, since non *EF specific* stuff like `DynamicQuery` can only be found there.
+
+*Note:* the *Entity Framework* versions are only necessary for writing async queries, since they contain additional code to handle these. For non-async code *NeinLinq.Queryable* does the job anyway.
 
 Lambda injection
 ----------------
