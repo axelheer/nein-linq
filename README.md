@@ -18,7 +18,7 @@ Use *NeinLinq.Interactive* for [interactive](https://github.com/dotnet/reactive/
 
     PM> Install-Package NeinLinq.Interactive
 
-Use *NeinLinq.EntityFramework* for classic [Entity Framework 6](https://github.com/aspnet/EntityFramework6) LINQ queries:
+Use *NeinLinq.EntityFramework* for [Entity Framework 6](https://github.com/aspnet/EntityFramework6) LINQ queries:
 
     PM> Install-Package NeinLinq.EntityFramework
 
