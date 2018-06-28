@@ -8,7 +8,7 @@ namespace NeinLinq
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = false)]
     public sealed class InjectLambdaAttribute : Attribute
     {
-        internal static InjectLambdaAttribute None = new InjectLambdaAttribute();
+        internal static readonly InjectLambdaAttribute None = new InjectLambdaAttribute();
 
         /// <summary>
         /// The target type for the method's expression. The current type, if null.

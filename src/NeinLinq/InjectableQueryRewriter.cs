@@ -83,12 +83,8 @@ namespace NeinLinq
 
         bool ShouldInject(MemberInfo member, InjectLambdaMetadata data)
         {
-            // inject only configured...
-            if (data.Config)
-                return true;
-
-            // ...or white-listed targets
-            return whitelist.Any(member.DeclaringType.IsAssignableFrom);
+            // inject only configured or white-listed targets
+            return data.Config || whitelist.Any(member.DeclaringType.IsAssignableFrom);
         }
     }
 }

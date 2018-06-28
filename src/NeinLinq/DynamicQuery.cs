@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace NeinLinq
 {
@@ -119,11 +118,11 @@ namespace NeinLinq
 
             var expression = (Expression)target;
 
-            var ordinalParse = underlyingType.GetRuntimeMethod("Parse", new[] { typeof(string) });
+            var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
             if (ordinalParse != null)
                 expression = Expression.Call(ordinalParse, target);
 
-            var cultureParse = underlyingType.GetRuntimeMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+            var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
             if (cultureParse != null)
                 expression = Expression.Call(cultureParse, target, format);
 

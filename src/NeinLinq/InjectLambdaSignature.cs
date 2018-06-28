@@ -35,7 +35,7 @@ namespace NeinLinq
         {
             // assume method without any parameters
             var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes)
-                ?? target.GetRuntimeProperty(method)?.GetMethod;
+                ?? target.GetProperty(method)?.GetMethod;
             if (factory == null)
                 throw FailFactory(target, method, "no matching parameterless member found");
 
@@ -55,7 +55,7 @@ namespace NeinLinq
                 throw FailFactory(target, method, "returns no lambda expression");
 
             // lambda signature matches original method's signature?
-            var signature = returns.GenericTypeArguments[0].GetRuntimeMethod("Invoke", parameterTypes);
+            var signature = returns.GenericTypeArguments[0].GetMethod("Invoke", parameterTypes);
             if (signature == null || signature.ReturnParameter.ParameterType != returnType)
                 throw FailFactory(target, method, "returns non-matching expression");
 
@@ -74,7 +74,7 @@ namespace NeinLinq
 
         static MethodInfo FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes)
         {
-            foreach (var candidate in target.GetRuntimeMethods())
+            foreach (var candidate in target.GetMethods())
             {
                 // non-matching name?
                 if (candidate.Name != method)
