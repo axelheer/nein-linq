@@ -174,5 +174,16 @@ namespace NeinLinq.Tests.InjectableQuery
 
             Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Dummy.VelocityWithInvalidSiblingSignatureExpr: returns non-matching expression.", error.Message);
         }
+
+        [Fact]
+        public void ShouldSucceedWithNonPublicSibling()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.VelocityWithNonPublicSibling;
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
     }
 }

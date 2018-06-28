@@ -78,5 +78,10 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             throw new NotSupportedException();
         }
+
+        public double VelocityWithNonPublicSibling(Dummy value)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

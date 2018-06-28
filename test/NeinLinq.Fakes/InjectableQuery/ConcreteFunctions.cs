@@ -70,5 +70,10 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return v => Math.Round(v.Distance / v.Time, digits);
         }
+
+        Expression<Func<Dummy, double>> VelocityWithNonPublicSibling()
+        {
+            return v => Math.Round(v.Distance / v.Time, digits);
+        }
     }
 }

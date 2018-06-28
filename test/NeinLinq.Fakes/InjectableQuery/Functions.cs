@@ -117,5 +117,15 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return v => v.Distance / v.Time;
         }
+
+        public static double VelocityWithNonPublicSibling(this Dummy value)
+        {
+            throw new NotSupportedException();
+        }
+
+        static Expression<Func<Dummy, double>> VelocityWithNonPublicSibling()
+        {
+            return v => v.Distance / v.Time;
+        }
     }
 }

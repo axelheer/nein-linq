@@ -25,5 +25,7 @@
 
         double VelocityWithInvalidGenericArguments<TDummy>(TDummy value)
             where TDummy : IDummy;
+
+        double VelocityWithNonPublicSibling(Dummy value);
     }
 }

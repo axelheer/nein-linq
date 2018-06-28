@@ -69,5 +69,9 @@ namespace NeinLinq.Fakes.InjectableQuery
         public double VelocityWithInvalidSiblingSignature { get; }
 
         public static Expression<Func<double, double, double>> VelocityWithInvalidSiblingSignatureExpr => (d, t) => d / t;
+
+        public double VelocityWithNonPublicSibling { get; }
+
+        static Expression<Func<Dummy, double>> VelocityWithNonPublicSiblingExpr => v => v.Distance / v.Time;
     }
 }

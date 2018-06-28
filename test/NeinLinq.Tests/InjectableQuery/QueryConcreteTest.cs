@@ -121,5 +121,16 @@ namespace NeinLinq.Tests.InjectableQuery
 
             Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.ConcreteFunctions.VelocityWithInvalidGenericArguments: no matching parameterless member found.", error.Message);
         }
+
+        [Fact]
+        public void ShouldSucceedWithNonPublicSibling()
+        {
+            var query = from d in data.ToInjectable(typeof(ConcreteFunctions))
+                        select functions.VelocityWithNonPublicSibling(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
     }
 }
