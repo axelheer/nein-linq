@@ -37,7 +37,7 @@ namespace NeinLinq
         {
             // assume method without any parameters
             var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes)
-                ?? target.GetProperty(method, everything)?.GetMethod;
+                ?? target.GetProperty(method, everything)?.GetGetMethod(true);
             if (factory == null)
                 throw FailFactory(target, method, "no matching parameterless member found");
 
@@ -53,11 +53,11 @@ namespace NeinLinq
 
             // method returns lambda expression?
             var returns = factory.ReturnType;
-            if (!returns.IsConstructedGenericType || returns.GetGenericTypeDefinition() != typeof(Expression<>))
+            if (!returns.IsGenericType || returns.GetGenericTypeDefinition() != typeof(Expression<>))
                 throw FailFactory(target, method, "returns no lambda expression");
 
             // lambda signature matches original method's signature?
-            var signature = returns.GenericTypeArguments[0].GetMethod("Invoke", parameterTypes);
+            var signature = returns.GetGenericArguments()[0].GetMethod("Invoke", parameterTypes);
             if (signature == null || signature.ReturnParameter.ParameterType != returnType)
                 throw FailFactory(target, method, "returns non-matching expression");
 

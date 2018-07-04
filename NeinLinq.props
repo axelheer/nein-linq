@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix' ">
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net40' ">/usr/lib/mono/4.0-api</FrameworkPathOverride>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net45' ">/usr/lib/mono/4.5-api</FrameworkPathOverride>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net461' ">/usr/lib/mono/4.6.1-api</FrameworkPathOverride>
     <EnableFrameworkPathOverride>true</EnableFrameworkPathOverride>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace NeinLinq
 {
@@ -9,6 +10,11 @@ namespace NeinLinq
     public sealed class InjectLambdaAttribute : Attribute
     {
         internal static readonly InjectLambdaAttribute None = new InjectLambdaAttribute();
+
+        internal static InjectLambdaAttribute GetCustomAttribute(MemberInfo element)
+        {
+            return (InjectLambdaAttribute)GetCustomAttribute(element, typeof(InjectLambdaAttribute));
+        }
 
         /// <summary>
         /// The target type for the method's expression. The current type, if null.

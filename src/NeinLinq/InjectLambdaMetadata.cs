@@ -22,7 +22,7 @@ namespace NeinLinq
 
         public static InjectLambdaMetadata Create(MethodInfo method)
         {
-            var metadata = method.GetCustomAttribute<InjectLambdaAttribute>();
+            var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
 
             var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() =>
                 LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
@@ -32,8 +32,8 @@ namespace NeinLinq
 
         public static InjectLambdaMetadata Create(PropertyInfo property)
         {
-            var metadata = property.GetCustomAttribute<InjectLambdaAttribute>()
-                ?? property.GetMethod.GetCustomAttribute<InjectLambdaAttribute>();
+            var metadata = InjectLambdaAttribute.GetCustomAttribute(property)
+                ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true));
 
             var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() =>
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
@@ -99,7 +99,7 @@ namespace NeinLinq
                 var concreteMethod = signature.FindMatch(target, method);
 
                 // configuration over convention, if any
-                var metadata = concreteMethod.GetCustomAttribute<InjectLambdaAttribute>() ?? InjectLambdaAttribute.None;
+                var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
 
                 // retrieve validated factory method
                 var factory = signature.FindFactory(target, metadata.Method ?? method);
