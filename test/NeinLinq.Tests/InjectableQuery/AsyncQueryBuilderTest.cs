@@ -17,9 +17,8 @@ namespace NeinLinq.Tests.InjectableQuery
             Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable)query).ToInjectable(null, null));
             Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToInjectable(null));
             Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable<Dummy>)query).ToInjectable(null, null));
-            // AsyncEnumerableQuery does not implement IOrderedAsyncQueryable
-            // Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToInjectable(null));
-            // Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable)query).ToInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable)query).ToInjectable(null, null));
             Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToInjectable(null));
             Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToInjectable(null, null));
         }
@@ -40,7 +39,7 @@ namespace NeinLinq.Tests.InjectableQuery
             AssertQuery(actual);
         }
 
-        [Fact(Skip = "AsyncEnumerableQuery does not implement IOrderedAsyncQueryable")]
+        [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
             var actual = ((IOrderedAsyncQueryable)query).ToInjectable();

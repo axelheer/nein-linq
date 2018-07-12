@@ -17,9 +17,8 @@ namespace NeinLinq.Tests.SubstitutionQuery
             Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToSubstitution(typeof(Functions), null));
             Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToSubstitution(null, typeof(OtherFunctions)));
             Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToSubstitution(typeof(Functions), null));
-            // AsyncEnumerableQuery does not implement IOrderedAsyncQueryable
-            // Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToSubstitution(null, typeof(OtherFunctions)));
-            // Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToSubstitution(typeof(Functions), null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToSubstitution(null, typeof(OtherFunctions)));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToSubstitution(typeof(Functions), null));
             Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToSubstitution(null, typeof(OtherFunctions)));
             Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToSubstitution(typeof(Functions), null));
         }
@@ -40,7 +39,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
             AssertQuery(actual);
         }
 
-        [Fact(Skip = "AsyncEnumerableQuery does not implement IOrderedAsyncQueryable")]
+        [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
             var actual = ((IOrderedAsyncQueryable)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));

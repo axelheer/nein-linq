@@ -18,8 +18,7 @@ namespace NeinLinq.Tests.RewriteQuery
             Assert.Throws<ArgumentNullException>(() => default(IAsyncQueryable<Dummy>).Rewrite(new Rewriter()));
             Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).Rewrite(null));
             Assert.Throws<ArgumentNullException>(() => default(IOrderedAsyncQueryable).Rewrite(new Rewriter()));
-            // AsyncEnumerableQuery does not implement IOrderedAsyncQueryable
-            // Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).Rewrite(null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).Rewrite(null));
             Assert.Throws<ArgumentNullException>(() => default(IOrderedAsyncQueryable<Dummy>).Rewrite(new Rewriter()));
             Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).Rewrite(null));
         }
@@ -40,7 +39,7 @@ namespace NeinLinq.Tests.RewriteQuery
             AssertQuery(actual);
         }
 
-        [Fact(Skip = "AsyncEnumerableQuery does not implement IOrderedAsyncQueryable")]
+        [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
             var actual = ((IOrderedAsyncQueryable)query).Rewrite(new Rewriter());

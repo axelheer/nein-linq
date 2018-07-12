@@ -25,7 +25,7 @@ namespace NeinLinq.Tests.NullsafeQuery
             AssertQuery(actual);
         }
 
-        [Fact(Skip = "AsyncEnumerableQuery does not implement IOrderedAsyncQueryable")]
+        [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
             var actual = ((IOrderedAsyncQueryable)query).ToNullsafe();

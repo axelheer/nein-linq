@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
-    <PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
+    <PackageReference Include="System.Interactive.Async.Providers" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
