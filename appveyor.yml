@@ -13,21 +13,15 @@ build_script:
 
 test_script:
   - ps: 'if ($env:OS -eq "Windows_NT") { dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework net461 }'
-  - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.1 /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="$PWD/TestResults/coverage.xml" /p:Exclude="[NeinLinq.Fakes]*"'
+  - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.1 /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="$PWD/coverage.xml" /p:Exclude="[NeinLinq.Fakes]*"'
 
 after_test:
-  - cmd: '"%UserProfile%\.nuget\packages\ReportGenerator\3.1.2\tools\ReportGenerator.exe" -reports:TestResults\coverage.xml -targetdir:TestResults\report -reporttypes:Badges;Html'
+  - cmd: 'curl -s https://codecov.io/bash | bash -s - -f coverage.xml'
 
 artifacts:
   - path: src/**/*.nupkg
-  - path: TestResults
 
 deploy:
-  - provider: Environment
-    name: blob.core.windows.net
-    on:
-      branch: master
-      ci_windows: true
   - provider: Environment
     name: nuget.org
     on:

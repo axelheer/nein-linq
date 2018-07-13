@@ -7,4 +7,6 @@
 # Build
 bin/
 obj/
-TestResults/
+
+# Test
+coverage.xml

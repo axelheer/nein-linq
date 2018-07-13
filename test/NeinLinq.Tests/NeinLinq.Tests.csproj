@@ -7,18 +7,21 @@
     <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
-    <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.2.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="System.Interactive.Async.Providers" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\NeinLinq.Interactive\NeinLinq.Interactive.csproj" />
     <ProjectReference Include="..\..\src\NeinLinq.Queryable\NeinLinq.Queryable.csproj" />
@@ -26,14 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="coverlet.msbuild" Version="2.1.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="2.1.0" PrivateAssets="All" />
-    <PackageReference Include="ReportGenerator" Version="3.1.2" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
