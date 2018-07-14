@@ -1,6 +1,4 @@
-﻿#if NETFRAMEWORK
-
-using NeinLinq.Fakes.DbAsyncQuery;
+﻿using NeinLinq.Fakes.DbAsyncQuery;
 using System.Data.Entity;
 
 namespace NeinLinq.Tests.DbAsyncQuery
@@ -21,5 +19,3 @@ namespace NeinLinq.Tests.DbAsyncQuery
         }
     }
 }
-
-#endif

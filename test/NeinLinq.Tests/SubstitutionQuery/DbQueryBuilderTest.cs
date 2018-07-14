@@ -1,6 +1,4 @@
-﻿#if NETFRAMEWORK
-
-using NeinLinq.EntityFramework;
+﻿using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.SubstitutionQuery;
 using System;
 using System.Linq;
@@ -69,5 +67,3 @@ namespace NeinLinq.Tests.SubstitutionQuery
         }
     }
 }
-
-#endif

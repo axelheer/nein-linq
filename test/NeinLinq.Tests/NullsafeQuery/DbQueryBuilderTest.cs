@@ -1,13 +1,11 @@
-﻿#if NETFRAMEWORK
-
-using NeinLinq.EntityFramework;
+﻿using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.NullsafeQuery;
 using System.Linq;
 using Xunit;
 
 namespace NeinLinq.Tests.NullsafeQuery
 {
-    public class DbBuilderTest
+    public class DbQueryBuilderTest
     {
         readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.SomeNumeric);
 
@@ -55,5 +53,3 @@ namespace NeinLinq.Tests.NullsafeQuery
         }
     }
 }
-
-#endif

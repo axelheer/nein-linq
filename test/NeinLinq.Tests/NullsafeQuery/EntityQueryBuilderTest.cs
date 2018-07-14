@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NeinLinq.Tests.NullsafeQuery
 {
-    public class EntityBuilderTest
+    public class EntityQueryBuilderTest
     {
         readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.SomeNumeric);
 

@@ -1,6 +1,4 @@
-﻿#if NETFRAMEWORK
-
-using NeinLinq.Fakes.RewriteQuery;
+﻿using NeinLinq.Fakes.RewriteQuery;
 using NeinLinq.EntityFramework;
 using System;
 using System.Linq;
@@ -69,5 +67,3 @@ namespace NeinLinq.Tests.RewriteQuery
         }
     }
 }
-
-#endif
