@@ -26,8 +26,6 @@ Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.co
 
     PM> Install-Package NeinLinq.EntityFrameworkCore
 
-*Note:* when using one of the *Entity Framework* versions, it's generally a good idea to include the *Queryable* edition too, since non *EF specific* stuff like `DynamicQuery` can only be found there.
-
 *Note:* the *Entity Framework* versions are only necessary for writing async queries, since they contain additional code to handle these. For non-async code *NeinLinq.Queryable* does the job anyway.
 
 Lambda injection

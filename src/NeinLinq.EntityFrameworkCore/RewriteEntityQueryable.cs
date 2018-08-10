@@ -22,7 +22,7 @@ namespace NeinLinq.EntityFrameworkCore
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
         {
             // rewrite on enumeration
-            var enumerable = RewriteQuery();
+            var enumerable = UnwrapQuery();
             if (enumerable is IAsyncEnumerable<T> asyncEnumerable)
                 return asyncEnumerable.GetEnumerator();
             return new RewriteEntityQueryEnumerator<T>(enumerable.GetEnumerator());

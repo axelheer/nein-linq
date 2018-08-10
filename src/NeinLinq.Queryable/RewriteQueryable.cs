@@ -34,17 +34,17 @@ namespace NeinLinq
         /// Rewrites the entire query expression.
         /// </summary>
         /// <returns>A rewritten query.</returns>
-        public IQueryable<T> RewriteQuery()
+        public IQueryable<T> UnwrapQuery()
         {
             var expression = provider.Rewriter.Visit(queryable.Expression);
-            return queryable.Provider.CreateQuery<T>(expression);
+            return provider.Provider.CreateQuery<T>(expression);
         }
 
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
             // rewrite on enumeration
-            var enumerable = RewriteQuery();
+            var enumerable = UnwrapQuery();
             return enumerable.GetEnumerator();
         }
 

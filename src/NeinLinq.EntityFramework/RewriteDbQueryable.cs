@@ -22,7 +22,7 @@ namespace NeinLinq.EntityFramework
         public IDbAsyncEnumerator<T> GetAsyncEnumerator()
         {
             // rewrite on enumeration
-            var enumerable = RewriteQuery();
+            var enumerable = UnwrapQuery();
             if (enumerable is IDbAsyncEnumerable<T> asyncEnumerable)
                 return asyncEnumerable.GetAsyncEnumerator();
             return new RewriteDbQueryEnumerator<T>(enumerable.GetEnumerator());

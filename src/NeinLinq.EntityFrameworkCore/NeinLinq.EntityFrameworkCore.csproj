@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
+    <ProjectReference Include="..\NeinLinq.Queryable\NeinLinq.Queryable.csproj" />
   </ItemGroup>
 
 </Project>

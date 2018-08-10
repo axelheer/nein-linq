@@ -33,17 +33,17 @@ namespace NeinLinq.Interactive
         /// Rewrites the entire query expression.
         /// </summary>
         /// <returns>A rewritten query.</returns>
-        public IAsyncQueryable<T> Rewrite()
+        public IAsyncQueryable<T> UnwrapQuery()
         {
             var expression = provider.Rewriter.Visit(queryable.Expression);
-            return queryable.Provider.CreateQuery<T>(expression);
+            return provider.Provider.CreateQuery<T>(expression);
         }
 
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetEnumerator()
         {
             // rewrite on enumeration
-            var enumerable = Rewrite();
+            var enumerable = UnwrapQuery();
             return enumerable.GetEnumerator();
         }
 

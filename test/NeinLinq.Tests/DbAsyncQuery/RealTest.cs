@@ -1,13 +1,13 @@
 ﻿#if NETFRAMEWORK
 
-using NeinLinq.EntityFramework;
-using NeinLinq.Fakes.DbAsyncQuery;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using NeinLinq.EntityFramework;
+using NeinLinq.Fakes.DbAsyncQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.DbAsyncQuery
