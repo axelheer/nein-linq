@@ -22,9 +22,11 @@ namespace NeinLinq.Queryable
             if (rewriter == null)
                 throw new ArgumentNullException(nameof(rewriter));
 
+            var provider = new RewriteQueryProvider(value.Provider, rewriter);
+
             return (IQueryable)Activator.CreateInstance(
-                typeof(RewriteQuery<>).MakeGenericType(value.ElementType),
-                value, rewriter);
+                typeof(RewriteQueryable<>).MakeGenericType(value.ElementType),
+                provider, value);
         }
 
         /// <summary>
@@ -40,9 +42,11 @@ namespace NeinLinq.Queryable
             if (rewriter == null)
                 throw new ArgumentNullException(nameof(rewriter));
 
+            var provider = new RewriteQueryProvider(value.Provider, rewriter);
+
             return (IOrderedQueryable)Activator.CreateInstance(
-                typeof(RewriteQuery<>).MakeGenericType(value.ElementType),
-                value, rewriter);
+                typeof(RewriteQueryable<>).MakeGenericType(value.ElementType),
+                provider, value);
         }
 
         /// <summary>
@@ -59,7 +63,9 @@ namespace NeinLinq.Queryable
             if (rewriter == null)
                 throw new ArgumentNullException(nameof(rewriter));
 
-            return new RewriteQuery<T>(value, rewriter);
+            var provider = new RewriteQueryProvider(value.Provider, rewriter);
+
+            return new RewriteQueryable<T>(provider, value);
         }
 
         /// <summary>
@@ -76,7 +82,9 @@ namespace NeinLinq.Queryable
             if (rewriter == null)
                 throw new ArgumentNullException(nameof(rewriter));
 
-            return new RewriteQuery<T>(value, rewriter);
+            var provider = new RewriteQueryProvider(value.Provider, rewriter);
+
+            return new RewriteQueryable<T>(provider, value);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace NeinLinq.Tests.RewriteQuery
 {
     public class EntityQueryEnumeratorTest
     {
-        private readonly DummyEnumerator enumerator = new DummyEnumerator();
+        readonly DummyEnumerator enumerator = new DummyEnumerator();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()

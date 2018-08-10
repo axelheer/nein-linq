@@ -57,7 +57,7 @@ namespace NeinLinq.Tests.InjectableQuery
 
         static void AssertQuery(IAsyncQueryable actual)
         {
-            Assert.IsType<RewriteAsyncQuery<Dummy>>(actual);
+            Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
             Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
 
             var actualProvider = (RewriteAsyncQueryProvider)actual.Provider;

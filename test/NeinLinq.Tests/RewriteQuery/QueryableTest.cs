@@ -7,23 +7,34 @@ using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
-    public class QueryTest
+    public class QueryableTest
     {
-        readonly IQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        readonly Rewriter rewriter;
+        readonly IQueryable<Dummy> query;
+        readonly RewriteQueryProvider provider;
+
+        public QueryableTest()
+        {
+            rewriter = new Rewriter();
+
+            query = Enumerable.Empty<Dummy>()
+                              .AsQueryable()
+                              .OrderBy(d => d.Id);
+
+            provider = new RewriteQueryProvider(query.Provider, rewriter);
+        }
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteQuery<Dummy>(query, null));
-            Assert.Throws<ArgumentNullException>(() => new RewriteQuery<Dummy>(null, new Rewriter()));
+            Assert.Throws<ArgumentNullException>(() => new RewriteQueryable<Dummy>(provider, null));
+            Assert.Throws<ArgumentNullException>(() => new RewriteQueryable<Dummy>(null, query));
         }
 
         [Fact]
         public void GetEnumeratorUntypedShouldRewrite()
         {
-            var rewriter = new Rewriter();
-
-            var actual = ((IEnumerable)new RewriteQuery<Dummy>(query, rewriter)).GetEnumerator();
+            var actual = ((IEnumerable)new RewriteQueryable<Dummy>(provider, query)).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);
@@ -32,9 +43,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void GetEnumeratorTypedShouldRewrite()
         {
-            var rewriter = new Rewriter();
-
-            var actual = new RewriteQuery<Dummy>(query, rewriter).GetEnumerator();
+            var actual = new RewriteQueryable<Dummy>(provider, query).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);
@@ -43,7 +52,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ElementTypeShouldReturnElementType()
         {
-            var actual = new RewriteQuery<Dummy>(query, new Rewriter()).ElementType;
+            var actual = new RewriteQueryable<Dummy>(provider, query).ElementType;
 
             Assert.Equal(typeof(Dummy), actual);
         }
@@ -51,7 +60,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ExpressionShouldReturnExpression()
         {
-            var actual = new RewriteQuery<Dummy>(query, new Rewriter()).Expression;
+            var actual = new RewriteQueryable<Dummy>(provider, query).Expression;
 
             Assert.Equal(query.Expression, actual);
         }
@@ -59,7 +68,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ProviderShouldReturnProvider()
         {
-            var actual = new RewriteQuery<Dummy>(query, new Rewriter()).Provider;
+            var actual = new RewriteQueryable<Dummy>(provider, query).Provider;
 
             Assert.IsType<RewriteQueryProvider>(actual);
             Assert.IsType<Rewriter>(((RewriteQueryProvider)actual).Rewriter);

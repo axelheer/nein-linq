@@ -36,7 +36,7 @@ namespace NeinLinq.Tests.RewriteQuery
 
         static void AssertQuery(IQueryable actual)
         {
-            Assert.IsType<RewriteDbQuery<Dummy>>(actual);
+            Assert.IsType<RewriteDbQueryable<Dummy>>(actual);
             Assert.IsType<RewriteDbQueryProvider>(actual.Provider);
 
             var actualProvider = (RewriteDbQueryProvider)actual.Provider;

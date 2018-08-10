@@ -1,7 +1,11 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <VersionPrefix>2.3.1</VersionPrefix>
+    <VersionPrefix>2.4.0</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>

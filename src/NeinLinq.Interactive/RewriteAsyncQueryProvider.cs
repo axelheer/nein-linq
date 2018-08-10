@@ -44,7 +44,8 @@ namespace NeinLinq.Interactive
         public IAsyncQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            return provider.CreateQuery<TElement>(expression).Rewrite(rewriter);
+            var queryable = provider.CreateQuery<TElement>(expression);
+            return new RewriteAsyncQueryable<TElement>(this, queryable);
         }
 
         /// <inheritdoc />

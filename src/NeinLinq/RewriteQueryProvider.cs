@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NeinLinq.Queryable
+namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query provider.
@@ -39,17 +39,21 @@ namespace NeinLinq.Queryable
         }
 
         /// <inheritdoc />
-        public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+        public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            return provider.CreateQuery<TElement>(expression).Rewrite(rewriter);
+            var queryable = provider.CreateQuery<TElement>(expression);
+            return new RewriteQueryable<TElement>(this, queryable);
         }
 
         /// <inheritdoc />
-        public IQueryable CreateQuery(Expression expression)
+        public virtual IQueryable CreateQuery(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            return provider.CreateQuery(expression).Rewrite(rewriter);
+            var queryable = provider.CreateQuery(expression);
+            return (IQueryable)Activator.CreateInstance(
+                typeof(RewriteQueryable<>).MakeGenericType(queryable.ElementType),
+                this, queryable);
         }
 
         /// <inheritdoc />
