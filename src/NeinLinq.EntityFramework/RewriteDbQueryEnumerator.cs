@@ -11,7 +11,7 @@ namespace NeinLinq.EntityFramework
     /// </summary>
     public class RewriteDbQueryEnumerator<T> : IDbAsyncEnumerator<T>
     {
-        readonly IEnumerator<T> enumerator;
+        private readonly IEnumerator<T> enumerator;
 
         /// <summary>
         /// Create a new enumerator proxy.

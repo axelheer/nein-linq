@@ -1,16 +1,15 @@
-﻿using NeinLinq.Fakes.DynamicQuery;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
+using NeinLinq.Fakes.DynamicQuery;
 using Xunit;
-
 using static NeinLinq.DynamicQuery;
 
 namespace NeinLinq.Tests.DynamicQuery
 {
     public class CreatePredicateTest
     {
-        readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()

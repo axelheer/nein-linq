@@ -1,14 +1,14 @@
-﻿using NeinLinq.Fakes.RewriteQuery;
-using NeinLinq.EntityFramework;
-using System;
+﻿using System;
 using System.Linq;
+using NeinLinq.EntityFramework;
+using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
     public class DbQueryBuilderTest
     {
-        readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void RewriteShouldHandleInvalidArguments()
@@ -55,7 +55,7 @@ namespace NeinLinq.Tests.RewriteQuery
             AssertQuery(actual);
         }
 
-        static void AssertQuery(IQueryable actual)
+        private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteDbQueryable<Dummy>>(actual);
             Assert.IsType<RewriteDbQueryProvider>(actual.Provider);

@@ -7,7 +7,7 @@ namespace NeinLinq.Fakes.SelectorTranslator
     {
         public static IEnumerable<IDummy> Data { get; } = InitData();
 
-        static IEnumerable<IDummy> InitData()
+        private static IEnumerable<IDummy> InitData()
         {
             var d = new[]
             {

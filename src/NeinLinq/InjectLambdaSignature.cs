@@ -5,17 +5,17 @@ using System.Reflection;
 
 namespace NeinLinq
 {
-    sealed class InjectLambdaSignature
+    internal sealed class InjectLambdaSignature
     {
-        const BindingFlags everything = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
+        private const BindingFlags everything = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
 
-        readonly Type[] genericArguments;
+        private readonly Type[] genericArguments;
 
-        readonly Type[] parameterTypes;
+        private readonly Type[] parameterTypes;
 
-        readonly Type returnType;
+        private readonly Type returnType;
 
-        readonly bool isStatic;
+        private readonly bool isStatic;
 
         public InjectLambdaSignature(MethodInfo method)
         {
@@ -64,7 +64,7 @@ namespace NeinLinq
             return factory;
         }
 
-        static Exception FailFactory(Type target, string method, string error)
+        private static Exception FailFactory(Type target, string method, string error)
         {
             throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: {error}.");
         }
@@ -74,7 +74,7 @@ namespace NeinLinq
             return FindMatch(target, method, genericArguments, parameterTypes);
         }
 
-        static MethodInfo FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes)
+        private static MethodInfo FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes)
         {
             foreach (var candidate in target.GetMethods(everything))
             {

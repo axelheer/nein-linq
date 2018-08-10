@@ -1,15 +1,15 @@
-﻿using NeinLinq.Fakes.RewriteQuery;
-using NeinLinq.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using NeinLinq.EntityFrameworkCore;
+using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
     public class EntityQueryProviderTest
     {
-        readonly IQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly IQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
@@ -34,7 +34,7 @@ namespace NeinLinq.Tests.RewriteQuery
             AssertQuery(actual);
         }
 
-        static void AssertQuery(IQueryable actual)
+        private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
             Assert.IsType<RewriteEntityQueryProvider>(actual.Provider);

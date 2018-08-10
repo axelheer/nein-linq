@@ -1,13 +1,13 @@
-﻿using NeinLinq.Fakes.SubstitutionQuery;
+﻿using System.Linq;
+using NeinLinq.Fakes.SubstitutionQuery;
 using NeinLinq.Queryable;
-using System.Linq;
 using Xunit;
 
 namespace NeinLinq.Tests.SubstitutionQuery
 {
     public class QueryTest
     {
-        readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
 
         public QueryTest()
         {

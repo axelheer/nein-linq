@@ -1,5 +1,5 @@
-﻿using NeinLinq.Fakes.PredicateTranslator;
-using System;
+﻿using System;
+using NeinLinq.Fakes.PredicateTranslator;
 using Xunit;
 
 namespace NeinLinq.Tests.PredicateTranslator

@@ -10,8 +10,8 @@ namespace NeinLinq.Interactive
     /// </summary>
     public class RewriteAsyncQueryable<T> : IOrderedAsyncQueryable<T>
     {
-        readonly RewriteAsyncQueryProvider provider;
-        readonly IAsyncQueryable queryable;
+        private readonly RewriteAsyncQueryProvider provider;
+        private readonly IAsyncQueryable queryable;
 
         /// <summary>
         /// Create a new query to rewrite.

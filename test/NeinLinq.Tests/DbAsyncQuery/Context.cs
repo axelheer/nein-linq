@@ -1,5 +1,5 @@
-﻿using NeinLinq.Fakes.DbAsyncQuery;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using NeinLinq.Fakes.DbAsyncQuery;
 
 namespace NeinLinq.Tests.DbAsyncQuery
 {
@@ -8,7 +8,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
     {
         public DbSet<Dummy> Dummies { get; set; }
 
-        public Context () : base("NeinLinq.EntityFramework")
+        public Context() : base("NeinLinq.EntityFramework")
         {
         }
 

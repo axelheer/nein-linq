@@ -5,7 +5,7 @@ namespace NeinLinq.Fakes.InjectableQuery
 {
     public class MixedFunctions
     {
-        readonly int digits;
+        private readonly int digits;
 
         public MixedFunctions(int digits)
         {

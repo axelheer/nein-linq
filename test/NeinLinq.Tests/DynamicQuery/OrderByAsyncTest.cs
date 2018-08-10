@@ -1,14 +1,14 @@
-﻿using NeinLinq.Fakes.DynamicQuery;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using NeinLinq.Fakes.DynamicQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.DynamicQuery
 {
     public class AsyncOrderByTest
     {
-        readonly IAsyncQueryable<Dummy> data = DummyStore.Data.ToAsyncEnumerable().AsAsyncQueryable();
+        private readonly IAsyncQueryable<Dummy> data = DummyStore.Data.ToAsyncEnumerable().AsAsyncQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()

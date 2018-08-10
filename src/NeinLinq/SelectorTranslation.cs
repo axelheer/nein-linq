@@ -12,7 +12,7 @@ namespace NeinLinq
     /// <typeparam name="TResult">The type of the selector's result parameter.</typeparam>
     public class SelectorTranslation<TSource, TResult>
     {
-        readonly Expression<Func<TSource, TResult>> selector;
+        private readonly Expression<Func<TSource, TResult>> selector;
 
         /// <summary>
         /// Starts translation of a given selector.

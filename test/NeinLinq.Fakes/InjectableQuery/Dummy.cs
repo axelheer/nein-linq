@@ -72,6 +72,6 @@ namespace NeinLinq.Fakes.InjectableQuery
 
         public double VelocityWithNonPublicSibling { get; }
 
-        static Expression<Func<Dummy, double>> VelocityWithNonPublicSiblingExpr => v => v.Distance / v.Time;
+        private static Expression<Func<Dummy, double>> VelocityWithNonPublicSiblingExpr => v => v.Distance / v.Time;
     }
 }

@@ -4,11 +4,11 @@ using System.Threading;
 
 namespace NeinLinq
 {
-    sealed class ObjectCache<TKey, TValue> : IDisposable
+    internal sealed class ObjectCache<TKey, TValue> : IDisposable
     {
-        readonly Dictionary<TKey, TValue> cache = new Dictionary<TKey, TValue>();
+        private readonly Dictionary<TKey, TValue> cache = new Dictionary<TKey, TValue>();
 
-        readonly ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim();
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
@@ -17,7 +17,9 @@ namespace NeinLinq
             try
             {
                 if (cache.TryGetValue(key, out var value))
+                {
                     return value;
+                }
             }
             finally
             {
@@ -29,7 +31,9 @@ namespace NeinLinq
             try
             {
                 if (cache.TryGetValue(key, out var value))
+                {
                     return value;
+                }
 
                 value = valueFactory(key);
                 cache.Add(key, value);

@@ -9,8 +9,8 @@ namespace NeinLinq
     /// </summary>
     public class SubstitutionQueryRewriter : ExpressionVisitor
     {
-        readonly Type from;
-        readonly Type to;
+        private readonly Type from;
+        private readonly Type to;
 
         /// <summary>
         /// Creates a new substitution query rewriter.

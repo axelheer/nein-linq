@@ -9,8 +9,8 @@ namespace NeinLinq
     /// </summary>
     public class RewriteQueryProvider : IQueryProvider
     {
-        readonly IQueryProvider provider;
-        readonly ExpressionVisitor rewriter;
+        private readonly IQueryProvider provider;
+        private readonly ExpressionVisitor rewriter;
 
         /// <summary>
         /// Actual query provider.

@@ -1,17 +1,17 @@
-﻿using NeinLinq.Fakes.RewriteQuery;
-using NeinLinq.Interactive;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using NeinLinq.Fakes.RewriteQuery;
+using NeinLinq.Interactive;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
     public class AsyncQueryProviderTest
     {
-        readonly IAsyncQueryable<Dummy> query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
+        private readonly IAsyncQueryable<Dummy> query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
@@ -28,7 +28,7 @@ namespace NeinLinq.Tests.RewriteQuery
             AssertQuery(actual);
         }
 
-        static void AssertQuery(IAsyncQueryable actual)
+        private static void AssertQuery(IAsyncQueryable actual)
         {
             Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
             Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);

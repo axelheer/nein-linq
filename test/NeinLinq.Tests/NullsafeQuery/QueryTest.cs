@@ -1,14 +1,14 @@
-﻿using NeinLinq.Fakes.NullsafeQuery;
-using NeinLinq.Queryable;
-using System;
+﻿using System;
 using System.Linq;
+using NeinLinq.Fakes.NullsafeQuery;
+using NeinLinq.Queryable;
 using Xunit;
 
 namespace NeinLinq.Tests.NullsafeQuery
 {
     public class QueryTest
     {
-        readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldSelectStructMember()
@@ -150,7 +150,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                 r => Assert.Empty(r.Lot),
                 r => Assert.Empty(r.Lot),
                 r => Assert.Empty(r.Lot),
-                r => Assert.Equal(new[] { 1, 1, 4, 7}, r.Lot));
+                r => Assert.Equal(new[] { 1, 1, 4, 7 }, r.Lot));
         }
 
         [Fact]

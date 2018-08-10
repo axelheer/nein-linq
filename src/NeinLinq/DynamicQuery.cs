@@ -9,7 +9,7 @@ namespace NeinLinq
     /// </summary>
     public static class DynamicQuery
     {
-        static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
+        private static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
 
         /// <summary>
         /// Create a dynamic predicate for a given property selector, comparison method and reference value.
@@ -96,7 +96,7 @@ namespace NeinLinq
             return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
         }
 
-        static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)
+        private static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)
         {
             var type = Expression.Lambda(selector, target).ReturnType;
 
@@ -109,7 +109,7 @@ namespace NeinLinq
             return Expression.Constant(convertedValue, type);
         }
 
-        static Func<string, IFormatProvider, object> CreateConverter(Type type)
+        private static Func<string, IFormatProvider, object> CreateConverter(Type type)
         {
             var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
 

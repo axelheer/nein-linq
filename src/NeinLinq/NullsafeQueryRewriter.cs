@@ -11,7 +11,7 @@ namespace NeinLinq
     /// </summary>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
-        static readonly ObjectCache<Type, Expression> cache = new ObjectCache<Type, Expression>();
+        private static readonly ObjectCache<Type, Expression> cache = new ObjectCache<Type, Expression>();
 
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
@@ -62,7 +62,7 @@ namespace NeinLinq
             return node.Update(target, arguments);
         }
 
-        static Expression BeSafe(Expression target, Expression expression, Func<Expression, Expression> update)
+        private static Expression BeSafe(Expression target, Expression expression, Func<Expression, Expression> update)
         {
             var fallback = cache.GetOrAdd(target.Type, Fallback);
 
@@ -82,7 +82,7 @@ namespace NeinLinq
             return Expression.Condition(Expression.Equal(target, targetFallback), expressionFallback, expression);
         }
 
-        static bool IsSafe(Expression expression)
+        private static bool IsSafe(Expression expression)
         {
             // in method call results and constant values we trust to avoid too much conditions...
             return expression == null
@@ -91,7 +91,7 @@ namespace NeinLinq
                 || !IsNullableOrReferenceType(expression.Type);
         }
 
-        static Expression Fallback(Type type)
+        private static Expression Fallback(Type type)
         {
             // default values for generic collections
             if (type.IsConstructedGenericType && type.GenericTypeArguments.Length == 1)
@@ -109,7 +109,7 @@ namespace NeinLinq
             return null;
         }
 
-        static Expression CollectionFallback(Type definition, Type type)
+        private static Expression CollectionFallback(Type definition, Type type)
         {
             var collection = definition.MakeGenericType(type.GenericTypeArguments);
 
@@ -122,12 +122,12 @@ namespace NeinLinq
             return null;
         }
 
-        static bool IsExtensionMethod(MethodInfo element)
+        private static bool IsExtensionMethod(MethodInfo element)
         {
             return element.IsDefined(typeof(ExtensionAttribute), false);
         }
 
-        static bool IsNullableOrReferenceType(Type type)
+        private static bool IsNullableOrReferenceType(Type type)
         {
             return !type.IsValueType || Nullable.GetUnderlyingType(type) != null;
         }

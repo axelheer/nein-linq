@@ -1,5 +1,5 @@
-﻿using NeinLinq.Fakes.SelectorTranslator;
-using System;
+﻿using System;
+using NeinLinq.Fakes.SelectorTranslator;
 using Xunit;
 
 namespace NeinLinq.Tests.SelectorTranslator

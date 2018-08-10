@@ -11,8 +11,8 @@ namespace NeinLinq
     /// </summary>
     public class RewriteQueryable<T> : IOrderedQueryable<T>
     {
-        readonly RewriteQueryProvider provider;
-        readonly IQueryable queryable;
+        private readonly RewriteQueryProvider provider;
+        private readonly IQueryable queryable;
 
         /// <summary>
         /// Create a new query to rewrite.

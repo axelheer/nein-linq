@@ -11,8 +11,8 @@ namespace NeinLinq.Interactive
     /// </summary>
     public class RewriteAsyncQueryProvider : IAsyncQueryProvider
     {
-        readonly IAsyncQueryProvider provider;
-        readonly ExpressionVisitor rewriter;
+        private readonly IAsyncQueryProvider provider;
+        private readonly ExpressionVisitor rewriter;
 
         /// <summary>
         /// Actual query provider.

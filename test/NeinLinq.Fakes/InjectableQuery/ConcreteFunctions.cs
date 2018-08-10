@@ -6,7 +6,7 @@ namespace NeinLinq.Fakes.InjectableQuery
 {
     public sealed class ConcreteFunctions : FunctionsBase
     {
-        readonly int digits;
+        private readonly int digits;
 
         public ConcreteFunctions(int digits)
         {
@@ -71,7 +71,7 @@ namespace NeinLinq.Fakes.InjectableQuery
             return v => Math.Round(v.Distance / v.Time, digits);
         }
 
-        Expression<Func<Dummy, double>> VelocityWithNonPublicSibling()
+        private Expression<Func<Dummy, double>> VelocityWithNonPublicSibling()
         {
             return v => Math.Round(v.Distance / v.Time, digits);
         }

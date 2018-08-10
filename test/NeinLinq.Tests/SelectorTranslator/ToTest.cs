@@ -1,14 +1,14 @@
-﻿using NeinLinq.Fakes.SelectorTranslator;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using NeinLinq.Fakes.SelectorTranslator;
 using Xunit;
 
 namespace NeinLinq.Tests.SelectorTranslator
 {
     public class ToTest
     {
-        readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void SubtypeShouldSubstitute()

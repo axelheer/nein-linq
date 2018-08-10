@@ -4,17 +4,17 @@ using System.Reflection;
 
 namespace NeinLinq
 {
-    sealed class InjectLambdaMetadata
+    internal sealed class InjectLambdaMetadata
     {
-        readonly bool config;
+        private readonly bool config;
 
         public bool Config => config;
 
-        readonly Lazy<Func<Expression, LambdaExpression>> lambda;
+        private readonly Lazy<Func<Expression, LambdaExpression>> lambda;
 
         public LambdaExpression Lambda(Expression value) => lambda.Value(value);
 
-        InjectLambdaMetadata(bool config, Lazy<Func<Expression, LambdaExpression>> lambda)
+        private InjectLambdaMetadata(bool config, Lazy<Func<Expression, LambdaExpression>> lambda)
         {
             this.config = config;
             this.lambda = lambda;
@@ -39,10 +39,9 @@ namespace NeinLinq
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
-
         }
 
-        static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
+        private static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
             var signature = new InjectLambdaSignature(method);
@@ -57,7 +56,7 @@ namespace NeinLinq
             return DynamicLambdaFactory(method.Name, signature);
         }
 
-        static Func<Expression, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
+        private static Func<Expression, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
             var signature = new InjectLambdaSignature(property);
@@ -69,7 +68,7 @@ namespace NeinLinq
             return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
         }
 
-        static Func<Expression, LambdaExpression> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
+        private static Func<Expression, LambdaExpression> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
         {
             // retrieve validated factory method once
             var factory = signature.FindFactory(target, method);
@@ -85,7 +84,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        static Func<Expression, LambdaExpression> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
+        private static Func<Expression, LambdaExpression> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
         {
             return value =>
             {

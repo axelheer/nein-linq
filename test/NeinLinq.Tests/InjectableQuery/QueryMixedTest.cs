@@ -1,14 +1,14 @@
-﻿using NeinLinq.Fakes.InjectableQuery;
-using NeinLinq.Queryable;
-using System;
+﻿using System;
 using System.Linq;
+using NeinLinq.Fakes.InjectableQuery;
+using NeinLinq.Queryable;
 using Xunit;
 
 namespace NeinLinq.Tests.InjectableQuery
 {
     public class QueryMixedTest
     {
-        readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void StaticToInstanceShouldFail()

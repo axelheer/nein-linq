@@ -10,7 +10,7 @@ namespace NeinLinq.EntityFrameworkCore
     /// </summary>
     public class RewriteEntityQueryEnumerator<T> : IAsyncEnumerator<T>
     {
-        readonly IEnumerator<T> enumerator;
+        private readonly IEnumerator<T> enumerator;
 
         /// <summary>
         /// Create a new enumerator proxy.

@@ -101,7 +101,7 @@ namespace NeinLinq
             return (IOrderedAsyncQueryable<T>)query.Provider.CreateQuery<T>(CreateAsyncOrderClause(target, query.Expression, selector, false, descending));
         }
 
-        static Expression CreateAsyncOrderClause(ParameterExpression target, Expression expression, string selector, bool initial, bool descending)
+        private static Expression CreateAsyncOrderClause(ParameterExpression target, Expression expression, string selector, bool initial, bool descending)
         {
             var keySelector = Expression.Lambda(DynamicQuery.CreateMemberAccess(target, selector), target);
 
@@ -114,7 +114,7 @@ namespace NeinLinq
                 expression, Expression.Quote(keySelector));
         }
 
-        static Expression CreateAsyncWhereClause(ParameterExpression target, Expression expression, Expression comparison)
+        private static Expression CreateAsyncWhereClause(ParameterExpression target, Expression expression, Expression comparison)
         {
             var predicate = Expression.Lambda(comparison, target);
 

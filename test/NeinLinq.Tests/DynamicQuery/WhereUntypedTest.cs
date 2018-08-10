@@ -1,14 +1,14 @@
-﻿using NeinLinq.Fakes.DynamicQuery;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
+using NeinLinq.Fakes.DynamicQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.DynamicQuery
 {
     public class WhereUntypedTest
     {
-        readonly IQueryable data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable data = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()

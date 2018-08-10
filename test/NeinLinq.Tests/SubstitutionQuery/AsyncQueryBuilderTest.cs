@@ -1,14 +1,14 @@
-﻿using NeinLinq.Interactive;
-using NeinLinq.Fakes.SubstitutionQuery;
-using System;
+﻿using System;
 using System.Linq;
+using NeinLinq.Fakes.SubstitutionQuery;
+using NeinLinq.Interactive;
 using Xunit;
 
 namespace NeinLinq.Tests.SubstitutionQuery
 {
     public class AsyncQueryBuilderTest
     {
-        readonly object query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
+        private readonly object query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ShouldHandleInvalidArguments()
@@ -55,7 +55,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
             AssertQuery(actual);
         }
 
-        static void AssertQuery(IAsyncQueryable actual)
+        private static void AssertQuery(IAsyncQueryable actual)
         {
             Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
             Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);

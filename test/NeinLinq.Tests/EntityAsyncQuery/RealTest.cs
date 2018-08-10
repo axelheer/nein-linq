@@ -1,16 +1,16 @@
-﻿using NeinLinq.EntityFrameworkCore;
-using NeinLinq.Fakes.DbAsyncQuery;
-using System;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NeinLinq.EntityFrameworkCore;
+using NeinLinq.Fakes.EntityAsyncQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.EntityAsyncQuery
 {
     public class RealTest : IDisposable
     {
-        readonly Context db;
+        private readonly Context db;
 
         public RealTest()
         {

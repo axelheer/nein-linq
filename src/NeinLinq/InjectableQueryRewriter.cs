@@ -10,9 +10,9 @@ namespace NeinLinq
     /// </summary>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
-        static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> cache = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
+        private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> cache = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
 
-        readonly Type[] whitelist;
+        private readonly Type[] whitelist;
 
         /// <summary>
         /// Creates a new injectable query rewriter.
@@ -81,7 +81,7 @@ namespace NeinLinq
             return base.VisitMethodCall(node);
         }
 
-        bool ShouldInject(MemberInfo member, InjectLambdaMetadata data)
+        private bool ShouldInject(MemberInfo member, InjectLambdaMetadata data)
         {
             // inject only configured or white-listed targets
             return data.Config || whitelist.Any(member.DeclaringType.IsAssignableFrom);

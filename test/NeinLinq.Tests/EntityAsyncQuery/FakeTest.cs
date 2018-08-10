@@ -1,17 +1,17 @@
-﻿using NeinLinq.EntityFrameworkCore;
-using NeinLinq.Fakes.DbAsyncQuery;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NeinLinq.EntityFrameworkCore;
+using NeinLinq.Fakes.EntityAsyncQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.EntityAsyncQuery
 {
     public class FakeTest
     {
-        readonly IQueryable<Dummy> data;
+        private readonly IQueryable<Dummy> data;
 
         public FakeTest()
         {

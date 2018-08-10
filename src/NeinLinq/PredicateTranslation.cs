@@ -9,7 +9,7 @@ namespace NeinLinq
     /// <typeparam name="TSource">The type of the predicate's parameter.</typeparam>
     public class PredicateTranslation<TSource>
     {
-        readonly Expression<Func<TSource, bool>> predicate;
+        private readonly Expression<Func<TSource, bool>> predicate;
 
         /// <summary>
         /// Creates a new predicate translation.

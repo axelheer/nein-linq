@@ -1,6 +1,6 @@
-﻿using NeinLinq.Fakes.DbAsyncQuery;
+﻿using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
+using NeinLinq.Fakes.EntityAsyncQuery;
 
 namespace NeinLinq.Tests.EntityAsyncQuery
 {

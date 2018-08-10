@@ -9,9 +9,9 @@ namespace NeinLinq.Tests.RewriteQuery
 {
     public class DbQueryableTest
     {
-        readonly Rewriter rewriter;
-        readonly IQueryable<Dummy> query;
-        readonly RewriteDbQueryProvider provider;
+        private readonly Rewriter rewriter;
+        private readonly IQueryable<Dummy> query;
+        private readonly RewriteDbQueryProvider provider;
 
         public DbQueryableTest()
         {

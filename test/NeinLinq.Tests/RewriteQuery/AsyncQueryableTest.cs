@@ -8,9 +8,9 @@ namespace NeinLinq.Tests.RewriteQuery
 {
     public class AsyncQueryableTest
     {
-        readonly Rewriter rewriter;
-        readonly IAsyncQueryable<Dummy> query;
-        readonly RewriteAsyncQueryProvider provider;
+        private readonly Rewriter rewriter;
+        private readonly IAsyncQueryable<Dummy> query;
+        private readonly RewriteAsyncQueryProvider provider;
 
         public AsyncQueryableTest()
         {

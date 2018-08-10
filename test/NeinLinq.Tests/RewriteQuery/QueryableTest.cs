@@ -1,17 +1,16 @@
-﻿using NeinLinq.Fakes.RewriteQuery;
-using NeinLinq.Queryable;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
+using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
     public class QueryableTest
     {
-        readonly Rewriter rewriter;
-        readonly IQueryable<Dummy> query;
-        readonly RewriteQueryProvider provider;
+        private readonly Rewriter rewriter;
+        private readonly IQueryable<Dummy> query;
+        private readonly RewriteQueryProvider provider;
 
         public QueryableTest()
         {

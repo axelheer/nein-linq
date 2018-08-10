@@ -1,14 +1,14 @@
-﻿using NeinLinq.EntityFrameworkCore;
-using NeinLinq.Fakes.InjectableQuery;
-using System;
+﻿using System;
 using System.Linq;
+using NeinLinq.EntityFrameworkCore;
+using NeinLinq.Fakes.InjectableQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.InjectableQuery
 {
     public class EntityQueryBuilderTest
     {
-        readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ShouldHandleInvalidArguments()
@@ -55,7 +55,7 @@ namespace NeinLinq.Tests.InjectableQuery
             AssertQuery(actual);
         }
 
-        static void AssertQuery(IQueryable actual)
+        private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
             Assert.IsType<RewriteEntityQueryProvider>(actual.Provider);

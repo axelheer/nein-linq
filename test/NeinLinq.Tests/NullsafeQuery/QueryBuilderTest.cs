@@ -1,13 +1,13 @@
-﻿using NeinLinq.Fakes.NullsafeQuery;
+﻿using System.Linq;
+using NeinLinq.Fakes.NullsafeQuery;
 using NeinLinq.Queryable;
-using System.Linq;
 using Xunit;
 
 namespace NeinLinq.Tests.NullsafeQuery
 {
     public class QueryBuilderTest
     {
-        readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.SomeNumeric);
+        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.SomeNumeric);
 
         [Fact]
         public void ShouldRewriteUntypedQueryable()
@@ -41,7 +41,7 @@ namespace NeinLinq.Tests.NullsafeQuery
             AssertQuery(actual);
         }
 
-        static void AssertQuery(IQueryable actual)
+        private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteQueryable<Dummy>>(actual);
             Assert.IsType<RewriteQueryProvider>(actual.Provider);
