@@ -8,18 +8,20 @@ namespace NeinLinq.Interactive
     /// <summary>
     /// Proxy for rewritten async queries.
     /// </summary>
-    public abstract class RewriteAsyncQuery : IOrderedAsyncQueryable
+    public class RewriteAsyncQuery<T> : IOrderedAsyncQueryable<T>
     {
-        readonly Type elementType;
-        readonly Expression expression;
-        readonly IAsyncQueryProvider provider;
+        private readonly Type elementType;
+        private readonly Expression expression;
+        private readonly IAsyncQueryProvider provider;
+
+        private readonly Lazy<IAsyncEnumerable<T>> enumerable;
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
-        protected RewriteAsyncQuery(IAsyncQueryable query, ExpressionVisitor rewriter)
+        public RewriteAsyncQuery(IAsyncQueryable query, ExpressionVisitor rewriter)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -31,7 +33,14 @@ namespace NeinLinq.Interactive
 
             // replace query provider for further chaining
             provider = new RewriteAsyncQueryProvider(query.Provider, rewriter);
+
+            // rewrite on enumeration
+            enumerable = new Lazy<IAsyncEnumerable<T>>(() =>
+                query.Provider.CreateQuery<T>(rewriter.Visit(query.Expression)));
         }
+
+        /// <inheritdoc />
+        public IAsyncEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
 
         /// <inheritdoc />
         public Type ElementType => elementType;
@@ -41,29 +50,5 @@ namespace NeinLinq.Interactive
 
         /// <inheritdoc />
         public IAsyncQueryProvider Provider => provider;
-    }
-
-    /// <summary>
-    /// Proxy for rewritten async queries.
-    /// </summary>
-    public class RewriteAsyncQuery<T> : RewriteAsyncQuery, IOrderedAsyncQueryable<T>
-    {
-        readonly Lazy<IAsyncEnumerable<T>> enumerable;
-
-        /// <summary>
-        /// Create a new query to rewrite.
-        /// </summary>
-        /// <param name="query">The actual query.</param>
-        /// <param name="rewriter">The rewriter to rewrite the query.</param>
-        public RewriteAsyncQuery(IAsyncQueryable<T> query, ExpressionVisitor rewriter)
-            : base(query, rewriter)
-        {
-            // rewrite on enumeration
-            enumerable = new Lazy<IAsyncEnumerable<T>>(() =>
-                query.Provider.CreateQuery<T>(rewriter.Visit(query.Expression)));
-        }
-
-        /// <inheritdoc />
-        public IAsyncEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
     }
 }

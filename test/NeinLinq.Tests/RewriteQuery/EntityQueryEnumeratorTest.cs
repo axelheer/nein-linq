@@ -1,13 +1,15 @@
-﻿using NeinLinq.Fakes.RewriteQuery;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using NeinLinq.EntityFrameworkCore;
-using System;
+using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
     public class EntityQueryEnumeratorTest
     {
-        readonly DummyEnumerator enumerator = new DummyEnumerator();
+        private readonly DummyEnumerator enumerator = new DummyEnumerator();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
@@ -16,17 +18,7 @@ namespace NeinLinq.Tests.RewriteQuery
         }
 
         [Fact]
-        public void CurrentUntypedShouldReturnCurrent()
-        {
-            enumerator.Current = new Dummy();
-
-            var actual = ((RewriteEntityQueryEnumerator)new RewriteEntityQueryEnumerator<Dummy>(enumerator)).Current;
-
-            Assert.Equal(enumerator.Current, (Dummy)actual);
-        }
-
-        [Fact]
-        public void CurrentTypedShouldReturnCurrent()
+        public void CurrentShouldReturnCurrent()
         {
             enumerator.Current = new Dummy();
 
@@ -36,19 +28,11 @@ namespace NeinLinq.Tests.RewriteQuery
         }
 
         [Fact]
-        public void MoveNextShouldMoveNext()
+        public async Task MoveNextShouldMoveNext()
         {
-            new RewriteEntityQueryEnumerator<Dummy>(enumerator).MoveNext();
+            await new RewriteEntityQueryEnumerator<Dummy>(enumerator).MoveNext(CancellationToken.None);
 
             Assert.True(enumerator.MoveNextCalled);
-        }
-
-        [Fact]
-        public void ResetShouldReset()
-        {
-            new RewriteEntityQueryEnumerator<Dummy>(enumerator).Reset();
-
-            Assert.True(enumerator.ResetCalled);
         }
 
         [Fact]

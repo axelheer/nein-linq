@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
@@ -10,15 +9,15 @@ namespace NeinLinq.EntityFramework
     /// <summary>
     /// Proxy for query enumerator.
     /// </summary>
-    public abstract class RewriteDbQueryEnumerator : IEnumerator, IDbAsyncEnumerator
+    public class RewriteDbQueryEnumerator<T> : IDbAsyncEnumerator<T>
     {
-        readonly IEnumerator enumerator;
+        private readonly IEnumerator<T> enumerator;
 
         /// <summary>
         /// Create a new enumerator proxy.
         /// </summary>
         /// <param name="enumerator">The actual enumerator.</param>
-        protected RewriteDbQueryEnumerator(IEnumerator enumerator)
+        public RewriteDbQueryEnumerator(IEnumerator<T> enumerator)
         {
             if (enumerator == null)
                 throw new ArgumentNullException(nameof(enumerator));
@@ -27,13 +26,16 @@ namespace NeinLinq.EntityFramework
         }
 
         /// <inheritdoc />
-        public object Current => enumerator.Current;
+        public T Current => enumerator.Current;
 
         /// <inheritdoc />
-        public bool MoveNext() => enumerator.MoveNext();
+        object IDbAsyncEnumerator.Current => Current;
 
         /// <inheritdoc />
-        public void Reset() => enumerator.Reset();
+        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(enumerator.MoveNext());
+        }
 
         /// <summary>
         /// Releases all resources.
@@ -51,35 +53,10 @@ namespace NeinLinq.EntityFramework
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && enumerator is IDisposable disposable)
-                disposable.Dispose();
+            if (disposing)
+            {
+                enumerator.Dispose();
+            }
         }
-
-        /// <inheritdoc />
-        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(enumerator.MoveNext());
-        }
-    }
-
-    /// <summary>
-    /// Proxy for query enumerator.
-    /// </summary>
-    public class RewriteDbQueryEnumerator<T> : RewriteDbQueryEnumerator, IEnumerator<T>, IDbAsyncEnumerator<T>
-    {
-        readonly IEnumerator<T> enumerator;
-
-        /// <summary>
-        /// Create a new enumerator proxy.
-        /// </summary>
-        /// <param name="enumerator">The actual enumerator.</param>
-        public RewriteDbQueryEnumerator(IEnumerator<T> enumerator)
-            : base(enumerator)
-        {
-            this.enumerator = enumerator;
-        }
-
-        /// <inheritdoc />
-        public new T Current => enumerator.Current;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using NeinLinq.Fakes.RewriteQuery;
 using NeinLinq.Queryable;
 using System;
+using System.Collections;
 using System.Linq;
 using Xunit;
 
@@ -22,7 +23,7 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             var rewriter = new Rewriter();
 
-            var actual = ((NeinLinq.Queryable.RewriteQuery)new RewriteQuery<Dummy>(query, rewriter)).GetEnumerator();
+            var actual = ((IEnumerable)new RewriteQuery<Dummy>(query, rewriter)).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);

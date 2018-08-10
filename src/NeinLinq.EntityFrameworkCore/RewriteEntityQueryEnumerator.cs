@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,15 +8,15 @@ namespace NeinLinq.EntityFrameworkCore
     /// <summary>
     /// Proxy for query enumerator.
     /// </summary>
-    public abstract class RewriteEntityQueryEnumerator : IEnumerator, IDisposable
+    public class RewriteEntityQueryEnumerator<T> : IAsyncEnumerator<T>
     {
-        readonly IEnumerator enumerator;
+        private readonly IEnumerator<T> enumerator;
 
         /// <summary>
         /// Create a new enumerator proxy.
         /// </summary>
         /// <param name="enumerator">The actual enumerator.</param>
-        protected RewriteEntityQueryEnumerator(IEnumerator enumerator)
+        public RewriteEntityQueryEnumerator(IEnumerator<T> enumerator)
         {
             if (enumerator == null)
                 throw new ArgumentNullException(nameof(enumerator));
@@ -26,13 +25,13 @@ namespace NeinLinq.EntityFrameworkCore
         }
 
         /// <inheritdoc />
-        public object Current => enumerator.Current;
+        public T Current => enumerator.Current;
 
         /// <inheritdoc />
-        public bool MoveNext() => enumerator.MoveNext();
-
-        /// <inheritdoc />
-        public void Reset() => enumerator.Reset();
+        public Task<bool> MoveNext(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(enumerator.MoveNext());
+        }
 
         /// <summary>
         /// Releases all resources.
@@ -50,35 +49,10 @@ namespace NeinLinq.EntityFrameworkCore
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && enumerator is IDisposable disposable)
-                disposable.Dispose();
-        }
-    }
-
-    /// <summary>
-    /// Proxy for query enumerator.
-    /// </summary>
-    public class RewriteEntityQueryEnumerator<T> : RewriteEntityQueryEnumerator, IEnumerator<T>, IAsyncEnumerator<T>
-    {
-        readonly IEnumerator<T> enumerator;
-
-        /// <summary>
-        /// Create a new enumerator proxy.
-        /// </summary>
-        /// <param name="enumerator">The actual enumerator.</param>
-        public RewriteEntityQueryEnumerator(IEnumerator<T> enumerator)
-            : base(enumerator)
-        {
-            this.enumerator = enumerator;
-        }
-
-        /// <inheritdoc />
-        public new T Current => enumerator.Current;
-
-        /// <inheritdoc />
-        public Task<bool> MoveNext(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(enumerator.MoveNext());
+            if (disposing)
+            {
+                enumerator.Dispose();
+            }
         }
     }
 }

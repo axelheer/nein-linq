@@ -3,6 +3,7 @@ using NeinLinq.EntityFrameworkCore;
 using System;
 using System.Linq;
 using Xunit;
+using System.Collections;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
@@ -22,7 +23,7 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             var rewriter = new Rewriter();
 
-            var actual = ((RewriteEntityQuery)new RewriteEntityQuery<Dummy>(query, rewriter)).GetEnumerator();
+            var actual = ((IEnumerable)new RewriteEntityQuery<Dummy>(query, rewriter)).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);

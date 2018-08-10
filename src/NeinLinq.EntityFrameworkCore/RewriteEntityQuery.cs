@@ -9,19 +9,20 @@ namespace NeinLinq.EntityFrameworkCore
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public abstract class RewriteEntityQuery : IOrderedQueryable
+    public class RewriteEntityQuery<T> : IOrderedQueryable<T>, IAsyncEnumerable<T>
     {
-        readonly Type elementType;
-        readonly Expression expression;
-        readonly IQueryProvider provider;
-        readonly Lazy<IEnumerable> enumerable;
+        private readonly Type elementType;
+        private readonly Expression expression;
+        private readonly IQueryProvider provider;
+
+        private readonly Lazy<IEnumerable<T>> enumerable;
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
-        protected RewriteEntityQuery(IQueryable query, ExpressionVisitor rewriter)
+        public RewriteEntityQuery(IQueryable query, ExpressionVisitor rewriter)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -35,12 +36,15 @@ namespace NeinLinq.EntityFrameworkCore
             provider = new RewriteEntityQueryProvider(query.Provider, rewriter);
 
             // rewrite on enumeration
-            enumerable = new Lazy<IEnumerable>(() =>
-                query.Provider.CreateQuery(rewriter.Visit(query.Expression)));
+            enumerable = new Lazy<IEnumerable<T>>(() =>
+                query.Provider.CreateQuery<T>(rewriter.Visit(query.Expression)));
         }
 
         /// <inheritdoc />
-        public IEnumerator GetEnumerator() => enumerable.Value.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
         public Type ElementType => elementType;
@@ -50,30 +54,6 @@ namespace NeinLinq.EntityFrameworkCore
 
         /// <inheritdoc />
         public IQueryProvider Provider => provider;
-    }
-
-    /// <summary>
-    /// Proxy for rewritten queries.
-    /// </summary>
-    public class RewriteEntityQuery<T> : RewriteEntityQuery, IOrderedQueryable<T>, IAsyncEnumerable<T>
-    {
-        readonly Lazy<IEnumerable<T>> enumerable;
-
-        /// <summary>
-        /// Create a new query to rewrite.
-        /// </summary>
-        /// <param name="query">The actual query.</param>
-        /// <param name="rewriter">The rewriter to rewrite the query.</param>
-        public RewriteEntityQuery(IQueryable<T> query, ExpressionVisitor rewriter)
-            : base(query, rewriter)
-        {
-            // rewrite on enumeration
-            enumerable = new Lazy<IEnumerable<T>>(() =>
-                query.Provider.CreateQuery<T>(rewriter.Visit(query.Expression)));
-        }
-
-        /// <inheritdoc />
-        public new IEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
 
         /// <inheritdoc />
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()

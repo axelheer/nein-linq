@@ -9,19 +9,20 @@ namespace NeinLinq.Queryable
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public abstract class RewriteQuery : IOrderedQueryable
+    public class RewriteQuery<T> : IOrderedQueryable<T>
     {
         readonly Type elementType;
         readonly Expression expression;
         readonly IQueryProvider provider;
-        readonly Lazy<IEnumerable> enumerable;
+
+        readonly Lazy<IEnumerable<T>> enumerable;
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
-        protected RewriteQuery(IQueryable query, ExpressionVisitor rewriter)
+        public RewriteQuery(IQueryable query, ExpressionVisitor rewriter)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -35,12 +36,15 @@ namespace NeinLinq.Queryable
             provider = new RewriteQueryProvider(query.Provider, rewriter);
 
             // rewrite on enumeration
-            enumerable = new Lazy<IEnumerable>(() =>
-                query.Provider.CreateQuery(rewriter.Visit(query.Expression)));
+            enumerable = new Lazy<IEnumerable<T>>(() =>
+                query.Provider.CreateQuery<T>(rewriter.Visit(query.Expression)));
         }
 
         /// <inheritdoc />
-        public IEnumerator GetEnumerator() => enumerable.Value.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
         public Type ElementType => elementType;
@@ -50,29 +54,5 @@ namespace NeinLinq.Queryable
 
         /// <inheritdoc />
         public IQueryProvider Provider => provider;
-    }
-
-    /// <summary>
-    /// Proxy for rewritten queries.
-    /// </summary>
-    public class RewriteQuery<T> : RewriteQuery, IOrderedQueryable<T>
-    {
-        readonly Lazy<IEnumerable<T>> enumerable;
-
-        /// <summary>
-        /// Create a new query to rewrite.
-        /// </summary>
-        /// <param name="query">The actual query.</param>
-        /// <param name="rewriter">The rewriter to rewrite the query.</param>
-        public RewriteQuery(IQueryable<T> query, ExpressionVisitor rewriter)
-            : base(query, rewriter)
-        {
-            // rewrite on enumeration
-            enumerable = new Lazy<IEnumerable<T>>(() =>
-                query.Provider.CreateQuery<T>(rewriter.Visit(query.Expression)));
-        }
-
-        /// <inheritdoc />
-        public new IEnumerator<T> GetEnumerator() => enumerable.Value.GetEnumerator();
     }
 }
