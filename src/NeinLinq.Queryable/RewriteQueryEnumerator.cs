@@ -48,11 +48,8 @@ namespace NeinLinq.Queryable
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (enumerator is IDisposable disposable)
-                    disposable.Dispose();
-            }
+            if (disposing && enumerator is IDisposable disposable)
+                disposable.Dispose();
         }
     }
 
@@ -75,11 +72,5 @@ namespace NeinLinq.Queryable
 
         /// <inheritdoc />
         public new T Current => enumerator.Current;
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
     }
 }

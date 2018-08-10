@@ -11,7 +11,7 @@ namespace NeinLinq.EntityFrameworkCore
     /// <summary>
     /// Proxy for query provider.
     /// </summary>
-    public class RewriteEntityQueryProvider : IQueryProvider, IAsyncQueryProvider
+    public class RewriteEntityQueryProvider : IAsyncQueryProvider
     {
         readonly IQueryProvider provider;
         readonly ExpressionVisitor rewriter;

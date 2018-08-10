@@ -12,13 +12,11 @@ namespace NeinLinq
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
-            var value = default(TValue);
-
             cacheLock.EnterReadLock();
 
             try
             {
-                if (cache.TryGetValue(key, out value))
+                if (cache.TryGetValue(key, out var value))
                     return value;
             }
             finally
@@ -30,7 +28,7 @@ namespace NeinLinq
 
             try
             {
-                if (cache.TryGetValue(key, out value))
+                if (cache.TryGetValue(key, out var value))
                     return value;
 
                 value = valueFactory(key);

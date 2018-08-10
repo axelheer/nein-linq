@@ -8,7 +8,7 @@ namespace NeinLinq.Interactive
     /// <summary>
     /// Proxy for async query enumerator.
     /// </summary>
-    public class RewriteAsyncQueryEnumerator<T> : IAsyncEnumerator<T>, IDisposable
+    public class RewriteAsyncQueryEnumerator<T> : IAsyncEnumerator<T>
     {
         readonly IEnumerator<T> enumerator;
 
@@ -49,11 +49,8 @@ namespace NeinLinq.Interactive
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (enumerator is IDisposable disposable)
-                    disposable.Dispose();
-            }
+            if (disposing && enumerator is IDisposable disposable)
+                disposable.Dispose();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace NeinLinq.EntityFramework
     /// <summary>
     /// Proxy for query enumerator.
     /// </summary>
-    public abstract class RewriteDbQueryEnumerator : IEnumerator, IDbAsyncEnumerator, IDisposable
+    public abstract class RewriteDbQueryEnumerator : IEnumerator, IDbAsyncEnumerator
     {
         readonly IEnumerator enumerator;
 
@@ -51,11 +51,8 @@ namespace NeinLinq.EntityFramework
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (enumerator is IDisposable disposable)
-                    disposable.Dispose();
-            }
+            if (disposing && enumerator is IDisposable disposable)
+                disposable.Dispose();
         }
 
         /// <inheritdoc />
@@ -84,11 +81,5 @@ namespace NeinLinq.EntityFramework
 
         /// <inheritdoc />
         public new T Current => enumerator.Current;
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
     }
 }

@@ -42,11 +42,8 @@ namespace NeinLinq.EntityFrameworkCore
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (enumerable is IDisposable disposable)
-                    disposable.Dispose();
-            }
+            if (disposing && enumerable is IDisposable disposable)
+                disposable.Dispose();
         }
     }
 

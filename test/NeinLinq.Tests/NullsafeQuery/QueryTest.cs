@@ -177,7 +177,7 @@ namespace NeinLinq.Tests.NullsafeQuery
         public void ShouldResolveNestedExtensions()
         {
             var query = from a in data.ToNullsafe()
-                        group a by a.MoreOthers.Count() into g
+                        group a by a.MoreOthers.Count into g
                         where g.Key > 0
                         select g.Sum(b => b.MoreOthers.Sum(c => c.SomeOther.OneDay.Month));
 

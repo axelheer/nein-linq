@@ -50,11 +50,8 @@ namespace NeinLinq.EntityFrameworkCore
         /// false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (enumerator is IDisposable disposable)
-                    disposable.Dispose();
-            }
+            if (disposing && enumerator is IDisposable disposable)
+                disposable.Dispose();
         }
     }
 
@@ -82,12 +79,6 @@ namespace NeinLinq.EntityFrameworkCore
         public Task<bool> MoveNext(CancellationToken cancellationToken)
         {
             return Task.FromResult(enumerator.MoveNext());
-        }
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
         }
     }
 }
