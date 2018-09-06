@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NeinLinq.EntityFramework
+namespace NeinLinq
 {
     /// <summary>
     /// Create rewritten queries.
@@ -15,7 +15,7 @@ namespace NeinLinq.EntityFramework
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IQueryable Rewrite(this IQueryable value, ExpressionVisitor rewriter)
+        public static IQueryable DbRewrite(this IQueryable value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -35,7 +35,7 @@ namespace NeinLinq.EntityFramework
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IOrderedQueryable Rewrite(this IOrderedQueryable value, ExpressionVisitor rewriter)
+        public static IOrderedQueryable DbRewrite(this IOrderedQueryable value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -56,7 +56,7 @@ namespace NeinLinq.EntityFramework
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IQueryable<T> Rewrite<T>(this IQueryable<T> value, ExpressionVisitor rewriter)
+        public static IQueryable<T> DbRewrite<T>(this IQueryable<T> value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -75,7 +75,7 @@ namespace NeinLinq.EntityFramework
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IOrderedQueryable<T> Rewrite<T>(this IOrderedQueryable<T> value, ExpressionVisitor rewriter)
+        public static IOrderedQueryable<T> DbRewrite<T>(this IOrderedQueryable<T> value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));

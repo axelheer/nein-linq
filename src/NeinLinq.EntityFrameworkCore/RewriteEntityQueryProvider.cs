@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-namespace NeinLinq.EntityFrameworkCore
+namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query provider.

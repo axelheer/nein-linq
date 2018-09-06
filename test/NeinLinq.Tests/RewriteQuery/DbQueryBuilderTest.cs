@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
@@ -13,20 +12,20 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void RewriteShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable).Rewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).Rewrite(null));
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable<Dummy>).Rewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).Rewrite(null));
-            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable).Rewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).Rewrite(null));
-            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable<Dummy>).Rewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).Rewrite(null));
+            Assert.Throws<ArgumentNullException>(() => default(IQueryable).DbRewrite(new Rewriter()));
+            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).DbRewrite(null));
+            Assert.Throws<ArgumentNullException>(() => default(IQueryable<Dummy>).DbRewrite(new Rewriter()));
+            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).DbRewrite(null));
+            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable).DbRewrite(new Rewriter()));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).DbRewrite(null));
+            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable<Dummy>).DbRewrite(new Rewriter()));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).DbRewrite(null));
         }
 
         [Fact]
         public void ShouldRewriteUntypedQueryable()
         {
-            var actual = ((IQueryable)query).Rewrite(new Rewriter());
+            var actual = ((IQueryable)query).DbRewrite(new Rewriter());
 
             AssertQuery(actual);
         }
@@ -34,7 +33,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ShouldRewriteTypedQueryable()
         {
-            var actual = ((IQueryable<Dummy>)query).Rewrite(new Rewriter());
+            var actual = ((IQueryable<Dummy>)query).DbRewrite(new Rewriter());
 
             AssertQuery(actual);
         }
@@ -42,7 +41,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
-            var actual = ((IOrderedQueryable)query).Rewrite(new Rewriter());
+            var actual = ((IOrderedQueryable)query).DbRewrite(new Rewriter());
 
             AssertQuery(actual);
         }
@@ -50,7 +49,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ShouldRewriteTypedOrderedQueryable()
         {
-            var actual = ((IOrderedQueryable<Dummy>)query).Rewrite(new Rewriter());
+            var actual = ((IOrderedQueryable<Dummy>)query).DbRewrite(new Rewriter());
 
             AssertQuery(actual);
         }

@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
 
-namespace NeinLinq.EntityFramework
+namespace NeinLinq
 {
     /// <summary>
     /// Proxy for rewritten queries.

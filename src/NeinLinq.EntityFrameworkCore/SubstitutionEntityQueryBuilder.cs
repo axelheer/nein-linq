@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NeinLinq.EntityFrameworkCore
+namespace NeinLinq
 {
     /// <summary>
     /// Replaces method types.
@@ -15,9 +15,9 @@ namespace NeinLinq.EntityFrameworkCore
         /// <param name="from">A type to replace.</param>
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
-        public static IQueryable ToSubstitution(this IQueryable value, Type from, Type to)
+        public static IQueryable ToEntitySubstitution(this IQueryable value, Type from, Type to)
         {
-            return value.Rewrite(new SubstitutionQueryRewriter(from, to));
+            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
         }
 
         /// <summary>
@@ -27,22 +27,9 @@ namespace NeinLinq.EntityFrameworkCore
         /// <param name="from">A type to replace.</param>
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedQueryable ToSubstitution(this IOrderedQueryable value, Type from, Type to)
+        public static IOrderedQueryable ToEntitySubstitution(this IOrderedQueryable value, Type from, Type to)
         {
-            return value.Rewrite(new SubstitutionQueryRewriter(from, to));
-        }
-
-        /// <summary>
-        /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
-        /// </summary>
-        /// <typeparam name="T">The type of the query data.</typeparam>
-        /// <param name="value">A query.</param>
-        /// <param name="from">A type to replace.</param>
-        /// <param name="to">A type to use instead.</param>
-        /// <returns>A query proxy.</returns>
-        public static IQueryable<T> ToSubstitution<T>(this IQueryable<T> value, Type from, Type to)
-        {
-            return value.Rewrite(new SubstitutionQueryRewriter(from, to));
+            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
         }
 
         /// <summary>
@@ -53,9 +40,22 @@ namespace NeinLinq.EntityFrameworkCore
         /// <param name="from">A type to replace.</param>
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedQueryable<T> ToSubstitution<T>(this IOrderedQueryable<T> value, Type from, Type to)
+        public static IQueryable<T> ToEntitySubstitution<T>(this IQueryable<T> value, Type from, Type to)
         {
-            return value.Rewrite(new SubstitutionQueryRewriter(from, to));
+            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
+        }
+
+        /// <summary>
+        /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
+        /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
+        /// <param name="value">A query.</param>
+        /// <param name="from">A type to replace.</param>
+        /// <param name="to">A type to use instead.</param>
+        /// <returns>A query proxy.</returns>
+        public static IOrderedQueryable<T> ToEntitySubstitution<T>(this IOrderedQueryable<T> value, Type from, Type to)
+        {
+            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
         }
     }
 }

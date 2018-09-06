@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NeinLinq.EntityFramework
+namespace NeinLinq
 {
     /// <summary>
     /// Proxy for query provider.

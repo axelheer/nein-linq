@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NeinLinq.Queryable
+namespace NeinLinq
 {
     /// <summary>
     /// Create rewritten queries.

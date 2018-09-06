@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NeinLinq.Fakes.InjectableQuery;
-using NeinLinq.Interactive;
 using Xunit;
 
 namespace NeinLinq.Tests.InjectableQuery
@@ -13,20 +12,20 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable)query).ToInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable<Dummy>)query).ToInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable)query).ToInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable)query).ToAsyncInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable)query).ToAsyncInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable(null, null));
         }
 
         [Fact]
         public void ShouldRewriteUntypedQueryable()
         {
-            var actual = ((IAsyncQueryable)query).ToInjectable();
+            var actual = ((IAsyncQueryable)query).ToAsyncInjectable();
 
             AssertQuery(actual);
         }
@@ -34,7 +33,7 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldRewriteTypedQueryable()
         {
-            var actual = ((IAsyncQueryable<Dummy>)query).ToInjectable();
+            var actual = ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable();
 
             AssertQuery(actual);
         }
@@ -42,7 +41,7 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
-            var actual = ((IOrderedAsyncQueryable)query).ToInjectable();
+            var actual = ((IOrderedAsyncQueryable)query).ToAsyncInjectable();
 
             AssertQuery(actual);
         }
@@ -50,7 +49,7 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldRewriteTypedOrderedQueryable()
         {
-            var actual = ((IOrderedAsyncQueryable<Dummy>)query).ToInjectable();
+            var actual = ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable();
 
             AssertQuery(actual);
         }

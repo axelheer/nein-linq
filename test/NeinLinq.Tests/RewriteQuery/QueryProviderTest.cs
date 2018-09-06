@@ -48,7 +48,7 @@ namespace NeinLinq.Tests.RewriteQuery
         public void ExecuteUntypedShouldRewrite()
         {
             var rewriter = new Rewriter();
-            var expression = Expression.Call(typeof(System.Linq.Queryable), nameof(System.Linq.Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
+            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
 
             var actual = new RewriteQueryProvider(query.Provider, rewriter).Execute(expression);
 
@@ -60,7 +60,7 @@ namespace NeinLinq.Tests.RewriteQuery
         public void ExecuteTypedShouldRewrite()
         {
             var rewriter = new Rewriter();
-            var expression = Expression.Call(typeof(System.Linq.Queryable), nameof(System.Linq.Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
+            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
 
             var actual = new RewriteQueryProvider(query.Provider, rewriter).Execute<int>(expression);
 

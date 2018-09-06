@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.DbAsyncQuery;
 using Xunit;
 
@@ -52,7 +51,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public async Task ToListAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = data.Rewrite(rewriter);
+            var query = data.DbRewrite(rewriter);
 
             var result = await query.ToListAsync();
 
@@ -71,7 +70,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public async Task SumAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = data.Rewrite(rewriter);
+            var query = data.DbRewrite(rewriter);
 
             var result = await query.SumAsync(d => d.Number);
 
@@ -83,7 +82,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public async Task AsyncEnumeratorShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = data.Rewrite(rewriter);
+            var query = data.DbRewrite(rewriter);
 
             var enumerator = ((IDbAsyncEnumerable)query).GetAsyncEnumerator();
 
@@ -97,9 +96,9 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = data.Rewrite(rewriter);
+            var query = data.DbRewrite(rewriter);
 
-            var expression = Expression.Call(typeof(System.Linq.Queryable), nameof(System.Linq.Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
+            var expression = Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Dummy) }, query.Expression);
 
             var result = await ((IDbAsyncQueryProvider)query.Provider).ExecuteAsync(expression, CancellationToken.None);
 

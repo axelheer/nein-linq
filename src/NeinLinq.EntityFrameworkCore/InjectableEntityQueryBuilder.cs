@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NeinLinq.EntityFrameworkCore
+namespace NeinLinq
 {
     /// <summary>
     /// Replaces method calls with lambda expressions.
@@ -14,9 +14,9 @@ namespace NeinLinq.EntityFrameworkCore
         /// <param name="value">A query.</param>
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
-        public static IQueryable ToInjectable(this IQueryable value, params Type[] whitelist)
+        public static IQueryable ToEntityInjectable(this IQueryable value, params Type[] whitelist)
         {
-            return value.Rewrite(new InjectableQueryRewriter(whitelist));
+            return value.EntityRewrite(new InjectableQueryRewriter(whitelist));
         }
 
         /// <summary>
@@ -25,21 +25,9 @@ namespace NeinLinq.EntityFrameworkCore
         /// <param name="value">A query.</param>
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedQueryable ToInjectable(this IOrderedQueryable value, params Type[] whitelist)
+        public static IOrderedQueryable ToEntityInjectable(this IOrderedQueryable value, params Type[] whitelist)
         {
-            return value.Rewrite(new InjectableQueryRewriter(whitelist));
-        }
-
-        /// <summary>
-        /// Replaces method calls with lambda expressions.
-        /// </summary>
-        /// <typeparam name="T">The type of the query data.</typeparam>
-        /// <param name="value">A query.</param>
-        /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
-        /// <returns>A query proxy.</returns>
-        public static IQueryable<T> ToInjectable<T>(this IQueryable<T> value, params Type[] whitelist)
-        {
-            return value.Rewrite(new InjectableQueryRewriter(whitelist));
+            return value.EntityRewrite(new InjectableQueryRewriter(whitelist));
         }
 
         /// <summary>
@@ -49,9 +37,21 @@ namespace NeinLinq.EntityFrameworkCore
         /// <param name="value">A query.</param>
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedQueryable<T> ToInjectable<T>(this IOrderedQueryable<T> value, params Type[] whitelist)
+        public static IQueryable<T> ToEntityInjectable<T>(this IQueryable<T> value, params Type[] whitelist)
         {
-            return value.Rewrite(new InjectableQueryRewriter(whitelist));
+            return value.EntityRewrite(new InjectableQueryRewriter(whitelist));
+        }
+
+        /// <summary>
+        /// Replaces method calls with lambda expressions.
+        /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
+        /// <param name="value">A query.</param>
+        /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
+        /// <returns>A query proxy.</returns>
+        public static IOrderedQueryable<T> ToEntityInjectable<T>(this IOrderedQueryable<T> value, params Type[] whitelist)
+        {
+            return value.EntityRewrite(new InjectableQueryRewriter(whitelist));
         }
     }
 }

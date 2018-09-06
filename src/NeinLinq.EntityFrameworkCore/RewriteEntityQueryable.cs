@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace NeinLinq.EntityFrameworkCore
+namespace NeinLinq
 {
     /// <summary>
     /// Proxy for rewritten queries.

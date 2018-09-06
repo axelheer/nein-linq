@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using NeinLinq.EntityFrameworkCore;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 

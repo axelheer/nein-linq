@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NeinLinq.EntityFrameworkCore;
 using NeinLinq.Fakes.EntityAsyncQuery;
 using Xunit;
 
@@ -48,7 +47,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         public async Task ToListAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = db.Dummies.Rewrite(rewriter);
+            var query = db.Dummies.EntityRewrite(rewriter);
 
             var result = await query.ToListAsync();
 
@@ -66,7 +65,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         public async Task SumAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = db.Dummies.Rewrite(rewriter);
+            var query = db.Dummies.EntityRewrite(rewriter);
 
             var result = await query.SumAsync(d => d.Number);
 
@@ -78,7 +77,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
-            var query = db.Dummies.Rewrite(rewriter);
+            var query = db.Dummies.EntityRewrite(rewriter);
 
             var enumerator = ((Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider)query.Provider).ExecuteAsync<Dummy>(query.Expression).GetEnumerator();
 

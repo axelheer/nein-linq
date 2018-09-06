@@ -193,12 +193,12 @@ namespace NeinLinq
         {
             var keySelector = Expression.Lambda(DynamicQuery.CreateMemberAccess(target, selector), target);
 
-            var method = initial ? (descending ? nameof(System.Linq.Queryable.OrderByDescending)
-                                               : nameof(System.Linq.Queryable.OrderBy))
-                                 : (descending ? nameof(System.Linq.Queryable.ThenByDescending)
-                                               : nameof(System.Linq.Queryable.ThenBy));
+            var method = initial ? (descending ? nameof(Queryable.OrderByDescending)
+                                               : nameof(Queryable.OrderBy))
+                                 : (descending ? nameof(Queryable.ThenByDescending)
+                                               : nameof(Queryable.ThenBy));
 
-            return Expression.Call(typeof(System.Linq.Queryable), method, new[] { target.Type, keySelector.ReturnType },
+            return Expression.Call(typeof(Queryable), method, new[] { target.Type, keySelector.ReturnType },
                 expression, Expression.Quote(keySelector));
         }
 
@@ -206,7 +206,7 @@ namespace NeinLinq
         {
             var predicate = Expression.Lambda(comparison, target);
 
-            return Expression.Call(typeof(System.Linq.Queryable), nameof(System.Linq.Queryable.Where), new[] { target.Type },
+            return Expression.Call(typeof(Queryable), nameof(Queryable.Where), new[] { target.Type },
                 expression, Expression.Quote(predicate));
         }
     }

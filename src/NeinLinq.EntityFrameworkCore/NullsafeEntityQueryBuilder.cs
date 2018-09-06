@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NeinLinq.EntityFrameworkCore
+namespace NeinLinq
 {
     /// <summary>
     /// Makes a query null-safe.
@@ -12,9 +12,9 @@ namespace NeinLinq.EntityFrameworkCore
         /// </summary>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
-        public static IQueryable ToNullsafe(this IQueryable value)
+        public static IQueryable ToEntityNullsafe(this IQueryable value)
         {
-            return value.Rewrite(new NullsafeQueryRewriter());
+            return value.EntityRewrite(new NullsafeQueryRewriter());
         }
 
         /// <summary>
@@ -22,20 +22,9 @@ namespace NeinLinq.EntityFrameworkCore
         /// </summary>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedQueryable ToNullsafe(this IOrderedQueryable value)
+        public static IOrderedQueryable ToEntityNullsafe(this IOrderedQueryable value)
         {
-            return value.Rewrite(new NullsafeQueryRewriter());
-        }
-
-        /// <summary>
-        /// Makes a query null-safe.
-        /// </summary>
-        /// <typeparam name="T">The type of the query data.</typeparam>
-        /// <param name="value">A query.</param>
-        /// <returns>A query proxy.</returns>
-        public static IQueryable<T> ToNullsafe<T>(this IQueryable<T> value)
-        {
-            return value.Rewrite(new NullsafeQueryRewriter());
+            return value.EntityRewrite(new NullsafeQueryRewriter());
         }
 
         /// <summary>
@@ -44,9 +33,20 @@ namespace NeinLinq.EntityFrameworkCore
         /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedQueryable<T> ToNullsafe<T>(this IOrderedQueryable<T> value)
+        public static IQueryable<T> ToEntityNullsafe<T>(this IQueryable<T> value)
         {
-            return value.Rewrite(new NullsafeQueryRewriter());
+            return value.EntityRewrite(new NullsafeQueryRewriter());
+        }
+
+        /// <summary>
+        /// Makes a query null-safe.
+        /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
+        /// <param name="value">A query.</param>
+        /// <returns>A query proxy.</returns>
+        public static IOrderedQueryable<T> ToEntityNullsafe<T>(this IOrderedQueryable<T> value)
+        {
+            return value.EntityRewrite(new NullsafeQueryRewriter());
         }
     }
 }

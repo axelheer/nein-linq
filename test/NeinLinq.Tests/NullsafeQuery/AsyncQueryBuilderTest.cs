@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using NeinLinq.Fakes.NullsafeQuery;
-using NeinLinq.Interactive;
 using Xunit;
 
 namespace NeinLinq.Tests.NullsafeQuery
@@ -12,7 +11,7 @@ namespace NeinLinq.Tests.NullsafeQuery
         [Fact]
         public void ShouldRewriteUntypedQueryable()
         {
-            var actual = ((IAsyncQueryable)query).ToNullsafe();
+            var actual = ((IAsyncQueryable)query).ToAsyncNullsafe();
 
             AssertQuery(actual);
         }
@@ -20,7 +19,7 @@ namespace NeinLinq.Tests.NullsafeQuery
         [Fact]
         public void ShouldRewriteTypedQueryable()
         {
-            var actual = ((IAsyncQueryable<Dummy>)query).ToNullsafe();
+            var actual = ((IAsyncQueryable<Dummy>)query).ToAsyncNullsafe();
 
             AssertQuery(actual);
         }
@@ -28,7 +27,7 @@ namespace NeinLinq.Tests.NullsafeQuery
         [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
-            var actual = ((IOrderedAsyncQueryable)query).ToNullsafe();
+            var actual = ((IOrderedAsyncQueryable)query).ToAsyncNullsafe();
 
             AssertQuery(actual);
         }
@@ -36,7 +35,7 @@ namespace NeinLinq.Tests.NullsafeQuery
         [Fact]
         public void ShouldRewriteTypedOrderedQueryable()
         {
-            var actual = ((IOrderedAsyncQueryable<Dummy>)query).ToNullsafe();
+            var actual = ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncNullsafe();
 
             AssertQuery(actual);
         }

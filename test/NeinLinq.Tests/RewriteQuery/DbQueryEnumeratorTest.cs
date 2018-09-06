@@ -2,7 +2,6 @@
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
-using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 

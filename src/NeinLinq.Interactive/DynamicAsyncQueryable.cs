@@ -105,12 +105,12 @@ namespace NeinLinq
         {
             var keySelector = Expression.Lambda(DynamicQuery.CreateMemberAccess(target, selector), target);
 
-            var method = initial ? (descending ? nameof(System.Linq.AsyncQueryable.OrderByDescending)
-                                               : nameof(System.Linq.AsyncQueryable.OrderBy))
-                                 : (descending ? nameof(System.Linq.AsyncQueryable.ThenByDescending)
-                                               : nameof(System.Linq.AsyncQueryable.ThenBy));
+            var method = initial ? (descending ? nameof(AsyncQueryable.OrderByDescending)
+                                               : nameof(AsyncQueryable.OrderBy))
+                                 : (descending ? nameof(AsyncQueryable.ThenByDescending)
+                                               : nameof(AsyncQueryable.ThenBy));
 
-            return Expression.Call(typeof(System.Linq.AsyncQueryable), method, new[] { target.Type, keySelector.ReturnType },
+            return Expression.Call(typeof(AsyncQueryable), method, new[] { target.Type, keySelector.ReturnType },
                 expression, Expression.Quote(keySelector));
         }
 
@@ -118,7 +118,7 @@ namespace NeinLinq
         {
             var predicate = Expression.Lambda(comparison, target);
 
-            return Expression.Call(typeof(System.Linq.AsyncQueryable), nameof(System.Linq.AsyncQueryable.Where), new[] { target.Type },
+            return Expression.Call(typeof(AsyncQueryable), nameof(AsyncQueryable.Where), new[] { target.Type },
                 expression, Expression.Quote(predicate));
         }
     }

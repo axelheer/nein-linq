@@ -1,5 +1,4 @@
 ﻿using System;
-using NeinLinq.EntityFrameworkCore;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 

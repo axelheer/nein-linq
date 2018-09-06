@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NeinLinq.Queryable
+namespace NeinLinq
 {
     /// <summary>
     /// Makes a query null-safe.

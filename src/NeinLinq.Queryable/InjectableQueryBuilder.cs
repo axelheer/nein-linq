@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NeinLinq.Queryable
+namespace NeinLinq
 {
     /// <summary>
     /// Replaces method calls with lambda expressions.

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NeinLinq.Fakes.NullsafeQuery;
-using NeinLinq.Queryable;
 using Xunit;
 
 namespace NeinLinq.Tests.NullsafeQuery

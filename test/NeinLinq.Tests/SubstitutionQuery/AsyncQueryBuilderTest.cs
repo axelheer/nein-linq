@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NeinLinq.Fakes.SubstitutionQuery;
-using NeinLinq.Interactive;
 using Xunit;
 
 namespace NeinLinq.Tests.SubstitutionQuery
@@ -13,20 +12,20 @@ namespace NeinLinq.Tests.SubstitutionQuery
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToSubstitution(typeof(Functions), null));
+            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
+            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), null));
+            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
+            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), null));
         }
 
         [Fact]
         public void ShouldRewriteUntypedQueryable()
         {
-            var actual = ((IAsyncQueryable)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
+            var actual = ((IAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             AssertQuery(actual);
         }
@@ -34,7 +33,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
         [Fact]
         public void ShouldRewriteTypedQueryable()
         {
-            var actual = ((IAsyncQueryable<Dummy>)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
+            var actual = ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             AssertQuery(actual);
         }
@@ -42,7 +41,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
         [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
-            var actual = ((IOrderedAsyncQueryable)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
+            var actual = ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             AssertQuery(actual);
         }
@@ -50,7 +49,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
         [Fact]
         public void ShouldRewriteTypedOrderedQueryable()
         {
-            var actual = ((IOrderedAsyncQueryable<Dummy>)query).ToSubstitution(typeof(Functions), typeof(OtherFunctions));
+            var actual = ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), typeof(OtherFunctions));
 
             AssertQuery(actual);
         }

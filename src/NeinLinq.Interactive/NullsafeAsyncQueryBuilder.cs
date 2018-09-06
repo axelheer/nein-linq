@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NeinLinq.Interactive
+namespace NeinLinq
 {
     /// <summary>
     /// Makes a query null-safe.
@@ -12,9 +12,9 @@ namespace NeinLinq.Interactive
         /// </summary>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
-        public static IAsyncQueryable ToNullsafe(this IAsyncQueryable value)
+        public static IAsyncQueryable ToAsyncNullsafe(this IAsyncQueryable value)
         {
-            return value.Rewrite(new NullsafeQueryRewriter());
+            return value.AsyncRewrite(new NullsafeQueryRewriter());
         }
 
         /// <summary>
@@ -22,20 +22,9 @@ namespace NeinLinq.Interactive
         /// </summary>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedAsyncQueryable ToNullsafe(this IOrderedAsyncQueryable value)
+        public static IOrderedAsyncQueryable ToAsyncNullsafe(this IOrderedAsyncQueryable value)
         {
-            return value.Rewrite(new NullsafeQueryRewriter());
-        }
-
-        /// <summary>
-        /// Makes a query null-safe.
-        /// </summary>
-        /// <typeparam name="T">The type of the query data.</typeparam>
-        /// <param name="value">A query.</param>
-        /// <returns>A query proxy.</returns>
-        public static IAsyncQueryable<T> ToNullsafe<T>(this IAsyncQueryable<T> value)
-        {
-            return value.Rewrite(new NullsafeQueryRewriter());
+            return value.AsyncRewrite(new NullsafeQueryRewriter());
         }
 
         /// <summary>
@@ -44,9 +33,20 @@ namespace NeinLinq.Interactive
         /// <typeparam name="T">The type of the query data.</typeparam>
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
-        public static IOrderedAsyncQueryable<T> ToNullsafe<T>(this IOrderedAsyncQueryable<T> value)
+        public static IAsyncQueryable<T> ToAsyncNullsafe<T>(this IAsyncQueryable<T> value)
         {
-            return value.Rewrite(new NullsafeQueryRewriter());
+            return value.AsyncRewrite(new NullsafeQueryRewriter());
+        }
+
+        /// <summary>
+        /// Makes a query null-safe.
+        /// </summary>
+        /// <typeparam name="T">The type of the query data.</typeparam>
+        /// <param name="value">A query.</param>
+        /// <returns>A query proxy.</returns>
+        public static IOrderedAsyncQueryable<T> ToAsyncNullsafe<T>(this IOrderedAsyncQueryable<T> value)
+        {
+            return value.AsyncRewrite(new NullsafeQueryRewriter());
         }
     }
 }

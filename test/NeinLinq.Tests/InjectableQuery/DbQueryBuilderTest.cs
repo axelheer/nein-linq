@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NeinLinq.EntityFramework;
 using NeinLinq.Fakes.InjectableQuery;
 using Xunit;
 
@@ -13,20 +12,20 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable)query).ToInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable<Dummy>)query).ToInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable)query).ToInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable<Dummy>)query).ToInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToDbInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable)query).ToDbInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToDbInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable<Dummy>)query).ToDbInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToDbInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable)query).ToDbInjectable(null, null));
+            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToDbInjectable(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable<Dummy>)query).ToDbInjectable(null, null));
         }
 
         [Fact]
         public void ShouldRewriteUntypedQueryable()
         {
-            var actual = ((IQueryable)query).ToInjectable();
+            var actual = ((IQueryable)query).ToDbInjectable();
 
             AssertQuery(actual);
         }
@@ -34,7 +33,7 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldRewriteTypedQueryable()
         {
-            var actual = ((IQueryable<Dummy>)query).ToInjectable();
+            var actual = ((IQueryable<Dummy>)query).ToDbInjectable();
 
             AssertQuery(actual);
         }
@@ -42,7 +41,7 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldRewriteUntypedOrderedQueryable()
         {
-            var actual = ((IOrderedQueryable)query).ToInjectable();
+            var actual = ((IOrderedQueryable)query).ToDbInjectable();
 
             AssertQuery(actual);
         }
@@ -50,7 +49,7 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldRewriteTypedOrderedQueryable()
         {
-            var actual = ((IOrderedQueryable<Dummy>)query).ToInjectable();
+            var actual = ((IOrderedQueryable<Dummy>)query).ToDbInjectable();
 
             AssertQuery(actual);
         }

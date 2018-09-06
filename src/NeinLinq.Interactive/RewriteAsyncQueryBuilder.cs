@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NeinLinq.Interactive
+namespace NeinLinq
 {
     /// <summary>
     /// Create rewritten async queries.
@@ -15,7 +15,7 @@ namespace NeinLinq.Interactive
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IAsyncQueryable Rewrite(this IAsyncQueryable value, ExpressionVisitor rewriter)
+        public static IAsyncQueryable AsyncRewrite(this IAsyncQueryable value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -35,7 +35,7 @@ namespace NeinLinq.Interactive
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IOrderedAsyncQueryable Rewrite(this IOrderedAsyncQueryable value, ExpressionVisitor rewriter)
+        public static IOrderedAsyncQueryable AsyncRewrite(this IOrderedAsyncQueryable value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -56,7 +56,7 @@ namespace NeinLinq.Interactive
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IAsyncQueryable<T> Rewrite<T>(this IAsyncQueryable<T> value, ExpressionVisitor rewriter)
+        public static IAsyncQueryable<T> AsyncRewrite<T>(this IAsyncQueryable<T> value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -75,7 +75,7 @@ namespace NeinLinq.Interactive
         /// <param name="value">The query to rewrite.</param>
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         /// <returns>The rewritten query.</returns>
-        public static IOrderedAsyncQueryable<T> Rewrite<T>(this IOrderedAsyncQueryable<T> value, ExpressionVisitor rewriter)
+        public static IOrderedAsyncQueryable<T> AsyncRewrite<T>(this IOrderedAsyncQueryable<T> value, ExpressionVisitor rewriter)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NeinLinq.Fakes.RewriteQuery;
-using NeinLinq.Interactive;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery

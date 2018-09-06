@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NeinLinq.Fakes.InjectableQuery;
-using NeinLinq.Queryable;
 using Xunit;
 
 namespace NeinLinq.Tests.InjectableQuery
