@@ -37,7 +37,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIconUrl>https://www.heer.eu/media/axel.png</PackageIconUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/mit</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
-    <PackageReleaseNotes>Reorganized extension methods in order to avoid some conflicts.</PackageReleaseNotes>
+    <PackageReleaseNotes>Reorganized extension methods in order to avoid some conflicts. Added .NET Framework 4.0 support.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
