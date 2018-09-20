@@ -26,7 +26,7 @@ namespace NeinLinq
 
             return (IQueryable)Activator.CreateInstance(
                 typeof(RewriteEntityQueryable<>).MakeGenericType(value.ElementType),
-                provider, value);
+                value, provider);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace NeinLinq
 
             return (IOrderedQueryable)Activator.CreateInstance(
                 typeof(RewriteEntityQueryable<>).MakeGenericType(value.ElementType),
-                provider, value);
+                value, provider);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace NeinLinq
 
             var provider = new RewriteEntityQueryProvider(value.Provider, rewriter);
 
-            return new RewriteEntityQueryable<T>(provider, value);
+            return new RewriteEntityQueryable<T>(value, provider);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace NeinLinq
 
             var provider = new RewriteEntityQueryProvider(value.Provider, rewriter);
 
-            return new RewriteEntityQueryable<T>(provider, value);
+            return new RewriteEntityQueryable<T>(value, provider);
         }
     }
 }

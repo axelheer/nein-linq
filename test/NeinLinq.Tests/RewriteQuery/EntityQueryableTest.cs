@@ -26,14 +26,14 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(provider, null));
-            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(null, query));
+            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(null, provider));
+            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(query, null));
         }
 
         [Fact]
         public void GetEnumeratorUntypedShouldRewrite()
         {
-            var actual = ((IEnumerable)new RewriteEntityQueryable<Dummy>(provider, query)).GetEnumerator();
+            var actual = ((IEnumerable)new RewriteEntityQueryable<Dummy>(query, provider)).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);
@@ -42,7 +42,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void GetEnumeratorTypedShouldRewrite()
         {
-            var actual = new RewriteEntityQueryable<Dummy>(provider, query).GetEnumerator();
+            var actual = new RewriteEntityQueryable<Dummy>(query, provider).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);
@@ -51,7 +51,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ElementTypeShouldReturnElementType()
         {
-            var actual = new RewriteEntityQueryable<Dummy>(provider, query).ElementType;
+            var actual = new RewriteEntityQueryable<Dummy>(query, provider).ElementType;
 
             Assert.Equal(typeof(Dummy), actual);
         }
@@ -59,7 +59,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ExpressionShouldReturnExpression()
         {
-            var actual = new RewriteEntityQueryable<Dummy>(provider, query).Expression;
+            var actual = new RewriteEntityQueryable<Dummy>(query, provider).Expression;
 
             Assert.Equal(query.Expression, actual);
         }
@@ -67,7 +67,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ProviderShouldReturnProvider()
         {
-            var actual = new RewriteEntityQueryable<Dummy>(provider, query).Provider;
+            var actual = new RewriteEntityQueryable<Dummy>(query, provider).Provider;
 
             Assert.IsType<RewriteEntityQueryProvider>(actual);
             Assert.IsType<Rewriter>(((RewriteEntityQueryProvider)actual).Rewriter);

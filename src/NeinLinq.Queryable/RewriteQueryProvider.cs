@@ -43,7 +43,7 @@ namespace NeinLinq
         {
             // create query and make proxy again for rewritten query chaining
             var queryable = provider.CreateQuery<TElement>(expression);
-            return new RewriteQueryable<TElement>(this, queryable);
+            return new RewriteQueryable<TElement>(queryable, this);
         }
 
         /// <inheritdoc />
@@ -53,7 +53,7 @@ namespace NeinLinq
             var queryable = provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
                 typeof(RewriteQueryable<>).MakeGenericType(queryable.ElementType),
-                this, queryable);
+                queryable, this);
         }
 
         /// <inheritdoc />

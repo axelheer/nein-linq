@@ -26,14 +26,14 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryable<Dummy>(provider, null));
-            Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryable<Dummy>(null, query));
+            Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryable<Dummy>(null, provider));
+            Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryable<Dummy>(query, null));
         }
 
         [Fact]
         public void GetEnumeratorShouldRewrite()
         {
-            var actual = new RewriteAsyncQueryable<Dummy>(provider, query).GetEnumerator();
+            var actual = new RewriteAsyncQueryable<Dummy>(query, provider).GetEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);
@@ -42,7 +42,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ElementTypeShouldReturnElementType()
         {
-            var actual = new RewriteAsyncQueryable<Dummy>(provider, query).ElementType;
+            var actual = new RewriteAsyncQueryable<Dummy>(query, provider).ElementType;
 
             Assert.Equal(typeof(Dummy), actual);
         }
@@ -50,7 +50,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ExpressionShouldReturnExpression()
         {
-            var actual = new RewriteAsyncQueryable<Dummy>(provider, query).Expression;
+            var actual = new RewriteAsyncQueryable<Dummy>(query, provider).Expression;
 
             Assert.Equal(query.Expression, actual);
         }
@@ -58,7 +58,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ProviderShouldReturnProvider()
         {
-            var actual = new RewriteAsyncQueryable<Dummy>(provider, query).Provider;
+            var actual = new RewriteAsyncQueryable<Dummy>(query, provider).Provider;
 
             Assert.IsType<RewriteAsyncQueryProvider>(actual);
             Assert.IsType<Rewriter>(((RewriteAsyncQueryProvider)actual).Rewriter);

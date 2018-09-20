@@ -11,23 +11,23 @@ namespace NeinLinq
     /// </summary>
     public class RewriteQueryable<T> : IOrderedQueryable<T>
     {
-        private readonly RewriteQueryProvider provider;
         private readonly IQueryable queryable;
+        private readonly RewriteQueryProvider provider;
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="provider">The provider to rewrite the query.</param>
         /// <param name="queryable">The actual query.</param>
-        public RewriteQueryable(RewriteQueryProvider provider, IQueryable queryable)
+        /// <param name="provider">The provider to rewrite the query.</param>
+        public RewriteQueryable(IQueryable queryable, RewriteQueryProvider provider)
         {
-            if (provider == null)
-                throw new ArgumentNullException(nameof(provider));
             if (queryable == null)
                 throw new ArgumentNullException(nameof(queryable));
+            if (provider == null)
+                throw new ArgumentNullException(nameof(provider));
 
-            this.provider = provider;
             this.queryable = queryable;
+            this.provider = provider;
         }
 
         /// <summary>

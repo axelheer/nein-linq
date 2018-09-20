@@ -27,7 +27,7 @@ namespace NeinLinq
         {
             // create query and make proxy again for rewritten query chaining
             var queryable = Provider.CreateQuery<TElement>(expression);
-            return new RewriteDbQueryable<TElement>(this, queryable);
+            return new RewriteDbQueryable<TElement>(queryable, this);
         }
 
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace NeinLinq
             var queryable = Provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
                 typeof(RewriteDbQueryable<>).MakeGenericType(queryable.ElementType),
-                this, queryable);
+                queryable, this);
         }
 
         /// <inheritdoc />
