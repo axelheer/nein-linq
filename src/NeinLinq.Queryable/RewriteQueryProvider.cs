@@ -9,18 +9,15 @@ namespace NeinLinq
     /// </summary>
     public class RewriteQueryProvider : IQueryProvider
     {
-        private readonly IQueryProvider provider;
-        private readonly ExpressionVisitor rewriter;
-
         /// <summary>
         /// Actual query provider.
         /// </summary>
-        public IQueryProvider Provider => provider;
+        public IQueryProvider Provider { get; }
 
         /// <summary>
         /// Rewriter to rewrite the query.
         /// </summary>
-        public ExpressionVisitor Rewriter => rewriter;
+        public ExpressionVisitor Rewriter { get; }
 
         /// <summary>
         /// Create a new rewrite query provider.
@@ -34,15 +31,26 @@ namespace NeinLinq
             if (rewriter == null)
                 throw new ArgumentNullException(nameof(rewriter));
 
-            this.provider = provider;
-            this.rewriter = rewriter;
+            Provider = provider;
+            Rewriter = rewriter;
+        }
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query.</returns>
+        public virtual IQueryable<TElement> RewriteQuery<TElement>(Expression expression)
+        {
+            // create query with now (!) rewritten expression
+            return Provider.CreateQuery<TElement>(Rewriter.Visit(expression));
         }
 
         /// <inheritdoc />
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = provider.CreateQuery<TElement>(expression);
+            var queryable = Provider.CreateQuery<TElement>(expression);
             return new RewriteQueryable<TElement>(queryable, this);
         }
 
@@ -50,24 +58,24 @@ namespace NeinLinq
         public virtual IQueryable CreateQuery(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = provider.CreateQuery(expression);
+            var queryable = Provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
                 typeof(RewriteQueryable<>).MakeGenericType(queryable.ElementType),
                 queryable, this);
         }
 
         /// <inheritdoc />
-        public TResult Execute<TResult>(Expression expression)
+        public virtual TResult Execute<TResult>(Expression expression)
         {
             // execute query with rewritten expression
-            return provider.Execute<TResult>(rewriter.Visit(expression));
+            return Provider.Execute<TResult>(Rewriter.Visit(expression));
         }
 
         /// <inheritdoc />
-        public object Execute(Expression expression)
+        public virtual object Execute(Expression expression)
         {
             // execute query with rewritten expression
-            return provider.Execute(rewriter.Visit(expression));
+            return Provider.Execute(Rewriter.Visit(expression));
         }
     }
 }

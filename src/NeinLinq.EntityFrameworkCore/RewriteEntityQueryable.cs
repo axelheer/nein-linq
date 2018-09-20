@@ -8,6 +8,8 @@ namespace NeinLinq
     /// </summary>
     public class RewriteEntityQueryable<T> : RewriteQueryable<T>, IAsyncEnumerable<T>
     {
+        private readonly RewriteEntityQueryProvider provider;
+
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
@@ -16,13 +18,14 @@ namespace NeinLinq
         public RewriteEntityQueryable(IQueryable queryable, RewriteEntityQueryProvider provider)
             : base(queryable, provider)
         {
+            this.provider = provider;
         }
 
         /// <inheritdoc />
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
         {
             // rewrite on enumeration
-            var enumerable = UnwrapQuery();
+            var enumerable = provider.RewriteQuery<T>(Expression);
             if (enumerable is IAsyncEnumerable<T> asyncEnumerable)
                 return asyncEnumerable.GetEnumerator();
             return new RewriteEntityQueryEnumerator<T>(enumerable.GetEnumerator());

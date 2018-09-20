@@ -30,22 +30,11 @@ namespace NeinLinq
             this.provider = provider;
         }
 
-        /// <summary>
-        /// Rewrites the entire query expression.
-        /// </summary>
-        /// <returns>A rewritten query.</returns>
-        public IQueryable<T> UnwrapQuery()
-        {
-            var expression = provider.Rewriter.Visit(queryable.Expression);
-            return provider.Provider.CreateQuery<T>(expression);
-        }
-
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
             // rewrite on enumeration
-            var enumerable = UnwrapQuery();
-            return enumerable.GetEnumerator();
+            return provider.RewriteQuery<T>(Expression).GetEnumerator();
         }
 
         /// <inheritdoc />

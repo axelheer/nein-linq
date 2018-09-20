@@ -42,7 +42,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
+        public virtual IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IAsyncQueryProvider asyncProvider)
@@ -51,7 +51,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IAsyncQueryProvider asyncProvider)

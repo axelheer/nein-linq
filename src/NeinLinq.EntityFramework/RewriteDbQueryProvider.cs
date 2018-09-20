@@ -41,7 +41,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IDbAsyncQueryProvider asyncProvider)
@@ -50,7 +50,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken)
+        public virtual Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken)
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IDbAsyncQueryProvider asyncProvider)
