@@ -16,7 +16,6 @@
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix' ">
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net40' ">/usr/lib/mono/4.0-api</FrameworkPathOverride>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net45' ">/usr/lib/mono/4.5-api</FrameworkPathOverride>
-    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net461' ">/usr/lib/mono/4.6.1-api</FrameworkPathOverride>
     <EnableFrameworkPathOverride>true</EnableFrameworkPathOverride>
   </PropertyGroup>
 
@@ -35,8 +34,8 @@ To support different LINQ implementations, the following flavours are available.
 
   <PropertyGroup>
     <PackageIconUrl>https://www.heer.eu/media/axel.png</PackageIconUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/mit</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
