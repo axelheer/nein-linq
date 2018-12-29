@@ -3,6 +3,7 @@
 *.suo
 *.user
 *.vscode
+.DS_Store
 
 # Build
 bin/
