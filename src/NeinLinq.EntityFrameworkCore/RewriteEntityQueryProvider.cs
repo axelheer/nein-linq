@@ -46,8 +46,8 @@ namespace NeinLinq
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IAsyncQueryProvider asyncProvider)
-                return asyncProvider.ExecuteAsync<TResult>(Rewriter.Visit(expression));
-            return new RewriteEntityQueryEnumerable<TResult>(Provider.CreateQuery<TResult>(Rewriter.Visit(expression)));
+                return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression));
+            return new RewriteEntityQueryEnumerable<TResult>(Provider.CreateQuery<TResult>(Rewrite(expression)));
         }
 
         /// <inheritdoc />
@@ -55,8 +55,8 @@ namespace NeinLinq
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IAsyncQueryProvider asyncProvider)
-                return asyncProvider.ExecuteAsync<TResult>(Rewriter.Visit(expression), cancellationToken);
-            return Task.FromResult(Provider.Execute<TResult>(Rewriter.Visit(expression)));
+                return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken);
+            return Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
         }
     }
 }

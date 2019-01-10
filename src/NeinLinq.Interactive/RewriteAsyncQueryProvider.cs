@@ -41,11 +41,21 @@ namespace NeinLinq
         /// Rewrites the entire query expression.
         /// </summary>
         /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query expression.</returns>
+        public virtual Expression Rewrite(Expression expression)
+        {
+            return Rewriter.Visit(expression);
+        }
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
         /// <returns>A rewritten query.</returns>
         public virtual IAsyncQueryable<TElement> RewriteQuery<TElement>(Expression expression)
         {
             // create query with now (!) rewritten expression
-            return Provider.CreateQuery<TElement>(Rewriter.Visit(expression));
+            return Provider.CreateQuery<TElement>(Rewrite(expression));
         }
 
         /// <inheritdoc />
@@ -60,7 +70,7 @@ namespace NeinLinq
         public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken token)
         {
             // execute query with rewritten expression
-            return Provider.ExecuteAsync<TResult>(Rewriter.Visit(expression), token);
+            return Provider.ExecuteAsync<TResult>(Rewrite(expression), token);
         }
     }
 }

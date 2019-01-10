@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,25 @@ namespace NeinLinq.Tests.EntityAsyncQuery
                 }
             });
             db.SaveChanges();
+        }
+
+        [Fact]
+        public async Task SubQueryShouldSucceed()
+        {
+            var innerRewriter = new Rewriter();
+            var outerRewriter = new Rewriter();
+
+            var dummies = db.Dummies.EntityRewrite(innerRewriter);
+
+            var query = from dummy in db.Dummies.EntityRewrite(outerRewriter)
+                        where dummies.Any(d => d.Id < dummy.Id)
+                        select dummy;
+
+            var result = await query.ToListAsync();
+
+            Assert.True(outerRewriter.VisitCalled);
+            Assert.True(innerRewriter.VisitCalled);
+            Assert.Equal(2, result.Count);
         }
 
         [Fact]

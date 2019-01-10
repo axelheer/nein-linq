@@ -35,6 +35,18 @@ namespace NeinLinq
             Rewriter = rewriter;
         }
 
+        private readonly ExpressionVisitor cleaner = new RewriteQueryCleaner();
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query expression.</returns>
+        public virtual Expression Rewrite(Expression expression)
+        {
+            return Rewriter.Visit(cleaner.Visit(expression));
+        }
+
         /// <summary>
         /// Rewrites the entire query expression.
         /// </summary>
@@ -43,7 +55,18 @@ namespace NeinLinq
         public virtual IQueryable<TElement> RewriteQuery<TElement>(Expression expression)
         {
             // create query with now (!) rewritten expression
-            return Provider.CreateQuery<TElement>(Rewriter.Visit(expression));
+            return Provider.CreateQuery<TElement>(Rewrite(expression));
+        }
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query.</returns>
+        public virtual IQueryable RewriteQuery(Expression expression)
+        {
+            // create query with now (!) rewritten expression
+            return Provider.CreateQuery(Rewrite(expression));
         }
 
         /// <inheritdoc />
@@ -68,14 +91,14 @@ namespace NeinLinq
         public virtual TResult Execute<TResult>(Expression expression)
         {
             // execute query with rewritten expression
-            return Provider.Execute<TResult>(Rewriter.Visit(expression));
+            return Provider.Execute<TResult>(Rewrite(expression));
         }
 
         /// <inheritdoc />
         public virtual object Execute(Expression expression)
         {
             // execute query with rewritten expression
-            return Provider.Execute(Rewriter.Visit(expression));
+            return Provider.Execute(Rewrite(expression));
         }
     }
 }
