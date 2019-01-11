@@ -42,13 +42,13 @@ namespace NeinLinq.Tests.DbAsyncQuery
             db.SaveChanges();
         }
 
-        [Fact]
+        [WindowsFact]
         public async Task ToListAsyncShouldWork()
         {
             await db.Dummies.ToListAsync();
         }
 
-        [Fact]
+        [WindowsFact]
         public async Task ToListAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -60,13 +60,13 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(3, result.Count);
         }
 
-        [Fact]
+        [WindowsFact]
         public async Task SumAsyncShouldWork()
         {
             await db.Dummies.SumAsync(d => d.Number);
         }
 
-        [Fact]
+        [WindowsFact]
         public async Task SumAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -78,7 +78,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(194.48m, result, 2);
         }
 
-        [Fact]
+        [WindowsFact]
         public async Task AsyncEnumeratorShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -92,7 +92,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.True(result);
         }
 
-        [Fact]
+        [WindowsFact]
         public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
