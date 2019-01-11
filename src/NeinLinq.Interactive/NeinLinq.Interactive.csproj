@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\NeinLinq.props" />
+  <Import Project="..\..\SourceLink.props" />
+  <Import Project="..\..\PackageData.props" />
   <Import Project="..\..\CodeAnalysis.props" />
 
   <PropertyGroup>

@@ -13,37 +13,17 @@
     <FrameworkPathOverrideBase Condition=" Exists('/usr/lib/mono') ">/usr/lib/mono</FrameworkPathOverrideBase>
     <FrameworkPathOverrideBase Condition=" Exists('/usr/local/lib/mono') ">/usr/local/lib/mono</FrameworkPathOverrideBase>
     <FrameworkPathOverrideBase Condition=" Exists('/Library/Frameworks/Mono.framework/Versions/Current/lib/mono') ">/Library/Frameworks/Mono.framework/Versions/Current/lib/mono</FrameworkPathOverrideBase>
-    <FrameworkPathOverride Condition=" '$(FrameworkPathOverrideBase)' != '' and '$(TargetFramework)' == 'net40' ">$(FrameworkPathOverrideBase)/4.0-api</FrameworkPathOverride>
-    <FrameworkPathOverride Condition=" '$(FrameworkPathOverrideBase)' != '' and '$(TargetFramework)' == 'net45' ">$(FrameworkPathOverrideBase)/4.5-api</FrameworkPathOverride>
-    <FrameworkPathOverride Condition=" '$(FrameworkPathOverrideBase)' != '' and '$(TargetFramework)' == 'net472' ">$(FrameworkPathOverrideBase)/4.7.2-api</FrameworkPathOverride>
-    <AssemblySearchPaths Condition=" '$(FrameworkPathOverride)' != '' ">$(FrameworkPathOverride)/Facades;$(AssemblySearchPaths)</AssemblySearchPaths>
-    <EnableFrameworkPathOverride Condition=" '$(FrameworkPathOverride)' != '' ">true</EnableFrameworkPathOverride>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <Authors>Axel Heer</Authors>
-    <Copyright>Copyright © 2014-2019 Axel Heer</Copyright>
-    <Description>NeinLinq provides helpful extensions for using LINQ providers such as Entity Framework that support only a minor subset of .NET functions, reusing functions, rewriting queries, even making them null-safe, and building dynamic queries using translatable predicates and selectors.
-
-To support different LINQ implementations, the following flavours are available. Choose at least one.
-
-- Use NeinLinq.Queryable for plain LINQ queries
-- Use NeinLinq.Interactive for interactive LINQ queries
-- Use NeinLinq.EntityFramework for Entity Framework 6 LINQ queries
-- Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries</Description>
+  <PropertyGroup Condition=" '$(FrameworkPathOverrideBase)' != '' ">
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net40' ">$(FrameworkPathOverrideBase)/4.0-api</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net45' ">$(FrameworkPathOverrideBase)/4.5-api</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net472' ">$(FrameworkPathOverrideBase)/4.7.2-api</FrameworkPathOverride>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <PackageIconUrl>https://www.heer.eu/media/axel.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>.</PackageReleaseNotes>
-    <PackageTags>LINQ;EF;IX</PackageTags>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/axelheer/nein-linq</RepositoryUrl>
+  <PropertyGroup Condition=" '$(FrameworkPathOverride)' != '' ">
+    <AssemblySearchPaths>$(FrameworkPathOverride)/Facades;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <EnableFrameworkPathOverride>true</EnableFrameworkPathOverride>
   </PropertyGroup>
 
 </Project>
