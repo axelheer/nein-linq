@@ -9,8 +9,6 @@ namespace NeinLinq
     /// </summary>
     public static class DynamicQuery
     {
-        private static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
-
         /// <summary>
         /// Create a dynamic predicate for a given property selector, comparison method and reference value.
         /// </summary>
@@ -29,7 +27,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value, provider), target);
+            return Expression.Lambda<Func<T, bool>>(DynamicExpression.CreateComparison(target, selector, comparer, value, provider), target);
         }
 
         /// <summary>
@@ -50,84 +48,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            return Expression.Lambda<Func<T, bool>>(CreateComparison(target, selector, comparer, value, provider), target);
-        }
-
-        internal static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider provider)
-        {
-            var memberAccess = CreateMemberAccess(target, selector);
-            var actualValue = CreateConstant(target, memberAccess, value, provider);
-
-            switch (comparer)
-            {
-                case DynamicCompare.Equal:
-                    return Expression.Equal(memberAccess, actualValue);
-
-                case DynamicCompare.NotEqual:
-                    return Expression.NotEqual(memberAccess, actualValue);
-
-                case DynamicCompare.GreaterThan:
-                    return Expression.GreaterThan(memberAccess, actualValue);
-
-                case DynamicCompare.GreaterThanOrEqual:
-                    return Expression.GreaterThanOrEqual(memberAccess, actualValue);
-
-                case DynamicCompare.LessThan:
-                    return Expression.LessThan(memberAccess, actualValue);
-
-                case DynamicCompare.LessThanOrEqual:
-                    return Expression.LessThanOrEqual(memberAccess, actualValue);
-
-                default:
-                    return Expression.Constant(false);
-            }
-        }
-
-        internal static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider provider)
-        {
-            var memberAccess = CreateMemberAccess(target, selector);
-            var actualValue = CreateConstant(target, memberAccess, value, provider);
-
-            return Expression.Call(memberAccess, comparer, null, actualValue);
-        }
-
-        internal static Expression CreateMemberAccess(Expression target, string selector)
-        {
-            return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
-        }
-
-        private static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)
-        {
-            var type = Expression.Lambda(selector, target).ReturnType;
-
-            if (string.IsNullOrEmpty(value))
-                return Expression.Default(type);
-
-            var converter = cache.GetOrAdd(type, CreateConverter);
-            var convertedValue = converter(value, provider);
-
-            return Expression.Constant(convertedValue, type);
-        }
-
-        private static Func<string, IFormatProvider, object> CreateConverter(Type type)
-        {
-            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
-
-            var target = Expression.Parameter(typeof(string));
-            var format = Expression.Parameter(typeof(IFormatProvider));
-
-            var expression = (Expression)target;
-
-            var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
-            if (ordinalParse != null)
-                expression = Expression.Call(ordinalParse, target);
-
-            var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
-            if (cultureParse != null)
-                expression = Expression.Call(cultureParse, target, format);
-
-            return Expression.Lambda<Func<string, IFormatProvider, object>>(
-                Expression.Convert(expression, typeof(object)), target, format).Compile();
+            return Expression.Lambda<Func<T, bool>>(DynamicExpression.CreateComparison(target, selector, comparer, value, provider), target);
         }
     }
 }

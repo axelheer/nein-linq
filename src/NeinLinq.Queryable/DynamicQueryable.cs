@@ -29,7 +29,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(query.ElementType);
 
-            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+            var comparison = DynamicExpression.CreateComparison(target, selector, comparer, value, provider);
 
             return query.Provider.CreateQuery(CreateWhereClause(target, query.Expression, comparison));
         }
@@ -55,7 +55,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+            var comparison = DynamicExpression.CreateComparison(target, selector, comparer, value, provider);
 
             return query.Provider.CreateQuery<T>(CreateWhereClause(target, query.Expression, comparison));
         }
@@ -80,7 +80,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(query.ElementType);
 
-            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+            var comparison = DynamicExpression.CreateComparison(target, selector, comparer, value, provider);
 
             return query.Provider.CreateQuery(CreateWhereClause(target, query.Expression, comparison));
         }
@@ -106,7 +106,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+            var comparison = DynamicExpression.CreateComparison(target, selector, comparer, value, provider);
 
             return query.Provider.CreateQuery<T>(CreateWhereClause(target, query.Expression, comparison));
         }
@@ -191,7 +191,7 @@ namespace NeinLinq
 
         private static Expression CreateOrderClause(ParameterExpression target, Expression expression, string selector, bool initial, bool descending)
         {
-            var keySelector = Expression.Lambda(DynamicQuery.CreateMemberAccess(target, selector), target);
+            var keySelector = Expression.Lambda(DynamicExpression.CreateMemberAccess(target, selector), target);
 
             var method = initial ? (descending ? nameof(Queryable.OrderByDescending)
                                                : nameof(Queryable.OrderBy))

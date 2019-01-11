@@ -30,7 +30,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+            var comparison = DynamicExpression.CreateComparison(target, selector, comparer, value, provider);
 
             return query.Provider.CreateQuery<T>(CreateAsyncWhereClause(target, query.Expression, comparison));
         }
@@ -56,7 +56,7 @@ namespace NeinLinq
 
             var target = Expression.Parameter(typeof(T));
 
-            var comparison = DynamicQuery.CreateComparison(target, selector, comparer, value, provider);
+            var comparison = DynamicExpression.CreateComparison(target, selector, comparer, value, provider);
 
             return query.Provider.CreateQuery<T>(CreateAsyncWhereClause(target, query.Expression, comparison));
         }
@@ -103,7 +103,7 @@ namespace NeinLinq
 
         private static Expression CreateAsyncOrderClause(ParameterExpression target, Expression expression, string selector, bool initial, bool descending)
         {
-            var keySelector = Expression.Lambda(DynamicQuery.CreateMemberAccess(target, selector), target);
+            var keySelector = Expression.Lambda(DynamicExpression.CreateMemberAccess(target, selector), target);
 
             var method = initial ? (descending ? nameof(AsyncQueryable.OrderByDescending)
                                                : nameof(AsyncQueryable.OrderBy))
