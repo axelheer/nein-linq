@@ -20,8 +20,15 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The dynamic comparison expression.</returns>
-        public static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider provider)
+        public static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+            if (string.IsNullOrEmpty(selector))
+                throw new ArgumentNullException(nameof(selector));
+            if (!Enum.IsDefined(typeof(DynamicCompare), comparer))
+                throw new ArgumentOutOfRangeException(nameof(comparer));
+
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value, provider);
 
@@ -60,8 +67,15 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The dynamic comparison expression.</returns>
-        public static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider provider)
+        public static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider provider = null)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+            if (string.IsNullOrEmpty(selector))
+                throw new ArgumentNullException(nameof(selector));
+            if (string.IsNullOrEmpty(comparer))
+                throw new ArgumentNullException(nameof(comparer));
+
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value, provider);
 
@@ -76,6 +90,11 @@ namespace NeinLinq
         /// <returns>The dynamic member access expression.</returns>
         public static Expression CreateMemberAccess(Expression target, string selector)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+            if (string.IsNullOrEmpty(selector))
+                throw new ArgumentNullException(nameof(selector));
+
             return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
         }
 
