@@ -20,6 +20,7 @@ after_test:
 
 artifacts:
   - path: src/**/*.nupkg
+  - path: src/**/*.snupkg
 
 deploy:
   - provider: Environment
