@@ -27,18 +27,18 @@ namespace NeinLinq
         public override IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery<TElement>(expression);
-            return new RewriteEntityQueryable<TElement>(queryable, this);
+            var query = Provider.CreateQuery<TElement>(expression);
+            return new RewriteEntityQueryable<TElement>(query, this);
         }
 
         /// <inheritdoc />
         public override IQueryable CreateQuery(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery(expression);
+            var query = Provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
-                typeof(RewriteEntityQueryable<>).MakeGenericType(queryable.ElementType),
-                queryable, this);
+                typeof(RewriteEntityQueryable<>).MakeGenericType(query.ElementType),
+                query, this);
         }
 
         /// <inheritdoc />

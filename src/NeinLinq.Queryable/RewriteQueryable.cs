@@ -12,9 +12,9 @@ namespace NeinLinq
     public abstract class RewriteQueryable : IOrderedQueryable
     {
         /// <summary>
-        /// Actual query-able.
+        /// Actual query.
         /// </summary>
-        public IQueryable Queryable { get; }
+        public IQueryable Query { get; }
 
         /// <summary>
         /// Rewriter to rewrite the query.
@@ -24,16 +24,16 @@ namespace NeinLinq
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="queryable">The actual query.</param>
+        /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        protected RewriteQueryable(IQueryable queryable, RewriteQueryProvider provider)
+        protected RewriteQueryable(IQueryable query, RewriteQueryProvider provider)
         {
-            if (queryable == null)
-                throw new ArgumentNullException(nameof(queryable));
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
 
-            Queryable = queryable;
+            Query = query;
             Provider = provider;
         }
 
@@ -45,10 +45,10 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public Type ElementType => Queryable.ElementType;
+        public Type ElementType => Query.ElementType;
 
         /// <inheritdoc />
-        public Expression Expression => Queryable.Expression;
+        public Expression Expression => Query.Expression;
 
         /// <inheritdoc />
         IQueryProvider IQueryable.Provider => Provider; // replace query provider
@@ -62,10 +62,10 @@ namespace NeinLinq
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="queryable">The actual query.</param>
+        /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteQueryable(IQueryable<T> queryable, RewriteQueryProvider provider)
-            : base(queryable, provider)
+        public RewriteQueryable(IQueryable<T> query, RewriteQueryProvider provider)
+            : base(query, provider)
         {
         }
 

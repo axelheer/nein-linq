@@ -11,9 +11,9 @@ namespace NeinLinq
     public abstract class RewriteAsyncQueryable : IOrderedAsyncQueryable
     {
         /// <summary>
-        /// Actual query-able.
+        /// Actual query.
         /// </summary>
-        public IAsyncQueryable Queryable { get; }
+        public IAsyncQueryable Query { get; }
 
         /// <summary>
         /// Rewriter to rewrite the query.
@@ -23,24 +23,24 @@ namespace NeinLinq
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="queryable">The actual query.</param>
+        /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        protected RewriteAsyncQueryable(IAsyncQueryable queryable, RewriteAsyncQueryProvider provider)
+        protected RewriteAsyncQueryable(IAsyncQueryable query, RewriteAsyncQueryProvider provider)
         {
-            if (queryable == null)
-                throw new ArgumentNullException(nameof(queryable));
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
 
-            Queryable = queryable;
+            Query = query;
             Provider = provider;
         }
 
         /// <inheritdoc />
-        public Type ElementType => Queryable.ElementType;
+        public Type ElementType => Query.ElementType;
 
         /// <inheritdoc />
-        public Expression Expression => Queryable.Expression;
+        public Expression Expression => Query.Expression;
 
         /// <inheritdoc />
         IAsyncQueryProvider IAsyncQueryable.Provider => Provider; // replace query provider
@@ -54,10 +54,10 @@ namespace NeinLinq
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="queryable">The actual query.</param>
+        /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteAsyncQueryable(IAsyncQueryable<T> queryable, RewriteAsyncQueryProvider provider)
-            : base(queryable, provider)
+        public RewriteAsyncQueryable(IAsyncQueryable<T> query, RewriteAsyncQueryProvider provider)
+            : base(query, provider)
         {
         }
 

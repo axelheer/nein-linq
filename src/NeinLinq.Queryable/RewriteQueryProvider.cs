@@ -42,8 +42,9 @@ namespace NeinLinq
         /// </summary>
         /// <param name="expression">The query expression.</param>
         /// <returns>A rewritten query expression.</returns>
-        public virtual Expression Rewrite(Expression expression)
+        protected virtual Expression Rewrite(Expression expression)
         {
+            // clean-up and rewrite the whole expression
             return Rewriter.Visit(cleaner.Visit(expression));
         }
 
@@ -73,18 +74,18 @@ namespace NeinLinq
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery<TElement>(expression);
-            return new RewriteQueryable<TElement>(queryable, this);
+            var query = Provider.CreateQuery<TElement>(expression);
+            return new RewriteQueryable<TElement>(query, this);
         }
 
         /// <inheritdoc />
         public virtual IQueryable CreateQuery(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery(expression);
+            var query = Provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
-                typeof(RewriteQueryable<>).MakeGenericType(queryable.ElementType),
-                queryable, this);
+                typeof(RewriteQueryable<>).MakeGenericType(query.ElementType),
+                query, this);
         }
 
         /// <inheritdoc />

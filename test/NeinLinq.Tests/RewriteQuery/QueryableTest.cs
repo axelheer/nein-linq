@@ -73,9 +73,9 @@ namespace NeinLinq.Tests.RewriteQuery
         }
 
         [Fact]
-        public void QueryableShouldReturnQueryable()
+        public void QueryShouldReturnQuery()
         {
-            var actual = new RewriteQueryable<Dummy>(query, provider).Queryable;
+            var actual = new RewriteQueryable<Dummy>(query, provider).Query;
 
             Assert.Equal(query, actual);
         }
