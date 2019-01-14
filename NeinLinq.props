@@ -1,6 +1,7 @@
 ﻿<Project>
 
   <PropertyGroup>
+    <NoWarn>NU5105</NoWarn>
     <VersionPrefix>3.0.1</VersionPrefix>
   </PropertyGroup>
 
