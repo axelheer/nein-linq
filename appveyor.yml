@@ -12,8 +12,7 @@ build_script:
   - ps: 'if ($env:APPVEYOR_REPO_BRANCH -ne "release") { dotnet pack --configuration Release --version-suffix "ci.$env:APPVEYOR_BUILD_NUMBER" --include-symbols }'
 
 test_script:
-  - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework net472'
-  - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release --framework netcoreapp2.2 /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="$PWD/coverage.xml" /p:Include="[NeinLinq*]*" /p:Exclude="[NeinLinq.Fakes]*"'
+  - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="$PWD/coverage.xml" /p:Include="[NeinLinq*]*" /p:Exclude="[NeinLinq.Fakes]*"'
 
 after_test:
   - cmd: 'curl -s https://codecov.io/bash | bash -s - -f coverage.xml'
