@@ -26,18 +26,18 @@ namespace NeinLinq
         public override IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery<TElement>(expression);
-            return new RewriteDbQueryable<TElement>(queryable, this);
+            var query = Provider.CreateQuery<TElement>(expression);
+            return new RewriteDbQueryable<TElement>(query, this);
         }
 
         /// <inheritdoc />
         public override IQueryable CreateQuery(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery(expression);
+            var query = Provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
-                typeof(RewriteDbQueryable<>).MakeGenericType(queryable.ElementType),
-                queryable, this);
+                typeof(RewriteDbQueryable<>).MakeGenericType(query.ElementType),
+                query, this);
         }
 
         /// <inheritdoc />
@@ -45,8 +45,8 @@ namespace NeinLinq
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IDbAsyncQueryProvider asyncProvider)
-                return asyncProvider.ExecuteAsync<TResult>(Rewriter.Visit(expression), cancellationToken);
-            return Task.FromResult(Provider.Execute<TResult>(Rewriter.Visit(expression)));
+                return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken);
+            return Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
         }
 
         /// <inheritdoc />
@@ -54,8 +54,8 @@ namespace NeinLinq
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IDbAsyncQueryProvider asyncProvider)
-                return asyncProvider.ExecuteAsync(Rewriter.Visit(expression), cancellationToken);
-            return Task.FromResult(Provider.Execute(Rewriter.Visit(expression)));
+                return asyncProvider.ExecuteAsync(Rewrite(expression), cancellationToken);
+            return Task.FromResult(Provider.Execute(Rewrite(expression)));
         }
     }
 }

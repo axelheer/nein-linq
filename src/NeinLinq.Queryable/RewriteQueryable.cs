@@ -9,44 +9,71 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public class RewriteQueryable<T> : IOrderedQueryable<T>
+    public abstract class RewriteQueryable : IOrderedQueryable
     {
-        private readonly IQueryable queryable;
-        private readonly RewriteQueryProvider provider;
+        /// <summary>
+        /// Actual query.
+        /// </summary>
+        public IQueryable Query { get; }
+
+        /// <summary>
+        /// Rewriter to rewrite the query.
+        /// </summary>
+        public RewriteQueryProvider Provider { get; }
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="queryable">The actual query.</param>
+        /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteQueryable(IQueryable queryable, RewriteQueryProvider provider)
+        protected RewriteQueryable(IQueryable query, RewriteQueryProvider provider)
         {
-            if (queryable == null)
-                throw new ArgumentNullException(nameof(queryable));
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
 
-            this.queryable = queryable;
-            this.provider = provider;
+            Query = query;
+            Provider = provider;
+        }
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            // rewrite on enumeration
+            return Provider.RewriteQuery(Expression).GetEnumerator(); 
+        }
+
+        /// <inheritdoc />
+        public Type ElementType => Query.ElementType;
+
+        /// <inheritdoc />
+        public Expression Expression => Query.Expression;
+
+        /// <inheritdoc />
+        IQueryProvider IQueryable.Provider => Provider; // replace query provider
+    }
+
+    /// <summary>
+    /// Proxy for rewritten queries.
+    /// </summary>
+    public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
+    {
+        /// <summary>
+        /// Create a new query to rewrite.
+        /// </summary>
+        /// <param name="query">The actual query.</param>
+        /// <param name="provider">The provider to rewrite the query.</param>
+        public RewriteQueryable(IQueryable<T> query, RewriteQueryProvider provider)
+            : base(query, provider)
+        {
         }
 
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
             // rewrite on enumeration
-            return provider.RewriteQuery<T>(Expression).GetEnumerator();
+            return Provider.RewriteQuery<T>(Expression).GetEnumerator();
         }
-
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        /// <inheritdoc />
-        public Type ElementType => queryable.ElementType;
-
-        /// <inheritdoc />
-        public Expression Expression => queryable.Expression;
-
-        /// <inheritdoc />
-        public IQueryProvider Provider => provider; // replace query provider
     }
 }

@@ -69,8 +69,15 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             var actual = new RewriteQueryable<Dummy>(query, provider).Provider;
 
-            Assert.IsType<RewriteQueryProvider>(actual);
-            Assert.IsType<Rewriter>(((RewriteQueryProvider)actual).Rewriter);
+            Assert.Equal(provider, actual);
+        }
+
+        [Fact]
+        public void QueryShouldReturnQuery()
+        {
+            var actual = new RewriteQueryable<Dummy>(query, provider).Query;
+
+            Assert.Equal(query, actual);
         }
     }
 }

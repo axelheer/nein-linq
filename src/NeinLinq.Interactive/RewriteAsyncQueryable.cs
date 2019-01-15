@@ -8,41 +8,64 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for rewritten async queries.
     /// </summary>
-    public class RewriteAsyncQueryable<T> : IOrderedAsyncQueryable<T>
+    public abstract class RewriteAsyncQueryable : IOrderedAsyncQueryable
     {
-        private readonly IAsyncQueryable queryable;
-        private readonly RewriteAsyncQueryProvider provider;
+        /// <summary>
+        /// Actual query.
+        /// </summary>
+        public IAsyncQueryable Query { get; }
+
+        /// <summary>
+        /// Rewriter to rewrite the query.
+        /// </summary>
+        public RewriteAsyncQueryProvider Provider { get; }
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
-        /// <param name="queryable">The actual query.</param>
+        /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteAsyncQueryable(IAsyncQueryable queryable, RewriteAsyncQueryProvider provider)
+        protected RewriteAsyncQueryable(IAsyncQueryable query, RewriteAsyncQueryProvider provider)
         {
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
-            if (queryable == null)
-                throw new ArgumentNullException(nameof(queryable));
 
-            this.queryable = queryable;
-            this.provider = provider;
+            Query = query;
+            Provider = provider;
+        }
+
+        /// <inheritdoc />
+        public Type ElementType => Query.ElementType;
+
+        /// <inheritdoc />
+        public Expression Expression => Query.Expression;
+
+        /// <inheritdoc />
+        IAsyncQueryProvider IAsyncQueryable.Provider => Provider; // replace query provider
+    }
+
+    /// <summary>
+    /// Proxy for rewritten async queries.
+    /// </summary>
+    public class RewriteAsyncQueryable<T> : RewriteAsyncQueryable, IOrderedAsyncQueryable<T>
+    {
+        /// <summary>
+        /// Create a new query to rewrite.
+        /// </summary>
+        /// <param name="query">The actual query.</param>
+        /// <param name="provider">The provider to rewrite the query.</param>
+        public RewriteAsyncQueryable(IAsyncQueryable<T> query, RewriteAsyncQueryProvider provider)
+            : base(query, provider)
+        {
         }
 
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetEnumerator()
         {
             // rewrite on enumeration
-            return provider.RewriteQuery<T>(Expression).GetEnumerator();
+            return Provider.RewriteQuery<T>(Expression).GetEnumerator();
         }
-
-        /// <inheritdoc />
-        public Type ElementType => queryable.ElementType;
-
-        /// <inheritdoc />
-        public Expression Expression => queryable.Expression;
-
-        /// <inheritdoc />
-        public IAsyncQueryProvider Provider => provider; // replace query provider
     }
 }

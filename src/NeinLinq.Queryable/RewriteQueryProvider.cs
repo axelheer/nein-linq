@@ -35,6 +35,19 @@ namespace NeinLinq
             Rewriter = rewriter;
         }
 
+        private readonly ExpressionVisitor cleaner = new RewriteQueryCleaner();
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query expression.</returns>
+        protected virtual Expression Rewrite(Expression expression)
+        {
+            // clean-up and rewrite the whole expression
+            return Rewriter.Visit(cleaner.Visit(expression));
+        }
+
         /// <summary>
         /// Rewrites the entire query expression.
         /// </summary>
@@ -43,39 +56,50 @@ namespace NeinLinq
         public virtual IQueryable<TElement> RewriteQuery<TElement>(Expression expression)
         {
             // create query with now (!) rewritten expression
-            return Provider.CreateQuery<TElement>(Rewriter.Visit(expression));
+            return Provider.CreateQuery<TElement>(Rewrite(expression));
+        }
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query.</returns>
+        public virtual IQueryable RewriteQuery(Expression expression)
+        {
+            // create query with now (!) rewritten expression
+            return Provider.CreateQuery(Rewrite(expression));
         }
 
         /// <inheritdoc />
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery<TElement>(expression);
-            return new RewriteQueryable<TElement>(queryable, this);
+            var query = Provider.CreateQuery<TElement>(expression);
+            return new RewriteQueryable<TElement>(query, this);
         }
 
         /// <inheritdoc />
         public virtual IQueryable CreateQuery(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery(expression);
+            var query = Provider.CreateQuery(expression);
             return (IQueryable)Activator.CreateInstance(
-                typeof(RewriteQueryable<>).MakeGenericType(queryable.ElementType),
-                queryable, this);
+                typeof(RewriteQueryable<>).MakeGenericType(query.ElementType),
+                query, this);
         }
 
         /// <inheritdoc />
         public virtual TResult Execute<TResult>(Expression expression)
         {
             // execute query with rewritten expression
-            return Provider.Execute<TResult>(Rewriter.Visit(expression));
+            return Provider.Execute<TResult>(Rewrite(expression));
         }
 
         /// <inheritdoc />
         public virtual object Execute(Expression expression)
         {
             // execute query with rewritten expression
-            return Provider.Execute(Rewriter.Visit(expression));
+            return Provider.Execute(Rewrite(expression));
         }
     }
 }

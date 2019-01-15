@@ -37,6 +37,19 @@ namespace NeinLinq
             Rewriter = rewriter;
         }
 
+        private readonly ExpressionVisitor cleaner = new RewriteAsyncQueryCleaner();
+
+        /// <summary>
+        /// Rewrites the entire query expression.
+        /// </summary>
+        /// <param name="expression">The query expression.</param>
+        /// <returns>A rewritten query expression.</returns>
+        protected virtual Expression Rewrite(Expression expression)
+        {
+            // clean-up and rewrite the whole expression
+            return Rewriter.Visit(cleaner.Visit(expression));
+        }
+
         /// <summary>
         /// Rewrites the entire query expression.
         /// </summary>
@@ -45,22 +58,22 @@ namespace NeinLinq
         public virtual IAsyncQueryable<TElement> RewriteQuery<TElement>(Expression expression)
         {
             // create query with now (!) rewritten expression
-            return Provider.CreateQuery<TElement>(Rewriter.Visit(expression));
+            return Provider.CreateQuery<TElement>(Rewrite(expression));
         }
 
         /// <inheritdoc />
         public virtual IAsyncQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             // create query and make proxy again for rewritten query chaining
-            var queryable = Provider.CreateQuery<TElement>(expression);
-            return new RewriteAsyncQueryable<TElement>(queryable, this);
+            var query = Provider.CreateQuery<TElement>(expression);
+            return new RewriteAsyncQueryable<TElement>(query, this);
         }
 
         /// <inheritdoc />
         public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken token)
         {
             // execute query with rewritten expression
-            return Provider.ExecuteAsync<TResult>(Rewriter.Visit(expression), token);
+            return Provider.ExecuteAsync<TResult>(Rewrite(expression), token);
         }
     }
 }
