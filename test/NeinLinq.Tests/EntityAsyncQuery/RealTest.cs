@@ -14,28 +14,55 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 
         public RealTest()
         {
-            db = new Context();
-            db.ResetDatabase();
-
-            db.Dummies.AddRange(new[]
+            using (var init = new Context())
             {
-                new Dummy
+                init.ResetDatabase();
+
+                init.Dummies.AddRange(new[]
                 {
-                    Name = "Asdf",
-                    Number = 123.45m
-                },
-                new Dummy
-                {
-                    Name = "Qwer",
-                    Number = 67.89m
-                },
-                new Dummy
-                {
-                    Name = "Narf",
-                    Number = 3.14m
-                }
-            });
-            db.SaveChanges();
+                    new Dummy
+                    {
+                        Name = "Asdf",
+                        Number = 123.45m,
+                        Other = new OtherDummy
+                        {
+                            Name = "Asdf"
+                        }
+                    },
+                    new Dummy
+                    {
+                        Name = "Qwer",
+                        Number = 67.89m,
+                        Other = new OtherDummy
+                        {
+                            Name = "Qwer"
+                        }
+                    },
+                    new Dummy
+                    {
+                        Name = "Narf",
+                        Number = 3.14m,
+                        Other = new OtherDummy
+                        {
+                            Name = "Narf"
+                        }
+                    }
+                });
+                init.SaveChanges();
+            }
+
+            db = new Context();
+        }
+
+        [Fact]
+        public async Task IncludeShouldSucceed()
+        {
+            var query = from dummy in db.Dummies.Include(d => d.Other).EntityRewrite(new Rewriter())
+                        select dummy;
+
+            var result = await query.ToListAsync();
+
+            Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
         }
 
         [Fact]
