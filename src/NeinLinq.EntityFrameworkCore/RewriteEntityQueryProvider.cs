@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -118,33 +119,40 @@ namespace NeinLinq
             return Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
         }
 
+        [ExcludeFromCodeCoverage]
         private class EmptyQueryCompiler : IQueryCompiler
         {
+            [ExcludeFromCodeCoverage]
             public Func<QueryContext, IAsyncEnumerable<TResult>> CreateCompiledAsyncEnumerableQuery<TResult>(Expression query)
             {
                 throw new NotSupportedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public Func<QueryContext, Task<TResult>> CreateCompiledAsyncTaskQuery<TResult>(Expression query)
             {
                 throw new NotSupportedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public Func<QueryContext, TResult> CreateCompiledQuery<TResult>(Expression query)
             {
                 throw new NotSupportedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public TResult Execute<TResult>(Expression query)
             {
                 throw new NotSupportedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression query)
             {
                 throw new NotSupportedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public Task<TResult> ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
             {
                 throw new NotSupportedException();
