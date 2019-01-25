@@ -59,6 +59,18 @@ namespace NeinLinq.Tests.DbAsyncQuery
         }
 
         [WindowsFact]
+        public async Task AsNoTrackingShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = db.Dummies.DbRewrite(rewriter);
+
+            var result = await query.AsNoTracking().ToListAsync();
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.Equal(3, result.Count);
+        }
+
+        [WindowsFact]
         public async Task IncludeShouldSucceed()
         {
             var rewriter = new Rewriter();

@@ -20,6 +20,15 @@ namespace NeinLinq
         }
 
         /// <summary>
+        /// Proxy for un-trackable queries.
+        /// </summary>
+        /// <returns>The un-trackable query.</returns>
+        public IQueryable<T> AsNoTracking()
+        {
+            return new RewriteDbQueryable<T>(Query.AsNoTracking(), Provider);
+        }
+
+        /// <summary>
         /// Proxy for includeable queries.
         /// </summary>
         /// <param name="path">The path to include.</param>
