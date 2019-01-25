@@ -7,7 +7,7 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for query provider.
     /// </summary>
-    public class RewriteQueryProvider : IQueryProvider
+    public class RewriteQueryProvider : IRewriteQueryProvider
     {
         /// <summary>
         /// Actual query provider.
@@ -48,22 +48,14 @@ namespace NeinLinq
             return Rewriter.Visit(cleaner.Visit(expression));
         }
 
-        /// <summary>
-        /// Rewrites the entire query expression.
-        /// </summary>
-        /// <param name="expression">The query expression.</param>
-        /// <returns>A rewritten query.</returns>
+        /// <inheritdoc />
         public virtual IQueryable<TElement> RewriteQuery<TElement>(Expression expression)
         {
             // create query with now (!) rewritten expression
             return Provider.CreateQuery<TElement>(Rewrite(expression));
         }
 
-        /// <summary>
-        /// Rewrites the entire query expression.
-        /// </summary>
-        /// <param name="expression">The query expression.</param>
-        /// <returns>A rewritten query.</returns>
+        /// <inheritdoc />
         public virtual IQueryable RewriteQuery(Expression expression)
         {
             // create query with now (!) rewritten expression

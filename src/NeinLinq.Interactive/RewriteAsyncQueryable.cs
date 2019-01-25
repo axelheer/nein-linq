@@ -18,14 +18,14 @@ namespace NeinLinq
         /// <summary>
         /// Rewriter to rewrite the query.
         /// </summary>
-        public RewriteAsyncQueryProvider Provider { get; }
+        public IRewriteAsyncQueryProvider Provider { get; }
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        protected RewriteAsyncQueryable(IAsyncQueryable query, RewriteAsyncQueryProvider provider)
+        protected RewriteAsyncQueryable(IAsyncQueryable query, IRewriteAsyncQueryProvider provider)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -56,7 +56,7 @@ namespace NeinLinq
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteAsyncQueryable(IAsyncQueryable<T> query, RewriteAsyncQueryProvider provider)
+        public RewriteAsyncQueryable(IAsyncQueryable query, IRewriteAsyncQueryProvider provider)
             : base(query, provider)
         {
         }

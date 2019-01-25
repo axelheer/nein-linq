@@ -57,11 +57,12 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         [Fact]
         public async Task IncludeShouldSucceed()
         {
-            var query = from dummy in db.Dummies.Include(d => d.Other).EntityRewrite(new Rewriter())
-                        select dummy;
+            var rewriter = new Rewriter();
+            var query = db.Dummies.EntityRewrite(rewriter);
 
-            var result = await query.ToListAsync();
+            var result = await query.Include(d => d.Other).ToListAsync();
 
+            Assert.True(rewriter.VisitCalled);
             Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
         }
 
@@ -69,10 +70,9 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         public async Task SubQueryShouldSucceed()
         {
             var innerRewriter = new Rewriter();
-            var outerRewriter = new Rewriter();
-
             var dummies = db.Dummies.EntityRewrite(innerRewriter);
 
+            var outerRewriter = new Rewriter();
             var query = from dummy in db.Dummies.EntityRewrite(outerRewriter)
                         where dummies.Any(d => d.Id < dummy.Id)
                         select dummy;

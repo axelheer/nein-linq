@@ -19,14 +19,14 @@ namespace NeinLinq
         /// <summary>
         /// Rewriter to rewrite the query.
         /// </summary>
-        public RewriteQueryProvider Provider { get; }
+        public IRewriteQueryProvider Provider { get; }
 
         /// <summary>
         /// Create a new query to rewrite.
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        protected RewriteQueryable(IQueryable query, RewriteQueryProvider provider)
+        protected RewriteQueryable(IQueryable query, IRewriteQueryProvider provider)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -64,7 +64,7 @@ namespace NeinLinq
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteQueryable(IQueryable<T> query, RewriteQueryProvider provider)
+        public RewriteQueryable(IQueryable query, IRewriteQueryProvider provider)
             : base(query, provider)
         {
         }

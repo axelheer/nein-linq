@@ -9,7 +9,7 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for async query provider.
     /// </summary>
-    public class RewriteAsyncQueryProvider : IAsyncQueryProvider
+    public class RewriteAsyncQueryProvider : IRewriteAsyncQueryProvider
     {
         /// <summary>
         /// Actual query provider.

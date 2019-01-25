@@ -13,7 +13,7 @@ namespace NeinLinq
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteEntityQueryable(IQueryable<T> query, RewriteEntityQueryProvider provider)
+        public RewriteEntityQueryable(IQueryable query, IRewriteQueryProvider provider)
             : base(query, provider)
         {
         }
