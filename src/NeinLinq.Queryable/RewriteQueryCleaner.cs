@@ -4,12 +4,8 @@ using System.Reflection;
 
 namespace NeinLinq
 {
-    /// <summary>
-    /// Resolves rewriteable subqueries.
-    /// </summary>
-    public class RewriteQueryCleaner : ExpressionVisitor
+    internal class RewriteQueryCleaner : ExpressionVisitor
     {
-        /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
             if (node == null)
