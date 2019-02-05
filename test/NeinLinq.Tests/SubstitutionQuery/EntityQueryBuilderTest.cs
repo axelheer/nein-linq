@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using NeinLinq.Fakes.SubstitutionQuery;
 using Xunit;
 
@@ -57,9 +58,9 @@ namespace NeinLinq.Tests.SubstitutionQuery
         private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteEntityQueryProvider>(actual.Provider);
+            Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
 
-            var actualProvider = (RewriteEntityQueryProvider)actual.Provider;
+            var actualProvider = (RewriteEntityQueryProvider)((RewriteEntityQueryable<Dummy>)actual).Provider;
 
             Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
             Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);

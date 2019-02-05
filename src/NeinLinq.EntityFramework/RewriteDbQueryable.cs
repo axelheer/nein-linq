@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace NeinLinq
@@ -13,9 +14,28 @@ namespace NeinLinq
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteDbQueryable(IQueryable<T> query, RewriteDbQueryProvider provider)
+        public RewriteDbQueryable(IQueryable query, RewriteQueryProvider provider)
             : base(query, provider)
         {
+        }
+
+        /// <summary>
+        /// Proxy for un-trackable queries.
+        /// </summary>
+        /// <returns>The un-trackable query.</returns>
+        public IQueryable<T> AsNoTracking()
+        {
+            return new RewriteDbQueryable<T>(Query.AsNoTracking(), Provider);
+        }
+
+        /// <summary>
+        /// Proxy for includeable queries.
+        /// </summary>
+        /// <param name="path">The path to include.</param>
+        /// <returns>The includeable query.</returns>
+        public IQueryable<T> Include(string path)
+        {
+            return new RewriteDbQueryable<T>(Query.Include(path), Provider);
         }
 
         /// <inheritdoc />

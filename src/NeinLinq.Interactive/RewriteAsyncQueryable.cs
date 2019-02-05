@@ -56,7 +56,7 @@ namespace NeinLinq
         /// </summary>
         /// <param name="query">The actual query.</param>
         /// <param name="provider">The provider to rewrite the query.</param>
-        public RewriteAsyncQueryable(IAsyncQueryable<T> query, RewriteAsyncQueryProvider provider)
+        public RewriteAsyncQueryable(IAsyncQueryable query, RewriteAsyncQueryProvider provider)
             : base(query, provider)
         {
         }

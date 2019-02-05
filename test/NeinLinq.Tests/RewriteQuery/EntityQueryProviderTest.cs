@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
@@ -36,9 +37,9 @@ namespace NeinLinq.Tests.RewriteQuery
         private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteEntityQueryProvider>(actual.Provider);
+            Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
 
-            var actualProvider = (RewriteEntityQueryProvider)actual.Provider;
+            var actualProvider = (RewriteEntityQueryProvider)((RewriteEntityQueryable<Dummy>)actual).Provider;
 
             Assert.IsType<Rewriter>(actualProvider.Rewriter);
             Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);

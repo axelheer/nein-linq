@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using NeinLinq.Fakes.NullsafeQuery;
 using Xunit;
 
@@ -43,9 +44,9 @@ namespace NeinLinq.Tests.NullsafeQuery
         private static void AssertQuery(IQueryable actual)
         {
             Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteEntityQueryProvider>(actual.Provider);
+            Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
 
-            var actualProvider = (RewriteEntityQueryProvider)actual.Provider;
+            var actualProvider = (RewriteEntityQueryProvider)((RewriteEntityQueryable<Dummy>)actual).Provider;
 
             Assert.IsType<NullsafeQueryRewriter>(actualProvider.Rewriter);
             Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);

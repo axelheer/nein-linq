@@ -59,13 +59,26 @@ namespace NeinLinq.Tests.DbAsyncQuery
         }
 
         [WindowsFact]
+        public async Task AsNoTrackingShouldSucceed()
+        {
+            var rewriter = new Rewriter();
+            var query = db.Dummies.DbRewrite(rewriter);
+
+            var result = await query.AsNoTracking().ToListAsync();
+
+            Assert.True(rewriter.VisitCalled);
+            Assert.Equal(3, result.Count);
+        }
+
+        [WindowsFact]
         public async Task IncludeShouldSucceed()
         {
-            var query = from dummy in db.Dummies.Include(d => d.Other).DbRewrite(new Rewriter())
-                        select dummy;
+            var rewriter = new Rewriter();
+            var query = db.Dummies.DbRewrite(rewriter);
 
-            var result = await query.ToListAsync();
+            var result = await query.Include(d => d.Other).ToListAsync();
 
+            Assert.True(rewriter.VisitCalled);
             Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
         }
 
@@ -73,10 +86,9 @@ namespace NeinLinq.Tests.DbAsyncQuery
         public async Task SubQueryShouldSucceed()
         {
             var innerRewriter = new Rewriter();
-            var outerRewriter = new Rewriter();
-
             var dummies = db.Dummies.DbRewrite(innerRewriter);
 
+            var outerRewriter = new Rewriter();
             var query = from dummy in db.Dummies.DbRewrite(outerRewriter)
                         where dummies.Any(d => d.Id < dummy.Id)
                         select dummy;
