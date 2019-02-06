@@ -28,8 +28,6 @@ Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.co
 
 *Breaking:* since Version `3.0.0` the extension methods have different names depending on the chosen package above, in order to avoid some conflicts! For example there are now `ToInjectable`, `ToAsyncInjectable`, `ToDbInjectable`, and `ToEntityInjectable`.
 
-*Note:* the *Entity Framework* versions are only necessary for writing async queries, since they contain additional code to handle these. For non-async code *NeinLinq.Queryable* does the job anyway.
-
 Lambda injection
 ----------------
 
