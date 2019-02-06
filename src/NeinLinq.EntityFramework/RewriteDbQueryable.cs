@@ -35,7 +35,7 @@ namespace NeinLinq
         /// <returns>The includeable query.</returns>
         public IQueryable<T> Include(string path)
         {
-            return new RewriteDbQueryable<T>(Query.Include(path), Provider);
+            return new RewriteDbQueryable<T>(Provider.RewriteQuery(Expression).Include(path), Provider);
         }
 
         /// <inheritdoc />

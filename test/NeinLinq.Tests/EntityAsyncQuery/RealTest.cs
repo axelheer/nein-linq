@@ -97,6 +97,43 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         }
 
         [Fact]
+        public async Task SubQueryShouldSucceedWithInclude()
+        {
+            var innerRewriter = new Rewriter();
+            var dummies = db.Dummies.EntityRewrite(innerRewriter);
+
+            var outerRewriter = new Rewriter();
+            var query = from dummy in db.Dummies.EntityRewrite(outerRewriter)
+                        where dummies.Any(d => d.Id < dummy.Id)
+                        select dummy;
+
+            var result = await query.Include(d => d.Other).ToListAsync();
+
+            Assert.True(outerRewriter.VisitCalled);
+            Assert.True(innerRewriter.VisitCalled);
+            Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
+        public async Task SubQueryShouldSucceedWithAsNoTracking()
+        {
+            var innerRewriter = new Rewriter();
+            var dummies = db.Dummies.EntityRewrite(innerRewriter);
+
+            var outerRewriter = new Rewriter();
+            var query = from dummy in db.Dummies.EntityRewrite(outerRewriter)
+                        where dummies.Any(d => d.Id < dummy.Id)
+                        select dummy;
+
+            var result = await query.AsNoTracking().ToListAsync();
+
+            Assert.True(outerRewriter.VisitCalled);
+            Assert.True(innerRewriter.VisitCalled);
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
         public async Task ToListAsyncShouldWork()
         {
             await db.Dummies.ToListAsync();
