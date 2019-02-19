@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -11,16 +12,24 @@ namespace NeinLinq
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (node.Expression is ConstantExpression expression)
+            if (typeof(IQueryable).IsAssignableFrom(node.Type))
             {
-                var value = GetValue(expression, node.Member);
+                var expression = Visit(node.Expression);
 
-                while (value is RewriteQueryable query)
+                if (expression is ConstantExpression target)
                 {
-                    value = query.Provider.RewriteQuery(query.Expression);
-                }
+                    var value = GetValue(target, node.Member);
 
-                return Expression.Constant(value, node.Type);
+                    while (value is RewriteQueryable rewrite)
+                    {
+                        value = rewrite.Provider.RewriteQuery(rewrite.Expression);
+                    }
+
+                    if (value is IQueryable query)
+                    {
+                        return query.Expression;
+                    }
+                }
             }
 
             return base.VisitMember(node);

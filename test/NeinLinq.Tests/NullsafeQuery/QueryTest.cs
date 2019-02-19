@@ -217,5 +217,27 @@ namespace NeinLinq.Tests.NullsafeQuery
 
             var result = query.ToList();
         }
+
+        [Fact]
+        public void ShouldHandleMember()
+        {
+            var danger = default(string);
+
+            var query = from a in data.ToNullsafe()
+                        orderby a.SomeNumeric
+                        select new DummyView
+                        {
+                            Numeric = danger.Length
+                        };
+
+            var result = query.ToList();
+
+            Assert.Collection(result,
+                r => Assert.Equal(0, r.Numeric),
+                r => Assert.Equal(0, r.Numeric),
+                r => Assert.Equal(0, r.Numeric),
+                r => Assert.Equal(0, r.Numeric),
+                r => Assert.Equal(0, r.Numeric));
+        }
     }
 }

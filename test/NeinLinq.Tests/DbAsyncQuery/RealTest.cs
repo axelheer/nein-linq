@@ -101,6 +101,24 @@ namespace NeinLinq.Tests.DbAsyncQuery
         }
 
         [WindowsFact]
+        public async Task SubQueryShouldSucceedWithProjection()
+        {
+            var innerRewriter = new Rewriter();
+            var dummies = db.Dummies.DbRewrite(innerRewriter).Select(d => new { d.Id });
+
+            var outerRewriter = new Rewriter();
+            var query = from dummy in db.Dummies.DbRewrite(outerRewriter)
+                        where dummies.Any(d => d.Id < dummy.Id)
+                        select dummy;
+
+            var result = await query.ToListAsync();
+
+            Assert.True(outerRewriter.VisitCalled);
+            Assert.True(innerRewriter.VisitCalled);
+            Assert.Equal(2, result.Count);
+        }
+
+        [WindowsFact]
         public async Task SubQueryShouldSucceedWithInclude()
         {
             var innerRewriter = new Rewriter();
