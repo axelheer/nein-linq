@@ -2,7 +2,7 @@ version: 3.1.2-ci.{build}
 
 image:
   - Ubuntu
-  - Visual Studio 2017
+  - Visual Studio 2019
 
 before_build:
   - ps: dotnet --info
