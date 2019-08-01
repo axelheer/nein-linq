@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+
+#pragma warning disable EF1001 // Internal EF Core API usage.
 
 namespace NeinLinq
 {
@@ -41,24 +41,14 @@ namespace NeinLinq
             return provider.Execute(expression);
         }
 
-        public override IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
-        {
-            return provider.ExecuteAsync<TResult>(expression);
-        }
-
-        public override Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        public override TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             return provider.ExecuteAsync<TResult>(expression, cancellationToken);
         }
 
         private class EmptyQueryCompiler : IQueryCompiler
         {
-            public Func<QueryContext, IAsyncEnumerable<TResult>> CreateCompiledAsyncEnumerableQuery<TResult>(Expression query)
-            {
-                throw new NotSupportedException();
-            }
-
-            public Func<QueryContext, Task<TResult>> CreateCompiledAsyncTaskQuery<TResult>(Expression query)
+            public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
             {
                 throw new NotSupportedException();
             }
@@ -73,15 +63,12 @@ namespace NeinLinq
                 throw new NotSupportedException();
             }
 
-            public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression query)
-            {
-                throw new NotSupportedException();
-            }
-
-            public Task<TResult> ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
+            public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
             {
                 throw new NotSupportedException();
             }
         }
     }
 }
+
+#pragma warning restore EF1001 // Internal EF Core API usage.

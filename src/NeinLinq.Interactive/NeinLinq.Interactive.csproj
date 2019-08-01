@@ -7,11 +7,11 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;netstandard2.1;netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Interactive.Async.Providers" Version="3.0.0" />
+    <PackageReference Include="System.Linq.Async.Queryable" Version="4.0.0-preview.6.build.801" />
   </ItemGroup>
 
   <ItemGroup>

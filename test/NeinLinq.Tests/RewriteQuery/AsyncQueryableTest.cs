@@ -33,7 +33,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void GetEnumeratorShouldRewrite()
         {
-            var actual = new RewriteAsyncQueryable<Dummy>(query, provider).GetEnumerator();
+            var actual = new RewriteAsyncQueryable<Dummy>(query, provider).GetAsyncEnumerator();
 
             Assert.NotNull(actual);
             Assert.True(rewriter.VisitCalled);

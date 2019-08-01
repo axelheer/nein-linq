@@ -4,6 +4,8 @@
     <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
         <!-- Collections should implement generic interface -->
         <Rule Id="CA1010" Action="None" />
+        <!-- Do not pass literals as localized parameters -->
+        <Rule Id="CA1303" Action="None" />
         <!-- Identifiers should have correct suffix -->
         <Rule Id="CA1710" Action="None" />
     </Rules>

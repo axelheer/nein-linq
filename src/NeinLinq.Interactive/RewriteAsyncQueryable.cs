@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace NeinLinq
 {
@@ -62,10 +63,10 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IAsyncEnumerator<T> GetEnumerator()
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             // rewrite on enumeration
-            return Provider.RewriteQuery<T>(Expression).GetEnumerator();
+            return Provider.RewriteQuery<T>(Expression).GetAsyncEnumerator(cancellationToken);
         }
     }
 }

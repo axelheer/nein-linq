@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+
+#pragma warning disable EF1001 // Internal EF Core API usage.
 
 namespace NeinLinq
 {
@@ -42,21 +42,14 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public virtual IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
-        {
-            // execute query with rewritten expression; async, if possible
-            if (Provider is IAsyncQueryProvider asyncProvider)
-                return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression));
-            return new RewriteEntityQueryEnumerable<TResult>(Provider.CreateQuery<TResult>(Rewrite(expression)));
-        }
-
-        /// <inheritdoc />
-        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        public virtual TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             // execute query with rewritten expression; async, if possible
             if (Provider is IAsyncQueryProvider asyncProvider)
                 return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken);
-            return Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
+            return Provider.Execute<TResult>(Rewrite(expression));
         }
     }
 }
+
+#pragma warning restore EF1001 // Internal EF Core API usage.

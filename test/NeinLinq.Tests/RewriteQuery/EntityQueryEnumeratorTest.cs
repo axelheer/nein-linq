@@ -29,15 +29,15 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public async Task MoveNextShouldMoveNext()
         {
-            await new RewriteEntityQueryEnumerator<Dummy>(enumerator).MoveNext(CancellationToken.None);
+            await new RewriteEntityQueryEnumerator<Dummy>(enumerator).MoveNextAsync();
 
             Assert.True(enumerator.MoveNextCalled);
         }
 
         [Fact]
-        public void DisposeShouldDispose()
+        public async Task DisposeShouldDispose()
         {
-            new RewriteEntityQueryEnumerator<Dummy>(enumerator).Dispose();
+            await new RewriteEntityQueryEnumerator<Dummy>(enumerator).DisposeAsync();
 
             Assert.True(enumerator.DisposeCalled);
         }

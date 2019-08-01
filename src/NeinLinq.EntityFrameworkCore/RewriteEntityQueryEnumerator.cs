@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace NeinLinq
@@ -28,31 +27,19 @@ namespace NeinLinq
         public T Current => enumerator.Current;
 
         /// <inheritdoc />
-        public Task<bool> MoveNext(CancellationToken cancellationToken)
+        public ValueTask<bool> MoveNextAsync()
         {
-            return Task.FromResult(enumerator.MoveNext());
+            return new ValueTask<bool>(enumerator.MoveNext());
         }
 
         /// <summary>
         /// Releases all resources.
         /// </summary>
-        public void Dispose()
+        public ValueTask DisposeAsync()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            enumerator.Dispose();
 
-        /// <summary>
-        /// Disposes of the resources (other than memory).
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                enumerator.Dispose();
-            }
+            return default;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace NeinLinq
 {
@@ -23,7 +24,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IAsyncEnumerator<T> GetEnumerator()
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             return new RewriteEntityQueryEnumerator<T>(enumerable.GetEnumerator());
         }

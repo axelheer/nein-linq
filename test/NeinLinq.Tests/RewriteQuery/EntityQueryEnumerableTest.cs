@@ -17,7 +17,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void GetEnumeratorShouldReturnEnumerator()
         {
-            var actual = new RewriteEntityQueryEnumerable<Dummy>(enumerable).GetEnumerator();
+            var actual = new RewriteEntityQueryEnumerable<Dummy>(enumerable).GetAsyncEnumerator();
 
             Assert.IsType<RewriteEntityQueryEnumerator<Dummy>>(actual);
         }

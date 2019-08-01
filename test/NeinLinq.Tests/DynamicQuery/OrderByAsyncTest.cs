@@ -25,8 +25,8 @@ namespace NeinLinq.Tests.DynamicQuery
             var one = data.OrderBy("Name.Length").ThenBy("Name", true);
             var two = data.OrderBy("Name.Length", true).ThenBy("Name");
 
-            var oneResult = await one.Select(d => d.Id).ToArray();
-            var twoResult = await two.Select(d => d.Id).ToArray();
+            var oneResult = await one.Select(d => d.Id).ToArrayAsync();
+            var twoResult = await two.Select(d => d.Id).ToArrayAsync();
 
             Assert.Equal(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 }, oneResult);
             Assert.Equal(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, twoResult);

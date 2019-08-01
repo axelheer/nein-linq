@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace NeinLinq
 {
@@ -25,12 +26,12 @@ namespace NeinLinq
         IQueryProvider IQueryable.Provider => providerAdapter; // feign entity query provider
 
         /// <inheritdoc />
-        IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             // rewrite on enumeration
             var enumerable = Provider.RewriteQuery<T>(Expression);
             if (enumerable is IAsyncEnumerable<T> asyncEnumerable)
-                return asyncEnumerable.GetEnumerator();
+                return asyncEnumerable.GetAsyncEnumerator(cancellationToken);
             return new RewriteEntityQueryEnumerator<T>(enumerable.GetEnumerator());
         }
     }

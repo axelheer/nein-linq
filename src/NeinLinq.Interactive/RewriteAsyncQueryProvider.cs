@@ -70,7 +70,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken token)
+        public virtual ValueTask<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken token)
         {
             // execute query with rewritten expression
             return Provider.ExecuteAsync<TResult>(Rewrite(expression), token);

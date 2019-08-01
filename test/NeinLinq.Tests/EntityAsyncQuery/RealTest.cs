@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NeinLinq.Fakes.EntityAsyncQuery;
@@ -154,7 +154,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         [Fact]
         public async Task ToListAsyncShouldWork()
         {
-            await db.Dummies.ToListAsync();
+            await db.Dummies.AsQueryable().ToListAsync();
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         [Fact]
         public async Task SumAsyncShouldWork()
         {
-            await db.Dummies.SumAsync(d => d.Number);
+            await db.Dummies.AsQueryable().SumAsync(d => d.Number);
         }
 
         [Fact]
@@ -187,19 +187,23 @@ namespace NeinLinq.Tests.EntityAsyncQuery
             Assert.Equal(194.48m, result, 2);
         }
 
+#pragma warning disable EF1001 // Internal EF Core API usage.
+
         [Fact]
         public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
             var query = db.Dummies.EntityRewrite(rewriter);
 
-            var enumerator = ((Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider)query.Provider).ExecuteAsync<Dummy>(query.Expression).GetEnumerator();
+            var enumerator = ((Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider)query.Provider).ExecuteAsync<IAsyncEnumerable<Dummy>>(query.Expression).GetAsyncEnumerator();
 
-            var result = await enumerator.MoveNext(CancellationToken.None);
+            var result = await enumerator.MoveNextAsync();
 
             Assert.True(rewriter.VisitCalled);
             Assert.True(result);
         }
+
+#pragma warning restore EF1001 // Internal EF Core API usage.
 
         protected virtual void Dispose(bool disposing)
         {

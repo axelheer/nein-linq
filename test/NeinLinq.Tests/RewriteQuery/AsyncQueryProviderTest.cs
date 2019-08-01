@@ -42,7 +42,7 @@ namespace NeinLinq.Tests.RewriteQuery
         public async Task ExecutedShouldRewrite()
         {
             var rewriter = new Rewriter();
-            var expression = Expression.Call(typeof(AsyncQueryable), nameof(AsyncQueryable.Count), new[] { typeof(Dummy) }, query.Expression);
+            var expression = Expression.Call(typeof(AsyncQueryable), nameof(AsyncQueryable.CountAsync), new[] { typeof(Dummy) }, query.Expression, Expression.Default(typeof(CancellationToken)));
 
             var actual = await new RewriteAsyncQueryProvider(query.Provider, rewriter).ExecuteAsync<int>(expression, CancellationToken.None);
 

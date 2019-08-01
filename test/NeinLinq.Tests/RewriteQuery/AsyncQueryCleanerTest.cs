@@ -33,7 +33,7 @@ namespace NeinLinq.Tests.RewriteQuery
                             other
                         };
 
-            var result = await outer.ToList();
+            var result = await outer.ToListAsync();
 
             Assert.True(outerRewriter.VisitCalled);
             Assert.True(innerRewriter.VisitCalled);

@@ -36,8 +36,8 @@ namespace NeinLinq.Tests.DynamicQuery
             var empty = data.Where("Number", comparison, null);
             var compare = data.Where("Number", comparison, "222,222", culture);
 
-            var emptyResult = await empty.Select(d => d.Id).ToArray();
-            var compareResult = await compare.Select(d => d.Id).ToArray();
+            var emptyResult = await empty.Select(d => d.Id).ToArrayAsync();
+            var compareResult = await compare.Select(d => d.Id).ToArrayAsync();
 
             var count = comparison == DynamicCompare.NotEqual ? 9 : 0;
 
@@ -50,7 +50,7 @@ namespace NeinLinq.Tests.DynamicQuery
         {
             var contains = data.Where("Name", "Contains", "b");
 
-            var containsResult = await contains.Select(d => d.Id).ToArray();
+            var containsResult = await contains.Select(d => d.Id).ToArrayAsync();
 
             Assert.Equal(new[] { 2, 5, 8 }, containsResult);
         }
