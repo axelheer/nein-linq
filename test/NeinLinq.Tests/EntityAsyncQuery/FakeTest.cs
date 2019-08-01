@@ -79,14 +79,14 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 #pragma warning disable EF1001 // Internal EF Core API usage.
 
         [Fact]
-        public void ExecuteAsyncShouldSucceed()
+        public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
             var query = data.EntityRewrite(rewriter);
 
-            var enumerator = ((Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider)query.Provider).ExecuteAsync<IEnumerable<Dummy>>(query.Expression).GetEnumerator();
+            var enumerator = ((Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider)query.Provider).ExecuteAsync<IAsyncEnumerable<Dummy>>(query.Expression).GetAsyncEnumerator();
 
-            var result = enumerator.MoveNext();
+            var result = await enumerator.MoveNextAsync();
 
             Assert.True(rewriter.VisitCalled);
             Assert.True(result);

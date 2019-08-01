@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
 #pragma warning disable EF1001 // Internal EF Core API usage.
@@ -47,7 +50,38 @@ namespace NeinLinq
             // execute query with rewritten expression; async, if possible
             if (Provider is IAsyncQueryProvider asyncProvider)
                 return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken);
+            if (typeof(TResult).IsGenericType)
+            {
+                // TODO: there is a better solution for that, right?
+                var resultDefinition = typeof(TResult).GetGenericTypeDefinition();
+                if (resultDefinition == typeof(Task<>))
+                    return Execute<TResult>(executeTask, expression);
+                if (resultDefinition == typeof(IAsyncEnumerable<>))
+                    return Execute<TResult>(executeAsyncEnumerable, expression);
+            }
             return Provider.Execute<TResult>(Rewrite(expression));
+        }
+
+        private TResult Execute<TResult>(MethodInfo method, Expression expression)
+        {
+            return (TResult)method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
+                .Invoke(this, new object[] { expression });
+        }
+
+        private static readonly MethodInfo executeTask = typeof(RewriteEntityQueryProvider)
+            .GetMethod("ExecuteTask", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private Task<TResult> ExecuteTask<TResult>(Expression expression)
+        {
+            return Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
+        }
+
+        private static readonly MethodInfo executeAsyncEnumerable = typeof(RewriteEntityQueryProvider)
+            .GetMethod("ExecuteAsyncEnumerable", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)
+        {
+            return new RewriteEntityQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
         }
     }
 }
