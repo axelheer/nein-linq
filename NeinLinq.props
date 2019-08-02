@@ -10,4 +10,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix' ">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.2" PrivateAssets="All" />
+  </ItemGroup>
+
 </Project>
