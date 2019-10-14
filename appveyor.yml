@@ -1,4 +1,4 @@
-version: 3.1.2-ci.{build}
+version: 3.1.2-preview.{build}
 
 image:
   - Ubuntu
@@ -9,7 +9,7 @@ before_build:
 
 build_script:
   - ps: 'if ($env:APPVEYOR_REPO_BRANCH -eq "release") { dotnet pack --configuration Release --include-symbols }'
-  - ps: 'if ($env:APPVEYOR_REPO_BRANCH -ne "release") { dotnet pack --configuration Release --version-suffix "ci.$env:APPVEYOR_BUILD_NUMBER" --include-symbols }'
+  - ps: 'if ($env:APPVEYOR_REPO_BRANCH -ne "release") { dotnet pack --configuration Release --version-suffix "preview.$env:APPVEYOR_BUILD_NUMBER" --include-symbols }'
 
 test_script:
   - ps: 'dotnet test test/NeinLinq.Tests/NeinLinq.Tests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput="$PWD/coverage.xml" /p:Include="[NeinLinq*]*" /p:Exclude="[NeinLinq.Fakes]*"'
