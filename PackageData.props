@@ -17,7 +17,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIconUrl>https://www.heer.eu/media/axel.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Added support for EF Core 3.0.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for EF Core 3.1.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
