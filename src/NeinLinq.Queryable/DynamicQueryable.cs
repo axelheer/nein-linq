@@ -18,7 +18,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IQueryable Where(this IQueryable query, string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
+        public static IQueryable Where(this IQueryable query, string selector, DynamicCompare comparer, string value, IFormatProvider? provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -44,7 +44,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IQueryable<T> Where<T>(this IQueryable<T> query, string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
+        public static IQueryable<T> Where<T>(this IQueryable<T> query, string selector, DynamicCompare comparer, string value, IFormatProvider? provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -69,7 +69,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IQueryable Where(this IQueryable query, string selector, string comparer, string value, IFormatProvider provider = null)
+        public static IQueryable Where(this IQueryable query, string selector, string comparer, string value, IFormatProvider? provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -95,7 +95,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IQueryable<T> Where<T>(this IQueryable<T> query, string selector, string comparer, string value, IFormatProvider provider = null)
+        public static IQueryable<T> Where<T>(this IQueryable<T> query, string selector, string comparer, string value, IFormatProvider? provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));

@@ -69,12 +69,12 @@ namespace NeinLinq
             throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: {error}.");
         }
 
-        public MethodInfo FindMatch(Type target, string method)
+        public MethodInfo? FindMatch(Type target, string method)
         {
             return FindMatch(target, method, genericArguments, parameterTypes);
         }
 
-        private static MethodInfo FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes)
+        private static MethodInfo? FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes)
         {
             foreach (var candidate in target.GetMethods(everything))
             {

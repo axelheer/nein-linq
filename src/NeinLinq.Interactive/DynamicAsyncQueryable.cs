@@ -19,7 +19,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
+        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, DynamicCompare comparer, string value, IFormatProvider? provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -45,7 +45,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The filtered query.</returns>
-        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, string comparer, string value, IFormatProvider provider = null)
+        public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, string comparer, string value, IFormatProvider? provider = null)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));

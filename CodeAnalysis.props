@@ -1,5 +1,10 @@
 ﻿<Project>
 
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>Enable</Nullable>
+  </PropertyGroup>
+
   <ItemGroup>
     <CodeAnalysisDictionary Include="$(MSBuildThisFileDirectory)CodeAnalysis.xml" />
   </ItemGroup>

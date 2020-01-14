@@ -38,7 +38,7 @@ namespace NeinLinq
             return base.VisitMember(node);
         }
 
-        private static object GetValue(ConstantExpression target, MemberInfo member)
+        private static object? GetValue(ConstantExpression target, MemberInfo member)
         {
             if (member is PropertyInfo p)
             {

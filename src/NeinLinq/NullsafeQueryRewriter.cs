@@ -11,7 +11,7 @@ namespace NeinLinq
     /// </summary>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
-        private static readonly ObjectCache<Type, Expression> cache = new ObjectCache<Type, Expression>();
+        private static readonly ObjectCache<Type, Expression?> cache = new ObjectCache<Type, Expression?>();
 
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
@@ -91,7 +91,7 @@ namespace NeinLinq
                 || !IsNullableOrReferenceType(expression.Type);
         }
 
-        private static Expression Fallback(Type type)
+        private static Expression? Fallback(Type type)
         {
             // default values for generic collections
             if (type.IsGenericType && type.GetGenericArguments().Length == 1)
@@ -109,7 +109,7 @@ namespace NeinLinq
             return null;
         }
 
-        private static Expression CollectionFallback(Type definition, Type type)
+        private static Expression? CollectionFallback(Type definition, Type type)
         {
             var collection = definition.MakeGenericType(type.GetGenericArguments());
 

@@ -19,12 +19,12 @@ namespace NeinLinq
         /// <summary>
         /// The target type for the method's expression. The current type, if null.
         /// </summary>
-        public Type Target { get; }
+        public Type? Target { get; }
 
         /// <summary>
         /// The method's name for creating the method's expression. The same name, if null or empty.
         /// </summary>
-        public string Method { get; }
+        public string? Method { get; }
 
         /// <summary>
         /// Marks a method as injectable.

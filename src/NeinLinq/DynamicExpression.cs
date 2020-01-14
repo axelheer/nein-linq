@@ -9,7 +9,7 @@ namespace NeinLinq
     /// </summary>
     public static class DynamicExpression
     {
-        private static readonly ObjectCache<Type, Func<string, IFormatProvider, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider, object>>();
+        private static readonly ObjectCache<Type, Func<string, IFormatProvider?, object>> cache = new ObjectCache<Type, Func<string, IFormatProvider?, object>>();
 
         /// <summary>
         /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.
@@ -20,7 +20,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The dynamic comparison expression.</returns>
-        public static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider provider = null)
+        public static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider? provider = null)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -67,7 +67,7 @@ namespace NeinLinq
         /// <param name="value">The reference value to compare with.</param>
         /// <param name="provider">The culture-specific formatting information.</param>
         /// <returns>The dynamic comparison expression.</returns>
-        public static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider provider = null)
+        public static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider? provider = null)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -98,7 +98,7 @@ namespace NeinLinq
             return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
         }
 
-        private static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider provider)
+        private static Expression CreateConstant(ParameterExpression target, Expression selector, string value, IFormatProvider? provider)
         {
             var type = Expression.Lambda(selector, target).ReturnType;
 
@@ -111,7 +111,7 @@ namespace NeinLinq
             return Expression.Constant(convertedValue, type);
         }
 
-        private static Func<string, IFormatProvider, object> CreateConverter(Type type)
+        private static Func<string, IFormatProvider?, object> CreateConverter(Type type)
         {
             var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
 
@@ -128,7 +128,7 @@ namespace NeinLinq
             if (cultureParse != null)
                 expression = Expression.Call(cultureParse, target, format);
 
-            return Expression.Lambda<Func<string, IFormatProvider, object>>(
+            return Expression.Lambda<Func<string, IFormatProvider?, object>>(
                 Expression.Convert(expression, typeof(object)), target, format).Compile();
         }
     }

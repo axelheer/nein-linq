@@ -28,8 +28,12 @@ namespace NeinLinq
         /// <inheritdoc />
         public T Current => enumerator.Current;
 
+#pragma warning disable CS8603 // Possible null reference return.
+
         /// <inheritdoc />
         object IDbAsyncEnumerator.Current => Current;
+
+#pragma warning restore CS8603 // Possible null reference return.
 
         /// <inheritdoc />
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken)

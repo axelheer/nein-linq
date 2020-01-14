@@ -22,8 +22,13 @@ namespace NeinLinq
         {
             if (whitelist == null)
                 throw new ArgumentNullException(nameof(whitelist));
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+
             if (whitelist.Contains(null))
                 throw new ArgumentOutOfRangeException(nameof(whitelist));
+
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             this.whitelist = whitelist;
         }

@@ -264,7 +264,7 @@ namespace NeinLinq
         /// <typeparam name="TTranslatedResult">The type of the translated selector's result parameter.</typeparam>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, TTranslatedResult>> value = null)
+        public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, TTranslatedResult>>? value = null)
             where TTranslatedSource : TSource
             where TTranslatedResult : TResult
         {
@@ -283,7 +283,7 @@ namespace NeinLinq
         /// <param name="resultPath">The path from the desired result type to the given type.</param>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, TSource>> sourcePath, Expression<Func<TTranslatedResult, TResult>> resultPath, Expression<Func<TTranslatedSource, TTranslatedResult>> value = null)
+        public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, TSource>> sourcePath, Expression<Func<TTranslatedResult, TResult>> resultPath, Expression<Func<TTranslatedSource, TTranslatedResult>>? value = null)
         {
             var result = Cross(sourcePath).Result(resultPath);
 
@@ -300,7 +300,7 @@ namespace NeinLinq
         /// using the initially given selector to be injected into a new selector.</param>
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
-        public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, TTranslatedResult>> translation, Expression<Func<TTranslatedSource, TTranslatedResult>> value = null)
+        public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, TTranslatedResult>> translation, Expression<Func<TTranslatedSource, TTranslatedResult>>? value = null)
         {
             if (translation == null)
                 throw new ArgumentNullException(nameof(translation));

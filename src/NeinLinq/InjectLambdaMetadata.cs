@@ -10,11 +10,11 @@ namespace NeinLinq
 
         public bool Config => config;
 
-        private readonly Lazy<Func<Expression, LambdaExpression>> lambda;
+        private readonly Lazy<Func<Expression?, LambdaExpression>> lambda;
 
-        public LambdaExpression Lambda(Expression value) => lambda.Value(value);
+        public LambdaExpression Lambda(Expression? value) => lambda.Value(value);
 
-        private InjectLambdaMetadata(bool config, Lazy<Func<Expression, LambdaExpression>> lambda)
+        private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression>> lambda)
         {
             this.config = config;
             this.lambda = lambda;
@@ -24,7 +24,7 @@ namespace NeinLinq
         {
             var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
 
-            var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() =>
+            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression>>(() =>
                 LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
@@ -35,13 +35,13 @@ namespace NeinLinq
             var metadata = InjectLambdaAttribute.GetCustomAttribute(property)
                 ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true));
 
-            var lambdaFactory = new Lazy<Func<Expression, LambdaExpression>>(() =>
+            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression>>(() =>
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
         }
 
-        private static Func<Expression, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
+        private static Func<Expression?, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
             var signature = new InjectLambdaSignature(method);
@@ -56,7 +56,7 @@ namespace NeinLinq
             return DynamicLambdaFactory(method.Name, signature);
         }
 
-        private static Func<Expression, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
+        private static Func<Expression?, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
             // retrieve method's signature
             var signature = new InjectLambdaSignature(property);
@@ -68,7 +68,7 @@ namespace NeinLinq
             return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
         }
 
-        private static Func<Expression, LambdaExpression> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
         {
             // retrieve validated factory method once
             var factory = signature.FindFactory(target, method);
@@ -76,7 +76,7 @@ namespace NeinLinq
             if (factory.IsStatic)
             {
                 // compile factory call for performance reasons :-)
-                return Expression.Lambda<Func<Expression, LambdaExpression>>(
+                return Expression.Lambda<Func<Expression?, LambdaExpression>>(
                     Expression.Call(factory), Expression.Parameter(typeof(Expression))).Compile();
             }
 
@@ -84,7 +84,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        private static Func<Expression, LambdaExpression> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
         {
             return value =>
             {
@@ -96,6 +96,10 @@ namespace NeinLinq
 
                 // actual method may provide different information
                 var concreteMethod = signature.FindMatch(target, method);
+
+                // this cannot happen; should not happen; i think...
+                if (concreteMethod == null)
+                    throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}.");
 
                 // configuration over convention, if any
                 var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
