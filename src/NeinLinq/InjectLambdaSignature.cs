@@ -19,6 +19,9 @@ namespace NeinLinq
 
         public InjectLambdaSignature(MethodInfo method)
         {
+            if (method.DeclaringType == null)
+                throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
+
             genericArguments = method.GetGenericArguments();
             parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
             returnType = method.ReturnParameter.ParameterType;
@@ -27,6 +30,9 @@ namespace NeinLinq
 
         public InjectLambdaSignature(PropertyInfo property)
         {
+            if (property.DeclaringType == null)
+                throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
+
             genericArguments = Type.EmptyTypes;
             parameterTypes = new[] { property.DeclaringType };
             returnType = property.PropertyType;

@@ -83,9 +83,9 @@ namespace NeinLinq
         {
             // create query and make proxy again for rewritten query chaining
             var query = Provider.CreateQuery(expression);
-            return (IQueryable)Activator.CreateInstance(
+            return (IQueryable?)Activator.CreateInstance(
                 typeof(RewriteQueryable<>).MakeGenericType(query.ElementType),
-                query, this);
+                query, this) ?? throw new InvalidOperationException();
         }
 
         /// <inheritdoc />

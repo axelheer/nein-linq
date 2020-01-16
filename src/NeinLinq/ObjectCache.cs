@@ -5,6 +5,7 @@ using System.Threading;
 namespace NeinLinq
 {
     internal sealed class ObjectCache<TKey, TValue> : IDisposable
+        where TKey : notnull
     {
         private readonly Dictionary<TKey, TValue> cache = new Dictionary<TKey, TValue>();
 

@@ -33,7 +33,8 @@ namespace NeinLinq
         public static InjectLambdaMetadata Create(PropertyInfo property)
         {
             var metadata = InjectLambdaAttribute.GetCustomAttribute(property)
-                ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true));
+                ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true)
+                ?? throw new InvalidOperationException($"Property {property.Name} has no get method."));
 
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression>>(() =>
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
@@ -43,6 +44,9 @@ namespace NeinLinq
 
         private static Func<Expression?, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
+            if (method.DeclaringType == null)
+                throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
+
             // retrieve method's signature
             var signature = new InjectLambdaSignature(method);
 
@@ -58,6 +62,9 @@ namespace NeinLinq
 
         private static Func<Expression?, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
+            if (property.DeclaringType == null)
+                throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
+
             // retrieve method's signature
             var signature = new InjectLambdaSignature(property);
 
@@ -108,7 +115,13 @@ namespace NeinLinq
                 var factory = signature.FindFactory(target, metadata.Method ?? method);
 
                 // finally call lambda factory *uff*
-                return (LambdaExpression)factory.Invoke(targetObject, null);
+                var expression = (LambdaExpression?)factory.Invoke(targetObject, null);
+
+                // what the heck?
+                if (expression == null)
+                    throw new InvalidOperationException($"Lambda factory {target.FullName}.{method} returns null.");
+
+                return expression;
             };
         }
     }

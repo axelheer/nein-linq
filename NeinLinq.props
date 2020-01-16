@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <NoWarn>NU5105</NoWarn>
-    <VersionPrefix>3.2.2</VersionPrefix>
+    <VersionPrefix>3.3.0</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(CollectCoverage)' != 'true' ">

@@ -39,9 +39,9 @@ namespace NeinLinq
         {
             // create query and make proxy again for rewritten query chaining
             var query = Provider.CreateQuery(expression);
-            return (IQueryable)Activator.CreateInstance(
+            return (IQueryable?)Activator.CreateInstance(
                 typeof(RewriteEntityQueryable<>).MakeGenericType(query.ElementType),
-                query, this);
+                query, this) ?? throw new InvalidOperationException();
         }
 
         /// <inheritdoc />
@@ -64,12 +64,13 @@ namespace NeinLinq
 
         private TResult Execute<TResult>(MethodInfo method, Expression expression)
         {
-            return (TResult)method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
-                .Invoke(this, new object[] { expression });
+            return (TResult)(method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
+                .Invoke(this, new object[] { expression }) ?? throw new InvalidOperationException("Execute returns null."));
         }
 
         private static readonly MethodInfo executeTask = typeof(RewriteEntityQueryProvider)
-            .GetMethod("ExecuteTask", BindingFlags.Instance | BindingFlags.NonPublic);
+            .GetMethod("ExecuteTask", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("Method ExecuteTask is missing.");
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
         {
@@ -77,7 +78,8 @@ namespace NeinLinq
         }
 
         private static readonly MethodInfo executeAsyncEnumerable = typeof(RewriteEntityQueryProvider)
-            .GetMethod("ExecuteAsyncEnumerable", BindingFlags.Instance | BindingFlags.NonPublic);
+            .GetMethod("ExecuteAsyncEnumerable", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("Method ExecuteAsyncEnumerable is missing.");
 
         private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)
         {

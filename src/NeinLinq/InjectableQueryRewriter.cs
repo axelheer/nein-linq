@@ -88,6 +88,9 @@ namespace NeinLinq
 
         private bool ShouldInject(MemberInfo member, InjectLambdaMetadata data)
         {
+            if (member.DeclaringType == null)
+                throw new InvalidOperationException($"Member {member.Name} has no declaring type.");
+
             // inject only configured or white-listed targets
             return data.Config || whitelist.Any(member.DeclaringType.IsAssignableFrom);
         }

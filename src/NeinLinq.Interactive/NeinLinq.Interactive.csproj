@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netstandard2.1;netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

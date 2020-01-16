@@ -11,9 +11,9 @@ namespace NeinLinq
     {
         internal static readonly InjectLambdaAttribute None = new InjectLambdaAttribute();
 
-        internal static InjectLambdaAttribute GetCustomAttribute(MemberInfo element)
+        internal static InjectLambdaAttribute? GetCustomAttribute(MemberInfo element)
         {
-            return (InjectLambdaAttribute)GetCustomAttribute(element, typeof(InjectLambdaAttribute));
+            return (InjectLambdaAttribute?)GetCustomAttribute(element, typeof(InjectLambdaAttribute));
         }
 
         /// <summary>
