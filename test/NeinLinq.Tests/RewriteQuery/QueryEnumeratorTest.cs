@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Threading.Tasks;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
@@ -16,6 +17,16 @@ namespace NeinLinq.Tests.RewriteQuery
         }
 
         [Fact]
+        public void LegacyCurrentShouldReturnCurrent()
+        {
+            enumerator.Current = new Dummy();
+
+            var actual = ((IEnumerator)new RewriteQueryEnumerator<Dummy>(enumerator)).Current;
+
+            Assert.Equal(enumerator.Current, actual);
+        }
+
+        [Fact]
         public void CurrentShouldReturnCurrent()
         {
             enumerator.Current = new Dummy();
@@ -26,7 +37,23 @@ namespace NeinLinq.Tests.RewriteQuery
         }
 
         [Fact]
-        public async Task MoveNextShouldMoveNext()
+        public void MoveNextShouldMoveNext()
+        {
+            new RewriteQueryEnumerator<Dummy>(enumerator).MoveNext();
+
+            Assert.True(enumerator.MoveNextCalled);
+        }
+
+        [Fact]
+        public void ResetShouldMoveNext()
+        {
+            new RewriteQueryEnumerator<Dummy>(enumerator).Reset();
+
+            Assert.True(enumerator.ResetCalled);
+        }
+
+        [Fact]
+        public async Task MoveNextAsyncShouldMoveNext()
         {
             await new RewriteQueryEnumerator<Dummy>(enumerator).MoveNextAsync();
 
@@ -34,7 +61,15 @@ namespace NeinLinq.Tests.RewriteQuery
         }
 
         [Fact]
-        public async Task DisposeShouldDispose()
+        public void DisposeShouldDispose()
+        {
+            new RewriteQueryEnumerator<Dummy>(enumerator).Dispose();
+
+            Assert.True(enumerator.DisposeCalled);
+        }
+
+        [Fact]
+        public async Task DisposeAsyncShouldDispose()
         {
             await new RewriteQueryEnumerator<Dummy>(enumerator).DisposeAsync();
 

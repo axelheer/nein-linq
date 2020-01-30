@@ -28,10 +28,16 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator() => enumerable.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
+        }
 
         /// <inheritdoc />
-        public IEnumerator<T> GetEnumerator() => enumerable.GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
+        }
 
 #if !(NET40 || NET45)
         /// <inheritdoc />
