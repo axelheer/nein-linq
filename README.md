@@ -26,7 +26,7 @@ Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.co
 
     PM> Install-Package NeinLinq.EntityFrameworkCore
 
-***Breaking:*** before Version '4.0.0' the package *NeinLinq.Queryable* is needed for plain LINQ queries
+***Breaking:*** before Version '4.0.0' the package *NeinLinq.Queryable* is needed for plain LINQ queries:
 
     PM> Install-Package NeinLinq.Queryable
 
