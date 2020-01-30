@@ -15,7 +15,8 @@ test_script:
   - ps: 'dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput="$PWD/coverage.xml" /p:Include="[NeinLinq*]*" /p:Exclude="[NeinLinq.Fakes]*"'
 
 after_test:
-  - cmd: 'curl -s https://codecov.io/bash | bash -s'
+  - ps: dotnet tool install --global codecov.tool
+  - ps: 'codecov --file coverage.*.xml --verbose'
 
 artifacts:
   - path: src/**/*.nupkg
