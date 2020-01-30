@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TargetFrameworks>netcoreapp3.1;netstandard2.1;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netstandard2.1;net461;net45</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq.Queryable\NeinLinq.Queryable.csproj" />
+    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
   </ItemGroup>
 
 </Project>

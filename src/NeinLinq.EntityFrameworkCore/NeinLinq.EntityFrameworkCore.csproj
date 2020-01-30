@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeinLinq.Queryable\NeinLinq.Queryable.csproj" />
+    <ProjectReference Include="..\NeinLinq\NeinLinq.csproj" />
   </ItemGroup>
 
 </Project>

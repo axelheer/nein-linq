@@ -7,7 +7,7 @@
 
 To support different LINQ implementations, the following flavours are available. Choose at least one.
 
-- Use NeinLinq.Queryable for plain LINQ queries
+- Use NeinLinq for plain LINQ queries
 - Use NeinLinq.Interactive for interactive LINQ queries
 - Use NeinLinq.EntityFramework for Entity Framework 6 LINQ queries
 - Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries</Description>
@@ -17,7 +17,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIconUrl>https://www.heer.eu/media/axel.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Added support for null-able reference types.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for null-able reference types. Improved support for IAsyncEnumerable.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 

@@ -10,9 +10,9 @@
 
 To support different LINQ implementations, the following flavours are available. Choose at least one.
 
-Use *NeinLinq.Queryable* for plain LINQ queries:
+Use *NeinLinq* for plain LINQ queries:
 
-    PM> Install-Package NeinLinq.Queryable
+    PM> Install-Package NeinLinq
 
 Use *NeinLinq.Interactive* for [interactive](https://github.com/dotnet/reactive/) LINQ queries:
 
