@@ -4,22 +4,22 @@ using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
-    public class EntityQueryEnumerableTest
+    public class QueryEnumerableTest
     {
         private readonly DummyEnumerable enumerable = new DummyEnumerable();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryEnumerable<Dummy>(null));
+            Assert.Throws<ArgumentNullException>(() => new RewriteQueryEnumerable<Dummy>(null));
         }
 
         [Fact]
         public void GetEnumeratorShouldReturnEnumerator()
         {
-            var actual = new RewriteEntityQueryEnumerable<Dummy>(enumerable).GetAsyncEnumerator();
+            var actual = new RewriteQueryEnumerable<Dummy>(enumerable).GetAsyncEnumerator();
 
-            Assert.IsType<RewriteEntityQueryEnumerator<Dummy>>(actual);
+            Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
         }
     }
 }

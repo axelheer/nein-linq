@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace NeinLinq
 {
@@ -58,6 +59,9 @@ namespace NeinLinq
     /// Proxy for rewritten queries.
     /// </summary>
     public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
+#if !(NET40 || NET45)
+        , IAsyncEnumerable<T>
+#endif
     {
         /// <summary>
         /// Create a new query to rewrite.
@@ -75,5 +79,17 @@ namespace NeinLinq
             // rewrite on enumeration
             return Provider.RewriteQuery<T>(Expression).GetEnumerator();
         }
+
+#if !(NET40 || NET45)
+        /// <inheritdoc />
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        {
+            // rewrite on enumeration
+            var enumerable = Provider.RewriteQuery<T>(Expression);
+            if (enumerable is IAsyncEnumerable<T> asyncEnumerable)
+                return asyncEnumerable.GetAsyncEnumerator(cancellationToken);
+            return new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
+        }
+#endif
     }
 }

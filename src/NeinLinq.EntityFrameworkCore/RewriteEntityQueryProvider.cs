@@ -83,7 +83,7 @@ namespace NeinLinq
 
         private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)
         {
-            return new RewriteEntityQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
+            return new RewriteQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
         }
     }
 }

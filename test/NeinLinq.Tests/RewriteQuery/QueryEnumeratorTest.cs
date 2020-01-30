@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
-    public class EntityQueryEnumeratorTest
+    public class QueryEnumeratorTest
     {
         private readonly DummyEnumerator enumerator = new DummyEnumerator();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryEnumerator<Dummy>(null));
+            Assert.Throws<ArgumentNullException>(() => new RewriteQueryEnumerator<Dummy>(null));
         }
 
         [Fact]
@@ -21,7 +20,7 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             enumerator.Current = new Dummy();
 
-            var actual = new RewriteEntityQueryEnumerator<Dummy>(enumerator).Current;
+            var actual = new RewriteQueryEnumerator<Dummy>(enumerator).Current;
 
             Assert.Equal(enumerator.Current, actual);
         }
@@ -29,7 +28,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public async Task MoveNextShouldMoveNext()
         {
-            await new RewriteEntityQueryEnumerator<Dummy>(enumerator).MoveNextAsync();
+            await new RewriteQueryEnumerator<Dummy>(enumerator).MoveNextAsync();
 
             Assert.True(enumerator.MoveNextCalled);
         }
@@ -37,7 +36,7 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public async Task DisposeShouldDispose()
         {
-            await new RewriteEntityQueryEnumerator<Dummy>(enumerator).DisposeAsync();
+            await new RewriteQueryEnumerator<Dummy>(enumerator).DisposeAsync();
 
             Assert.True(enumerator.DisposeCalled);
         }

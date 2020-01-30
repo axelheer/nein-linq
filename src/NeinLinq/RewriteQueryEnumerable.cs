@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -7,7 +8,10 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for query enumerable.
     /// </summary>
-    public class RewriteEntityQueryEnumerable<T> : IAsyncEnumerable<T>
+    public class RewriteQueryEnumerable<T> : IEnumerable<T>
+#if !(NET40 || NET45)
+        , IAsyncEnumerable<T>
+#endif
     {
         private readonly IEnumerable<T> enumerable;
 
@@ -15,7 +19,7 @@ namespace NeinLinq
         /// Create a new enumerable proxy.
         /// </summary>
         /// <param name="enumerable">The actual enumerable.</param>
-        public RewriteEntityQueryEnumerable(IEnumerable<T> enumerable)
+        public RewriteQueryEnumerable(IEnumerable<T> enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -24,9 +28,17 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => enumerable.GetEnumerator();
+
+        /// <inheritdoc />
+        public IEnumerator<T> GetEnumerator() => enumerable.GetEnumerator();
+
+#if !(NET40 || NET45)
+        /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
-            return new RewriteEntityQueryEnumerator<T>(enumerable.GetEnumerator());
+            return new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
         }
+#endif
     }
 }
