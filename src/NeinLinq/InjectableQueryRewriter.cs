@@ -23,12 +23,11 @@ namespace NeinLinq
             if (whitelist == null)
                 throw new ArgumentNullException(nameof(whitelist));
 
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-
-            if (whitelist.Contains(null))
-                throw new ArgumentOutOfRangeException(nameof(whitelist));
-
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            foreach (var item in whitelist)
+            {
+                if (item == null)
+                    throw new ArgumentOutOfRangeException(nameof(whitelist));
+            }
 
             this.whitelist = whitelist;
         }
@@ -49,6 +48,9 @@ namespace NeinLinq
                 if (ShouldInject(property, data))
                 {
                     var lambda = data.Lambda(null);
+
+                    if (lambda == null)
+                        throw new InvalidOperationException($"Lambda factory for {property.Name} returns null.");
 
                     // only one parameter for property getter
                     var argument = lambda.Parameters.Single();
@@ -75,6 +77,9 @@ namespace NeinLinq
             if (ShouldInject(node.Method, data))
             {
                 var lambda = data.Lambda(node.Object);
+
+                if (lambda == null)
+                    throw new InvalidOperationException($"Lambda factory for {node.Method.Name} returns null.");
 
                 // rebind expression parameters for current arguments
                 var binders = lambda.Parameters.Zip(node.Arguments,

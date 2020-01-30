@@ -10,11 +10,11 @@ namespace NeinLinq
 
         public bool Config => config;
 
-        private readonly Lazy<Func<Expression?, LambdaExpression>> lambda;
+        private readonly Lazy<Func<Expression?, LambdaExpression?>> lambda;
 
-        public LambdaExpression Lambda(Expression? value) => lambda.Value(value);
+        public LambdaExpression? Lambda(Expression? value) => lambda.Value(value);
 
-        private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression>> lambda)
+        private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>> lambda)
         {
             this.config = config;
             this.lambda = lambda;
@@ -24,7 +24,7 @@ namespace NeinLinq
         {
             var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
 
-            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression>>(() =>
+            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
                 LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
@@ -36,13 +36,13 @@ namespace NeinLinq
                 ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true)
                 ?? throw new InvalidOperationException($"Property {property.Name} has no get method."));
 
-            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression>>(() =>
+            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata != null, lambdaFactory);
         }
 
-        private static Func<Expression?, LambdaExpression> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
+        private static Func<Expression?, LambdaExpression?> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
             if (method.DeclaringType == null)
                 throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
@@ -60,7 +60,7 @@ namespace NeinLinq
             return DynamicLambdaFactory(method.Name, signature);
         }
 
-        private static Func<Expression?, LambdaExpression> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
+        private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
             if (property.DeclaringType == null)
                 throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
@@ -75,7 +75,7 @@ namespace NeinLinq
             return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
         }
 
-        private static Func<Expression?, LambdaExpression> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression?> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
         {
             // retrieve validated factory method once
             var factory = signature.FindFactory(target, method);
@@ -91,7 +91,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        private static Func<Expression?, LambdaExpression> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
         {
             return value =>
             {
@@ -115,13 +115,7 @@ namespace NeinLinq
                 var factory = signature.FindFactory(target, metadata.Method ?? method);
 
                 // finally call lambda factory *uff*
-                var expression = (LambdaExpression?)factory.Invoke(targetObject, null);
-
-                // what the heck?
-                if (expression == null)
-                    throw new InvalidOperationException($"Lambda factory {target.FullName}.{method} returns null.");
-
-                return expression;
+                return (LambdaExpression?)factory.Invoke(targetObject, null);
             };
         }
     }
