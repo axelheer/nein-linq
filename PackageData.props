@@ -13,8 +13,12 @@ To support different LINQ implementations, the following flavours are available.
 - Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
   <PropertyGroup>
-    <PackageIconUrl>https://www.heer.eu/media/axel.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Added support for null-able reference types. Improved support for IAsyncEnumerable.</PackageReleaseNotes>
