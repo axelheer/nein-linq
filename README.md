@@ -18,11 +18,11 @@ Use *NeinLinq.Interactive* for [interactive](https://github.com/dotnet/reactive/
 
     PM> Install-Package NeinLinq.Interactive
 
-Use *NeinLinq.EntityFramework* for [Entity Framework 6](https://github.com/aspnet/EntityFramework6) LINQ queries:
+Use *NeinLinq.EntityFramework* for [Entity Framework 6](https://github.com/dotnet/ef6/) LINQ queries:
 
     PM> Install-Package NeinLinq.EntityFramework
 
-Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore) LINQ queries:
+Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.com/dotnet/efcore/) LINQ queries:
 
     PM> Install-Package NeinLinq.EntityFrameworkCore
 
