@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NeinLinq.Interactive\NeinLinq.Interactive.csproj" />
+    <ProjectReference Include="..\..\src\NeinLinq.Async\NeinLinq.Async.csproj" />
     <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\NeinLinq.Fakes\NeinLinq.Fakes.csproj" />
