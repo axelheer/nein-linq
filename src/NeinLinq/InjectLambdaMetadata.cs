@@ -99,23 +99,23 @@ namespace NeinLinq
                 var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
 
                 // retrieve actual target type at runtime, whatever it may be
-                var target = targetObject.GetType();
+                var targetType = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteMethod = signature.FindMatch(target, method);
+                var concreteMethod = signature.FindMatch(targetType, method, value?.Type);
 
                 // this cannot happen; should not happen; i think...
                 if (concreteMethod == null)
-                    throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}.");
+                    throw new InvalidOperationException($"Unable to retrieve lambda expression from {targetType.FullName}.{method}.");
 
                 // configuration over convention, if any
                 var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
 
                 // retrieve validated factory method
-                var factory = signature.FindFactory(target, metadata.Method ?? method);
+                var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method, value?.Type);
 
                 // finally call lambda factory *uff*
-                return (LambdaExpression?)factory.Invoke(targetObject, null);
+                return (LambdaExpression?)factoryMethod.Invoke(targetObject, null);
             };
         }
     }

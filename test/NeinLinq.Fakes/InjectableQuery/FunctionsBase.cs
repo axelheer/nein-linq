@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace NeinLinq.Fakes.InjectableQuery
 {
@@ -82,6 +83,17 @@ namespace NeinLinq.Fakes.InjectableQuery
         public double VelocityWithNonPublicSibling(Dummy value)
         {
             throw new NotSupportedException();
+        }
+
+        [InjectLambda]
+        public double VelocityWithHiddenSibling(Dummy value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Expression<Func<Dummy, double>> VelocityWithHiddenSibling()
+        {
+            return v => v.Distance / v.Time;
         }
     }
 }

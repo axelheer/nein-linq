@@ -39,10 +39,10 @@ namespace NeinLinq
             isStatic = true;
         }
 
-        public MethodInfo FindFactory(Type target, string method)
+        public MethodInfo FindFactory(Type target, string method, Type? injectedType = null)
         {
             // assume method without any parameters
-            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes)
+            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType)
                 ?? target.GetProperty(method, everything)?.GetGetMethod(true);
             if (factory == null)
                 throw FailFactory(target, method, "no matching parameterless member found");
@@ -75,13 +75,15 @@ namespace NeinLinq
             throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: {error}.");
         }
 
-        public MethodInfo? FindMatch(Type target, string method)
+        public MethodInfo? FindMatch(Type target, string method, Type? injectedType = null)
         {
-            return FindMatch(target, method, genericArguments, parameterTypes);
+            return FindMatch(target, method, genericArguments, parameterTypes, injectedType);
         }
 
-        private static MethodInfo? FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes)
+        private static MethodInfo? FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes, Type? injectedType = null)
         {
+            MethodInfo? result = null;
+
             foreach (var candidate in target.GetMethods(everything))
             {
                 // non-matching name?
@@ -101,10 +103,10 @@ namespace NeinLinq
                 var index = 0;
                 for (; index < parameterTypes.Length; index++)
                 {
-                    var type = candidateParameters[index].ParameterType;
-                    if (type.IsGenericParameter)
+                    var candidateParameterType = candidateParameters[index].ParameterType;
+                    if (candidateParameterType.IsGenericParameter)
                         continue;
-                    if (type != parameterTypes[index])
+                    if (candidateParameterType != parameterTypes[index])
                         break;
                 }
 
@@ -112,10 +114,21 @@ namespace NeinLinq
                 if (index != parameterTypes.Length)
                     continue;
 
-                return candidate;
+                // There can only be one!
+                if (result != null)
+                {
+                    // base definition is virtual
+                    if (candidate.IsVirtual)
+                        continue;
+                    // base definition is non-virtual, but hiding is allowed anyway
+                    if (injectedType == null || result.DeclaringType!.IsAssignableFrom(injectedType))
+                        continue;
+                }
+
+                result = candidate;
             }
 
-            return null;
+            return result;
         }
     }
 }

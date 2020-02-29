@@ -75,5 +75,10 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return v => Math.Round(v.Distance / v.Time, digits);
         }
+
+        public new Expression<Func<Dummy, double>> VelocityWithHiddenSibling()
+        {
+            throw new InvalidOperationException("Implementing sibling has been hidden.");
+        }
     }
 }
