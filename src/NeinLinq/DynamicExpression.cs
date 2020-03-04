@@ -32,29 +32,16 @@ namespace NeinLinq
             var memberAccess = CreateMemberAccess(target, selector);
             var actualValue = CreateConstant(target, memberAccess, value, provider);
 
-            switch (comparer)
+            return comparer switch
             {
-                case DynamicCompare.Equal:
-                    return Expression.Equal(memberAccess, actualValue);
-
-                case DynamicCompare.NotEqual:
-                    return Expression.NotEqual(memberAccess, actualValue);
-
-                case DynamicCompare.GreaterThan:
-                    return Expression.GreaterThan(memberAccess, actualValue);
-
-                case DynamicCompare.GreaterThanOrEqual:
-                    return Expression.GreaterThanOrEqual(memberAccess, actualValue);
-
-                case DynamicCompare.LessThan:
-                    return Expression.LessThan(memberAccess, actualValue);
-
-                case DynamicCompare.LessThanOrEqual:
-                    return Expression.LessThanOrEqual(memberAccess, actualValue);
-
-                default:
-                    return Expression.Constant(false);
-            }
+                DynamicCompare.Equal => Expression.Equal(memberAccess, actualValue),
+                DynamicCompare.NotEqual => Expression.NotEqual(memberAccess, actualValue),
+                DynamicCompare.GreaterThan => Expression.GreaterThan(memberAccess, actualValue),
+                DynamicCompare.GreaterThanOrEqual => Expression.GreaterThanOrEqual(memberAccess, actualValue),
+                DynamicCompare.LessThan => Expression.LessThan(memberAccess, actualValue),
+                DynamicCompare.LessThanOrEqual => Expression.LessThanOrEqual(memberAccess, actualValue),
+                _ => Expression.Constant(false),
+            };
         }
 
         

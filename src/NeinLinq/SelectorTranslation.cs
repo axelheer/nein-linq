@@ -113,17 +113,18 @@ namespace NeinLinq
         public Expression<Func<TSource, TTranslatedResult>> Result<TTranslatedResult>()
             where TTranslatedResult : TResult
         {
-            var init = selector.Body as MemberInitExpression;
+            if (selector.Body is MemberInitExpression init)
+            {
+                if (init.NewExpression.Arguments.Any())
+                    throw new NotSupportedException("Only parameterless constructors are supported yet.");
 
-            if (init is null)
-                throw new NotSupportedException("Only member init expressions are supported yet.");
-            if (init.NewExpression.Arguments.Any())
-                throw new NotSupportedException("Only parameterless constructors are supported yet.");
+                var s = selector.Parameters[0];
 
-            var s = selector.Parameters[0];
+                return Expression.Lambda<Func<TSource, TTranslatedResult>>(
+                    Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), init.Bindings), s);
+            }
 
-            return Expression.Lambda<Func<TSource, TTranslatedResult>>(
-                Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), init.Bindings), s);
+            throw new NotSupportedException("Only member init expressions are supported yet.");
         }
 
         /// <summary>
@@ -137,16 +138,17 @@ namespace NeinLinq
             if (path is null)
                 throw new ArgumentNullException(nameof(path));
 
-            var member = path.Body as MemberExpression;
-            if (member is null)
-                throw new NotSupportedException("Only member expressions are supported yet.");
+            if (path.Body is MemberExpression member)
+            {
+                var s = selector.Parameters[0];
 
-            var s = selector.Parameters[0];
+                var bind = Expression.Bind(member.Member, selector.Body);
 
-            var bind = Expression.Bind(member.Member, selector.Body);
+                return Expression.Lambda<Func<TSource, TTranslatedResult>>(
+                    Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), bind), s);
+            }
 
-            return Expression.Lambda<Func<TSource, TTranslatedResult>>(
-                Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), bind), s);
+            throw new NotSupportedException("Only member expressions are supported yet.");
         }
 
         /// <summary>

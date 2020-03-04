@@ -57,7 +57,7 @@ namespace NeinLinq
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(method.Name, signature);
+            return DynamicLambdaFactory(method, signature);
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
@@ -91,7 +91,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature)
         {
             return value =>
             {
@@ -102,17 +102,13 @@ namespace NeinLinq
                 var targetType = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteMethod = signature.FindMatch(targetType, method, value?.Type);
-
-                // this cannot happen; should not happen; i think...
-                if (concreteMethod is null)
-                    throw new InvalidOperationException($"Unable to retrieve lambda expression from {targetType.FullName}.{method}.");
+                var concreteMethod = signature.FindMatch(targetType, method.Name, value?.Type);
 
                 // configuration over convention, if any
-                var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
+                var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod ?? method) ?? InjectLambdaAttribute.None;
 
                 // retrieve validated factory method
-                var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method, value?.Type);
+                var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value?.Type);
 
                 // finally call lambda factory *uff*
                 return (LambdaExpression?)factoryMethod.Invoke(targetObject, null);
