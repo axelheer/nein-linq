@@ -21,7 +21,7 @@ namespace NeinLinq
         /// <param name="enumerable">The actual enumerable.</param>
         public RewriteQueryEnumerable(IEnumerable<T> enumerable)
         {
-            if (enumerable == null)
+            if (enumerable is null)
                 throw new ArgumentNullException(nameof(enumerable));
 
             this.enumerable = enumerable;

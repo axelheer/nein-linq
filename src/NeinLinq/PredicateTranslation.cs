@@ -17,7 +17,7 @@ namespace NeinLinq
         /// <param name="predicate">The predicate to translate.</param>
         public PredicateTranslation(Expression<Func<TSource, bool>> predicate)
         {
-            if (predicate == null)
+            if (predicate is null)
                 throw new ArgumentNullException(nameof(predicate));
 
             this.predicate = predicate;
@@ -48,7 +48,7 @@ namespace NeinLinq
         /// <returns>A translated predicate expression.</returns>
         public Expression<Func<TTranslatedSource, bool>> To<TTranslatedSource>(Expression<Func<TTranslatedSource, TSource>> path)
         {
-            if (path == null)
+            if (path is null)
                 throw new ArgumentNullException(nameof(path));
 
             var s = predicate.Parameters[0];
@@ -69,7 +69,7 @@ namespace NeinLinq
         /// <returns>A translated predicate expression.</returns>
         public Expression<Func<TTranslatedSource, bool>> To<TTranslatedSource>(Expression<Func<TTranslatedSource, Func<TSource, bool>, bool>> translation)
         {
-            if (translation == null)
+            if (translation is null)
                 throw new ArgumentNullException(nameof(translation));
 
             var t = translation.Parameters[0];

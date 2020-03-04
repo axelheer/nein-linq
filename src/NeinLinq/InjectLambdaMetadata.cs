@@ -27,7 +27,7 @@ namespace NeinLinq
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
                 LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
-            return new InjectLambdaMetadata(metadata != null, lambdaFactory);
+            return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
         }
 
         public static InjectLambdaMetadata Create(PropertyInfo property)
@@ -39,12 +39,12 @@ namespace NeinLinq
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
-            return new InjectLambdaMetadata(metadata != null, lambdaFactory);
+            return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
-            if (method.DeclaringType == null)
+            if (method.DeclaringType is null)
                 throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
 
             // retrieve method's signature
@@ -62,14 +62,14 @@ namespace NeinLinq
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
-            if (property.DeclaringType == null)
+            if (property.DeclaringType is null)
                 throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
 
             // retrieve method's signature
             var signature = new InjectLambdaSignature(property);
 
             // apply "Expr" convention for property "overloading"
-            var method = metadata.Target == null ? property.Name + "Expr" : property.Name;
+            var method = metadata.Target is null ? property.Name + "Expr" : property.Name;
 
             // special treatment for super-heroic property getters
             return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
@@ -105,7 +105,7 @@ namespace NeinLinq
                 var concreteMethod = signature.FindMatch(targetType, method, value?.Type);
 
                 // this cannot happen; should not happen; i think...
-                if (concreteMethod == null)
+                if (concreteMethod is null)
                     throw new InvalidOperationException($"Unable to retrieve lambda expression from {targetType.FullName}.{method}.");
 
                 // configuration over convention, if any

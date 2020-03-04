@@ -17,9 +17,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IQueryable EntityRewrite(this IQueryable value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteEntityQueryProvider(value.Provider, rewriter);
@@ -37,9 +37,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IOrderedQueryable EntityRewrite(this IOrderedQueryable value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteEntityQueryProvider(value.Provider, rewriter);
@@ -58,9 +58,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IQueryable<T> EntityRewrite<T>(this IQueryable<T> value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteEntityQueryProvider(value.Provider, rewriter);
@@ -77,9 +77,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IOrderedQueryable<T> EntityRewrite<T>(this IOrderedQueryable<T> value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteEntityQueryProvider(value.Provider, rewriter);

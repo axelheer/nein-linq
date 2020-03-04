@@ -29,9 +29,9 @@ namespace NeinLinq
         /// <param name="provider">The provider to rewrite the query.</param>
         protected RewriteQueryable(IQueryable query, RewriteQueryProvider provider)
         {
-            if (query == null)
+            if (query is null)
                 throw new ArgumentNullException(nameof(query));
-            if (provider == null)
+            if (provider is null)
                 throw new ArgumentNullException(nameof(provider));
 
             Query = query;

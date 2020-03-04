@@ -16,7 +16,7 @@ namespace NeinLinq
         /// <returns>A translation object for the given predicate.</returns>
         public static PredicateTranslation<TSource> Translate<TSource>(this Expression<Func<TSource, bool>> predicate)
         {
-            if (predicate == null)
+            if (predicate is null)
                 throw new ArgumentNullException(nameof(predicate));
 
             return new PredicateTranslation<TSource>(predicate);
@@ -31,9 +31,9 @@ namespace NeinLinq
         /// <returns>A single combined predicate expression.</returns>
         public static Expression<Func<TSource, bool>> And<TSource>(this Expression<Func<TSource, bool>> left, Expression<Func<TSource, bool>> right)
         {
-            if (left == null)
+            if (left is null)
                 throw new ArgumentNullException(nameof(left));
-            if (right == null)
+            if (right is null)
                 throw new ArgumentNullException(nameof(right));
 
             var l = left.Parameters[0];
@@ -54,9 +54,9 @@ namespace NeinLinq
         /// <returns>A single combined predicate expression.</returns>
         public static Expression<Func<TSource, bool>> Or<TSource>(this Expression<Func<TSource, bool>> left, Expression<Func<TSource, bool>> right)
         {
-            if (left == null)
+            if (left is null)
                 throw new ArgumentNullException(nameof(left));
-            if (right == null)
+            if (right is null)
                 throw new ArgumentNullException(nameof(right));
 
             var l = left.Parameters[0];
@@ -76,7 +76,7 @@ namespace NeinLinq
         /// <returns>A predicate expression.</returns>
         public static Expression<Func<TSource, bool>> Not<TSource>(this Expression<Func<TSource, bool>> predicate)
         {
-            if (predicate == null)
+            if (predicate is null)
                 throw new ArgumentNullException(nameof(predicate));
 
             return Expression.Lambda<Func<TSource, bool>>(

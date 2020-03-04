@@ -19,9 +19,9 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         public SubstitutionQueryRewriter(Type from, Type to)
         {
-            if (from == null)
+            if (from is null)
                 throw new ArgumentNullException(nameof(from));
-            if (to == null)
+            if (to is null)
                 throw new ArgumentNullException(nameof(to));
 
             this.from = from;
@@ -31,7 +31,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.Method.DeclaringType == from)

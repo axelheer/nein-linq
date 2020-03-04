@@ -19,7 +19,7 @@ namespace NeinLinq
 
         public InjectLambdaSignature(MethodInfo method)
         {
-            if (method.DeclaringType == null)
+            if (method.DeclaringType is null)
                 throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
 
             genericArguments = method.GetGenericArguments();
@@ -30,7 +30,7 @@ namespace NeinLinq
 
         public InjectLambdaSignature(PropertyInfo property)
         {
-            if (property.DeclaringType == null)
+            if (property.DeclaringType is null)
                 throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
 
             genericArguments = Type.EmptyTypes;
@@ -44,7 +44,7 @@ namespace NeinLinq
             // assume method without any parameters
             var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType)
                 ?? target.GetProperty(method, everything)?.GetGetMethod(true);
-            if (factory == null)
+            if (factory is null)
                 throw FailFactory(target, method, "no matching parameterless member found");
 
             // apply type arguments, if any
@@ -64,7 +64,7 @@ namespace NeinLinq
 
             // lambda signature matches original method's signature?
             var signature = returns.GetGenericArguments()[0].GetMethod("Invoke", parameterTypes);
-            if (signature == null || signature.ReturnParameter.ParameterType != returnType)
+            if (signature is null || signature.ReturnParameter.ParameterType != returnType)
                 throw FailFactory(target, method, "returns non-matching expression");
 
             return factory;
@@ -115,13 +115,13 @@ namespace NeinLinq
                     continue;
 
                 // There can only be one!
-                if (result != null)
+                if (result is { })
                 {
                     // base definition is virtual
                     if (candidate.IsVirtual)
                         continue;
                     // base definition is non-virtual, but hiding is allowed anyway
-                    if (injectedType == null || result.DeclaringType!.IsAssignableFrom(injectedType))
+                    if (injectedType is null || result.DeclaringType!.IsAssignableFrom(injectedType))
                         continue;
                 }
 

@@ -21,7 +21,7 @@ namespace NeinLinq
         /// <param name="enumerator">The actual enumerator.</param>
         public RewriteQueryEnumerator(IEnumerator<T> enumerator)
         {
-            if (enumerator == null)
+            if (enumerator is null)
                 throw new ArgumentNullException(nameof(enumerator));
 
             this.enumerator = enumerator;
@@ -40,7 +40,6 @@ namespace NeinLinq
         public void Reset() => enumerator.Reset();
 
 #if !(NET40 || NET45)
-
         /// <inheritdoc />
         public ValueTask<bool> MoveNextAsync()
         {

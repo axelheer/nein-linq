@@ -9,7 +9,7 @@ namespace NeinLinq
     {
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             if (typeof(IQueryable).IsAssignableFrom(node.Type))

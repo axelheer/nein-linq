@@ -22,7 +22,7 @@ namespace NeinLinq
         /// <returns>The dynamic comparison expression.</returns>
         public static Expression CreateComparison(ParameterExpression target, string selector, DynamicCompare comparer, string value, IFormatProvider? provider = null)
         {
-            if (target == null)
+            if (target is null)
                 throw new ArgumentNullException(nameof(target));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -69,7 +69,7 @@ namespace NeinLinq
         /// <returns>The dynamic comparison expression.</returns>
         public static Expression CreateComparison(ParameterExpression target, string selector, string comparer, string value, IFormatProvider? provider = null)
         {
-            if (target == null)
+            if (target is null)
                 throw new ArgumentNullException(nameof(target));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -90,7 +90,7 @@ namespace NeinLinq
         /// <returns>The dynamic member access expression.</returns>
         public static Expression CreateMemberAccess(Expression target, string selector)
         {
-            if (target == null)
+            if (target is null)
                 throw new ArgumentNullException(nameof(target));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -121,11 +121,11 @@ namespace NeinLinq
             var expression = (Expression)target;
 
             var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
-            if (ordinalParse != null)
+            if (ordinalParse is { })
                 expression = Expression.Call(ordinalParse, target);
 
             var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
-            if (cultureParse != null)
+            if (cultureParse is { })
                 expression = Expression.Call(cultureParse, target, format);
 
             return Expression.Lambda<Func<string, IFormatProvider?, object>>(
