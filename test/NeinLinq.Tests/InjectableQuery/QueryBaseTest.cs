@@ -136,11 +136,33 @@ namespace NeinLinq.Tests.InjectableQuery
         public void ShouldSucceedWithHiddenSibling()
         {
             var query = from d in data.ToInjectable()
-                        select ((FunctionsBase)functions).VelocityWithHiddenSibling(d);
+                        select functions.VelocityWithHiddenSibling(d);
 
             var result = query.ToList();
             
             Assert.Equal(new[] { 200, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithAbstractSibling()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithAbstractSibling(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithVirtualSibling()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithVirtualSibling(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200, .0, .1 }, result);
         }
     }
 }

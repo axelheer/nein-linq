@@ -80,5 +80,15 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             throw new InvalidOperationException("Implementing sibling has been hidden.");
         }
+
+        public override Expression<Func<Dummy, double>> VelocityWithAbstractSibling()
+        {
+            return v => Math.Round(v.Distance / v.Time, digits);
+        }
+
+        public override Expression<Func<Dummy, double>> VelocityWithVirtualSibling()
+        {
+            return v => Math.Round(v.Distance / v.Time, digits);
+        }
     }
 }
