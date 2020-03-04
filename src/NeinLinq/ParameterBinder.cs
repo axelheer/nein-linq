@@ -19,9 +19,9 @@ namespace NeinLinq
         /// <param name="replacement">Expression to insert.</param>
         public ParameterBinder(ParameterExpression parameter, Expression replacement)
         {
-            if (parameter == null)
+            if (parameter is null)
                 throw new ArgumentNullException(nameof(parameter));
-            if (replacement == null)
+            if (replacement is null)
                 throw new ArgumentNullException(nameof(replacement));
 
             this.parameter = parameter;
@@ -31,7 +31,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node == parameter)
@@ -45,7 +45,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitInvocation(InvocationExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.Expression == parameter && replacement is LambdaExpression lambda)

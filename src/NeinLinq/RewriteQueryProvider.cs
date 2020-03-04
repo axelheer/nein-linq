@@ -26,9 +26,9 @@ namespace NeinLinq
         /// <param name="rewriter">The rewriter to rewrite the query.</param>
         public RewriteQueryProvider(IQueryProvider provider, ExpressionVisitor rewriter)
         {
-            if (provider == null)
+            if (provider is null)
                 throw new ArgumentNullException(nameof(provider));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             Provider = provider;

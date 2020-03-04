@@ -39,7 +39,7 @@ namespace NeinLinq
         /// <param name="target">The target type for the method's expression.</param>
         public InjectLambdaAttribute(Type target)
         {
-            if (target == null)
+            if (target is null)
                 throw new ArgumentNullException(nameof(target));
 
             Target = target;
@@ -52,7 +52,7 @@ namespace NeinLinq
         /// <param name="method">The method's name for creating the method's expression.</param>
         public InjectLambdaAttribute(Type target, string method)
         {
-            if (target == null)
+            if (target is null)
                 throw new ArgumentNullException(nameof(target));
             if (string.IsNullOrEmpty(method))
                 throw new ArgumentNullException(nameof(method));

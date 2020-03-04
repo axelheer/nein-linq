@@ -69,7 +69,7 @@ namespace NeinLinq
         }
 
         private static readonly MethodInfo executeTask = typeof(RewriteEntityQueryProvider)
-            .GetMethod("ExecuteTask", BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("Method ExecuteTask is missing.");
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
@@ -78,7 +78,7 @@ namespace NeinLinq
         }
 
         private static readonly MethodInfo executeAsyncEnumerable = typeof(RewriteEntityQueryProvider)
-            .GetMethod("ExecuteAsyncEnumerable", BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("Method ExecuteAsyncEnumerable is missing.");
 
         private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)

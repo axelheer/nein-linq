@@ -20,12 +20,12 @@ namespace NeinLinq
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         public InjectableQueryRewriter(params Type[] whitelist)
         {
-            if (whitelist == null)
+            if (whitelist is null)
                 throw new ArgumentNullException(nameof(whitelist));
 
             foreach (var item in whitelist)
             {
-                if (item == null)
+                if (item is null)
                     throw new ArgumentOutOfRangeException(nameof(whitelist));
             }
 
@@ -35,12 +35,12 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             var property = node.Member as PropertyInfo;
 
-            if (property?.GetGetMethod(true) != null && property.GetSetMethod(true) == null)
+            if (property?.GetGetMethod(true) is { } && property.GetSetMethod(true) is null)
             {
                 // cache "meta-data" for performance reasons
                 var data = cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));
@@ -49,7 +49,7 @@ namespace NeinLinq
                 {
                     var lambda = data.Lambda(null);
 
-                    if (lambda == null)
+                    if (lambda is null)
                         throw new InvalidOperationException($"Lambda factory for {property.Name} returns null.");
 
                     // only one parameter for property getter
@@ -68,7 +68,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             // cache "meta-data" for performance reasons
@@ -78,7 +78,7 @@ namespace NeinLinq
             {
                 var lambda = data.Lambda(node.Object);
 
-                if (lambda == null)
+                if (lambda is null)
                     throw new InvalidOperationException($"Lambda factory for {node.Method.Name} returns null.");
 
                 // rebind expression parameters for current arguments
@@ -93,7 +93,7 @@ namespace NeinLinq
 
         private bool ShouldInject(MemberInfo member, InjectLambdaMetadata data)
         {
-            if (member.DeclaringType == null)
+            if (member.DeclaringType is null)
                 throw new InvalidOperationException($"Member {member.Name} has no declaring type.");
 
             // inject only configured or white-listed targets

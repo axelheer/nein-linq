@@ -27,7 +27,7 @@ namespace NeinLinq
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
                 LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
-            return new InjectLambdaMetadata(metadata != null, lambdaFactory);
+            return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
         }
 
         public static InjectLambdaMetadata Create(PropertyInfo property)
@@ -39,12 +39,12 @@ namespace NeinLinq
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
                 LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
-            return new InjectLambdaMetadata(metadata != null, lambdaFactory);
+            return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
         {
-            if (method.DeclaringType == null)
+            if (method.DeclaringType is null)
                 throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
 
             // retrieve method's signature
@@ -57,19 +57,19 @@ namespace NeinLinq
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(method.Name, signature);
+            return DynamicLambdaFactory(method, signature);
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
         {
-            if (property.DeclaringType == null)
+            if (property.DeclaringType is null)
                 throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
 
             // retrieve method's signature
             var signature = new InjectLambdaSignature(property);
 
             // apply "Expr" convention for property "overloading"
-            var method = metadata.Target == null ? property.Name + "Expr" : property.Name;
+            var method = metadata.Target is null ? property.Name + "Expr" : property.Name;
 
             // special treatment for super-heroic property getters
             return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
@@ -91,7 +91,7 @@ namespace NeinLinq
             return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
         }
 
-        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(string method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature)
         {
             return value =>
             {
@@ -99,23 +99,19 @@ namespace NeinLinq
                 var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
 
                 // retrieve actual target type at runtime, whatever it may be
-                var target = targetObject.GetType();
+                var targetType = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteMethod = signature.FindMatch(target, method);
-
-                // this cannot happen; should not happen; i think...
-                if (concreteMethod == null)
-                    throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}.");
+                var concreteMethod = signature.FindMatch(targetType, method.Name, value?.Type);
 
                 // configuration over convention, if any
-                var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
+                var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod ?? method) ?? InjectLambdaAttribute.None;
 
                 // retrieve validated factory method
-                var factory = signature.FindFactory(target, metadata.Method ?? method);
+                var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value?.Type);
 
                 // finally call lambda factory *uff*
-                return (LambdaExpression?)factory.Invoke(targetObject, null);
+                return (LambdaExpression?)factoryMethod.Invoke(targetObject, null);
             };
         }
     }

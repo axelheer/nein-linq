@@ -31,9 +31,9 @@ namespace NeinLinq
         /// <returns>A single combined selector expression.</returns>
         public static Expression<Func<TSource, TResult>> Apply<TSource, TResult>(this Expression<Func<TSource, TResult>> left, Expression<Func<TSource, TResult>> right)
         {
-            if (left == null)
+            if (left is null)
                 throw new ArgumentNullException(nameof(left));
-            if (right == null)
+            if (right is null)
                 throw new ArgumentNullException(nameof(right));
 
             var leftInit = left.Body as MemberInitExpression;
@@ -42,7 +42,7 @@ namespace NeinLinq
             var leftNew = left.Body as NewExpression ?? leftInit?.NewExpression;
             var rightNew = right.Body as NewExpression ?? rightInit?.NewExpression;
 
-            if (leftNew == null || rightNew == null)
+            if (leftNew is null || rightNew is null)
                 throw new NotSupportedException("Only member init expressions and new expressions are supported yet.");
             if (leftNew.Arguments.Any() || rightNew.Arguments.Any())
                 throw new NotSupportedException("Only parameterless constructors are supported yet.");

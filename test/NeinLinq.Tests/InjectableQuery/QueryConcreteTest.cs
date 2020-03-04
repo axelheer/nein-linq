@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using NeinLinq.Fakes.InjectableQuery;
 using Xunit;
 
@@ -130,6 +131,41 @@ namespace NeinLinq.Tests.InjectableQuery
             var result = query.ToList();
 
             Assert.Equal(new[] { 200.0, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void ShouldFailWithHiddenSibling()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithHiddenSibling(d);
+
+            var error = Assert.Throws<TargetInvocationException>(() => query.ToList());
+
+            var innerError = Assert.IsType<InvalidOperationException>(error.InnerException);
+
+            Assert.Equal("Implementing sibling has been hidden.", innerError.Message);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithAbstractSibling()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithAbstractSibling(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithVirtualSibling()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithVirtualSibling(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200, .0, .1 }, result);
         }
     }
 }

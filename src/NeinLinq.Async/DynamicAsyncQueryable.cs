@@ -21,7 +21,7 @@ namespace NeinLinq
         /// <returns>The filtered query.</returns>
         public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, DynamicCompare comparer, string value, IFormatProvider? provider = null)
         {
-            if (query == null)
+            if (query is null)
                 throw new ArgumentNullException(nameof(query));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -47,7 +47,7 @@ namespace NeinLinq
         /// <returns>The filtered query.</returns>
         public static IAsyncQueryable<T> Where<T>(this IAsyncQueryable<T> query, string selector, string comparer, string value, IFormatProvider? provider = null)
         {
-            if (query == null)
+            if (query is null)
                 throw new ArgumentNullException(nameof(query));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -71,7 +71,7 @@ namespace NeinLinq
         /// <returns>The sorted query.</returns>
         public static IOrderedAsyncQueryable<T> OrderBy<T>(this IAsyncQueryable<T> query, string selector, bool descending = false)
         {
-            if (query == null)
+            if (query is null)
                 throw new ArgumentNullException(nameof(query));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));
@@ -91,7 +91,7 @@ namespace NeinLinq
         /// <returns>The sorted query.</returns>
         public static IOrderedAsyncQueryable<T> ThenBy<T>(this IOrderedAsyncQueryable<T> query, string selector, bool descending = false)
         {
-            if (query == null)
+            if (query is null)
                 throw new ArgumentNullException(nameof(query));
             if (string.IsNullOrEmpty(selector))
                 throw new ArgumentNullException(nameof(selector));

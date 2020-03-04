@@ -20,7 +20,7 @@ namespace NeinLinq
         /// <param name="selector">The selector expression to translate.</param>
         public SelectorTranslation(Expression<Func<TSource, TResult>> selector)
         {
-            if (selector == null)
+            if (selector is null)
                 throw new ArgumentNullException(nameof(selector));
 
             this.selector = selector;
@@ -51,7 +51,7 @@ namespace NeinLinq
         /// <returns>A translated selector expression.</returns>
         public Expression<Func<TTranslatedSource, TResult>> Source<TTranslatedSource>(Expression<Func<TTranslatedSource, TSource>> path)
         {
-            if (path == null)
+            if (path is null)
                 throw new ArgumentNullException(nameof(path));
 
             var s = selector.Parameters[0];
@@ -72,7 +72,7 @@ namespace NeinLinq
         /// <returns>A translated selector expression.</returns>
         public Expression<Func<TTranslatedSource, TResult>> Source<TTranslatedSource>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, TResult>> translation)
         {
-            if (translation == null)
+            if (translation is null)
                 throw new ArgumentNullException(nameof(translation));
 
             var t = translation.Parameters[0];
@@ -93,7 +93,7 @@ namespace NeinLinq
         /// <returns>A translated selector expression.</returns>
         public Expression<Func<TTranslatedSource, IEnumerable<TResult>>> Source<TTranslatedSource>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, IEnumerable<TResult>>> translation)
         {
-            if (translation == null)
+            if (translation is null)
                 throw new ArgumentNullException(nameof(translation));
 
             var t = translation.Parameters[0];
@@ -113,17 +113,18 @@ namespace NeinLinq
         public Expression<Func<TSource, TTranslatedResult>> Result<TTranslatedResult>()
             where TTranslatedResult : TResult
         {
-            var init = selector.Body as MemberInitExpression;
+            if (selector.Body is MemberInitExpression init)
+            {
+                if (init.NewExpression.Arguments.Any())
+                    throw new NotSupportedException("Only parameterless constructors are supported yet.");
 
-            if (init == null)
-                throw new NotSupportedException("Only member init expressions are supported yet.");
-            if (init.NewExpression.Arguments.Any())
-                throw new NotSupportedException("Only parameterless constructors are supported yet.");
+                var s = selector.Parameters[0];
 
-            var s = selector.Parameters[0];
+                return Expression.Lambda<Func<TSource, TTranslatedResult>>(
+                    Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), init.Bindings), s);
+            }
 
-            return Expression.Lambda<Func<TSource, TTranslatedResult>>(
-                Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), init.Bindings), s);
+            throw new NotSupportedException("Only member init expressions are supported yet.");
         }
 
         /// <summary>
@@ -134,19 +135,20 @@ namespace NeinLinq
         /// <returns>A translated selector expression.</returns>
         public Expression<Func<TSource, TTranslatedResult>> Result<TTranslatedResult>(Expression<Func<TTranslatedResult, TResult>> path)
         {
-            if (path == null)
+            if (path is null)
                 throw new ArgumentNullException(nameof(path));
 
-            var member = path.Body as MemberExpression;
-            if (member == null)
-                throw new NotSupportedException("Only member expressions are supported yet.");
+            if (path.Body is MemberExpression member)
+            {
+                var s = selector.Parameters[0];
 
-            var s = selector.Parameters[0];
+                var bind = Expression.Bind(member.Member, selector.Body);
 
-            var bind = Expression.Bind(member.Member, selector.Body);
+                return Expression.Lambda<Func<TSource, TTranslatedResult>>(
+                    Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), bind), s);
+            }
 
-            return Expression.Lambda<Func<TSource, TTranslatedResult>>(
-                Expression.MemberInit(Expression.New(typeof(TTranslatedResult)), bind), s);
+            throw new NotSupportedException("Only member expressions are supported yet.");
         }
 
         /// <summary>
@@ -158,7 +160,7 @@ namespace NeinLinq
         /// <returns>A translated selector expression.</returns>
         public Expression<Func<TSource, TTranslatedResult>> Result<TTranslatedResult>(Expression<Func<TSource, Func<TSource, TResult>, TTranslatedResult>> translation)
         {
-            if (translation == null)
+            if (translation is null)
                 throw new ArgumentNullException(nameof(translation));
 
             var s = translation.Parameters[0];
@@ -270,7 +272,7 @@ namespace NeinLinq
         {
             var result = Cross<TTranslatedSource>().Result<TTranslatedResult>();
 
-            return value != null ? result.Apply(value) : result;
+            return value is { } ? result.Apply(value) : result;
         }
 
         /// <summary>
@@ -287,7 +289,7 @@ namespace NeinLinq
         {
             var result = Cross(sourcePath).Result(resultPath);
 
-            return value != null ? result.Apply(value) : result;
+            return value is { } ? result.Apply(value) : result;
         }
 
         /// <summary>
@@ -302,7 +304,7 @@ namespace NeinLinq
         /// <returns>A single translated and combined selector expression.</returns>
         public Expression<Func<TTranslatedSource, TTranslatedResult>> To<TTranslatedSource, TTranslatedResult>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, TTranslatedResult>> translation, Expression<Func<TTranslatedSource, TTranslatedResult>>? value = null)
         {
-            if (translation == null)
+            if (translation is null)
                 throw new ArgumentNullException(nameof(translation));
 
             var s = translation.Parameters[0];
@@ -313,7 +315,7 @@ namespace NeinLinq
             var result = Expression.Lambda<Func<TTranslatedSource, TTranslatedResult>>(
                 binder.Visit(translation.Body), s);
 
-            return value != null ? result.Apply(value) : result;
+            return value is { } ? result.Apply(value) : result;
         }
     }
 }

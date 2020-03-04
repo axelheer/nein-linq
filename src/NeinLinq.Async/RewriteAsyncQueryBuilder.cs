@@ -17,9 +17,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IAsyncQueryable AsyncRewrite(this IAsyncQueryable value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteAsyncQueryProvider(value.Provider, rewriter);
@@ -37,9 +37,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IOrderedAsyncQueryable AsyncRewrite(this IOrderedAsyncQueryable value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteAsyncQueryProvider(value.Provider, rewriter);
@@ -58,9 +58,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IAsyncQueryable<T> AsyncRewrite<T>(this IAsyncQueryable<T> value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteAsyncQueryProvider(value.Provider, rewriter);
@@ -77,9 +77,9 @@ namespace NeinLinq
         /// <returns>The rewritten query.</returns>
         public static IOrderedAsyncQueryable<T> AsyncRewrite<T>(this IOrderedAsyncQueryable<T> value, ExpressionVisitor rewriter)
         {
-            if (value == null)
+            if (value is null)
                 throw new ArgumentNullException(nameof(value));
-            if (rewriter == null)
+            if (rewriter is null)
                 throw new ArgumentNullException(nameof(rewriter));
 
             var provider = new RewriteAsyncQueryProvider(value.Provider, rewriter);

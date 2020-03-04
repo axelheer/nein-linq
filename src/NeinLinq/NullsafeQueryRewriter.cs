@@ -16,7 +16,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             var target = Visit(node.Expression);
@@ -33,7 +33,7 @@ namespace NeinLinq
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             var target = Visit(node.Object);
@@ -66,7 +66,7 @@ namespace NeinLinq
         {
             var fallback = cache.GetOrAdd(target.Type, Fallback);
 
-            if (fallback != null)
+            if (fallback is { })
             {
                 // coalesce instead, a bit intrusive but fast...
                 return update(Expression.Coalesce(target, fallback));
@@ -85,7 +85,7 @@ namespace NeinLinq
         private static bool IsSafe(Expression expression)
         {
             // in method call results and constant values we trust to avoid too much conditions...
-            return expression == null
+            return expression is null
                 || expression.NodeType == ExpressionType.Call
                 || expression.NodeType == ExpressionType.Constant
                 || !IsNullableOrReferenceType(expression.Type);
@@ -129,7 +129,7 @@ namespace NeinLinq
 
         private static bool IsNullableOrReferenceType(Type type)
         {
-            return !type.IsValueType || Nullable.GetUnderlyingType(type) != null;
+            return !type.IsValueType || Nullable.GetUnderlyingType(type) is { };
         }
     }
 }
