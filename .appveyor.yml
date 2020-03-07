@@ -1,0 +1,37 @@
+skip_branch_with_pr: true
+skip_tags: true
+
+image:
+  - macOS
+  - Ubuntu
+  - Visual Studio 2019
+
+before_build:
+  - dotnet --info
+
+build_script:
+  - pwsh: |
+      [xml] $buildInfo = Get-Content ./BuildInfo.props
+
+      $versionPrefix = $buildInfo.Project.PropertyGroup.VersionPrefix[0]
+      $versionSuffix = "preview.$env:APPVEYOR_BUILD_NUMBER"
+
+      if ('release' -eq $env:APPVEYOR_REPO_BRANCH) {
+        Update-AppveyorBuild -Version $versionPrefix
+        & dotnet pack --configuration Release --include-symbols
+      } else {
+        Update-AppveyorBuild -Version "$versionPrefix-$versionSuffix"
+        & dotnet pack --configuration Release --version-suffix $versionSuffix --include-symbols
+      }
+
+test_script:
+  - dotnet test --configuration Release --results-directory ./test-results --settings ./CodeCoverage.runsettings
+
+after_test:
+  - dotnet new tool-manifest 
+  - dotnet tool install codecov.tool
+  - dotnet codecov --file ./test-results/*/coverage.*.xml
+
+artifacts:
+  - path: src/**/*.nupkg
+  - path: src/**/*.snupkg

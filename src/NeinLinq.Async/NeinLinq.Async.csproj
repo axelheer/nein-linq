@@ -1,17 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\NeinLinq.props" />
-  <Import Project="..\..\SourceLink.props" />
-  <Import Project="..\..\PackageData.props" />
-  <Import Project="..\..\CodeAnalysis.props" />
-
   <PropertyGroup>
     <!-- Use the old name for legacy reasons... -->
     <AssemblyName>NeinLinq.Interactive</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TargetFrameworks>netcoreapp3.1;netstandard2.1;netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
 

@@ -10,4 +10,4 @@ bin/
 obj/
 
 # Test
-coverage.xml
+test-results/

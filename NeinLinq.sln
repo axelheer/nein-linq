@@ -5,15 +5,12 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62384529-4A89-45AA-9241-6C41D736333C}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
+		BuildInfo.props = BuildInfo.props
 		CodeAnalysis.props = CodeAnalysis.props
 		CodeAnalysis.ruleset = CodeAnalysis.ruleset
 		CodeAnalysis.xml = CodeAnalysis.xml
-		LICENSE = LICENSE
-		NeinLinq.props = NeinLinq.props
-		NeinLinq.snk = NeinLinq.snk
+		CodeCoverage.runsettings = CodeCoverage.runsettings
 		PackageData.props = PackageData.props
-		README.md = README.md
 		SourceLink.props = SourceLink.props
 	EndProjectSection
 EndProject
