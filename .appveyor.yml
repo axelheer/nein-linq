@@ -6,11 +6,34 @@ image:
   - Ubuntu
   - Visual Studio 2019
 
-before_build:
-  - dotnet --info
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_MULTILEVEL_LOOKUP: 0
+
+install:
+  - ps: |
+      New-Item -Name bin -Force -ItemType Directory | Out-Null
+      New-Item -Name obj -Force -ItemType Directory | Out-Null
+
+      Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -OutFile './obj/dotnet-install.ps1'
+      Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.sh' -OutFile './obj/dotnet-install.sh'
+
+      if ('Win32NT' -eq [System.Environment]::OSVersion.Platform) {
+        ./obj/dotnet-install.ps1 -InstallDir ./bin -JsonFile ./global.json -NoPath
+      }
+
+  - sh: |
+      chmod +x ./obj/dotnet-install.sh
+      ./obj/dotnet-install.sh -InstallDir ./bin -JsonFile ./global.json -NoPath
+
+  - ps: |
+      ./bin/dotnet --info
+      ./bin/dotnet new tool-manifest
+      ./bin/dotnet tool install codecov.tool
 
 build_script:
-  - pwsh: |
+  - ps: |
       [xml] $buildInfo = Get-Content ./BuildInfo.props
 
       $versionPrefix = $buildInfo.Project.PropertyGroup.VersionPrefix[0]
@@ -18,19 +41,18 @@ build_script:
 
       if ('release' -eq $env:APPVEYOR_REPO_BRANCH) {
         Update-AppveyorBuild -Version $versionPrefix
-        & dotnet pack --configuration Release --include-symbols
+        ./bin/dotnet build --configuration Release
+        ./bin/dotnet pack --configuration Release --no-build
       } else {
         Update-AppveyorBuild -Version "$versionPrefix-$versionSuffix"
-        & dotnet pack --configuration Release --version-suffix $versionSuffix --include-symbols
+        ./bin/dotnet build --configuration Release --version-suffix $versionSuffix
+        ./bin/dotnet pack --configuration Release --no-build --version-suffix $versionSuffix
       }
 
 test_script:
-  - dotnet test --configuration Release --results-directory ./test-results --settings ./CodeCoverage.runsettings
-
-after_test:
-  - dotnet new tool-manifest 
-  - dotnet tool install codecov.tool
-  - dotnet codecov --file ./test-results/*/coverage.*.xml
+  - ps: |
+      ./bin/dotnet test --configuration Release --no-build --results-directory ./test-results --settings ./CodeCoverage.runsettings
+      ./bin/dotnet codecov --file ./test-results/*/coverage.*.xml
 
 artifacts:
   - path: src/**/*.nupkg
