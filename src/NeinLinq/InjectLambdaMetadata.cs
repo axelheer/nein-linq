@@ -84,11 +84,13 @@ namespace NeinLinq
             {
                 // compile factory call for performance reasons :-)
                 return Expression.Lambda<Func<Expression?, LambdaExpression>>(
-                    Expression.Call(factory), Expression.Parameter(typeof(Expression))).Compile();
+                    Expression.Convert(Expression.Call(factory), typeof(LambdaExpression)),
+                    Expression.Parameter(typeof(Expression))).Compile();
             }
 
             // call actual target object, compiles every time during execution... :-|
-            return value => Expression.Lambda<Func<LambdaExpression>>(Expression.Call(value, factory)).Compile()();
+            return value => Expression.Lambda<Func<LambdaExpression>>(
+                Expression.Convert(Expression.Call(value, factory), typeof(LambdaExpression))).Compile()();
         }
 
         private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature)
