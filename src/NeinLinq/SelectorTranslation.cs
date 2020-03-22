@@ -179,9 +179,7 @@ namespace NeinLinq
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<TTranslatedSource, TResult> Cross<TTranslatedSource>()
             where TTranslatedSource : TSource
-        {
-            return Source<TTranslatedSource>().Translate();
-        }
+            => Source<TTranslatedSource>().Translate();
 
         /// <summary>
         /// Continues translation of a given selector for a given related type using it's source parameter.
@@ -190,9 +188,7 @@ namespace NeinLinq
         /// <param name="path">The path from the desired type to the given type.</param>
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<TTranslatedSource, TResult> Cross<TTranslatedSource>(Expression<Func<TTranslatedSource, TSource>> path)
-        {
-            return Source(path).Translate();
-        }
+            => Source(path).Translate();
 
         /// <summary>
         /// Continues translation of a given selector for a given related type using it's source parameter.
@@ -202,9 +198,7 @@ namespace NeinLinq
         /// using the initially given selector to be injected into a new selector.</param>
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<TTranslatedSource, TResult> Cross<TTranslatedSource>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, TResult>> translation)
-        {
-            return Source(translation).Translate();
-        }
+            => Source(translation).Translate();
 
         /// <summary>
         /// Continues translation of a given selector for a given related type using it's source parameter.
@@ -214,9 +208,7 @@ namespace NeinLinq
         /// using the initially given selector to be injected into a new selector.</param>
         /// <returns>Another translation object for the given selector.</returns>
         public SelectorTranslation<TTranslatedSource, IEnumerable<TResult>> Cross<TTranslatedSource>(Expression<Func<TTranslatedSource, Func<TSource, TResult>, IEnumerable<TResult>>> translation)
-        {
-            return Source(translation).Translate();
-        }
+            => Source(translation).Translate();
 
         /// <summary>
         /// Translates a given selector for a given subtype using it's result parameter
@@ -227,9 +219,7 @@ namespace NeinLinq
         /// <returns>A single translated and combined selector expression.</returns>
         public Expression<Func<TSource, TTranslatedResult>> Apply<TTranslatedResult>(Expression<Func<TSource, TTranslatedResult>> value)
             where TTranslatedResult : TResult
-        {
-            return Result<TTranslatedResult>().Apply(value);
-        }
+            => Result<TTranslatedResult>().Apply(value);
 
         /// <summary>
         /// Translates a given selector for a given related type using it's result parameter
@@ -240,9 +230,7 @@ namespace NeinLinq
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
         public Expression<Func<TSource, TTranslatedResult>> Apply<TTranslatedResult>(Expression<Func<TTranslatedResult, TResult>> path, Expression<Func<TSource, TTranslatedResult>> value)
-        {
-            return Result(path).Apply(value);
-        }
+            => Result(path).Apply(value);
 
         /// <summary>
         /// Translates a given selector for a given related type using it's result parameter
@@ -254,9 +242,7 @@ namespace NeinLinq
         /// <param name="value">The additional selector expression to combine.</param>
         /// <returns>A single translated and combined selector expression.</returns>
         public Expression<Func<TSource, TTranslatedResult>> Apply<TTranslatedResult>(Expression<Func<TSource, Func<TSource, TResult>, TTranslatedResult>> translation, Expression<Func<TSource, TTranslatedResult>> value)
-        {
-            return Result(translation).Apply(value);
-        }
+            => Result(translation).Apply(value);
 
         /// <summary>
         /// Translates a given selector for given subtypes using it's source and result parameter

@@ -20,7 +20,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             {
                 init.ResetDatabase();
 
-                init.Dummies.AddRange(new[]
+                _ = init.Dummies.AddRange(new[]
                 {
                     new Dummy
                     {
@@ -50,7 +50,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
                         }
                     }
                 });
-                init.SaveChanges();
+                _ = init.SaveChanges();
             }
 
             db = new Context();
@@ -77,7 +77,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             var result = await query.Include(d => d.Other).ToListAsync();
 
             Assert.True(rewriter.VisitCalled);
-            Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
+            Assert.All(result, r => Assert.Equal(r.Name, r.Other?.Name));
         }
 
         [WindowsFact]
@@ -131,7 +131,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
 
             Assert.True(outerRewriter.VisitCalled);
             Assert.True(innerRewriter.VisitCalled);
-            Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
+            Assert.All(result, r => Assert.Equal(r.Name, r.Other?.Name));
             Assert.Equal(2, result.Count);
         }
 
@@ -155,9 +155,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
 
         [WindowsFact]
         public async Task ToListAsyncShouldWork()
-        {
-            await db.Dummies.ToListAsync();
-        }
+            => await db.Dummies.ToListAsync();
 
         [WindowsFact]
         public async Task ToListAsyncShouldSucceed()
@@ -173,9 +171,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
 
         [WindowsFact]
         public async Task SumAsyncShouldWork()
-        {
-            await db.Dummies.SumAsync(d => d.Number);
-        }
+            => await db.Dummies.SumAsync(d => d.Number);
 
         [WindowsFact]
         public async Task SumAsyncShouldSucceed()

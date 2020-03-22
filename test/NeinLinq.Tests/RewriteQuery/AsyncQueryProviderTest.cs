@@ -10,13 +10,14 @@ namespace NeinLinq.Tests.RewriteQuery
 {
     public class AsyncQueryProviderTest
     {
-        private readonly IAsyncQueryable<Dummy> query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
+        private readonly IAsyncQueryable<Dummy> query
+            = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryProvider(query.Provider, null));
-            Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryProvider(null, new Rewriter()));
+            _ = Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryProvider(query.Provider, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => new RewriteAsyncQueryProvider(null!, new Rewriter()));
         }
 
         [Fact]
@@ -29,13 +30,12 @@ namespace NeinLinq.Tests.RewriteQuery
 
         private static void AssertQuery(IAsyncQueryable actual)
         {
-            Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
 
-            var actualProvider = (RewriteAsyncQueryProvider)actual.Provider;
+            var actualProvider = Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
 
-            Assert.IsType<Rewriter>(actualProvider.Rewriter);
-            Assert.IsAssignableFrom<IAsyncQueryProvider>(actualProvider.Provider);
+            _ = Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            _ = Assert.IsAssignableFrom<IAsyncQueryProvider>(actualProvider.Provider);
         }
 
         [Fact]

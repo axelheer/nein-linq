@@ -6,16 +6,17 @@ namespace NeinLinq.Tests.DbAsyncQuery
     [DbConfigurationType(typeof(Config))]
     public class Context : DbContext
     {
-        public DbSet<Dummy> Dummies { get; set; }
+        public DbSet<Dummy> Dummies { get; }
 
         public Context() : base("NeinLinq.EntityFramework")
         {
+            Dummies = Set<Dummy>();
         }
 
         public void ResetDatabase()
         {
-            Dummies.RemoveRange(Dummies);
-            SaveChanges();
+            _ = Dummies.RemoveRange(Dummies);
+            _ = SaveChanges();
         }
     }
 }

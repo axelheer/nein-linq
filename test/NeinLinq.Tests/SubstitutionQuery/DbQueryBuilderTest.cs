@@ -7,19 +7,20 @@ namespace NeinLinq.Tests.SubstitutionQuery
 {
     public class DbQueryBuilderTest
     {
-        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly object query
+            = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToDbSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToDbSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToDbSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToDbSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToDbSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToDbSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToDbSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToDbSubstitution(typeof(Functions), null));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToDbSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToDbSubstitution(typeof(Functions), null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToDbSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToDbSubstitution(typeof(Functions), null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToDbSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToDbSubstitution(typeof(Functions), null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToDbSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToDbSubstitution(typeof(Functions), null!));
         }
 
         [Fact]
@@ -56,13 +57,12 @@ namespace NeinLinq.Tests.SubstitutionQuery
 
         private static void AssertQuery(IQueryable actual)
         {
-            Assert.IsType<RewriteDbQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteDbQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteDbQueryable<Dummy>>(actual);
 
-            var actualProvider = (RewriteDbQueryProvider)actual.Provider;
+            var actualProvider = Assert.IsType<RewriteDbQueryProvider>(actual.Provider);
 
-            Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            _ = Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
+            _ = Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

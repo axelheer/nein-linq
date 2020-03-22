@@ -1,0 +1,23 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <Nullable>Enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+    <VersionPrefix>4.1.0</VersionPrefix>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)NeinLinq.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CA1010;CA1303;CA1710;CA2007;CA2225</NoWarn>
+  </PropertyGroup>
+
+</Project>

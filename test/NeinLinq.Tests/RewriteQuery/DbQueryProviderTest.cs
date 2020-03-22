@@ -8,13 +8,14 @@ namespace NeinLinq.Tests.RewriteQuery
 {
     public class DbQueryProviderTest
     {
-        private readonly IQueryable<Dummy> query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly IQueryable<Dummy> query
+            = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteDbQueryProvider(query.Provider, null));
-            Assert.Throws<ArgumentNullException>(() => new RewriteDbQueryProvider(null, new Rewriter()));
+            _ = Assert.Throws<ArgumentNullException>(() => new RewriteDbQueryProvider(query.Provider, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => new RewriteDbQueryProvider(null!, new Rewriter()));
         }
 
         [Fact]
@@ -35,13 +36,12 @@ namespace NeinLinq.Tests.RewriteQuery
 
         private static void AssertQuery(IQueryable actual)
         {
-            Assert.IsType<RewriteDbQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteDbQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteDbQueryable<Dummy>>(actual);
 
-            var actualProvider = (RewriteDbQueryProvider)actual.Provider;
+            var actualProvider = Assert.IsType<RewriteDbQueryProvider>(actual.Provider);
 
-            Assert.IsType<Rewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            _ = Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            _ = Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
 
         [Fact]

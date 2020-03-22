@@ -16,9 +16,7 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IAsyncQueryable ToAsyncSubstitution(this IAsyncQueryable value, Type from, Type to)
-        {
-            return value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
 
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
@@ -28,9 +26,7 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedAsyncQueryable ToAsyncSubstitution(this IOrderedAsyncQueryable value, Type from, Type to)
-        {
-            return value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
 
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
@@ -41,9 +37,7 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IAsyncQueryable<T> ToAsyncSubstitution<T>(this IAsyncQueryable<T> value, Type from, Type to)
-        {
-            return value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
 
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
@@ -54,8 +48,6 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedAsyncQueryable<T> ToAsyncSubstitution<T>(this IOrderedAsyncQueryable<T> value, Type from, Type to)
-        {
-            return value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.AsyncRewrite(new SubstitutionQueryRewriter(from, to));
     }
 }

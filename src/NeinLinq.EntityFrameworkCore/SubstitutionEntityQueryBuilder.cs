@@ -16,9 +16,7 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IQueryable ToEntitySubstitution(this IQueryable value, Type from, Type to)
-        {
-            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
 
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
@@ -28,9 +26,7 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedQueryable ToEntitySubstitution(this IOrderedQueryable value, Type from, Type to)
-        {
-            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
 
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
@@ -41,9 +37,7 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IQueryable<T> ToEntitySubstitution<T>(this IQueryable<T> value, Type from, Type to)
-        {
-            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
 
         /// <summary>
         /// Replaces methods of type <c>from</c> with methods of type <c>to</c>.
@@ -54,8 +48,6 @@ namespace NeinLinq
         /// <param name="to">A type to use instead.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedQueryable<T> ToEntitySubstitution<T>(this IOrderedQueryable<T> value, Type from, Type to)
-        {
-            return value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
-        }
+            => value.EntityRewrite(new SubstitutionQueryRewriter(from, to));
     }
 }

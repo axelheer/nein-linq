@@ -7,15 +7,16 @@ namespace NeinLinq.Tests.DynamicQuery
 {
     public class OrderByUntypedTest
     {
-        private readonly IQueryable data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable).OrderBy("Name.Length"));
-            Assert.Throws<ArgumentNullException>(() => data.OrderBy(null));
-            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable).ThenBy("Name"));
-            Assert.Throws<ArgumentNullException>(() => data.OrderBy("Name.Length").ThenBy(null));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IQueryable)!.OrderBy("Name.Length"));
+            _ = Assert.Throws<ArgumentNullException>(() => data.OrderBy(null!));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable)!.ThenBy("Name"));
+            _ = Assert.Throws<ArgumentNullException>(() => data.OrderBy("Name.Length").ThenBy(null!));
         }
 
         [Fact]

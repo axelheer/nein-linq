@@ -11,7 +11,8 @@ namespace NeinLinq
     /// </summary>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
-        private static readonly ObjectCache<Type, Expression?> cache = new ObjectCache<Type, Expression?>();
+        private static readonly ObjectCache<Type, Expression?> cache
+            = new ObjectCache<Type, Expression?>();
 
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
@@ -101,12 +102,9 @@ namespace NeinLinq
             }
 
             // default value for arrays
-            if (type.IsArray)
-            {
-                return Expression.NewArrayInit(type.GetElementType());
-            }
-
-            return null;
+            return type.IsArray
+                ? Expression.NewArrayInit(type.GetElementType())
+                : null;
         }
 
         private static Expression? CollectionFallback(Type definition, Type type)
@@ -114,22 +112,15 @@ namespace NeinLinq
             var collection = definition.MakeGenericType(type.GetGenericArguments());
 
             // try if an instance of this collection would suffice
-            if (type.IsAssignableFrom(collection))
-            {
-                return Expression.Convert(Expression.New(collection), type);
-            }
-
-            return null;
+            return type.IsAssignableFrom(collection)
+                ? Expression.Convert(Expression.New(collection), type)
+                : null;
         }
 
         private static bool IsExtensionMethod(MethodInfo element)
-        {
-            return element.IsDefined(typeof(ExtensionAttribute), false);
-        }
+            => element.IsDefined(typeof(ExtensionAttribute), false);
 
         private static bool IsNullableOrReferenceType(Type type)
-        {
-            return !type.IsValueType || Nullable.GetUnderlyingType(type) is { };
-        }
+            => !type.IsValueType || Nullable.GetUnderlyingType(type) is { };
     }
 }

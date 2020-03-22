@@ -9,7 +9,8 @@ namespace NeinLinq.Tests.SelectorTranslator
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new SelectorTranslation<Dummy, DummyView>(null));
+            _ = Assert.Throws<ArgumentNullException>(()
+                => new SelectorTranslation<Dummy, DummyView>(null!));
         }
     }
 }

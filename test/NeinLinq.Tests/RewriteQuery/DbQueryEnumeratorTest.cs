@@ -7,14 +7,16 @@ using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
-    public class DbQueryEnumeratorTest
+    public sealed class DbQueryEnumeratorTest : IDisposable
     {
-        private readonly DummyEnumerator enumerator = new DummyEnumerator();
+        private readonly DummyEnumerator enumerator
+            = new DummyEnumerator();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteDbQueryEnumerator<Dummy>(null));
+            _ = Assert.Throws<ArgumentNullException>(()
+                => new RewriteDbQueryEnumerator<Dummy>(null!));
         }
 
         [Fact]
@@ -22,9 +24,12 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             enumerator.Current = new Dummy();
 
-            var actual = ((IDbAsyncEnumerator)new RewriteDbQueryEnumerator<Dummy>(enumerator)).Current;
+            using (var subject = new RewriteDbQueryEnumerator<Dummy>(enumerator))
+            {
+                var actual = ((IDbAsyncEnumerator)subject).Current;
 
-            Assert.Equal(enumerator.Current, (Dummy)actual);
+                Assert.Equal(enumerator.Current, (Dummy)actual);
+            }
         }
 
         [Fact]
@@ -32,25 +37,37 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             enumerator.Current = new Dummy();
 
-            var actual = new RewriteDbQueryEnumerator<Dummy>(enumerator).Current;
+            using (var subject = new RewriteDbQueryEnumerator<Dummy>(enumerator))
+            {
+                var actual = subject.Current;
 
-            Assert.Equal(enumerator.Current, actual);
+                Assert.Equal(enumerator.Current, actual);
+            }
         }
 
         [Fact]
         public async Task MoveNextShouldMoveNext()
         {
-            await new RewriteDbQueryEnumerator<Dummy>(enumerator).MoveNextAsync(CancellationToken.None);
+            using (var subject = new RewriteDbQueryEnumerator<Dummy>(enumerator))
+            {
+                _ = await subject.MoveNextAsync(CancellationToken.None);
 
-            Assert.True(enumerator.MoveNextCalled);
+                Assert.True(enumerator.MoveNextCalled);
+            }
         }
 
         [Fact]
         public void DisposeShouldDispose()
         {
-            new RewriteDbQueryEnumerator<Dummy>(enumerator).Dispose();
+            using (var subject = new RewriteDbQueryEnumerator<Dummy>(enumerator))
+            {
+                subject.Dispose();
 
-            Assert.True(enumerator.DisposeCalled);
+                Assert.True(enumerator.DisposeCalled);
+            }
         }
+
+        public void Dispose()
+            => enumerator.Dispose();
     }
 }

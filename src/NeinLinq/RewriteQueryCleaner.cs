@@ -15,20 +15,13 @@ namespace NeinLinq
             if (typeof(IQueryable).IsAssignableFrom(node.Type))
             {
                 var expression = Visit(node.Expression);
-
                 if (expression is ConstantExpression target)
                 {
                     var value = GetValue(target, node.Member);
-
                     while (value is RewriteQueryable rewrite)
-                    {
                         value = rewrite.Provider.RewriteQuery(rewrite.Expression);
-                    }
-
                     if (value is IQueryable query)
-                    {
                         return query.Expression;
-                    }
                 }
             }
 
@@ -37,17 +30,12 @@ namespace NeinLinq
 
         private static object? GetValue(ConstantExpression target, MemberInfo member)
         {
-            if (member is PropertyInfo p)
+            return member switch
             {
-                return p.GetValue(target.Value, null);
-            }
-
-            if (member is FieldInfo f)
-            {
-                return f.GetValue(target.Value);
-            }
-
-            return null;
+                PropertyInfo p => p.GetValue(target.Value, null),
+                FieldInfo f => f.GetValue(target.Value),
+                _ => null
+            };
         }
     }
 }

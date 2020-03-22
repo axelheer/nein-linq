@@ -9,8 +9,8 @@ namespace NeinLinq.Tests
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new ParameterBinder(null, Expression.Constant(true)));
-            Assert.Throws<ArgumentNullException>(() => new ParameterBinder(Expression.Parameter(typeof(bool)), null));
+            _ = Assert.Throws<ArgumentNullException>(() => new ParameterBinder(null!, Expression.Constant(true)));
+            _ = Assert.Throws<ArgumentNullException>(() => new ParameterBinder(Expression.Parameter(typeof(bool)), null!));
         }
 
         [Fact]

@@ -9,7 +9,8 @@ namespace NeinLinq.Tests.SelectorTranslator
 {
     public class SourceTest
     {
-        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void SubtypeShouldSubstitute()
@@ -30,7 +31,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<ParentDummy, ParentDummyView>> s = _ => new ParentDummyView();
 
-            Assert.Throws<ArgumentNullException>(() => s.Translate().Source(default(Expression<Func<ChildDummy, ParentDummy>>)));
+            _ = Assert.Throws<ArgumentNullException>(() => s.Translate().Source(default(Expression<Func<ChildDummy, ParentDummy>>)!));
         }
 
         [Fact]
@@ -38,7 +39,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<ParentDummy, ParentDummyView>> s = d => new ParentDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Source<ChildDummy>(d => d.Parent);
+            var select = s.Translate().Source<ChildDummy>(d => d.Parent!);
             var result = data.OfType<ChildDummy>().Select(select);
 
             Assert.Collection(result,
@@ -52,7 +53,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<ChildDummy, ChildDummyView>> s = _ => new ChildDummyView();
 
-            Assert.Throws<ArgumentNullException>(() => s.Translate().Source(default(Expression<Func<ParentDummy, Func<ChildDummy, ChildDummyView>, ChildDummyView>>)));
+            _ = Assert.Throws<ArgumentNullException>(() => s.Translate().Source(default(Expression<Func<ParentDummy, Func<ChildDummy, ChildDummyView>, ChildDummyView>>)!));
         }
 
         [Fact]
@@ -74,7 +75,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<ChildDummy, ChildDummyView>> s = _ => new ChildDummyView();
 
-            Assert.Throws<ArgumentNullException>(() => s.Translate().Source(default(Expression<Func<ParentDummy, Func<ChildDummy, ChildDummyView>, IEnumerable<ChildDummyView>>>)));
+            _ = Assert.Throws<ArgumentNullException>(() => s.Translate().Source(default(Expression<Func<ParentDummy, Func<ChildDummy, ChildDummyView>, IEnumerable<ChildDummyView>>>)!));
         }
 
         [Fact]

@@ -8,14 +8,15 @@ namespace NeinLinq.Tests.PredicateTranslator
 {
     public class NotTest
     {
-        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Expression<Func<IDummy, bool>> p = null;
+            Expression<Func<IDummy, bool>>? p = null;
 
-            Assert.Throws<ArgumentNullException>(() => p.Not());
+            _ = Assert.Throws<ArgumentNullException>(() => p!.Not());
         }
 
         [Fact]

@@ -7,7 +7,11 @@ namespace NeinLinq
 {
     internal sealed class InjectLambdaSignature
     {
-        private const BindingFlags everything = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
+        private const BindingFlags everything
+            = BindingFlags.NonPublic
+            | BindingFlags.Public
+            | BindingFlags.Static
+            | BindingFlags.Instance;
 
         private readonly Type[] genericArguments;
 
@@ -91,9 +95,7 @@ namespace NeinLinq
         }
 
         public MethodInfo? FindMatch(Type target, string method, Type? injectedType = null)
-        {
-            return FindMatch(target, method, genericArguments, parameterTypes, injectedType);
-        }
+            => FindMatch(target, method, genericArguments, parameterTypes, injectedType);
 
         private static MethodInfo? FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes, Type? injectedType = null)
         {

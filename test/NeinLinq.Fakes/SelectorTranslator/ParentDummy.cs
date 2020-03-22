@@ -6,8 +6,8 @@ namespace NeinLinq.Fakes.SelectorTranslator
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public IEnumerable<ChildDummy> Children { get; set; }
+        public IEnumerable<ChildDummy>? Children { get; set; }
     }
 }

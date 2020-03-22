@@ -9,7 +9,8 @@ namespace NeinLinq.Tests.PredicateTranslator
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new PredicateTranslation<Dummy>(null));
+            _ = Assert.Throws<ArgumentNullException>(()
+                => new PredicateTranslation<Dummy>(null!));
         }
     }
 }

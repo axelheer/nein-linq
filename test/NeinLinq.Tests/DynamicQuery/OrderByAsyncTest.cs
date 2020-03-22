@@ -8,15 +8,16 @@ namespace NeinLinq.Tests.DynamicQuery
 {
     public class AsyncOrderByTest
     {
-        private readonly IAsyncQueryable<Dummy> data = DummyStore.Data.ToAsyncEnumerable().AsAsyncQueryable();
+        private readonly IAsyncQueryable<Dummy> data
+            = DummyStore.Data.ToAsyncEnumerable().AsAsyncQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => default(IAsyncQueryable<Dummy>).OrderBy("Name.Length"));
-            Assert.Throws<ArgumentNullException>(() => data.OrderBy(null));
-            Assert.Throws<ArgumentNullException>(() => default(IOrderedAsyncQueryable<Dummy>).ThenBy("Name"));
-            Assert.Throws<ArgumentNullException>(() => data.OrderBy("Name.Length").ThenBy(null));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IAsyncQueryable<Dummy>)!.OrderBy("Name.Length"));
+            _ = Assert.Throws<ArgumentNullException>(() => data.OrderBy(null!));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IOrderedAsyncQueryable<Dummy>)!.ThenBy("Name"));
+            _ = Assert.Throws<ArgumentNullException>(() => data.OrderBy("Name.Length").ThenBy(null!));
         }
 
         [Fact]

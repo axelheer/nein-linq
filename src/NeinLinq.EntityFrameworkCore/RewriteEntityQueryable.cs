@@ -21,6 +21,7 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        IQueryProvider IQueryable.Provider => providerAdapter; // feign entity query provider
+        IQueryProvider IQueryable.Provider
+            => providerAdapter; // feign entity query provider
     }
 }

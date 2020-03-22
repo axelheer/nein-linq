@@ -7,7 +7,8 @@ namespace NeinLinq.Tests.NullsafeQuery
 {
     public class QueryTest
     {
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy?> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldSelectStructMember()
@@ -36,7 +37,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            Numeric = a.SomeOther.SomeNumeric
+                            Numeric = a.SomeOther!.SomeNumeric
                         };
 
             var result = query.ToList();
@@ -56,7 +57,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            Question = a.SomeText.Contains("?")
+                            Question = a.SomeText!.Contains("?", StringComparison.Ordinal)
                         };
 
             var result = query.ToList();
@@ -76,7 +77,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            FirstWord = a.SomeText.Split(new[] { ' ' }).FirstOrDefault()
+                            FirstWord = a.SomeText!.Split(new[] { ' ' }).FirstOrDefault()
                         };
 
             var result = query.ToList();
@@ -118,7 +119,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         select new DummyView
                         {
                             More = from c in a.MoreOthers
-                                   select c.SomeOther.OneDay.Day
+                                   select c.SomeOther!.OneDay.Day
                         };
 
             var result = query.ToList();
@@ -139,7 +140,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         select new DummyView
                         {
                             Lot = from d in a.EvenLotMoreOthers
-                                  select d.SomeOther.OneDay.Day
+                                  select d.SomeOther!.OneDay.Day
                         };
 
             var result = query.ToList();
@@ -159,7 +160,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            Numeric = a.DaNullable.Value
+                            Numeric = a.DaNullable!.Value
                         };
 
             var result = query.ToList();
@@ -176,9 +177,9 @@ namespace NeinLinq.Tests.NullsafeQuery
         public void ShouldResolveNestedExtensions()
         {
             var query = from a in data.ToNullsafe()
-                        group a by a.MoreOthers.Count into g
+                        group a by a.MoreOthers!.Count into g
                         where g.Key > 0
-                        select g.Sum(b => b.MoreOthers.Sum(c => c.SomeOther.OneDay.Month));
+                        select g.Sum(b => b.MoreOthers.Sum(c => c!.SomeOther!.OneDay.Month));
 
             var result = query.ToList();
 
@@ -211,8 +212,8 @@ namespace NeinLinq.Tests.NullsafeQuery
                         select new DummyView
                         {
                             Year = x.OneDay.Year,
-                            Numeric = y.SomeOther.SomeNumeric,
-                            Question = z.SomeText.Contains("?")
+                            Numeric = y.SomeOther!.SomeNumeric,
+                            Question = z.SomeText!.Contains("?", StringComparison.Ordinal)
                         };
 
             var result = query.ToList();
@@ -227,7 +228,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            Numeric = danger.Length
+                            Numeric = danger!.Length
                         };
 
             var result = query.ToList();

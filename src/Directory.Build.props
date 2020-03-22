@@ -1,9 +1,7 @@
 <Project>
 
-  <Import Project="..\BuildInfo.props" />
-  <Import Project="..\SourceLink.props" />
-  <Import Project="..\PackageData.props" />
-  <Import Project="..\CodeAnalysis.props" />
+  <Import Project="..\Build.props" />
+  <Import Project="..\Pack.props" />
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -6,7 +6,8 @@ namespace NeinLinq.Tests.NullsafeQuery
 {
     public class QueryBuilderTest
     {
-        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.SomeNumeric);
+        private readonly object query
+            = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.SomeNumeric);
 
         [Fact]
         public void ShouldRewriteUntypedQueryable()
@@ -42,13 +43,13 @@ namespace NeinLinq.Tests.NullsafeQuery
 
         private static void AssertQuery(IQueryable actual)
         {
-            Assert.IsType<RewriteQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteQueryable<Dummy>>(actual);
+            _ = Assert.IsType<RewriteQueryProvider>(actual.Provider);
 
             var actualProvider = (RewriteQueryProvider)actual.Provider;
 
-            Assert.IsType<NullsafeQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            _ = Assert.IsType<NullsafeQueryRewriter>(actualProvider.Rewriter);
+            _ = Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

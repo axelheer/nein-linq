@@ -8,14 +8,15 @@ namespace NeinLinq.Tests.PredicateTranslator
 {
     public class ToTranslationTest
     {
-        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
             Expression<Func<ChildDummy, bool>> p = _ => false;
 
-            Assert.Throws<ArgumentNullException>(() => p.Translate().To(default(Expression<Func<ParentDummy, Func<ChildDummy, bool>, bool>>)));
+            _ = Assert.Throws<ArgumentNullException>(() => p.Translate().To(default(Expression<Func<ParentDummy, Func<ChildDummy, bool>, bool>>)!));
         }
 
         [Fact]

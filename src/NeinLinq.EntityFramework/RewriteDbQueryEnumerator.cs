@@ -24,12 +24,11 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        object? IDbAsyncEnumerator.Current => Current;
+        object? IDbAsyncEnumerator.Current
+            => Current;
 
         /// <inheritdoc />
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(enumerator.MoveNext());
-        }
+            => Task.FromResult(enumerator.MoveNext());
     }
 }

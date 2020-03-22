@@ -5,7 +5,8 @@ namespace NeinLinq.Fakes.PredicateTranslator
 {
     public static class DummyStore
     {
-        public static IEnumerable<IDummy> Data { get; } = InitData();
+        public static IEnumerable<IDummy> Data { get; }
+            = InitData();
 
         private static IEnumerable<IDummy> InitData()
         {

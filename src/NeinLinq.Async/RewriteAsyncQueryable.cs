@@ -38,13 +38,16 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public Type ElementType => Query.ElementType;
+        public Type ElementType
+            => Query.ElementType;
 
         /// <inheritdoc />
-        public Expression Expression => Query.Expression;
+        public Expression Expression
+            => Query.Expression;
 
         /// <inheritdoc />
-        IAsyncQueryProvider IAsyncQueryable.Provider => Provider; // replace query provider
+        IAsyncQueryProvider IAsyncQueryable.Provider
+            => Provider; // replace query provider
     }
 
     /// <summary>

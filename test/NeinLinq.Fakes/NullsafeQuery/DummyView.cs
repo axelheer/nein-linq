@@ -10,12 +10,12 @@ namespace NeinLinq.Fakes.NullsafeQuery
 
         public bool Question { get; set; }
 
-        public string FirstWord { get; set; }
+        public string? FirstWord { get; set; }
 
-        public IEnumerable<int> Other { get; set; }
+        public IEnumerable<int>? Other { get; set; }
 
-        public IEnumerable<int> More { get; set; }
+        public IEnumerable<int>? More { get; set; }
 
-        public IEnumerable<int> Lot { get; set; }
+        public IEnumerable<int>? Lot { get; set; }
     }
 }

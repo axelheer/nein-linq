@@ -8,19 +8,20 @@ namespace NeinLinq.Tests.RewriteQuery
 {
     public class EntityQueryBuilderTest
     {
-        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly object query
+            = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void RewriteShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable).EntityRewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).EntityRewrite(null));
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable<Dummy>).EntityRewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).EntityRewrite(null));
-            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable).EntityRewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).EntityRewrite(null));
-            Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable<Dummy>).EntityRewrite(new Rewriter()));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).EntityRewrite(null));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IQueryable)!.EntityRewrite(new Rewriter()));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).EntityRewrite(null!));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IQueryable<Dummy>)!.EntityRewrite(new Rewriter()));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).EntityRewrite(null!));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable)!.EntityRewrite(new Rewriter()));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).EntityRewrite(null!));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IOrderedQueryable<Dummy>)!.EntityRewrite(new Rewriter()));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).EntityRewrite(null!));
         }
 
         [Fact]
@@ -57,13 +58,13 @@ namespace NeinLinq.Tests.RewriteQuery
 
         private static void AssertQuery(IQueryable actual)
         {
-            Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
-            Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
+            _ = Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
 
             var actualProvider = (RewriteEntityQueryProvider)((RewriteEntityQueryable<Dummy>)actual).Provider;
 
-            Assert.IsType<Rewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            _ = Assert.IsType<Rewriter>(actualProvider.Rewriter);
+            _ = Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

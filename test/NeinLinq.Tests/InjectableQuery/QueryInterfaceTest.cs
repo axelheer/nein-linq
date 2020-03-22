@@ -7,9 +7,11 @@ namespace NeinLinq.Tests.InjectableQuery
 {
     public class QueryInterfaceTest
     {
-        private readonly IFunctions functions = new ConcreteFunctions(1);
+        private readonly IFunctions functions
+            = new ConcreteFunctions(1);
 
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldFailWithoutSibling()

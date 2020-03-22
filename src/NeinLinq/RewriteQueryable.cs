@@ -42,17 +42,20 @@ namespace NeinLinq
         IEnumerator IEnumerable.GetEnumerator()
         {
             // rewrite on enumeration
-            return Provider.RewriteQuery(Expression).GetEnumerator(); 
+            return Provider.RewriteQuery(Expression).GetEnumerator();
         }
 
         /// <inheritdoc />
-        public Type ElementType => Query.ElementType;
+        public Type ElementType
+            => Query.ElementType;
 
         /// <inheritdoc />
-        public Expression Expression => Query.Expression;
+        public Expression Expression
+            => Query.Expression;
 
         /// <inheritdoc />
-        IQueryProvider IQueryable.Provider => Provider; // replace query provider
+        IQueryProvider IQueryable.Provider
+            => Provider; // replace query provider
     }
 
     /// <summary>
@@ -86,9 +89,9 @@ namespace NeinLinq
         {
             // rewrite on enumeration
             var enumerable = Provider.RewriteQuery<T>(Expression);
-            if (enumerable is IAsyncEnumerable<T> asyncEnumerable)
-                return asyncEnumerable.GetAsyncEnumerator(cancellationToken);
-            return new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
+            return enumerable is IAsyncEnumerable<T> asyncEnumerable
+                ? asyncEnumerable.GetAsyncEnumerator(cancellationToken)
+                : new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
         }
 #endif
     }

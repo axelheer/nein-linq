@@ -7,19 +7,20 @@ namespace NeinLinq.Tests.InjectableQuery
 {
     public class AsyncQueryBuilderTest
     {
-        private readonly object query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
+        private readonly object query
+            = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable)query).ToAsyncInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable)query).ToAsyncInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable(null, null));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable)query).ToAsyncInjectable(null!, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncInjectable(null!, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable)query).ToAsyncInjectable(null!, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncInjectable(null!, null!));
         }
 
         [Fact]
@@ -56,13 +57,12 @@ namespace NeinLinq.Tests.InjectableQuery
 
         private static void AssertQuery(IAsyncQueryable actual)
         {
-            Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
 
-            var actualProvider = (RewriteAsyncQueryProvider)actual.Provider;
+            var actualProvider = Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
 
-            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsAssignableFrom<IAsyncQueryProvider>(actualProvider.Provider);
+            _ = Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
+            _ = Assert.IsAssignableFrom<IAsyncQueryProvider>(actualProvider.Provider);
         }
     }
 }

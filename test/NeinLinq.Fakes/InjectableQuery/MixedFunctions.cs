@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 
+#pragma warning disable CA1801
+#pragma warning disable CA1822
+
 namespace NeinLinq.Fakes.InjectableQuery
 {
     public class MixedFunctions
@@ -13,23 +16,15 @@ namespace NeinLinq.Fakes.InjectableQuery
         }
 
         public double VelocityInstanceToStatic(Dummy value)
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
 
         public static Expression<Func<Dummy, double>> VelocityInstanceToStatic()
-        {
-            return v => v.Distance / v.Time;
-        }
+            => v => v.Distance / v.Time;
 
         public static double VelocityStaticToInstance(Dummy value)
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
 
         public Expression<Func<Dummy, double>> VelocityStaticToInstance()
-        {
-            return v => Math.Round(v.Distance / v.Time, digits);
-        }
+            => v => Math.Round(v.Distance / v.Time, digits);
     }
 }

@@ -35,7 +35,8 @@ namespace NeinLinq
             Rewriter = rewriter;
         }
 
-        private readonly ExpressionVisitor cleaner = new RewriteQueryCleaner();
+        private readonly ExpressionVisitor cleaner
+            = new RewriteQueryCleaner();
 
         /// <summary>
         /// Rewrites the entire query expression.

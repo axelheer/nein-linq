@@ -26,8 +26,8 @@ namespace NeinLinq.Tests.RewriteQuery
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(null, provider));
-            Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(query, null));
+            _ = Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(null!, provider));
+            _ = Assert.Throws<ArgumentNullException>(() => new RewriteEntityQueryable<Dummy>(query, null!));
         }
 
         [Fact]

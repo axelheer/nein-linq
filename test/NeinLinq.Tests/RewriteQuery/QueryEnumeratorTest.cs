@@ -6,14 +6,16 @@ using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
-    public class QueryEnumeratorTest
+    public sealed class QueryEnumeratorTest : IDisposable
     {
-        private readonly DummyEnumerator enumerator = new DummyEnumerator();
+        private readonly DummyEnumerator enumerator
+            = new DummyEnumerator();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteQueryEnumerator<Dummy>(null));
+            _ = Assert.Throws<ArgumentNullException>(()
+                => new RewriteQueryEnumerator<Dummy>(null!));
         }
 
         [Fact]
@@ -21,9 +23,12 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             enumerator.Current = new Dummy();
 
-            var actual = ((IEnumerator)new RewriteQueryEnumerator<Dummy>(enumerator)).Current;
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                var actual = ((IEnumerator)subject).Current;
 
-            Assert.Equal(enumerator.Current, actual);
+                Assert.Equal(enumerator.Current, actual);
+            }
         }
 
         [Fact]
@@ -31,49 +36,70 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             enumerator.Current = new Dummy();
 
-            var actual = new RewriteQueryEnumerator<Dummy>(enumerator).Current;
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                var actual = subject.Current;
 
-            Assert.Equal(enumerator.Current, actual);
+                Assert.Equal(enumerator.Current, actual);
+            }
         }
 
         [Fact]
         public void MoveNextShouldMoveNext()
         {
-            new RewriteQueryEnumerator<Dummy>(enumerator).MoveNext();
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                _ = subject.MoveNext();
 
-            Assert.True(enumerator.MoveNextCalled);
+                Assert.True(enumerator.MoveNextCalled);
+            }
         }
 
         [Fact]
         public void ResetShouldMoveNext()
         {
-            new RewriteQueryEnumerator<Dummy>(enumerator).Reset();
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                subject.Reset();
 
-            Assert.True(enumerator.ResetCalled);
+                Assert.True(enumerator.ResetCalled);
+            }
         }
 
         [Fact]
         public async Task MoveNextAsyncShouldMoveNext()
         {
-            await new RewriteQueryEnumerator<Dummy>(enumerator).MoveNextAsync();
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                _ = await subject.MoveNextAsync();
 
-            Assert.True(enumerator.MoveNextCalled);
+                Assert.True(enumerator.MoveNextCalled);
+            }
         }
 
         [Fact]
         public void DisposeShouldDispose()
         {
-            new RewriteQueryEnumerator<Dummy>(enumerator).Dispose();
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                subject.Dispose();
 
-            Assert.True(enumerator.DisposeCalled);
+                Assert.True(enumerator.DisposeCalled);
+            }
         }
 
         [Fact]
         public async Task DisposeAsyncShouldDispose()
         {
-            await new RewriteQueryEnumerator<Dummy>(enumerator).DisposeAsync();
+            using (var subject = new RewriteQueryEnumerator<Dummy>(enumerator))
+            {
+                await subject.DisposeAsync();
 
-            Assert.True(enumerator.DisposeCalled);
+                Assert.True(enumerator.DisposeCalled);
+            }
         }
+
+        public void Dispose()
+            => enumerator.Dispose();
     }
 }

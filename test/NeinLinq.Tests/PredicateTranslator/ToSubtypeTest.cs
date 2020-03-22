@@ -8,7 +8,8 @@ namespace NeinLinq.Tests.PredicateTranslator
 {
     public class ToSubtypeTest
     {
-        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ToSubtypeShouldSubstitute()

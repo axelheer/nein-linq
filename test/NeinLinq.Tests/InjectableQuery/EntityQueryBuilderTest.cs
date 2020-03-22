@@ -8,19 +8,20 @@ namespace NeinLinq.Tests.InjectableQuery
 {
     public class EntityQueryBuilderTest
     {
-        private readonly object query = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
+        private readonly object query
+            = Enumerable.Empty<Dummy>().AsQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToEntityInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable)query).ToEntityInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToEntityInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable<Dummy>)query).ToEntityInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToEntityInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable)query).ToEntityInjectable(null, null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToEntityInjectable(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable<Dummy>)query).ToEntityInjectable(null, null));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable)query).ToEntityInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable)query).ToEntityInjectable(null!, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IQueryable<Dummy>)query).ToEntityInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IQueryable<Dummy>)query).ToEntityInjectable(null!, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable)query).ToEntityInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable)query).ToEntityInjectable(null!, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedQueryable<Dummy>)query).ToEntityInjectable(null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => ((IOrderedQueryable<Dummy>)query).ToEntityInjectable(null!, null!));
         }
 
         [Fact]
@@ -57,13 +58,13 @@ namespace NeinLinq.Tests.InjectableQuery
 
         private static void AssertQuery(IQueryable actual)
         {
-            Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
-            Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteEntityQueryable<Dummy>>(actual);
+            _ = Assert.IsAssignableFrom<EntityQueryProvider>(actual.Provider);
 
             var actualProvider = (RewriteEntityQueryProvider)((RewriteEntityQueryable<Dummy>)actual).Provider;
 
-            Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
+            _ = Assert.IsType<InjectableQueryRewriter>(actualProvider.Rewriter);
+            _ = Assert.IsType<EnumerableQuery<Dummy>>(actualProvider.Provider);
         }
     }
 }

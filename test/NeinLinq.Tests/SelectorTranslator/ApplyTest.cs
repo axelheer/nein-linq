@@ -8,26 +8,27 @@ namespace NeinLinq.Tests.SelectorTranslator
 {
     public class ApplyTest
     {
-        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
             Expression<Func<Dummy, DummyView>> s = _ => new DummyView { Id = 1 };
-            Expression<Func<Dummy, DummyView>> t = null;
+            Expression<Func<Dummy, DummyView?>>? t = null;
 
-            Assert.Throws<ArgumentNullException>(() => s.Apply(t));
-            Assert.Throws<ArgumentNullException>(() => t.Apply(s));
+            _ = Assert.Throws<ArgumentNullException>(() => s.Apply(t!));
+            _ = Assert.Throws<ArgumentNullException>(() => t!.Apply(s));
 
             t = _ => null;
 
-            Assert.Throws<NotSupportedException>(() => s.Apply(t));
-            Assert.Throws<NotSupportedException>(() => t.Apply(s));
+            _ = Assert.Throws<NotSupportedException>(() => s.Apply(t!));
+            _ = Assert.Throws<NotSupportedException>(() => t!.Apply(s));
 
             t = _ => new DummyView(1) { Name = "Narf" };
 
-            Assert.Throws<NotSupportedException>(() => s.Apply(t));
-            Assert.Throws<NotSupportedException>(() => t.Apply(s));
+            _ = Assert.Throws<NotSupportedException>(() => s.Apply(t!));
+            _ = Assert.Throws<NotSupportedException>(() => t!.Apply(s));
         }
 
         [Fact]

@@ -15,9 +15,7 @@ namespace NeinLinq
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
         public static IQueryable ToDbInjectable(this IQueryable value, params Type[] whitelist)
-        {
-            return value.DbRewrite(new InjectableQueryRewriter(whitelist));
-        }
+            => value.DbRewrite(new InjectableQueryRewriter(whitelist));
 
         /// <summary>
         /// Replaces method calls with lambda expressions.
@@ -26,9 +24,7 @@ namespace NeinLinq
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedQueryable ToDbInjectable(this IOrderedQueryable value, params Type[] whitelist)
-        {
-            return value.DbRewrite(new InjectableQueryRewriter(whitelist));
-        }
+            => value.DbRewrite(new InjectableQueryRewriter(whitelist));
 
         /// <summary>
         /// Replaces method calls with lambda expressions.
@@ -38,9 +34,7 @@ namespace NeinLinq
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
         public static IQueryable<T> ToDbInjectable<T>(this IQueryable<T> value, params Type[] whitelist)
-        {
-            return value.DbRewrite(new InjectableQueryRewriter(whitelist));
-        }
+            => value.DbRewrite(new InjectableQueryRewriter(whitelist));
 
         /// <summary>
         /// Replaces method calls with lambda expressions.
@@ -50,8 +44,6 @@ namespace NeinLinq
         /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedQueryable<T> ToDbInjectable<T>(this IOrderedQueryable<T> value, params Type[] whitelist)
-        {
-            return value.DbRewrite(new InjectableQueryRewriter(whitelist));
-        }
+            => value.DbRewrite(new InjectableQueryRewriter(whitelist));
     }
 }

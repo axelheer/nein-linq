@@ -34,12 +34,9 @@ namespace NeinLinq
             if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (node == parameter)
-            {
-                return replacement;
-            }
-
-            return base.VisitParameter(node);
+            return node == parameter
+                ? replacement
+                : base.VisitParameter(node);
         }
 
         /// <inheritdoc />

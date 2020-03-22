@@ -7,9 +7,11 @@ namespace NeinLinq
     internal sealed class ObjectCache<TKey, TValue> : IDisposable
         where TKey : notnull
     {
-        private readonly Dictionary<TKey, TValue> cache = new Dictionary<TKey, TValue>();
+        private readonly Dictionary<TKey, TValue> cache
+            = new Dictionary<TKey, TValue>();
 
-        private readonly ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim cacheLock
+            = new ReaderWriterLockSlim();
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
@@ -48,8 +50,6 @@ namespace NeinLinq
         }
 
         public void Dispose()
-        {
-            cacheLock.Dispose();
-        }
+            => cacheLock.Dispose();
     }
 }

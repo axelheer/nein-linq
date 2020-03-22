@@ -9,12 +9,11 @@ namespace NeinLinq
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = false)]
     public sealed class InjectLambdaAttribute : Attribute
     {
-        internal static readonly InjectLambdaAttribute None = new InjectLambdaAttribute();
+        internal static InjectLambdaAttribute None { get; }
+            = new InjectLambdaAttribute();
 
         internal static InjectLambdaAttribute? GetCustomAttribute(MemberInfo element)
-        {
-            return (InjectLambdaAttribute?)GetCustomAttribute(element, typeof(InjectLambdaAttribute));
-        }
+            => (InjectLambdaAttribute?)GetCustomAttribute(element, typeof(InjectLambdaAttribute));
 
         /// <summary>
         /// The target type for the method's expression. The current type, if null.

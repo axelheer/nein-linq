@@ -9,15 +9,16 @@ namespace NeinLinq.Tests.DynamicQuery
 {
     public class CreatePredicateTest
     {
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => CreatePredicate<Dummy>(null, DynamicCompare.Equal, null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => CreatePredicate<Dummy>("Number", (DynamicCompare)(object)-1, null));
-            Assert.Throws<ArgumentNullException>(() => CreatePredicate<Dummy>(null, "Contains", "b"));
-            Assert.Throws<ArgumentNullException>(() => CreatePredicate<Dummy>("Name", null, "b"));
+            _ = Assert.Throws<ArgumentNullException>(() => CreatePredicate<Dummy>(null!, DynamicCompare.Equal, null!));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => CreatePredicate<Dummy>("Number", (DynamicCompare)(object)-1, null!));
+            _ = Assert.Throws<ArgumentNullException>(() => CreatePredicate<Dummy>(null!, "Contains", "b"));
+            _ = Assert.Throws<ArgumentNullException>(() => CreatePredicate<Dummy>("Name", null!, "b"));
         }
 
         [Theory]

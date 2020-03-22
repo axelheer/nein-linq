@@ -48,7 +48,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
                         }
                     }
                 });
-                init.SaveChanges();
+                _ = init.SaveChanges();
             }
 
             db = new Context();
@@ -75,7 +75,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
             var result = await query.Include(d => d.Other).ToListAsync();
 
             Assert.True(rewriter.VisitCalled);
-            Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
+            Assert.All(result, r => Assert.Equal(r.Name, r.Other?.Name));
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 
             Assert.True(outerRewriter.VisitCalled);
             Assert.True(innerRewriter.VisitCalled);
-            Assert.All(result, r => Assert.Equal(r.Name, r.Other.Name));
+            Assert.All(result, r => Assert.Equal(r.Name, r.Other?.Name));
             Assert.Equal(2, result.Count);
         }
 
@@ -153,9 +153,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 
         [Fact]
         public async Task ToListAsyncShouldWork()
-        {
-            await db.Dummies.AsQueryable().ToListAsync();
-        }
+            => await db.Dummies.AsQueryable().ToListAsync();
 
         [Fact]
         public async Task ToListAsyncShouldSucceed()
@@ -171,9 +169,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 
         [Fact]
         public async Task SumAsyncShouldWork()
-        {
-            await db.Dummies.AsQueryable().SumAsync(d => d.Number);
-        }
+            => await db.Dummies.AsQueryable().SumAsync(d => d.Number);
 
         [Fact]
         public async Task SumAsyncShouldSucceed()

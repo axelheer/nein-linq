@@ -6,7 +6,8 @@ namespace NeinLinq.Tests.SubstitutionQuery
 {
     public class QueryTest
     {
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data
+            = DummyStore.Data.AsQueryable();
 
         public QueryTest()
         {
@@ -18,7 +19,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
         public void FunctionsShouldBeCalled()
         {
             var query = from d in data
-                        where Functions.IsSomehow(d.Name)
+                        where Functions.IsSomehow(d.Name!)
                         select d;
 
             var result = query.ToList();
@@ -31,7 +32,7 @@ namespace NeinLinq.Tests.SubstitutionQuery
         public void OtherFunctionsShouldBeCalled()
         {
             var query = from d in data.ToSubstitution(typeof(Functions), typeof(OtherFunctions))
-                        where Functions.IsSomehow(d.Name)
+                        where Functions.IsSomehow(d.Name!)
                         select d;
 
             var result = query.ToList();

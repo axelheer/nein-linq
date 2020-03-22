@@ -24,9 +24,7 @@ namespace NeinLinq
         /// </summary>
         /// <returns>The un-trackable query.</returns>
         public IQueryable<T> AsNoTracking()
-        {
-            return new RewriteDbQueryable<T>(Query.AsNoTracking(), Provider);
-        }
+            => new RewriteDbQueryable<T>(Query.AsNoTracking(), Provider);
 
         /// <summary>
         /// Proxy for includeable queries.
@@ -34,21 +32,20 @@ namespace NeinLinq
         /// <param name="path">The path to include.</param>
         /// <returns>The includeable query.</returns>
         public IQueryable<T> Include(string path)
-        {
-            return new RewriteDbQueryable<T>(Provider.RewriteQuery(Expression).Include(path), Provider);
-        }
+            => new RewriteDbQueryable<T>(Provider.RewriteQuery(Expression).Include(path), Provider);
 
         /// <inheritdoc />
         public IDbAsyncEnumerator<T> GetAsyncEnumerator()
         {
             // rewrite on enumeration
             var enumerable = Provider.RewriteQuery<T>(Expression);
-            if (enumerable is IDbAsyncEnumerable<T> asyncEnumerable)
-                return asyncEnumerable.GetAsyncEnumerator();
-            return new RewriteDbQueryEnumerator<T>(enumerable.GetEnumerator());
+            return enumerable is IDbAsyncEnumerable<T> asyncEnumerable
+                ? asyncEnumerable.GetAsyncEnumerator()
+                : new RewriteDbQueryEnumerator<T>(enumerable.GetEnumerator());
         }
 
         /// <inheritdoc />
-        IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator() => GetAsyncEnumerator();
+        IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator()
+            => GetAsyncEnumerator();
     }
 }

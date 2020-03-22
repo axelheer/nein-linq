@@ -13,9 +13,7 @@ namespace NeinLinq
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
         public static IAsyncQueryable ToAsyncNullsafe(this IAsyncQueryable value)
-        {
-            return value.AsyncRewrite(new NullsafeQueryRewriter());
-        }
+            => value.AsyncRewrite(new NullsafeQueryRewriter());
 
         /// <summary>
         /// Makes a query null-safe.
@@ -23,9 +21,7 @@ namespace NeinLinq
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedAsyncQueryable ToAsyncNullsafe(this IOrderedAsyncQueryable value)
-        {
-            return value.AsyncRewrite(new NullsafeQueryRewriter());
-        }
+            => value.AsyncRewrite(new NullsafeQueryRewriter());
 
         /// <summary>
         /// Makes a query null-safe.
@@ -34,9 +30,7 @@ namespace NeinLinq
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
         public static IAsyncQueryable<T> ToAsyncNullsafe<T>(this IAsyncQueryable<T> value)
-        {
-            return value.AsyncRewrite(new NullsafeQueryRewriter());
-        }
+            => value.AsyncRewrite(new NullsafeQueryRewriter());
 
         /// <summary>
         /// Makes a query null-safe.
@@ -45,8 +39,6 @@ namespace NeinLinq
         /// <param name="value">A query.</param>
         /// <returns>A query proxy.</returns>
         public static IOrderedAsyncQueryable<T> ToAsyncNullsafe<T>(this IOrderedAsyncQueryable<T> value)
-        {
-            return value.AsyncRewrite(new NullsafeQueryRewriter());
-        }
+            => value.AsyncRewrite(new NullsafeQueryRewriter());
     }
 }

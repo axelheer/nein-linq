@@ -5,14 +5,16 @@ using Xunit;
 
 namespace NeinLinq.Tests.RewriteQuery
 {
-    public class QueryEnumerableTest
+    public sealed class QueryEnumerableTest : IDisposable
     {
-        private readonly DummyEnumerable enumerable = new DummyEnumerable();
+        private readonly DummyEnumerable enumerable
+            = new DummyEnumerable();
 
         [Fact]
         public void ConstructorShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new RewriteQueryEnumerable<Dummy>(null));
+            _ = Assert.Throws<ArgumentNullException>(()
+                => new RewriteQueryEnumerable<Dummy>(null!));
         }
 
         [Fact]
@@ -20,7 +22,7 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             var actual = ((IEnumerable)new RewriteQueryEnumerable<Dummy>(enumerable)).GetEnumerator();
 
-            Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
+            _ = Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
         }
 
         [Fact]
@@ -28,7 +30,7 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             var actual = new RewriteQueryEnumerable<Dummy>(enumerable).GetEnumerator();
 
-            Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
+            _ = Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
         }
 
         [Fact]
@@ -36,7 +38,10 @@ namespace NeinLinq.Tests.RewriteQuery
         {
             var actual = new RewriteQueryEnumerable<Dummy>(enumerable).GetAsyncEnumerator();
 
-            Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
+            _ = Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
         }
+
+        public void Dispose()
+            => enumerable.Dispose();
     }
 }

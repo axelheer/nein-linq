@@ -11,8 +11,8 @@ namespace NeinLinq.Tests.DynamicQuery
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateMemberAccess(null, "Name"));
-            Assert.Throws<ArgumentNullException>(() => CreateMemberAccess(Expression.Parameter(typeof(Dummy)), null));
+            _ = Assert.Throws<ArgumentNullException>(() => CreateMemberAccess(null!, "Name"));
+            _ = Assert.Throws<ArgumentNullException>(() => CreateMemberAccess(Expression.Parameter(typeof(Dummy)), null!));
         }
     }
 }

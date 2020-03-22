@@ -28,23 +28,25 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        object? IEnumerator.Current => enumerator.Current;
+        object? IEnumerator.Current
+            => enumerator.Current;
 
         /// <inheritdoc />
-        public T Current => enumerator.Current;
+        public T Current
+            => enumerator.Current;
 
         /// <inheritdoc />
-        public bool MoveNext() => enumerator.MoveNext();
+        public bool MoveNext()
+            => enumerator.MoveNext();
 
         /// <inheritdoc />
-        public void Reset() => enumerator.Reset();
+        public void Reset()
+            => enumerator.Reset();
 
 #if !(NET40 || NET45)
         /// <inheritdoc />
         public ValueTask<bool> MoveNextAsync()
-        {
-            return new ValueTask<bool>(enumerator.MoveNext());
-        }
+            => new ValueTask<bool>(enumerator.MoveNext());
 
         /// <summary>
         /// Releases all resources.

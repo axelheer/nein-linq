@@ -68,23 +68,19 @@ namespace NeinLinq
                 .Invoke(this, new object[] { expression }) ?? throw new InvalidOperationException("Execute returns null."));
         }
 
-        private static readonly MethodInfo executeTask = typeof(RewriteEntityQueryProvider)
-            .GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)
+        private static readonly MethodInfo executeTask
+            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("Method ExecuteTask is missing.");
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
-        {
-            return Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
-        }
+            => Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
 
-        private static readonly MethodInfo executeAsyncEnumerable = typeof(RewriteEntityQueryProvider)
-            .GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)
+        private static readonly MethodInfo executeAsyncEnumerable
+            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("Method ExecuteAsyncEnumerable is missing.");
 
         private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)
-        {
-            return new RewriteQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
-        }
+            => new RewriteQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
     }
 }
 

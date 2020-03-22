@@ -7,19 +7,20 @@ namespace NeinLinq.Tests.SubstitutionQuery
 {
     public class AsyncQueryBuilderTest
     {
-        private readonly object query = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
+        private readonly object query
+            = Enumerable.Empty<Dummy>().ToAsyncEnumerable().AsAsyncQueryable().OrderBy(d => d.Id);
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), null));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(null, typeof(OtherFunctions)));
-            Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), null));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable)query).ToAsyncSubstitution(typeof(Functions), null!));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(null!, typeof(OtherFunctions)));
+            _ = Assert.Throws<ArgumentNullException>(() => ((IOrderedAsyncQueryable<Dummy>)query).ToAsyncSubstitution(typeof(Functions), null!));
         }
 
         [Fact]
@@ -56,13 +57,12 @@ namespace NeinLinq.Tests.SubstitutionQuery
 
         private static void AssertQuery(IAsyncQueryable actual)
         {
-            Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
-            Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
+            _ = Assert.IsType<RewriteAsyncQueryable<Dummy>>(actual);
 
-            var actualProvider = (RewriteAsyncQueryProvider)actual.Provider;
+            var actualProvider = Assert.IsType<RewriteAsyncQueryProvider>(actual.Provider);
 
-            Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
-            Assert.IsAssignableFrom<IAsyncQueryProvider>(actualProvider.Provider);
+            _ = Assert.IsType<SubstitutionQueryRewriter>(actualProvider.Rewriter);
+            _ = Assert.IsAssignableFrom<IAsyncQueryProvider>(actualProvider.Provider);
         }
     }
 }

@@ -17,9 +17,7 @@ namespace NeinLinq
         /// <param name="selector">The selector expression to translate.</param>
         /// <returns>A translation object for the given selector.</returns>
         public static SelectorTranslation<TSource, TResult> Translate<TSource, TResult>(this Expression<Func<TSource, TResult>> selector)
-        {
-            return new SelectorTranslation<TSource, TResult>(selector);
-        }
+            => new SelectorTranslation<TSource, TResult>(selector);
 
         /// <summary>
         /// Combines two given selectors by merging their member bindings.

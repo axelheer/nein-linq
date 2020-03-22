@@ -1,4 +1,6 @@
-﻿namespace NeinLinq.Fakes.SubstitutionQuery
+﻿#pragma warning disable CA1801
+
+namespace NeinLinq.Fakes.SubstitutionQuery
 {
     public static class Functions
     {

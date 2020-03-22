@@ -8,17 +8,18 @@ namespace NeinLinq.Tests.DynamicQuery
 {
     public class WhereUntypedTest
     {
-        private readonly IQueryable data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable).Where("Number", DynamicCompare.Equal, null));
-            Assert.Throws<ArgumentNullException>(() => data.Where(null, DynamicCompare.Equal, null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => data.Where("Number", (DynamicCompare)(object)-1, null));
-            Assert.Throws<ArgumentNullException>(() => default(IQueryable).Where("Name", "Contains", "b"));
-            Assert.Throws<ArgumentNullException>(() => data.Where(null, "Contains", "b"));
-            Assert.Throws<ArgumentNullException>(() => data.Where("Name", null, "b"));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IQueryable)!.Where("Number", DynamicCompare.Equal, null));
+            _ = Assert.Throws<ArgumentNullException>(() => data.Where(null!, DynamicCompare.Equal, null));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => data.Where("Number", (DynamicCompare)(object)-1, null));
+            _ = Assert.Throws<ArgumentNullException>(() => default(IQueryable)!.Where("Name", "Contains", "b"));
+            _ = Assert.Throws<ArgumentNullException>(() => data.Where(null!, "Contains", "b"));
+            _ = Assert.Throws<ArgumentNullException>(() => data.Where("Name", null!, "b"));
         }
 
         [Theory]

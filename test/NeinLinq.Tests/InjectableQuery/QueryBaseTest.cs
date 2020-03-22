@@ -7,9 +7,11 @@ namespace NeinLinq.Tests.InjectableQuery
 {
     public class QueryBaseTest
     {
-        private readonly FunctionsBase functions = new ConcreteFunctions(1);
+        private readonly FunctionsBase functions
+            = new ConcreteFunctions(1);
 
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldFailWithoutSibling()
@@ -139,7 +141,7 @@ namespace NeinLinq.Tests.InjectableQuery
                         select functions.VelocityWithHiddenSibling(d);
 
             var result = query.ToList();
-            
+
             Assert.Equal(new[] { 200, .0, .125 }, result);
         }
 

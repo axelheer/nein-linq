@@ -8,16 +8,17 @@ namespace NeinLinq.Tests.PredicateTranslator
 {
     public class OrTest
     {
-        private readonly IQueryable<IDummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<IDummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
             Expression<Func<IDummy, bool>> p = _ => false;
-            Expression<Func<IDummy, bool>> q = null;
+            Expression<Func<IDummy, bool>>? q = null;
 
-            Assert.Throws<ArgumentNullException>(() => p.Or(q));
-            Assert.Throws<ArgumentNullException>(() => q.Or(p));
+            _ = Assert.Throws<ArgumentNullException>(() => p.Or(q!));
+            _ = Assert.Throws<ArgumentNullException>(() => q!.Or(p));
         }
 
         [Fact]

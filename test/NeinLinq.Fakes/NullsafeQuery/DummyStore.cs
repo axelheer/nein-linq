@@ -5,7 +5,8 @@ namespace NeinLinq.Fakes.NullsafeQuery
 {
     public static class DummyStore
     {
-        public static IEnumerable<Dummy> Data { get; } = new[]
+        public static IEnumerable<Dummy?> Data { get; }
+            = new[]
         {
             new Dummy
             {
@@ -45,7 +46,7 @@ namespace NeinLinq.Fakes.NullsafeQuery
                 SomeNumeric = 654321,
                 SomeText = "",
                 OneDay = new DateTime(2015, 12, 18),
-                EvenLotMoreOthers = new HashSet<Dummy>
+                EvenLotMoreOthers = new HashSet<Dummy?>
                 {
                     null,
                     new Dummy(),

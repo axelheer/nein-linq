@@ -6,17 +6,17 @@ namespace NeinLinq
 {
     internal sealed class InjectLambdaMetadata
     {
-        private readonly bool config;
-
-        public bool Config => config;
+        public bool Config { get; }
 
         private readonly Lazy<Func<Expression?, LambdaExpression?>> lambda;
 
-        public LambdaExpression? Lambda(Expression? value) => lambda.Value(value);
+        public LambdaExpression? Lambda(Expression? value)
+            => lambda.Value(value);
 
         private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>> lambda)
         {
-            this.config = config;
+            Config = config;
+
             this.lambda = lambda;
         }
 
@@ -24,8 +24,8 @@ namespace NeinLinq
         {
             var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
 
-            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
-                LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
+            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
+                => LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
         }
@@ -36,8 +36,8 @@ namespace NeinLinq
                 ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true)
                 ?? throw new InvalidOperationException($"Property {property.Name} has no get method."));
 
-            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(() =>
-                LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
+            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
+                => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
             return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
         }

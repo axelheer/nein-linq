@@ -7,7 +7,8 @@ namespace NeinLinq
 {
     internal class RewriteAsyncQueryCleaner : ExpressionVisitor
     {
-        private static readonly MethodInfo rewriteQuery = typeof(RewriteAsyncQueryProvider).GetMethod("RewriteQuery")
+        private static readonly MethodInfo rewriteQuery
+            = typeof(RewriteAsyncQueryProvider).GetMethod("RewriteQuery")
             ?? throw new InvalidOperationException("Method RewriteQuery is missing.");
 
         protected override Expression VisitMember(MemberExpression node)
@@ -18,21 +19,16 @@ namespace NeinLinq
             if (typeof(IAsyncQueryable).IsAssignableFrom(node.Type))
             {
                 var expression = Visit(node.Expression);
-
                 if (expression is ConstantExpression target)
                 {
                     var value = GetValue(target, node.Member);
-
                     while (value is RewriteAsyncQueryable rewrite)
                     {
                         value = rewriteQuery.MakeGenericMethod(rewrite.ElementType)
                             .Invoke(rewrite.Provider, new object[] { rewrite.Expression });
                     }
-
                     if (value is IAsyncQueryable query)
-                    {
                         return query.Expression;
-                    }
                 }
             }
 
@@ -41,17 +37,12 @@ namespace NeinLinq
 
         private static object? GetValue(ConstantExpression target, MemberInfo member)
         {
-            if (member is PropertyInfo p)
+            return member switch
             {
-                return p.GetValue(target.Value, null);
-            }
-
-            if (member is FieldInfo f)
-            {
-                return f.GetValue(target.Value);
-            }
-
-            return null;
+                PropertyInfo p => p.GetValue(target.Value, null),
+                FieldInfo f => f.GetValue(target.Value),
+                _ => null
+            };
         }
     }
 }

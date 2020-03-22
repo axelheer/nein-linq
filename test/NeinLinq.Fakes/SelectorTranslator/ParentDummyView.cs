@@ -6,10 +6,10 @@ namespace NeinLinq.Fakes.SelectorTranslator
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public ChildDummyView FirstChild { get; set; }
+        public ChildDummyView? FirstChild { get; set; }
 
-        public IEnumerable<ChildDummyView> Children { get; set; }
+        public IEnumerable<ChildDummyView>? Children { get; set; }
     }
 }

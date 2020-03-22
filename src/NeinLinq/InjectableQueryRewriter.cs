@@ -10,7 +10,8 @@ namespace NeinLinq
     /// </summary>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
-        private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> cache = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
+        private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> cache
+            = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
 
         private readonly Type[] whitelist;
 

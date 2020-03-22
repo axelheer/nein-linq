@@ -7,7 +7,8 @@ namespace NeinLinq.Tests.InjectableQuery
 {
     public class QueryStaticTest
     {
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldFailWithoutSibling()

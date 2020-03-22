@@ -8,10 +8,10 @@ namespace NeinLinq.Tests.InjectableQuery
         [Fact]
         public void ShouldHandleInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(default(string)));
-            Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(default(Type)));
-            Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(default(Type), "Narf"));
-            Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(typeof(object), default(string)));
+            _ = Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(default(string)!));
+            _ = Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(default(Type)!));
+            _ = Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(default!, "Narf"));
+            _ = Assert.Throws<ArgumentNullException>(() => new InjectLambdaAttribute(typeof(object), default!));
         }
     }
 }

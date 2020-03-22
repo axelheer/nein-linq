@@ -41,8 +41,8 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         [Fact]
         public async Task ToListAsyncShouldFail()
         {
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                data.ToListAsync());
+            _ = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                  data.ToListAsync());
         }
 
         [Fact]
@@ -60,8 +60,8 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         [Fact]
         public async Task SumAsyncShouldFail()
         {
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                data.SumAsync(d => d.Number));
+            _ = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                  data.SumAsync(d => d.Number));
         }
 
         [Fact]

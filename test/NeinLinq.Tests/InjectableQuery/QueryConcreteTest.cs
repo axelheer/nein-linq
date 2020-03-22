@@ -8,9 +8,11 @@ namespace NeinLinq.Tests.InjectableQuery
 {
     public class QueryConcreteTest
     {
-        private readonly ConcreteFunctions functions = new ConcreteFunctions(1);
+        private readonly ConcreteFunctions functions
+            = new ConcreteFunctions(1);
 
-        private readonly IQueryable<Dummy> data = DummyStore.Data.AsQueryable();
+        private readonly IQueryable<Dummy> data
+            = DummyStore.Data.AsQueryable();
 
         [Fact]
         public void ShouldFailWithoutSibling()

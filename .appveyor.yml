@@ -34,7 +34,7 @@ install:
 
 build_script:
   - ps: |
-      [xml] $buildInfo = Get-Content ./BuildInfo.props
+      [xml] $buildInfo = Get-Content ./Build.props
 
       $versionPrefix = $buildInfo.Project.PropertyGroup.VersionPrefix[0]
       $versionSuffix = "preview.$env:APPVEYOR_BUILD_NUMBER"
@@ -51,7 +51,7 @@ build_script:
 
 test_script:
   - ps: |
-      ./bin/dotnet test --configuration Release --no-build --results-directory ./test-results --settings ./CodeCoverage.runsettings
+      ./bin/dotnet test --configuration Release --no-build --results-directory ./test-results --settings ./Test.runsettings
       ./bin/dotnet codecov --file ./test-results/*/coverage.*.xml
 
 artifacts:
