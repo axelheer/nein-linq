@@ -35,21 +35,15 @@ namespace NeinLinq
         /// <summary>
         /// Returns the original expression.
         /// </summary>
-        /// <returns>The original expression.</returns>
-        public LambdaExpression ToLambdaExpression() => expression;
-
-        /// <summary>
-        /// Returns the original expression.
-        /// </summary>
         /// <param name="cached">The cached expression.</param>
         /// <returns>The original expression.</returns>
-        public static implicit operator LambdaExpression(CachedExpression<TDelegate> cached) => cached?.expression!;
+        public static implicit operator LambdaExpression(CachedExpression<TDelegate> cached) => cached?.Expression!;
     }
 
     /// <summary>
     /// Helper for cached expressions.
     /// </summary>
-    public abstract class CachedExpression
+    public static class CachedExpression
     {
         /// <summary>
         /// Create a new cached expression.
