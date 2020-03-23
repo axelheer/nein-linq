@@ -7,7 +7,7 @@ namespace NeinLinq
 {
     internal sealed class InjectLambdaSignature
     {
-        private const BindingFlags everything
+        private const BindingFlags Everything
             = BindingFlags.NonPublic
             | BindingFlags.Public
             | BindingFlags.Static
@@ -47,8 +47,8 @@ namespace NeinLinq
         {
             // assume method without any parameters
             var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType)
-                ?? target.GetProperty(method, everything)?.GetGetMethod(true)
-                ?? target.GetProperty(method + "Expr", everything)?.GetGetMethod(true);
+                ?? target.GetProperty(method, Everything)?.GetGetMethod(true)
+                ?? target.GetProperty(method + "Expr", Everything)?.GetGetMethod(true);
             if (factory is null)
                 throw FailFactory(target, method, "no matching parameterless member found");
 
@@ -101,7 +101,7 @@ namespace NeinLinq
         {
             MethodInfo? result = null;
 
-            foreach (var candidate in target.GetMethods(everything))
+            foreach (var candidate in target.GetMethods(Everything))
             {
                 // non-matching name?
                 if (candidate.Name != method)

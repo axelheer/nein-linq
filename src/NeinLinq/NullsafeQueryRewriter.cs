@@ -11,7 +11,7 @@ namespace NeinLinq
     /// </summary>
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
-        private static readonly ObjectCache<Type, Expression?> cache
+        private static readonly ObjectCache<Type, Expression?> Cache
             = new ObjectCache<Type, Expression?>();
 
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace NeinLinq
 
         private static Expression BeSafe(Expression target, Expression expression, Func<Expression, Expression> update)
         {
-            var fallback = cache.GetOrAdd(target.Type, Fallback);
+            var fallback = Cache.GetOrAdd(target.Type, Fallback);
 
             if (fallback is { })
             {

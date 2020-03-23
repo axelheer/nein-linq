@@ -7,7 +7,7 @@ namespace NeinLinq
 {
     internal class RewriteAsyncQueryCleaner : ExpressionVisitor
     {
-        private static readonly MethodInfo rewriteQuery
+        private static readonly MethodInfo RewriteQueryMethod
             = typeof(RewriteAsyncQueryProvider).GetMethod("RewriteQuery")
             ?? throw new InvalidOperationException("Method RewriteQuery is missing.");
 
@@ -24,7 +24,7 @@ namespace NeinLinq
                     var value = GetValue(target, node.Member);
                     while (value is RewriteAsyncQueryable rewrite)
                     {
-                        value = rewriteQuery.MakeGenericMethod(rewrite.ElementType)
+                        value = RewriteQueryMethod.MakeGenericMethod(rewrite.ElementType)
                             .Invoke(rewrite.Provider, new object[] { rewrite.Expression });
                     }
                     if (value is IAsyncQueryable query)

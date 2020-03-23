@@ -55,9 +55,9 @@ namespace NeinLinq
                 // TODO: there is a better solution for that, right?
                 var resultDefinition = typeof(TResult).GetGenericTypeDefinition();
                 if (resultDefinition == typeof(Task<>))
-                    return Execute<TResult>(executeTask, expression);
+                    return Execute<TResult>(ExecuteTaskMethod, expression);
                 if (resultDefinition == typeof(IAsyncEnumerable<>))
-                    return Execute<TResult>(executeAsyncEnumerable, expression);
+                    return Execute<TResult>(ExecuteAsyncEnumerableMethod, expression);
             }
             return Provider.Execute<TResult>(Rewrite(expression));
         }
@@ -68,14 +68,14 @@ namespace NeinLinq
                 .Invoke(this, new object[] { expression }) ?? throw new InvalidOperationException("Execute returns null."));
         }
 
-        private static readonly MethodInfo executeTask
+        private static readonly MethodInfo ExecuteTaskMethod
             = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("Method ExecuteTask is missing.");
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
             => Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
 
-        private static readonly MethodInfo executeAsyncEnumerable
+        private static readonly MethodInfo ExecuteAsyncEnumerableMethod
             = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("Method ExecuteAsyncEnumerable is missing.");
 

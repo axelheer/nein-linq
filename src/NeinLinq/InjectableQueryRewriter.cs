@@ -10,7 +10,7 @@ namespace NeinLinq
     /// </summary>
     public class InjectableQueryRewriter : ExpressionVisitor
     {
-        private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> cache
+        private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> Cache
             = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
 
         private readonly Type[] whitelist;
@@ -44,7 +44,7 @@ namespace NeinLinq
             if (property?.GetGetMethod(true) is { } && property.GetSetMethod(true) is null)
             {
                 // cache "meta-data" for performance reasons
-                var data = cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));
+                var data = Cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));
 
                 if (ShouldInject(property, data))
                 {
@@ -73,7 +73,7 @@ namespace NeinLinq
                 throw new ArgumentNullException(nameof(node));
 
             // cache "meta-data" for performance reasons
-            var data = cache.GetOrAdd(node.Method, _ => InjectLambdaMetadata.Create(node.Method));
+            var data = Cache.GetOrAdd(node.Method, _ => InjectLambdaMetadata.Create(node.Method));
 
             if (ShouldInject(node.Method, data))
             {

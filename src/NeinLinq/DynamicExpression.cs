@@ -9,7 +9,7 @@ namespace NeinLinq
     /// </summary>
     public static class DynamicExpression
     {
-        private static readonly ObjectCache<Type, Func<string?, IFormatProvider?, object>> cache
+        private static readonly ObjectCache<Type, Func<string?, IFormatProvider?, object>> Cache
             = new ObjectCache<Type, Func<string?, IFormatProvider?, object>>();
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace NeinLinq
             if (string.IsNullOrEmpty(value))
                 return Expression.Default(type);
 
-            var converter = cache.GetOrAdd(type, CreateConverter);
+            var converter = Cache.GetOrAdd(type, CreateConverter);
             var convertedValue = converter(value, provider);
 
             return Expression.Constant(convertedValue, type);
