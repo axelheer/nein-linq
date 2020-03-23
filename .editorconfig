@@ -1,6 +1,11 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
+# All files
+[*]
+
+charset = utf-8
+
 # C# files
 [*.cs]
 
@@ -179,6 +184,14 @@ dotnet_naming_rule.fields_and_parameters_should_be_camel_case.severity = suggest
 dotnet_naming_rule.fields_and_parameters_should_be_camel_case.symbols = fields_and_parameters
 dotnet_naming_rule.fields_and_parameters_should_be_camel_case.style = camel_case
 
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.symbols = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols = constant_fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style = pascal_case
+
 # Symbol specifications
 
 dotnet_naming_symbols.interfaces.applicable_kinds = interface
@@ -197,9 +210,17 @@ dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, meth
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.non_field_members.required_modifiers =
 
-dotnet_naming_symbols.fields_and_parameters.applicable_kinds = field
+dotnet_naming_symbols.fields_and_parameters.applicable_kinds = field, parameter
 dotnet_naming_symbols.fields_and_parameters.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.fields_and_parameters.required_modifiers = parameter
+dotnet_naming_symbols.fields_and_parameters.required_modifiers =
+
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.static_readonly_fields.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.static_readonly_fields.required_modifiers = static
+
+dotnet_naming_symbols.constant_fields.applicable_kinds = field
+dotnet_naming_symbols.constant_fields.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.constant_fields.required_modifiers = const
 
 # Naming styles
 
@@ -222,11 +243,3 @@ dotnet_naming_style.camel_case.required_prefix =
 dotnet_naming_style.camel_case.required_suffix =
 dotnet_naming_style.camel_case.word_separator =
 dotnet_naming_style.camel_case.capitalization = camel_case
-
-#### Diagnostics ####
-
-dotnet_diagnostic.CA1010.severity = silent
-dotnet_diagnostic.CA1303.severity = silent
-dotnet_diagnostic.CA1710.severity = silent
-dotnet_diagnostic.CA2007.severity = silent
-dotnet_diagnostic.CA2225.severity = silent
