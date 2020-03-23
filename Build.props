@@ -20,6 +20,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <Target Name="UpdateAppveyorBuild" BeforeTargets="Build" Condition=" $(APPVEYOR_BUILD_NUMBER) != '' ">
+    <Exec Command="appveyor UpdateBuild -Version $(Version)" />
+  </Target>
+
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1010;CA1303;CA1710;CA2007;CA2225;NU5105</NoWarn>
   </PropertyGroup>
