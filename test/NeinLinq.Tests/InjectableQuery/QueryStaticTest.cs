@@ -151,5 +151,27 @@ namespace NeinLinq.Tests.InjectableQuery
 
             Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
+
+        [Fact]
+        public void ShouldSucceedWithCachedExpression()
+        {
+            var query = from d in data.ToInjectable()
+                        select d.VelocityWithCachedExpression();
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithCachedDelegate()
+        {
+            var query = from d in data
+                        select d.VelocityWithCachedExpression();
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        }
     }
 }

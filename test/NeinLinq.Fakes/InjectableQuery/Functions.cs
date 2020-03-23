@@ -127,5 +127,12 @@ namespace NeinLinq.Fakes.InjectableQuery
         {
             return v => v.Distance / v.Time;
         }
+
+        private static CachedExpression<Func<Dummy, double>> VelocityWithCachedExpressionExpr { get; }
+            = CachedExpression.From<Func<Dummy, double>>(v => v.Distance / v.Time);
+
+        [InjectLambda]
+        public static double VelocityWithCachedExpression(this Dummy value)
+            => VelocityWithCachedExpressionExpr.Compiled(value);
     }
 }

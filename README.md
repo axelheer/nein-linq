@@ -161,6 +161,17 @@ public static string LimitText(this string value, int maxLength)
 }
 ```
 
+**New:** with Version `4.1.0` a simple and build-in expression cache has been added. You can still use your own more fancy one; and if you add any cast operator to `LambdaExpression`, your code may get a nice little clean-up here...
+
+```csharp
+public static CachedExpression<Func<string, int, string>> LimitTextExpr { get; }
+    = CachedExpression.From<Func<string, int, string>>((v, l) => v != null && v.Length > l ? v.Substring(0, l) : v)
+
+[InjectLambda]
+public static string LimitText(this string value, int maxLength)
+    => LimitTextExpr.Compiled(value, maxLength);
+```
+
 **New:** that works with instance methods too (Version `1.3.1`), so the actual expression code is finally able to retrieve additional data. Since Version `1.5.1` even interfaces and / or base classes can be used to abstract all the things. Thus, we can declare an interface / base class without expressions, but provide the expression to inject using inheritance.
 
 ```csharp

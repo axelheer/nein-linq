@@ -43,7 +43,8 @@ namespace NeinLinq
         {
             // assume method without any parameters
             var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType)
-                ?? target.GetProperty(method, everything)?.GetGetMethod(true);
+                ?? target.GetProperty(method, everything)?.GetGetMethod(true)
+                ?? target.GetProperty(method + "Expr", everything)?.GetGetMethod(true);
             if (factory is null)
                 throw FailFactory(target, method, "no matching parameterless member found");
 
@@ -53,25 +54,39 @@ namespace NeinLinq
 
             // mixed static and non-static methods?
             if (isStatic && !factory.IsStatic)
-                throw FailFactory(target, method, "static implementation expected");
+                throw FailFactory(target, factory.Name, "static implementation expected");
             if (!isStatic && factory.IsStatic)
-                throw FailFactory(target, method, "non-static implementation expected");
+                throw FailFactory(target, factory.Name, "non-static implementation expected");
 
             // method returns lambda expression?
             var returns = factory.ReturnType;
-            if (!returns.IsGenericType || returns.GetGenericTypeDefinition() != typeof(Expression<>))
-                throw FailFactory(target, method, "returns no lambda expression");
+            if (!IsLambdaExpression(returns))
+                throw FailFactory(target, factory.Name, "returns no lambda expression");
 
-            // lambda signature matches original method's signature?
-            var signature = returns.GetGenericArguments()[0].GetMethod("Invoke", parameterTypes);
-            if (signature is null || signature.ReturnParameter.ParameterType != returnType)
-                throw FailFactory(target, method, "returns non-matching expression");
+            if (returns.IsGenericType)
+            {
+                // lambda signature matches original method's signature?
+                var signature = returns.GetGenericArguments()[0].GetMethod("Invoke", parameterTypes);
+                if (signature is null || signature.ReturnParameter.ParameterType != returnType)
+                    throw FailFactory(target, factory.Name, "returns non-matching expression");
+            }
 
             return factory;
         }
 
+        private static bool IsLambdaExpression(Type type)
+        {
+            return typeof(LambdaExpression).IsAssignableFrom(type)
+                || type.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                       .Any(method => method.ReturnType == typeof(LambdaExpression)
+                                   && (method.Name == "op_Implicit" || method.Name == "op_Explicit"));
+        }
+
         private static Exception FailFactory(Type target, string method, string error)
         {
+            if (method.StartsWith("get_", StringComparison.Ordinal))
+                method = method.Substring(4);
+
             throw new InvalidOperationException($"Unable to retrieve lambda expression from {target.FullName}.{method}: {error}.");
         }
 
