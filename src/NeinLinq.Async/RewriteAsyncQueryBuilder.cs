@@ -24,9 +24,9 @@ namespace NeinLinq
 
             var provider = new RewriteAsyncQueryProvider(value.Provider, rewriter);
 
-            return (IAsyncQueryable?)Activator.CreateInstance(
+            return (IAsyncQueryable)Activator.CreateInstance(
                 typeof(RewriteAsyncQueryable<>).MakeGenericType(value.ElementType),
-                value, provider) ?? throw new InvalidOperationException();
+                value, provider)!;
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace NeinLinq
 
             var provider = new RewriteAsyncQueryProvider(value.Provider, rewriter);
 
-            return (IOrderedAsyncQueryable?)Activator.CreateInstance(
+            return (IOrderedAsyncQueryable)Activator.CreateInstance(
                 typeof(RewriteAsyncQueryable<>).MakeGenericType(value.ElementType),
-                value, provider) ?? throw new InvalidOperationException();
+                value, provider)!;
         }
 
         /// <summary>

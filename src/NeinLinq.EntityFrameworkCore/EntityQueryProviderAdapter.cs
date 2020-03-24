@@ -6,7 +6,7 @@ using System.Threading;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-#pragma warning disable EF1001 // Internal EF Core API usage.
+#pragma warning disable EF1001
 
 namespace NeinLinq
 {
@@ -52,5 +52,3 @@ namespace NeinLinq
         }
     }
 }
-
-#pragma warning restore EF1001 // Internal EF Core API usage.

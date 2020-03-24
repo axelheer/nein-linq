@@ -39,9 +39,9 @@ namespace NeinLinq
         {
             // create query and make proxy again for rewritten query chaining
             var query = Provider.CreateQuery(expression);
-            return (IQueryable?)Activator.CreateInstance(
+            return (IQueryable)Activator.CreateInstance(
                 typeof(RewriteEntityQueryable<>).MakeGenericType(query.ElementType),
-                query, this) ?? throw new InvalidOperationException();
+                query, this)!;
         }
 
         /// <inheritdoc />
@@ -65,19 +65,17 @@ namespace NeinLinq
         private TResult Execute<TResult>(MethodInfo method, Expression expression)
         {
             return (TResult)(method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
-                .Invoke(this, new object[] { expression }) ?? throw new InvalidOperationException("Execute returns null."));
+                .Invoke(this, new object[] { expression })!);
         }
 
         private static readonly MethodInfo ExecuteTaskMethod
-            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("Method ExecuteTask is missing.");
+            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)!;
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
             => Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
 
         private static readonly MethodInfo ExecuteAsyncEnumerableMethod
-            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("Method ExecuteAsyncEnumerable is missing.");
+            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)!;
 
         private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)
             => new RewriteQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));

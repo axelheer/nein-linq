@@ -8,8 +8,7 @@ namespace NeinLinq
     internal class RewriteAsyncQueryCleaner : ExpressionVisitor
     {
         private static readonly MethodInfo RewriteQueryMethod
-            = typeof(RewriteAsyncQueryProvider).GetMethod("RewriteQuery")
-            ?? throw new InvalidOperationException("Method RewriteQuery is missing.");
+            = typeof(RewriteAsyncQueryProvider).GetMethod("RewriteQuery")!;
 
         protected override Expression VisitMember(MemberExpression node)
         {
