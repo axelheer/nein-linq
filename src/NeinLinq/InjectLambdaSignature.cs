@@ -82,7 +82,7 @@ namespace NeinLinq
         {
             return typeof(LambdaExpression).IsAssignableFrom(type)
                 || type.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                       .Any(method => method.ReturnType == typeof(LambdaExpression)
+                       .Any(method => typeof(LambdaExpression).IsEquivalentTo(method.ReturnType)
                                    && (method.Name == "op_Implicit" || method.Name == "op_Explicit"));
         }
 

@@ -29,7 +29,7 @@ namespace NeinLinq
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
-            lazyCompiled = new Lazy<TDelegate>(Expression.Compile);
+            lazyCompiled = new Lazy<TDelegate>(expression.Compile);
         }
 
         /// <summary>
@@ -42,6 +42,14 @@ namespace NeinLinq
 
         /// <summary>
         /// Returns the original expression.
+        /// </summary>
+        /// <param name="cached">The cached expression.</param>
+        /// <returns>The original expression.</returns>
+        public static implicit operator Expression<TDelegate>(CachedExpression<TDelegate> cached)
+            => cached?.Expression!;
+
+        /// <summary>
+        /// Returns the original expression. Untyped.
         /// </summary>
         /// <param name="cached">The cached expression.</param>
         /// <returns>The original expression.</returns>
