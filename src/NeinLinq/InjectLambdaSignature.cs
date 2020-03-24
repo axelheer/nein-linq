@@ -46,9 +46,15 @@ namespace NeinLinq
         public MethodInfo FindFactory(Type target, string method, Type? injectedType = null)
         {
             // assume method without any parameters
-            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType)
-                ?? target.GetProperty(method, Everything)?.GetGetMethod(true)
-                ?? target.GetProperty(method + "Expr", Everything)?.GetGetMethod(true);
+            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType);
+            if (factory is null && genericArguments.Length == 0)
+            {
+                // fall-back to properties for non-generic types
+                factory = target.GetProperty(method, Everything)?.GetGetMethod(true)
+                    ?? target.GetProperty(method + "Expr", Everything)?.GetGetMethod(true);
+            }
+
+            // okay, no more checks here...
             if (factory is null)
                 throw FailFactory(target, method, "no matching parameterless member found");
 
@@ -57,25 +63,28 @@ namespace NeinLinq
                 factory = factory.MakeGenericMethod(genericArguments);
 
             // mixed static and non-static methods?
-            if (isStatic && !factory.IsStatic)
-                throw FailFactory(target, factory.Name, "static implementation expected");
-            if (!isStatic && factory.IsStatic)
-                throw FailFactory(target, factory.Name, "non-static implementation expected");
+            if (factory.IsStatic != isStatic)
+                throw FailFactory(target, factory.Name, $"{(isStatic ? "static" : "non-static")} implementation expected");
 
             // method returns lambda expression?
-            var returns = factory.ReturnType;
-            if (!IsLambdaExpression(returns))
+            if (!IsLambdaExpression(factory.ReturnType))
                 throw FailFactory(target, factory.Name, "returns no lambda expression");
 
-            if (returns.IsGenericType)
-            {
-                // lambda signature matches original method's signature?
-                var signature = returns.GetGenericArguments()[0].GetMethod("Invoke", parameterTypes);
-                if (signature is null || signature.ReturnParameter.ParameterType != returnType)
-                    throw FailFactory(target, factory.Name, "returns non-matching expression");
-            }
+            // lambda signature matches original method's signature?
+            if (!IsMatchingDelegate(factory.ReturnType))
+                throw FailFactory(target, factory.Name, "returns non-matching expression");
 
             return factory;
+        }
+
+        private bool IsMatchingDelegate(Type type)
+        {
+            if (!type.IsGenericType)
+                return false;
+            var delegatus = type.GetGenericArguments()
+                .FirstOrDefault(typeof(Delegate).IsAssignableFrom);
+            return delegatus?.GetMethod("Invoke", parameterTypes)
+                ?.ReturnParameter.ParameterType == returnType;
         }
 
         private static bool IsLambdaExpression(Type type)
