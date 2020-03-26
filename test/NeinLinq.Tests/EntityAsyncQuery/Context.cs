@@ -15,10 +15,14 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlite("Data Source=NeinLinq.EntityFrameworkCore.db");
 
-        public void ResetDatabase()
+        public void CreateDatabase(params Dummy[] seed)
         {
             _ = Database.EnsureDeleted();
             _ = Database.EnsureCreated();
+
+            Dummies.AddRange(seed);
+
+            _ = SaveChanges();
         }
     }
 }

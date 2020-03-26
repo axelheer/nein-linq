@@ -18,10 +18,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
         {
             using (var init = new Context())
             {
-                init.ResetDatabase();
-
-                _ = init.Dummies.AddRange(new[]
-                {
+                init.CreateDatabase(
                     new Dummy
                     {
                         Name = "Asdf",
@@ -49,9 +46,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
                             Name = "Narf"
                         }
                     }
-                });
-
-                _ = init.SaveChanges();
+                );
             }
 
             db = new Context();

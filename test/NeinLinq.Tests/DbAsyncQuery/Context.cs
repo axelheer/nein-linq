@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.IO;
 using NeinLinq.Fakes.DbAsyncQuery;
 
 namespace NeinLinq.Tests.DbAsyncQuery
@@ -8,14 +9,33 @@ namespace NeinLinq.Tests.DbAsyncQuery
     {
         public DbSet<Dummy> Dummies { get; }
 
-        public Context() : base("NeinLinq.EntityFramework")
+        public Context() : base("Data Source=NeinLinq.EntityFramework.db")
         {
             Dummies = Set<Dummy>();
         }
 
-        public void ResetDatabase()
+        public void CreateDatabase(params Dummy[] seed)
         {
-            _ = Dummies.RemoveRange(Dummies);
+            if (File.Exists("NeinLinq.EntityFramework.db"))
+                return;
+
+            File.Create("NeinLinq.EntityFramework.db").Close();
+
+            _ = Database.ExecuteSqlCommand(@"
+                CREATE TABLE Dummies (
+                    Id INTEGER PRIMARY KEY NOT NULL,
+                    Name TEXT,
+                    Number REAL NOT NULL,
+                    OtherId INTEGER NOT NULL
+            )");
+
+            _ = Database.ExecuteSqlCommand(@"
+                CREATE TABLE OtherDummies (
+                    Id INTEGER PRIMARY KEY  NOT NULL,
+                    Name TEXT
+            )");
+
+            _ = Dummies.AddRange(seed);
             _ = SaveChanges();
         }
     }
