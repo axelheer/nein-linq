@@ -7,6 +7,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.DependencyResolution;
 using System.Data.SQLite;
 using System.Data.SQLite.EF6;
+using System.Linq;
 
 namespace NeinLinq.Tests.DbAsyncQuery
 {
@@ -24,21 +25,17 @@ namespace NeinLinq.Tests.DbAsyncQuery
 
             public object GetService(Type type, object key)
             {
-                if (type == typeof(DbProviderFactory))
-                    return SQLiteProviderFactory.Instance;
-                if (type == typeof(IDbProviderFactoryResolver))
-                    return SQLiteDbProviderFactoryResolver.Instance;
-                if (type == typeof(IProviderInvariantName))
-                    return SQLiteProviderInvariantName.Instance;
-                return SQLiteProviderFactory.Instance.GetService(type);
+                return type == typeof(DbProviderFactory)
+                    ? SQLiteProviderFactory.Instance
+                    : type == typeof(IDbProviderFactoryResolver)
+                    ? SQLiteDbProviderFactoryResolver.Instance
+                    : type == typeof(IProviderInvariantName)
+                    ? SQLiteProviderInvariantName.Instance
+                    : SQLiteProviderFactory.Instance.GetService(type);
             }
 
             public IEnumerable<object> GetServices(Type type, object key)
-            {
-                var service = GetService(type, key);
-                if (service != null)
-                    yield return service;
-            }
+                => Enumerable.Empty<object>();
         }
 
         private class SQLiteDbProviderFactoryResolver : IDbProviderFactoryResolver
@@ -48,11 +45,12 @@ namespace NeinLinq.Tests.DbAsyncQuery
 
             public DbProviderFactory ResolveProviderFactory(DbConnection connection)
             {
-                if (connection is SQLiteConnection)
-                    return SQLiteProviderFactory.Instance;
-                if (connection is EntityConnection)
-                    return EntityProviderFactory.Instance;
-                return null!;
+                return connection switch
+                {
+                    SQLiteConnection _ => SQLiteProviderFactory.Instance,
+                    EntityConnection _ => EntityProviderFactory.Instance,
+                    _ => null!
+                };
             }
         }
 

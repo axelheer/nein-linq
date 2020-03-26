@@ -52,7 +52,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             db = new Context();
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task AsNoTrackingShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -64,7 +64,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(3, result.Count);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task IncludeShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -76,7 +76,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.All(result, r => Assert.Equal(r.Name, r.Other?.Name));
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task SubQueryShouldSucceed()
         {
             var innerRewriter = new Rewriter();
@@ -94,7 +94,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(2, result.Count);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task SubQueryShouldSucceedWithProjection()
         {
             var innerRewriter = new Rewriter();
@@ -112,7 +112,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(2, result.Count);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task SubQueryShouldSucceedWithInclude()
         {
             var innerRewriter = new Rewriter();
@@ -131,7 +131,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(2, result.Count);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task SubQueryShouldSucceedWithAsNoTracking()
         {
             var innerRewriter = new Rewriter();
@@ -149,11 +149,11 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(2, result.Count);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task ToListAsyncShouldWork()
             => await db.Dummies.ToListAsync();
 
-        [WindowsFact]
+        [Fact]
         public async Task ToListAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -165,11 +165,11 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(3, result.Count);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task SumAsyncShouldWork()
             => await db.Dummies.SumAsync(d => d.Number);
 
-        [WindowsFact]
+        [Fact]
         public async Task SumAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -181,7 +181,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.Equal(194.48f, result, 2);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task AsyncEnumeratorShouldSucceed()
         {
             var rewriter = new Rewriter();
@@ -195,7 +195,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             Assert.True(result);
         }
 
-        [WindowsFact]
+        [Fact]
         public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
