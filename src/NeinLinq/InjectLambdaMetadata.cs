@@ -56,7 +56,7 @@ namespace NeinLinq
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(method, signature);
+            return DynamicLambdaFactory(method, signature)!;
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)

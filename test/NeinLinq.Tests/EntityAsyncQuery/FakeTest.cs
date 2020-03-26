@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using NeinLinq.Fakes.EntityAsyncQuery;
 using Xunit;
 
+#pragma warning disable EF1001
+
+using IAsyncQueryProvider = Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider;
+
 namespace NeinLinq.Tests.EntityAsyncQuery
 {
     public class FakeTest
@@ -76,22 +80,18 @@ namespace NeinLinq.Tests.EntityAsyncQuery
             Assert.Equal(194.48m, result, 2);
         }
 
-#pragma warning disable EF1001 // Internal EF Core API usage.
-
         [Fact]
         public async Task ExecuteAsyncShouldSucceed()
         {
             var rewriter = new Rewriter();
             var query = data.EntityRewrite(rewriter);
 
-            var enumerator = ((Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider)query.Provider).ExecuteAsync<IAsyncEnumerable<Dummy>>(query.Expression).GetAsyncEnumerator();
+            var enumerator = ((IAsyncQueryProvider)query.Provider).ExecuteAsync<IAsyncEnumerable<Dummy>>(query.Expression).GetAsyncEnumerator();
 
             var result = await enumerator.MoveNextAsync();
 
             Assert.True(rewriter.VisitCalled);
             Assert.True(result);
         }
-
-#pragma warning restore EF1001 // Internal EF Core API usage.
     }
 }

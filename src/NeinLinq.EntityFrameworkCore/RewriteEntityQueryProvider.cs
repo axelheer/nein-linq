@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-#pragma warning disable EF1001 // Internal EF Core API usage.
+#pragma warning disable EF1001
 
 namespace NeinLinq
 {
@@ -81,5 +81,3 @@ namespace NeinLinq
             => new RewriteQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
     }
 }
-
-#pragma warning restore EF1001 // Internal EF Core API usage.
