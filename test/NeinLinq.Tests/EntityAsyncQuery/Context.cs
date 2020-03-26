@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NeinLinq.Fakes.EntityAsyncQuery;
 
 namespace NeinLinq.Tests.EntityAsyncQuery
@@ -14,17 +13,12 @@ namespace NeinLinq.Tests.EntityAsyncQuery
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            _ = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NeinLinq.EntityFrameworkCore; Integrated Security=true;")
-                : optionsBuilder.UseInMemoryDatabase("NeinLinq.EntityFrameworkCore");
-        }
+            => optionsBuilder.UseSqlite("Data Source=NeinLinq.EntityFrameworkCore.db");
 
         public void ResetDatabase()
         {
+            _ = Database.EnsureDeleted();
             _ = Database.EnsureCreated();
-            Dummies.RemoveRange(Dummies);
-            _ = SaveChanges();
         }
     }
 }

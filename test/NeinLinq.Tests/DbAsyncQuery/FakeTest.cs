@@ -22,19 +22,19 @@ namespace NeinLinq.Tests.DbAsyncQuery
                 {
                     Id = 1,
                     Name = "Asdf",
-                    Number = 123.45m
+                    Number = 123.45f
                 },
                 new Dummy
                 {
                     Id = 2,
                     Name = "Qwer",
-                    Number = 67.89m
+                    Number = 67.89f
                 },
                 new Dummy
                 {
                     Id = 3,
                     Name = "Narf",
-                    Number = 3.14m
+                    Number = 3.14f
                 }
             }
             .AsQueryable();
@@ -75,7 +75,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             var result = await query.SumAsync(d => d.Number);
 
             Assert.True(rewriter.VisitCalled);
-            Assert.Equal(194.48m, result, 2);
+            Assert.Equal(194.48f, result, 2);
         }
 
         [Fact]

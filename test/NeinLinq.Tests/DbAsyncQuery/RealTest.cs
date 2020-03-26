@@ -25,7 +25,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
                     new Dummy
                     {
                         Name = "Asdf",
-                        Number = 123.45m,
+                        Number = 123.45f,
                         Other = new OtherDummy
                         {
                             Name = "Asdf"
@@ -34,7 +34,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
                     new Dummy
                     {
                         Name = "Qwer",
-                        Number = 67.89m,
+                        Number = 67.89f,
                         Other = new OtherDummy
                         {
                             Name = "Qwer"
@@ -43,13 +43,14 @@ namespace NeinLinq.Tests.DbAsyncQuery
                     new Dummy
                     {
                         Name = "Narf",
-                        Number = 3.14m,
+                        Number = 3.14f,
                         Other = new OtherDummy
                         {
                             Name = "Narf"
                         }
                     }
                 });
+
                 _ = init.SaveChanges();
             }
 
@@ -182,7 +183,7 @@ namespace NeinLinq.Tests.DbAsyncQuery
             var result = await query.SumAsync(d => d.Number);
 
             Assert.True(rewriter.VisitCalled);
-            Assert.Equal(194.48m, result, 2);
+            Assert.Equal(194.48f, result, 2);
         }
 
         [WindowsFact]

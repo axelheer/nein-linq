@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NeinLinq.Fakes.EntityAsyncQuery;
 using Xunit;
-
-#pragma warning disable EF1001
-
-using IAsyncQueryProvider = Microsoft.EntityFrameworkCore.Query.Internal.IAsyncQueryProvider;
 
 namespace NeinLinq.Tests.EntityAsyncQuery
 {
@@ -27,7 +22,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
                     new Dummy
                     {
                         Name = "Asdf",
-                        Number = 123.45m,
+                        Number = 123.45f,
                         Other = new OtherDummy
                         {
                             Name = "Asdf"
@@ -36,7 +31,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
                     new Dummy
                     {
                         Name = "Qwer",
-                        Number = 67.89m,
+                        Number = 67.89f,
                         Other = new OtherDummy
                         {
                             Name = "Qwer"
@@ -45,13 +40,14 @@ namespace NeinLinq.Tests.EntityAsyncQuery
                     new Dummy
                     {
                         Name = "Narf",
-                        Number = 3.14m,
+                        Number = 3.14f,
                         Other = new OtherDummy
                         {
                             Name = "Narf"
                         }
                     }
                 });
+
                 _ = init.SaveChanges();
             }
 
@@ -184,21 +180,7 @@ namespace NeinLinq.Tests.EntityAsyncQuery
             var result = await query.SumAsync(d => d.Number);
 
             Assert.True(rewriter.VisitCalled);
-            Assert.Equal(194.48m, result, 2);
-        }
-
-        [Fact]
-        public async Task ExecuteAsyncShouldSucceed()
-        {
-            var rewriter = new Rewriter();
-            var query = db.Dummies.EntityRewrite(rewriter);
-
-            var enumerator = ((IAsyncQueryProvider)query.Provider).ExecuteAsync<IAsyncEnumerable<Dummy>>(query.Expression).GetAsyncEnumerator();
-
-            var result = await enumerator.MoveNextAsync();
-
-            Assert.True(rewriter.VisitCalled);
-            Assert.True(result);
+            Assert.Equal(194.48f, result, 2);
         }
 
         protected virtual void Dispose(bool disposing)

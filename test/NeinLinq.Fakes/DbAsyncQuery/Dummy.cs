@@ -6,7 +6,7 @@
 
         public string? Name { get; set; }
 
-        public decimal Number { get; set; }
+        public float Number { get; set; }
 
         public int OtherId { get; set; }
 
