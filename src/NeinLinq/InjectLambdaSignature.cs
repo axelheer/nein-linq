@@ -45,14 +45,7 @@ namespace NeinLinq
 
         public MethodInfo FindFactory(Type target, string method, Type? injectedType = null)
         {
-            // assume method without any parameters
-            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType);
-            if (factory is null && genericArguments.Length == 0)
-            {
-                // fall-back to properties for non-generic types
-                factory = target.GetProperty(method, Everything)?.GetGetMethod(true)
-                    ?? target.GetProperty(method + "Expr", Everything)?.GetGetMethod(true);
-            }
+            var factory = FindMatchWithoutParameters(target, method, genericArguments, injectedType);
 
             // okay, no more checks here...
             if (factory is null)
@@ -79,12 +72,11 @@ namespace NeinLinq
 
         private bool IsMatchingDelegate(Type type)
         {
-            if (!type.IsGenericType)
-                return false;
-            var delegatus = type.GetGenericArguments()
-                .FirstOrDefault(typeof(Delegate).IsAssignableFrom);
-            return delegatus?.GetMethod("Invoke", parameterTypes)
-                ?.ReturnParameter.ParameterType == returnType;
+            return type.GetGenericArguments()
+                .FirstOrDefault(typeof(Delegate).IsAssignableFrom)
+                ?.GetMethod("Invoke", parameterTypes)
+                ?.ReturnParameter
+                .ParameterType == returnType;
         }
 
         private static bool IsLambdaExpression(Type type)
@@ -105,6 +97,17 @@ namespace NeinLinq
 
         public MethodInfo? FindMatch(Type target, string method, Type? injectedType = null)
             => FindMatch(target, method, genericArguments, parameterTypes, injectedType);
+
+        private static MethodInfo? FindMatchWithoutParameters(Type target, string method, Type[] genericArguments, Type? injectedType = null)
+        {
+            var factory = FindMatch(target, method, genericArguments, Type.EmptyTypes, injectedType);
+            if (genericArguments.Length == 0)
+            {
+                factory ??= target.GetProperty(method, Everything)?.GetGetMethod(true)
+                    ?? target.GetProperty(method + "Expr", Everything)?.GetGetMethod(true);
+            }
+            return factory;
+        }
 
         private static MethodInfo? FindMatch(Type target, string method, Type[] genericArguments, Type[] parameterTypes, Type? injectedType = null)
         {
