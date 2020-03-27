@@ -48,18 +48,11 @@ namespace NeinLinq
         public virtual TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             // execute query with rewritten expression; async, if possible
-            if (Provider is IAsyncQueryProvider asyncProvider)
-                return asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken);
-            if (typeof(TResult).IsGenericType)
-            {
-                // TODO: there is a better solution for that, right?
-                var resultDefinition = typeof(TResult).GetGenericTypeDefinition();
-                if (resultDefinition == typeof(Task<>))
-                    return Execute<TResult>(ExecuteTaskMethod, expression);
-                if (resultDefinition == typeof(IAsyncEnumerable<>))
-                    return Execute<TResult>(ExecuteAsyncEnumerableMethod, expression);
-            }
-            return Provider.Execute<TResult>(Rewrite(expression));
+            return Provider is IAsyncQueryProvider asyncProvider
+                ? asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken)
+                : typeof(Task).IsAssignableFrom(typeof(TResult))
+                ? Execute<TResult>(ExecuteTaskMethod, expression)
+                : Provider.Execute<TResult>(Rewrite(expression));
         }
 
         private TResult Execute<TResult>(MethodInfo method, Expression expression)
@@ -73,11 +66,5 @@ namespace NeinLinq
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
             => Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
-
-        private static readonly MethodInfo ExecuteAsyncEnumerableMethod
-            = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteAsyncEnumerable), BindingFlags.Instance | BindingFlags.NonPublic)!;
-
-        private IAsyncEnumerable<TResult> ExecuteAsyncEnumerable<TResult>(Expression expression)
-            => new RewriteQueryEnumerable<TResult>(Provider.Execute<IEnumerable<TResult>>(Rewrite(expression)));
     }
 }
