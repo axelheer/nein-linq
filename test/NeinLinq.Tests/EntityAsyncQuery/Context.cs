@@ -17,12 +17,11 @@ namespace NeinLinq.Tests.EntityAsyncQuery
 
         public void CreateDatabase(params Dummy[] seed)
         {
-            _ = Database.EnsureDeleted();
-            _ = Database.EnsureCreated();
-
-            Dummies.AddRange(seed);
-
-            _ = SaveChanges();
+            if (Database.EnsureCreated())
+            {
+                Dummies.AddRange(seed);
+                _ = SaveChanges();
+            }
         }
     }
 }
