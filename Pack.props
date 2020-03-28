@@ -31,7 +31,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Added a simple CachedExpression.</PackageReleaseNotes>
+    <PackageReleaseNotes>.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
