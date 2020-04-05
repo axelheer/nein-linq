@@ -60,6 +60,12 @@ namespace NeinLinq.Fakes.InjectableQuery
         public static Expression<Func<Dummy, double>> VelocityWithMetadataExpr
             => v => v.Distance / v.Time;
 
+        [InjectLambda]
+        public double VelocityWithNull { get; }
+
+        public static Expression<Func<Dummy, double>> VelocityWithNullExpr
+            => null!;
+
         public double VelocityWithoutSibling { get; }
 
         public double VelocityWithStupidSiblingResult { get; }

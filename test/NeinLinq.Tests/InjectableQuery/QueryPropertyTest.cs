@@ -33,6 +33,17 @@ namespace NeinLinq.Tests.InjectableQuery
         }
 
         [Fact]
+        public void ShouldFailWithNull()
+        {
+            var query = from d in data.ToInjectable(typeof(Dummy))
+                        select d.VelocityWithNull;
+
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Lambda factory for VelocityWithNull returns null.", error.Message);
+        }
+
+        [Fact]
         public void ShouldFailWithoutSibling()
         {
             var query = from d in data.ToInjectable(typeof(Dummy))

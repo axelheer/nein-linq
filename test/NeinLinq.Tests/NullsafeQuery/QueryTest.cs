@@ -77,7 +77,8 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            FirstWord = a.SomeText!.Split(new[] { ' ' }).FirstOrDefault()
+                            FirstWord = a.SomeText!.Split(new[] { ' ' }).FirstOrDefault(),
+                            CharacterCount = a.SomeText!.ToCharArray().GetLength(0)
                         };
 
             var result = query.ToList();
@@ -88,6 +89,13 @@ namespace NeinLinq.Tests.NullsafeQuery
                 r => Assert.Equal("What", r.FirstWord),
                 r => Assert.Null(r.FirstWord),
                 r => Assert.Equal("", r.FirstWord));
+
+            Assert.Collection(result,
+                r => Assert.Equal(0, r.CharacterCount),
+                r => Assert.Equal(4, r.CharacterCount),
+                r => Assert.Equal(20, r.CharacterCount),
+                r => Assert.Equal(0, r.CharacterCount),
+                r => Assert.Equal(0, r.CharacterCount));
         }
 
         [Fact]

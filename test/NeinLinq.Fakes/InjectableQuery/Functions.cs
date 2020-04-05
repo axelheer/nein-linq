@@ -37,6 +37,13 @@ namespace NeinLinq.Fakes.InjectableQuery
         public static Expression<Func<Dummy, double>> Narf()
             => v => v.Distance / v.Time;
 
+        public static Expression<Func<Dummy, double>> VelocityWithNull()
+            => null!;
+
+        [InjectLambda]
+        public static double VelocityWithNull(this Dummy value)
+            => throw new NotSupportedException();
+
         public static double VelocityWithStupidSiblingResult(this Dummy value)
             => throw new NotSupportedException();
 
@@ -48,6 +55,12 @@ namespace NeinLinq.Fakes.InjectableQuery
 
         public static Func<Dummy, double> VelocityWithInvalidSiblingResult()
             => v => v.Distance / v.Time;
+
+        public static double VelocityWithWeakSiblingResult(this Dummy value)
+            => throw new NotSupportedException();
+
+        public static LambdaExpression VelocityWithWeakSiblingResult()
+            => (Expression<Func<Dummy, double>>)(v => v.Distance / v.Time);
 
         public static double VelocityWithStupidSiblingSignature(this Dummy value)
             => throw new NotSupportedException();

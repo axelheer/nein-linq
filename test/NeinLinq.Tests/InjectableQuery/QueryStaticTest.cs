@@ -77,6 +77,17 @@ namespace NeinLinq.Tests.InjectableQuery
         }
 
         [Fact]
+        public void ShouldFailWithNull()
+        {
+            var query = from d in data.ToInjectable(typeof(Functions))
+                        select d.VelocityWithNull();
+
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Lambda factory for VelocityWithNull returns null.", error.Message);
+        }
+
+        [Fact]
         public void ShouldFailWithStupidSiblingResult()
         {
             var query = from d in data.ToInjectable(typeof(Functions))
@@ -96,6 +107,17 @@ namespace NeinLinq.Tests.InjectableQuery
             var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
             Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithInvalidSiblingResult: returns no lambda expression.", error.Message);
+        }
+
+        [Fact]
+        public void ShouldFailWithWeakSiblingResult()
+        {
+            var query = from d in data.ToInjectable(typeof(Functions))
+                        select d.VelocityWithWeakSiblingResult();
+
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Fakes.InjectableQuery.Functions.VelocityWithWeakSiblingResult: returns non-matching expression.", error.Message);
         }
 
         [Fact]

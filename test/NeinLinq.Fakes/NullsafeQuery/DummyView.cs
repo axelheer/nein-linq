@@ -12,6 +12,8 @@ namespace NeinLinq.Fakes.NullsafeQuery
 
         public string? FirstWord { get; set; }
 
+        public int CharacterCount { get; set; }
+
         public IEnumerable<int>? Other { get; set; }
 
         public IEnumerable<int>? More { get; set; }
