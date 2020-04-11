@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62384529-4A89-45AA-9241-6C41D736333C}"
 	ProjectSection(SolutionItems) = preProject
-		Build.props = Build.props
-		Pack.props = Pack.props
-		Test.runsettings = Test.runsettings
+		build.props = build.props
+		pack.props = pack.props
+		test.runsettings = test.runsettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC57719B-6A66-4F54-B935-C206C91DA09D}"

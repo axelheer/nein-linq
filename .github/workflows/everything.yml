@@ -1,0 +1,81 @@
+name: everything
+on: [push, pull_request]
+env:
+  DOTNET_VERSION: 3.1.201
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Install packages
+        run: dotnet restore --no-cache
+      - name: Build solution (w/o version suffix)
+        run: dotnet build --configuration Release --no-restore
+        if: github.ref == 'refs/heads/release'
+      - name: Build solution (w/ version suffix)
+        run: dotnet build --configuration Release --no-restore --version-suffix preview.${{ github.run_number }}
+        if: github.ref != 'refs/heads/release'
+      - name: Test solution
+        run: dotnet test --configuration Release --no-build --results-directory test-results --settings test.runsettings
+      - name: Publish coverage
+        uses: codecov/codecov-action@v1
+        with:
+          file: test-results/*/coverage.opencover.xml
+      - name: Pack packages (w/o version suffix)
+        run: dotnet pack --configuration Release --no-build --output pkg
+        if: github.ref == 'refs/heads/release'
+      - name: Pack packages (w/ version suffix)
+        run: dotnet pack --configuration Release --no-build --output pkg --version-suffix preview.${{ github.run_number }}
+        if: github.ref != 'refs/heads/release'
+      - name: Upload packages
+        uses: actions/upload-artifact@v1
+        with:
+          name: packages
+          path: pkg
+  prerelease:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref != 'refs/heads/release'
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v1
+        with:
+          name: packages
+          path: .
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          source-url: https://nuget.pkg.github.com/axelheer/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish packages
+        run: dotnet nuget push *.nupkg
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v1
+        with:
+          name: packages
+          path: .
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          source-url: https://api.nuget.org/v3/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
+      - name: Publish packages
+        run: dotnet nuget push *.nupkg

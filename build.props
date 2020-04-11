@@ -6,8 +6,8 @@
     <VersionPrefix>4.1.1</VersionPrefix>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" $(APPVEYOR_BUILD_NUMBER) != '' and $(APPVEYOR_REPO_BRANCH) != 'release' ">
-    <VersionSuffix>preview.$(APPVEYOR_BUILD_NUMBER)</VersionSuffix>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,13 +16,9 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)NeinLinq.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nein-linq.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
-
-  <Target Name="UpdateAppveyorBuild" BeforeTargets="Build" Condition=" $(APPVEYOR_BUILD_NUMBER) != '' ">
-    <Exec Command="appveyor UpdateBuild -Version $(Version)" />
-  </Target>
 
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1010;CA1303;CA1710;CA2007;CA2225;NU5105</NoWarn>

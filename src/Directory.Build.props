@@ -1,7 +1,7 @@
 <Project>
 
-  <Import Project="..\Build.props" />
-  <Import Project="..\Pack.props" />
+  <Import Project="..\build.props" />
+  <Import Project="..\pack.props" />
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
