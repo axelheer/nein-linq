@@ -43,7 +43,7 @@ jobs:
           path: pkg
   prerelease:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: github.event_name == 'push' && github.ref != 'refs/heads/release'
     steps:
       - name: Download packages
@@ -62,7 +62,7 @@ jobs:
         run: dotnet nuget push *.nupkg
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/release'
     steps:
       - name: Download packages
