@@ -1,12 +1,12 @@
 name: everything
-on: [push, pull_request]
+on: [ push, pull_request ]
 env:
   DOTNET_VERSION: 3.1.201
 jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -30,10 +30,10 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           file: test-results/*/coverage.opencover.xml
-      - name: Pack packages (w/o version suffix)
+      - name: Create packages (w/o version suffix)
         run: dotnet pack --configuration Release --no-build --output pkg
         if: github.ref == 'refs/heads/release'
-      - name: Pack packages (w/ version suffix)
+      - name: Create packages (w/ version suffix)
         run: dotnet pack --configuration Release --no-build --output pkg --version-suffix preview.${{ github.run_number }}
         if: github.ref != 'refs/heads/release'
       - name: Upload packages
@@ -41,6 +41,7 @@ jobs:
         with:
           name: packages
           path: pkg
+        if: runner.os == 'windows'
   prerelease:
     needs: build
     runs-on: windows-latest
@@ -59,7 +60,7 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish packages
-        run: dotnet nuget push *.nupkg
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
   release:
     needs: build
     runs-on: windows-latest
@@ -78,4 +79,20 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
       - name: Publish packages
-        run: dotnet nuget push *.nupkg
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+      - name: Extract version
+        run: |
+          if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
+            echo "::set-env name=RELEASE_VERSION::$($matches[0])"
+          }
+          else {
+            write-error "There is no version."
+          }
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.RELEASE_VERSION }}
+          release_name: Version ${{ env.RELEASE_VERSION }}
+          draft: true
