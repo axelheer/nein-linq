@@ -61,6 +61,7 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish packages
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        continue-on-error: true
   release:
     needs: build
     runs-on: windows-latest
