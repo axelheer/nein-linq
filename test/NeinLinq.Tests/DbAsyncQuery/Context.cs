@@ -4,7 +4,6 @@ using NeinLinq.Fakes.DbAsyncQuery;
 
 namespace NeinLinq.Tests.DbAsyncQuery
 {
-    [DbConfigurationType(typeof(Config))]
     public class Context : DbContext
     {
         public DbSet<Dummy> Dummies { get; }
