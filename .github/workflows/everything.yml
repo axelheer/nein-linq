@@ -60,8 +60,7 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish packages
-        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
-        continue-on-error: true
+        run: dotnet nuget push *.nupkg --skip-duplicate
   release:
     needs: build
     runs-on: windows-latest
@@ -77,8 +76,6 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           source-url: https://api.nuget.org/v3/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
       - name: Publish packages
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
       - name: Extract version
