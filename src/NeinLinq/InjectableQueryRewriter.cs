@@ -13,24 +13,24 @@ namespace NeinLinq
         private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> Cache
             = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
 
-        private readonly Type[] whitelist;
+        private readonly Type[] greenlist;
 
         /// <summary>
         /// Creates a new injectable query rewriter.
         /// </summary>
-        /// <param name="whitelist">A list of types to inject, whether marked as injectable or not.</param>
-        public InjectableQueryRewriter(params Type[] whitelist)
+        /// <param name="greenlist">A list of types to inject, whether marked as injectable or not.</param>
+        public InjectableQueryRewriter(params Type[] greenlist)
         {
-            if (whitelist is null)
-                throw new ArgumentNullException(nameof(whitelist));
+            if (greenlist is null)
+                throw new ArgumentNullException(nameof(greenlist));
 
-            foreach (var item in whitelist)
+            foreach (var item in greenlist)
             {
                 if (item is null)
-                    throw new ArgumentOutOfRangeException(nameof(whitelist));
+                    throw new ArgumentOutOfRangeException(nameof(greenlist));
             }
 
-            this.whitelist = whitelist;
+            this.greenlist = greenlist;
         }
 
         /// <inheritdoc />
@@ -97,8 +97,8 @@ namespace NeinLinq
             if (member.DeclaringType is null)
                 throw new InvalidOperationException($"Member {member.Name} has no declaring type.");
 
-            // inject only configured or white-listed targets
-            return data.Config || whitelist.Any(member.DeclaringType.IsAssignableFrom);
+            // inject only configured or green-listed targets
+            return data.Config || greenlist.Any(member.DeclaringType.IsAssignableFrom);
         }
     }
 }

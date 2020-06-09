@@ -20,10 +20,10 @@ jobs:
         run: dotnet restore --no-cache
       - name: Build solution (w/o version suffix)
         run: dotnet build --configuration Release --no-restore
-        if: github.ref == 'refs/heads/release'
+        if: github.ref == 'refs/heads/final'
       - name: Build solution (w/ version suffix)
         run: dotnet build --configuration Release --no-restore --version-suffix preview.${{ github.run_number }}
-        if: github.ref != 'refs/heads/release'
+        if: github.ref != 'refs/heads/final'
       - name: Test solution
         run: dotnet test --configuration Release --no-build --results-directory test-results --settings test.runsettings
       - name: Publish coverage
@@ -32,10 +32,10 @@ jobs:
           file: test-results/*/coverage.opencover.xml
       - name: Create packages (w/o version suffix)
         run: dotnet pack --configuration Release --no-build --output pkg
-        if: github.ref == 'refs/heads/release'
+        if: github.ref == 'refs/heads/final'
       - name: Create packages (w/ version suffix)
         run: dotnet pack --configuration Release --no-build --output pkg --version-suffix preview.${{ github.run_number }}
-        if: github.ref != 'refs/heads/release'
+        if: github.ref != 'refs/heads/final'
       - name: Upload packages
         uses: actions/upload-artifact@v1
         with:
@@ -45,7 +45,7 @@ jobs:
   prerelease:
     needs: build
     runs-on: windows-latest
-    if: github.event_name == 'push' && github.ref != 'refs/heads/release'
+    if: github.event_name == 'push' && github.ref != 'refs/heads/final'
     steps:
       - name: Download packages
         uses: actions/download-artifact@v1
@@ -64,7 +64,7 @@ jobs:
   release:
     needs: build
     runs-on: windows-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/final'
     steps:
       - name: Download packages
         uses: actions/download-artifact@v1

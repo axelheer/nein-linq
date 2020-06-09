@@ -145,7 +145,7 @@ public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
 }
 ```
 
-The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be white listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic.
+The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be green listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic.
 
 *Note:* code duplication should not be necessary. The ordinary method can just compile the expression, ideally only once. A straightforward solution can look like the following code sample (it's possible to encapsulate / organize this stuff however sophisticated it seems fit, *NeinLinq* has no specific requirements; feel free to build some kind of "Expression Cache"...):
 
@@ -245,7 +245,7 @@ public class Model
 }
 ```
 
-Again, instead of placing `[InjectLambda]` on everything it's possible to add all the models to the white-list while calling `ToInjectable`.
+Again, instead of placing `[InjectLambda]` on everything it's possible to add all the models to the green-list while calling `ToInjectable`.
 
 Null-safe queries
 -----------------
