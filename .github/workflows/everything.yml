@@ -76,7 +76,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Publish packages
-        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
       - name: Extract version
         run: |
           if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
