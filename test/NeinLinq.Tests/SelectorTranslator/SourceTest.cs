@@ -61,7 +61,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Source<ParentDummy>((d, v) => d.Children.Select(v).First());
+            var select = s.Translate().Source<ParentDummy>((d, v) => d.Children!.Select(v).First());
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,
@@ -83,7 +83,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         {
             Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Source<ParentDummy>((d, v) => d.Children.Select(v));
+            var select = s.Translate().Source<ParentDummy>((d, v) => d.Children!.Select(v));
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,

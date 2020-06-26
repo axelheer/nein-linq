@@ -187,7 +187,7 @@ namespace NeinLinq.Tests.NullsafeQuery
             var query = from a in data.ToNullsafe()
                         group a by a.MoreOthers!.Count into g
                         where g.Key > 0
-                        select g.Sum(b => b.MoreOthers.Sum(c => c!.SomeOther!.OneDay.Month));
+                        select g.Sum(b => b.MoreOthers!.Sum(c => c!.SomeOther!.OneDay.Month));
 
             var result = query.ToList();
 
@@ -213,9 +213,9 @@ namespace NeinLinq.Tests.NullsafeQuery
         public void ShouldBeNice()
         {
             var query = from a in data.ToNullsafe()
-                        let x = a.SomeOthers.FirstOrDefault()
-                        let y = a.MoreOthers.FirstOrDefault()
-                        let z = a.EvenLotMoreOthers.FirstOrDefault()
+                        let x = a.SomeOthers!.FirstOrDefault()
+                        let y = a.MoreOthers!.FirstOrDefault()
+                        let z = a.EvenLotMoreOthers!.FirstOrDefault()
                         orderby a.SomeNumeric
                         select new DummyView
                         {

@@ -55,7 +55,7 @@ namespace NeinLinq
             // execute query with rewritten expression; async, if possible
             return Provider is IDbAsyncQueryProvider asyncProvider
                 ? asyncProvider.ExecuteAsync(Rewrite(expression), cancellationToken)
-                : Task.FromResult(Provider.Execute(Rewrite(expression)));
+                : Task.FromResult(Provider.Execute(Rewrite(expression))!);
         }
     }
 }

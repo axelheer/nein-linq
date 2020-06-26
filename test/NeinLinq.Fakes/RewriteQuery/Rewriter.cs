@@ -6,7 +6,7 @@ namespace NeinLinq.Fakes.RewriteQuery
     {
         public bool VisitCalled { get; set; }
 
-        public override Expression Visit(Expression node)
+        public override Expression? Visit(Expression? node)
         {
             VisitCalled = true;
 

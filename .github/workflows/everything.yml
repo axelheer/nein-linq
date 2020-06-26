@@ -1,7 +1,5 @@
 name: everything
 on: [ push, pull_request ]
-env:
-  DOTNET_VERSION: 3.1.301
 jobs:
   build:
     strategy:
@@ -14,9 +12,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: Install packages
+      - name: Restore packages
         run: dotnet restore --no-cache
       - name: Build solution (w/o version suffix)
         run: dotnet build --configuration Release --no-restore
@@ -55,7 +51,6 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
           source-url: https://nuget.pkg.github.com/axelheer/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,8 +68,6 @@ jobs:
           path: .
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Publish packages
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
       - name: Extract version

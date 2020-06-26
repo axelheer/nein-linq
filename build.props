@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Nullable>Enable</Nullable>
     <LangVersion>8.0</LangVersion>
-    <VersionPrefix>4.1.1</VersionPrefix>
+    <VersionPrefix>4.2.0</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

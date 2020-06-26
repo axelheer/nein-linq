@@ -57,7 +57,7 @@ namespace NeinLinq
                     var argument = lambda.Parameters.Single();
 
                     // rebind expression for single (!) lambda argument
-                    var binder = new ParameterBinder(argument, node.Expression);
+                    var binder = new ParameterBinder(argument, node.Expression!);
 
                     return Visit(binder.Visit(lambda.Body));
                 }

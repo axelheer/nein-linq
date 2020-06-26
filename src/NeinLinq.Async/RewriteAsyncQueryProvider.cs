@@ -48,7 +48,8 @@ namespace NeinLinq
         protected virtual Expression Rewrite(Expression expression)
         {
             // clean-up and rewrite the whole expression
-            return Rewriter.Visit(cleaner.Visit(expression));
+            var cleaned = cleaner.Visit(expression);
+            return Rewriter.Visit(cleaned);
         }
 
         /// <summary>
@@ -59,7 +60,8 @@ namespace NeinLinq
         public virtual IAsyncQueryable<TElement> RewriteQuery<TElement>(Expression expression)
         {
             // create query with now (!) rewritten expression
-            return Provider.CreateQuery<TElement>(Rewrite(expression));
+            var rewritten = Rewrite(expression);
+            return Provider.CreateQuery<TElement>(rewritten);
         }
 
         /// <inheritdoc />
@@ -74,7 +76,8 @@ namespace NeinLinq
         public virtual ValueTask<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken token)
         {
             // execute query with rewritten expression
-            return Provider.ExecuteAsync<TResult>(Rewrite(expression), token);
+            var rewritten = Rewrite(expression);
+            return Provider.ExecuteAsync<TResult>(rewritten, token);
         }
     }
 }

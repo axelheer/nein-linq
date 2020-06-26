@@ -40,7 +40,7 @@ namespace NeinLinq
                 var arguments = node.Arguments.Select(Visit).ToArray();
 
                 // assume equivalent method signature
-                return Expression.Call(to, node.Method.Name, typeArguments, arguments);
+                return Expression.Call(to, node.Method.Name, typeArguments, arguments!);
             }
 
             return base.VisitMethodCall(node);

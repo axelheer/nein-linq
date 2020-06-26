@@ -69,7 +69,8 @@ namespace NeinLinq
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             // rewrite on enumeration
-            return Provider.RewriteQuery<T>(Expression).GetAsyncEnumerator(cancellationToken);
+            return Provider.RewriteQuery<T>(Expression)
+                .GetAsyncEnumerator(cancellationToken);
         }
     }
 }

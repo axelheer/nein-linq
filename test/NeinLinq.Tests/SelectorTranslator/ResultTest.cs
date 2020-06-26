@@ -72,7 +72,7 @@ namespace NeinLinq.Tests.SelectorTranslator
         [Fact]
         public void TranslationShouldSubstitute()
         {
-            Expression<Func<ParentDummy, IEnumerable<ChildDummyView>>> s = d => d.Children.Select(e => new ChildDummyView { Id = e.Id, Name = e.Name });
+            Expression<Func<ParentDummy, IEnumerable<ChildDummyView>>> s = d => d.Children!.Select(e => new ChildDummyView { Id = e.Id, Name = e.Name });
 
             var select = s.Translate().Result((d, v) => new ParentDummyView { FirstChild = v(d).First() });
             var result = data.OfType<ParentDummy>().Select(select);

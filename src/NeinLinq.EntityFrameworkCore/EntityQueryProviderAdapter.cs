@@ -30,7 +30,7 @@ namespace NeinLinq
         public override TResult Execute<TResult>(Expression expression)
             => provider.Execute<TResult>(expression);
 
-        public override object Execute(Expression expression)
+        public override object? Execute(Expression expression)
             => provider.Execute(expression);
 
         public override TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)

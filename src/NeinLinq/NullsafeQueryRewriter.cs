@@ -25,10 +25,10 @@ namespace NeinLinq
             if (!IsSafe(target))
             {
                 // insert null-check before accessing property or field
-                return BeSafe(target, node, node.Update);
+                return BeSafe(target!, node, node.Update);
             }
 
-            return node.Update(target);
+            return node.Update(target!);
         }
 
         /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace NeinLinq
             if (!IsSafe(target))
             {
                 // insert null-check before invoking instance method
-                return BeSafe(target, node, fallback => node.Update(fallback, node.Arguments));
+                return BeSafe(target!, node, fallback => node.Update(fallback, node.Arguments));
             }
 
             var arguments = Visit(node.Arguments);
@@ -50,17 +50,17 @@ namespace NeinLinq
             if (IsExtensionMethod(node.Method) && !IsSafe(arguments[0]))
             {
                 // insert null-check before invoking extension method
-                return BeSafe(arguments[0], node.Update(null, arguments), fallback =>
+                return BeSafe(arguments[0], node.Update(target!, arguments), fallback =>
                 {
                     var args = new Expression[arguments.Count];
                     arguments.CopyTo(args, 0);
                     args[0] = fallback;
 
-                    return node.Update(null, args);
+                    return node.Update(target!, args);
                 });
             }
 
-            return node.Update(target, arguments);
+            return node.Update(target!, arguments);
         }
 
         private static Expression BeSafe(Expression target, Expression expression, Func<Expression, Expression> update)
@@ -83,7 +83,7 @@ namespace NeinLinq
             return Expression.Condition(Expression.Equal(target, targetFallback), expressionFallback, expression);
         }
 
-        private static bool IsSafe(Expression expression)
+        private static bool IsSafe(Expression? expression)
         {
             // in method call results and constant values we trust to avoid too much conditions...
             return expression is null
@@ -103,7 +103,7 @@ namespace NeinLinq
 
             // default value for arrays
             return type.IsArray
-                ? Expression.NewArrayInit(type.GetElementType())
+                ? Expression.NewArrayInit(type.GetElementType()!)
                 : null;
         }
 

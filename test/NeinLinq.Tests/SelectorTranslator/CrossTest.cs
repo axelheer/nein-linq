@@ -47,7 +47,7 @@ namespace NeinLinq.Tests.SelectorTranslator
             Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
             Expression<Func<ParentDummy, ParentDummyView>> t = d => new ParentDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Children.Select(v).First()).Apply((d, v) => new ParentDummyView { FirstChild = v(d) }, t);
+            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Children!.Select(v).First()).Apply((d, v) => new ParentDummyView { FirstChild = v(d) }, t);
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,
@@ -62,7 +62,7 @@ namespace NeinLinq.Tests.SelectorTranslator
             Expression<Func<ChildDummy, ChildDummyView>> s = d => new ChildDummyView { Id = d.Id, Name = d.Name };
             Expression<Func<ParentDummy, ParentDummyView>> t = d => new ParentDummyView { Id = d.Id, Name = d.Name };
 
-            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Children.Select(v)).Apply((d, v) => new ParentDummyView { FirstChild = v(d).First() }, t);
+            var select = s.Translate().Cross<ParentDummy>((d, v) => d.Children!.Select(v)).Apply((d, v) => new ParentDummyView { FirstChild = v(d).First() }, t);
             var result = data.OfType<ParentDummy>().Select(select);
 
             Assert.Collection(result,

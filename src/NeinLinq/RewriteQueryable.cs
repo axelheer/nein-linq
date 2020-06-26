@@ -39,10 +39,11 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             // rewrite on enumeration
-            return Provider.RewriteQuery(Expression).GetEnumerator();
+            return Provider.RewriteQuery(Expression)
+                .GetEnumerator();
         }
 
         /// <inheritdoc />
@@ -77,10 +78,11 @@ namespace NeinLinq
         }
 
         /// <inheritdoc />
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             // rewrite on enumeration
-            return Provider.RewriteQuery<T>(Expression).GetEnumerator();
+            return Provider.RewriteQuery<T>(Expression)
+                .GetEnumerator();
         }
 
 #if !(NET40 || NET45)
