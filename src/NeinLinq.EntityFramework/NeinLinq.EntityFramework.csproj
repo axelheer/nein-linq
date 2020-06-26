@@ -4,7 +4,11 @@
     <TargetFrameworks>net5.0;netcoreapp3.1;netstandard2.1;net461;net45</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework) == 'net461' OR $(TargetFramework) == 'net45' ">
+    <PackageReference Include="EntityFramework" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework) != 'net461' AND $(TargetFramework) != 'net45' ">
     <PackageReference Include="EntityFramework" Version="6.3.0" />
   </ItemGroup>
 

@@ -6,6 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query;
 
+#if NETSTANDARD2_0
+
+using Microsoft.EntityFrameworkCore.Query.Internal;
+
+#endif
+
 #pragma warning disable EF1001
 
 namespace NeinLinq
