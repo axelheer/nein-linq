@@ -14,14 +14,18 @@ jobs:
         uses: actions/setup-dotnet@v1
       - name: Restore packages
         run: dotnet restore --no-cache
-      - name: Build solution (w/o version suffix)
+      - name: Build entire solution (w/o version suffix)
         run: dotnet build --configuration Release --no-restore
         if: github.ref == 'refs/heads/final'
-      - name: Build solution (w/ version suffix)
+      - name: Build entire solution (w/ version suffix)
         run: dotnet build --configuration Release --no-restore --version-suffix preview.${{ github.run_number }}
         if: github.ref != 'refs/heads/final'
-      - name: Test solution
+      - name: Run tests (all frameworks)
         run: dotnet test --configuration Release --no-build --results-directory test-results --settings test.runsettings
+        if: runner.os == 'windows'
+      - name: Run tests (latest framework only)
+        run: dotnet test --configuration Release --framework net5.0 --no-build --results-directory test-results --settings test.runsettings
+        if: runner.os != 'windows'
       - name: Publish coverage
         uses: codecov/codecov-action@v1
         with:

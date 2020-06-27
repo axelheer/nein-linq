@@ -66,6 +66,8 @@ namespace NeinLinq.Tests.RewriteQuery
             }
         }
 
+#if !NET46
+
         [Fact]
         public async Task MoveNextAsyncShouldMoveNext()
         {
@@ -76,6 +78,8 @@ namespace NeinLinq.Tests.RewriteQuery
                 Assert.True(enumerator.MoveNextCalled);
             }
         }
+
+#endif
 
         [Fact]
         public void DisposeShouldDispose()
@@ -88,6 +92,8 @@ namespace NeinLinq.Tests.RewriteQuery
             }
         }
 
+#if !NET46
+
         [Fact]
         public async Task DisposeAsyncShouldDispose()
         {
@@ -98,6 +104,8 @@ namespace NeinLinq.Tests.RewriteQuery
                 Assert.True(enumerator.DisposeCalled);
             }
         }
+
+#endif
 
         public void Dispose()
             => enumerator.Dispose();

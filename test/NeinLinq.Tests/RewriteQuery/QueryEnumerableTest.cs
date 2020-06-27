@@ -33,6 +33,8 @@ namespace NeinLinq.Tests.RewriteQuery
             _ = Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
         }
 
+#if !NET46
+
         [Fact]
         public void GetAsyncEnumeratorShouldReturnEnumerator()
         {
@@ -40,6 +42,8 @@ namespace NeinLinq.Tests.RewriteQuery
 
             _ = Assert.IsType<RewriteQueryEnumerator<Dummy>>(actual);
         }
+
+#endif
 
         public void Dispose()
             => enumerable.Dispose();

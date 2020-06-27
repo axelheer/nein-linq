@@ -9,7 +9,7 @@ namespace NeinLinq
     /// Proxy for query enumerator.
     /// </summary>
     public class RewriteQueryEnumerator<T> : IEnumerator<T>
-#if !(NET40 || NET45)
+#if !NET40
         , IAsyncEnumerator<T>
 #endif
     {
@@ -43,7 +43,7 @@ namespace NeinLinq
         public void Reset()
             => enumerator.Reset();
 
-#if !(NET40 || NET45)
+#if !NET40
         /// <inheritdoc />
         public ValueTask<bool> MoveNextAsync()
             => new ValueTask<bool>(enumerator.MoveNext());

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;net48;net46</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,19 +9,51 @@
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-preview.6.20312.4" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.113.1" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net46' ">
     <PackageReference Include="System.Linq.Async.Queryable" Version="4.1.1" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp2.1' ">
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.1" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' OR '$(TargetFramework)' == 'net48' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' OR '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-preview.6.20312.4" />
+  </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NeinLinq.Async\NeinLinq.Async.csproj" />
-    <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
-    <ProjectReference Include="..\..\src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\NeinLinq.Fakes\NeinLinq.Fakes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net46' ">
+    <ProjectReference Include="..\..\src\NeinLinq.Async\NeinLinq.Async.csproj" />
+    <ProjectReference Include="..\..\src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp2.1' ">
+    <ProjectReference Include="..\..\src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Compile Remove="**/AsyncQuery*.cs" />
+    <Compile Remove="DynamicQuery/*Async*.cs" />
+    <Compile Remove="EntityAsyncQuery/*.cs" />
+    <Compile Remove="**/EntityQuery*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <Compile Remove="DbAsyncQuery/*.cs" />
+    <Compile Remove="**/DbQuery*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,6 +3,8 @@ using System.Linq;
 using NeinLinq.Fakes.NullsafeQuery;
 using Xunit;
 
+#pragma warning disable CA1307
+
 namespace NeinLinq.Tests.NullsafeQuery
 {
     public class QueryTest
@@ -57,7 +59,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         orderby a.SomeNumeric
                         select new DummyView
                         {
-                            Question = a.SomeText!.Contains("?", StringComparison.Ordinal)
+                            Question = a.SomeText!.Contains("?")
                         };
 
             var result = query.ToList();
@@ -221,7 +223,7 @@ namespace NeinLinq.Tests.NullsafeQuery
                         {
                             Year = x.OneDay.Year,
                             Numeric = y.SomeOther!.SomeNumeric,
-                            Question = z.SomeText!.Contains("?", StringComparison.Ordinal)
+                            Question = z.SomeText!.Contains("?")
                         };
 
             var result = query.ToList();

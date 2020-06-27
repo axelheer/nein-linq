@@ -63,7 +63,7 @@ namespace NeinLinq
     /// Proxy for rewritten queries.
     /// </summary>
     public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
-#if !(NET40 || NET45)
+#if !NET40
         , IAsyncEnumerable<T>
 #endif
     {
@@ -85,7 +85,7 @@ namespace NeinLinq
                 .GetEnumerator();
         }
 
-#if !(NET40 || NET45)
+#if !NET40
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
