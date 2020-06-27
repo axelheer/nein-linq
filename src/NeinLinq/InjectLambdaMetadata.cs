@@ -27,7 +27,7 @@ namespace NeinLinq
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
                 => LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
-            return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
+            return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
         }
 
         public static InjectLambdaMetadata Create(PropertyInfo property)
@@ -38,7 +38,7 @@ namespace NeinLinq
             var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
                 => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
 
-            return new InjectLambdaMetadata(metadata is { }, lambdaFactory);
+            return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)

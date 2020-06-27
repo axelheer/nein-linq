@@ -41,7 +41,7 @@ namespace NeinLinq
 
             var property = node.Member as PropertyInfo;
 
-            if (property?.GetGetMethod(true) is { } && property.GetSetMethod(true) is null)
+            if (property?.GetGetMethod(true) is not null && property.GetSetMethod(true) is null)
             {
                 // cache "meta-data" for performance reasons
                 var data = Cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));

@@ -144,7 +144,7 @@ namespace NeinLinq
                     continue;
 
                 // There can only be one!
-                if (result is { })
+                if (result is not null)
                 {
                     // base definition is virtual
                     if (candidate.IsVirtual)

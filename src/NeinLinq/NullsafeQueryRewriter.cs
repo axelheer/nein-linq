@@ -67,7 +67,7 @@ namespace NeinLinq
         {
             var fallback = Cache.GetOrAdd(target.Type, Fallback);
 
-            if (fallback is { })
+            if (fallback is not null)
             {
                 // coalesce instead, a bit intrusive but fast...
                 return update(Expression.Coalesce(target, fallback));
@@ -121,6 +121,6 @@ namespace NeinLinq
             => element.IsDefined(typeof(ExtensionAttribute), false);
 
         private static bool IsNullableOrReferenceType(Type type)
-            => !type.IsValueType || Nullable.GetUnderlyingType(type) is { };
+            => !type.IsValueType || Nullable.GetUnderlyingType(type) is not null;
     }
 }

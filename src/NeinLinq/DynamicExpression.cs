@@ -120,11 +120,11 @@ namespace NeinLinq
             var expression = (Expression)target;
 
             var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
-            if (ordinalParse is { })
+            if (ordinalParse is not null)
                 expression = Expression.Call(ordinalParse, target);
 
             var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
-            if (cultureParse is { })
+            if (cultureParse is not null)
                 expression = Expression.Call(cultureParse, target, format);
 
             return Expression.Lambda<Func<string?, IFormatProvider?, object>>(

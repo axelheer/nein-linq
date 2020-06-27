@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Nullable>Enable</Nullable>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>preview</LangVersion>
     <VersionPrefix>5.0.0</VersionPrefix>
   </PropertyGroup>
 

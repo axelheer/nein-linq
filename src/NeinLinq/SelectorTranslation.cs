@@ -258,7 +258,7 @@ namespace NeinLinq
         {
             var result = Cross<TTranslatedSource>().Result<TTranslatedResult>();
 
-            return value is { } ? result.Apply(value) : result;
+            return value is not null ? result.Apply(value) : result;
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace NeinLinq
         {
             var result = Cross(sourcePath).Result(resultPath);
 
-            return value is { } ? result.Apply(value) : result;
+            return value is not null ? result.Apply(value) : result;
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace NeinLinq
             var result = Expression.Lambda<Func<TTranslatedSource, TTranslatedResult>>(
                 binder.Visit(translation.Body), s);
 
-            return value is { } ? result.Apply(value) : result;
+            return value is not null ? result.Apply(value) : result;
         }
     }
 }
