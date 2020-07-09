@@ -68,14 +68,31 @@ namespace NeinLinq.Tests.DynamicQuery
 
         [Theory]
         [InlineData(nameof(DummyEnum.Undefined), new[] { 1, 2, 3 })]
-        [InlineData(nameof(DummyEnum.One), new[] { 4,5,6})]
-        [InlineData(nameof(DummyEnum.Two), new[] { 7,8,9 })]
+        [InlineData(nameof(DummyEnum.One), new[] { 4, 5, 6 })]
+        [InlineData(nameof(DummyEnum.Two), new[] { 7, 8, 9 })]
         [InlineData("0", new[] { 1, 2, 3 })]
         [InlineData("1", new[] { 4, 5, 6 })]
         [InlineData("2", new[] { 7, 8, 9 })]
         public void ShouldSupportEnumsToo(string value, int[] expectedResult)
         {
             var predicate = CreatePredicate<Dummy>(nameof(Dummy.Enum), DynamicCompare.Equal, value);
+
+            var result = data.Where(predicate).Select(d => d.Id).ToArray();
+
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory]
+        [InlineData(nameof(DummyEnum.Undefined), new[] { 4, 5 })]
+        [InlineData(nameof(DummyEnum.One), new[] { 7, 8 })]
+        [InlineData(nameof(DummyEnum.Two), new[] { 1, 2 })]
+        [InlineData("0", new[] { 4, 5 })]
+        [InlineData("1", new[] { 7, 8 })]
+        [InlineData("2", new[] { 1, 2 })]
+        [InlineData(null, new[] { 3, 6, 9 })]
+        public void ShouldSupportNullableEnumsToo(string value, int[] expectedResult)
+        {
+            var predicate = CreatePredicate<Dummy>(nameof(Dummy.NullableEnum), DynamicCompare.Equal, value);
 
             var result = data.Where(predicate).Select(d => d.Id).ToArray();
 

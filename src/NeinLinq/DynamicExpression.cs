@@ -121,7 +121,7 @@ namespace NeinLinq
 
             if (underlyingType.IsEnum)
             {
-                return (string? value , IFormatProvider? formatProvider) => value == null ? null : Enum.Parse(underlyingType, value);
+                return (string? value , IFormatProvider? formatProvider) => value is null ? null : Enum.Parse(underlyingType, value);
             }
 
             var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });

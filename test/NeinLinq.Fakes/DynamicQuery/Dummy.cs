@@ -13,5 +13,7 @@ namespace NeinLinq.Fakes.DynamicQuery
         public Guid Reference { get; set; }
 
         public DummyEnum Enum { get; set; }
+
+        public DummyEnum? NullableEnum { get; set; }
     }
 }
