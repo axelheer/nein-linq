@@ -9,8 +9,8 @@ namespace NeinLinq
     /// </summary>
     public static class DynamicExpression
     {
-        private static readonly ObjectCache<Type, Func<string?, IFormatProvider?, object>> Cache
-            = new ObjectCache<Type, Func<string?, IFormatProvider?, object>>();
+        private static readonly ObjectCache<Type, Func<string?, IFormatProvider?, object?>> Cache
+            = new ObjectCache<Type, Func<string?, IFormatProvider?, object?>>();
 
         /// <summary>
         /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.
@@ -110,7 +110,7 @@ namespace NeinLinq
             return Expression.Constant(convertedValue, type);
         }
 
-        private static Func<string?, IFormatProvider?, object> CreateConverter(Type type)
+        private static Func<string?, IFormatProvider?, object?> CreateConverter(Type type)
         {
             var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
 
@@ -121,7 +121,7 @@ namespace NeinLinq
 
             if (underlyingType.IsEnum)
             {
-                return (string? value , IFormatProvider? formatProvider) => Enum.Parse(underlyingType, value);
+                return (string? value , IFormatProvider? formatProvider) => value == null ? null : Enum.Parse(underlyingType, value);
             }
 
             var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
