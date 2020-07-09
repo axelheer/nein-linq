@@ -65,5 +65,22 @@ namespace NeinLinq.Tests.DynamicQuery
 
             Assert.Equal(new[] { expected }, actual);
         }
+
+        [Theory]
+        [InlineData(nameof(DummyEnum.Undefined), new[] { 1, 2, 3 })]
+        [InlineData(nameof(DummyEnum.One), new[] { 4,5,6})]
+        [InlineData(nameof(DummyEnum.Two), new[] { 7,8,9 })]
+        [InlineData("0", new[] { 1, 2, 3 })]
+        [InlineData("1", new[] { 4, 5, 6 })]
+        [InlineData("2", new[] { 7, 8, 9 })]
+        public void ShouldSupportEnumsToo(string value, int[] expectedResult)
+        {
+            var predicate = CreatePredicate<Dummy>(nameof(Dummy.Enum), DynamicCompare.Equal, value);
+
+            var result = data.Where(predicate).Select(d => d.Id).ToArray();
+
+            Assert.Equal(expectedResult, result);
+        }
+
     }
 }

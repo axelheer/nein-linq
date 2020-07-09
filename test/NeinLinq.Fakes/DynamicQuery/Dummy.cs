@@ -11,5 +11,7 @@ namespace NeinLinq.Fakes.DynamicQuery
         public decimal? Number { get; set; }
 
         public Guid Reference { get; set; }
+
+        public DummyEnum Enum { get; set; }
     }
 }

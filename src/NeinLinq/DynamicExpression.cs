@@ -119,6 +119,11 @@ namespace NeinLinq
 
             var expression = (Expression)target;
 
+            if (underlyingType.IsEnum)
+            {
+                return (string? value , IFormatProvider? formatProvider) => Enum.Parse(underlyingType, value);
+            }
+
             var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
             if (ordinalParse is not null)
                 expression = Expression.Call(ordinalParse, target);
