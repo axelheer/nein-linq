@@ -56,7 +56,7 @@ namespace NeinLinq
             }
 
             // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(method, signature)!;
+            return DynamicLambdaFactory(method, signature);
         }
 
         private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
@@ -92,18 +92,18 @@ namespace NeinLinq
                 Expression.Convert(Expression.Call(value, factory), typeof(LambdaExpression))).Compile()();
         }
 
-        private static Func<Expression, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature)
+        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature)
         {
             return value =>
             {
                 // retrieve actual target object, compiles every time and needs reflection too... :-(
-                var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value, typeof(object))).Compile()();
+                var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value!, typeof(object))).Compile()();
 
                 // retrieve actual target type at runtime, whatever it may be
                 var targetType = targetObject.GetType();
 
                 // actual method may provide different information
-                var concreteMethod = signature.FindMatch(targetType, method.Name, value.Type)!;
+                var concreteMethod = signature.FindMatch(targetType, method.Name, value!.Type)!;
 
                 // configuration over convention, if any
                 var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
