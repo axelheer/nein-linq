@@ -14,9 +14,9 @@ Use *NeinLinq* for plain LINQ queries:
 
     PM> Install-Package NeinLinq
 
-Use *NeinLinq.Interactive* for [interactive](https://github.com/dotnet/reactive/) LINQ queries:
+Use *NeinLinq.Async* for [async](https://github.com/dotnet/reactive/) LINQ queries:
 
-    PM> Install-Package NeinLinq.Interactive
+    PM> Install-Package NeinLinq.Async
 
 Use *NeinLinq.EntityFramework* for [Entity Framework 6](https://github.com/dotnet/ef6/) LINQ queries:
 
@@ -29,7 +29,7 @@ Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.co
 ***Breaking:*** since Version `3.0.0` the extension methods have different names depending on the chosen package above, in order to avoid some conflicts! For example there are now:
 
 - `ToInjectable` (*NeinLinq*)
-- `ToAsyncInjectable` (*NeinLinq.Interactive*)
+- `ToAsyncInjectable` (*NeinLinq.Async*)
 - `ToDbInjectable` (*NeinLinq.EntityFramework*)
 - `ToEntityInjectable` (*NeinLinq.EntityFrameworkCore*)
 
@@ -38,6 +38,10 @@ Usage of specific flavors is encouraged for EF6 / EFCore (otherwise async querie
 ***Breaking:*** before Version `4.0.0` the package *NeinLinq.Queryable* is needed for plain LINQ queries:
 
     PM> Install-Package NeinLinq.Queryable
+
+***Breaking:*** before Version `5.0.0` the package *NeinLinq.Interactive* is needed for async LINQ queries instead:
+
+    PM> Install-Package NeinLinq.Interactive
 
 Lambda injection
 ----------------

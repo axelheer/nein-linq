@@ -18,7 +18,7 @@
 To support different LINQ implementations, the following flavours are available. Choose at least one.
 
 - Use NeinLinq for plain LINQ queries
-- Use NeinLinq.Interactive for interactive LINQ queries
+- Use NeinLinq.Async for async LINQ queries
 - Use NeinLinq.EntityFramework for Entity Framework 6 LINQ queries
 - Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries</Description>
   </PropertyGroup>
