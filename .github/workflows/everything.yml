@@ -76,6 +76,8 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish packages
         run: dotnet nuget push *.nupkg --skip-duplicate
+        env:
+          DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLE: '0'
     if: github.event_name == 'push' && github.ref != 'refs/heads/final'
   release:
     needs: package
