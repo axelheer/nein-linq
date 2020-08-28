@@ -2,15 +2,18 @@ name: everything
 on: [ push, pull_request ]
 jobs:
   test:
+    defaults:
+      run:
+        shell: pwsh
     strategy:
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
         framework: [ 'netcoreapp2.1', 'netcoreapp3.1', 'net5.0' ]
         include:
-         - os: windows-latest
-           framework: net46
-         - os: windows-latest
-           framework: net48
+          - os: windows-latest
+            framework: net46
+          - os: windows-latest
+            framework: net48
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -30,7 +33,6 @@ jobs:
         uses: actions/setup-dotnet@v1
       - name: Merge dotnet versions
         run: gci $env:DOTNET_ROOT/../.. -e (dotnet --version) | gci -ad | gci -i shared | cpi -d $env:DOTNET_ROOT -r -force; dotnet --info
-        shell: pwsh
       - name: Run tests (${{ matrix.framework }})
         run: dotnet test --configuration Release --framework ${{ matrix.framework }} --results-directory test-results --settings test.runsettings
       - name: Publish coverage
