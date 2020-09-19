@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using NeinLinq.Fakes.RewriteQuery;
 using Xunit;
 
+#pragma warning disable EF1001
+
 namespace NeinLinq.Tests.RewriteQuery
 {
     public class EntityQueryProviderTest

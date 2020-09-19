@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using NeinLinq.Fakes.NullsafeQuery;
 using Xunit;
 
+#pragma warning disable EF1001
+
 namespace NeinLinq.Tests.NullsafeQuery
 {
     public class EntityQueryBuilderTest
