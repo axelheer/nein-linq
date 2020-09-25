@@ -2,110 +2,104 @@ name: everything
 on: [ push, pull_request ]
 jobs:
   test:
-    defaults:
-      run:
-        shell: pwsh
     strategy:
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
         framework: [ 'netcoreapp2.1', 'netcoreapp3.1', 'net5.0' ]
         include:
-          - os: windows-latest
-            framework: net46
-          - os: windows-latest
-            framework: net48
+        - os: windows-latest
+          framework: net46
+        - os: windows-latest
+          framework: net48
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup dotnet (2.1)
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '2.1'
-        if: matrix.framework == 'netcoreapp2.1'
-      - name: Setup dotnet (3.1)
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1'
-        if: matrix.framework == 'netcoreapp3.1'
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-      - name: Merge dotnet versions
-        run: gci $env:DOTNET_ROOT/../.. -e (dotnet --version) | gci -ad | gci -i shared | cpi -d $env:DOTNET_ROOT -r -force; dotnet --info
-      - name: Run tests (${{ matrix.framework }})
-        run: dotnet test --configuration Release --framework ${{ matrix.framework }} --results-directory test-results --settings test.runsettings
-      - name: Publish coverage
-        uses: codecov/codecov-action@v1
-        with:
-          file: test-results/*/coverage.opencover.xml
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup dotnet (2.1)
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '2.1'
+      if: matrix.framework == 'netcoreapp2.1'
+    - name: Setup dotnet (3.1)
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1'
+      if: matrix.framework == 'netcoreapp3.1'
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+    - name: Run tests (${{ matrix.framework }})
+      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --results-directory test-results --settings test.runsettings
+    - name: Publish coverage
+      uses: codecov/codecov-action@v1
+      with:
+        file: test-results/*/coverage.opencover.xml
   package:
     needs: test
     runs-on: windows-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-      - name: Create packages (w/o version suffix)
-        run: dotnet pack --configuration Release --output pkg
-        if: github.ref == 'refs/heads/final'
-      - name: Create packages (w/ version suffix)
-        run: dotnet pack --configuration Release --output pkg --version-suffix preview.${{ github.run_number }}
-        if: github.ref != 'refs/heads/final'
-      - name: Upload packages
-        uses: actions/upload-artifact@v1
-        with:
-          name: packages
-          path: pkg
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+    - name: Create packages (w/o version suffix)
+      run: dotnet pack --configuration Release --output pkg
+      if: github.ref == 'refs/heads/final'
+    - name: Create packages (w/ version suffix)
+      run: dotnet pack --configuration Release --output pkg --version-suffix preview.${{ github.run_number }}
+      if: github.ref != 'refs/heads/final'
+    - name: Upload packages
+      uses: actions/upload-artifact@v1
+      with:
+        name: packages
+        path: pkg
     if: github.event_name == 'push'
   prerelease:
     needs: package
     runs-on: windows-latest
+    continue-on-error: true
     steps:
-      - name: Download packages
-        uses: actions/download-artifact@v1
-        with:
-          name: packages
-          path: .
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-          source-url: https://nuget.pkg.github.com/axelheer/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish packages
-        run: dotnet nuget push *.nupkg --skip-duplicate
-        env:
-          DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLE: '0'
+    - name: Download packages
+      uses: actions/download-artifact@v1
+      with:
+        name: packages
+        path: .
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish packages
+      run: dotnet nuget push *.nupkg --skip-duplicate
     if: github.event_name == 'push' && github.ref != 'refs/heads/final'
   release:
     needs: package
     runs-on: windows-latest
     steps:
-      - name: Download packages
-        uses: actions/download-artifact@v1
-        with:
-          name: packages
-          path: .
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-      - name: Publish packages
-        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
-      - name: Extract version
-        run: |
-          if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
-            echo "::set-env name=RELEASE_VERSION::$($matches[0])"
-          }
-          else {
-            write-error "There is no version."
-          }
-      - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ env.RELEASE_VERSION }}
-          release_name: Version ${{ env.RELEASE_VERSION }}
-          draft: true
+    - name: Download packages
+      uses: actions/download-artifact@v1
+      with:
+        name: packages
+        path: .
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+    - name: Publish packages
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
+    - name: Extract version
+      run: |
+        if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
+          echo "::set-env name=RELEASE_VERSION::$($matches[0])"
+        }
+        else {
+          write-error "There is no version."
+        }
+    - name: Create release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ env.RELEASE_VERSION }}
+        release_name: Version ${{ env.RELEASE_VERSION }}
+        draft: true
     if: github.event_name == 'push' && github.ref == 'refs/heads/final'
