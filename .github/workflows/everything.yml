@@ -89,7 +89,7 @@ jobs:
     - name: Extract version
       run: |
         if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
-          echo "::set-env name=RELEASE_VERSION::$($matches[0])"
+          echo "RELEASE_VERSION=$($matches[0])" >> $env:GITHUB_ENV
         }
         else {
           write-error "There is no version."
