@@ -3,6 +3,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
+#pragma warning disable CA1508
+
 namespace NeinLinq
 {
     /// <summary>

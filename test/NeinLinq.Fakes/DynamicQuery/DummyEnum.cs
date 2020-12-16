@@ -1,4 +1,6 @@
-﻿namespace NeinLinq.Fakes.DynamicQuery
+﻿#pragma warning disable CA1711
+
+namespace NeinLinq.Fakes.DynamicQuery
 {
     public enum DummyEnum
     {

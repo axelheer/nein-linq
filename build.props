@@ -10,10 +10,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
+  <PropertyGroup>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+  </PropertyGroup>
 
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nein-linq.snk</AssemblyOriginatorKeyFile>
@@ -21,7 +20,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1010;CA1303;CA1710;CA2007;CA2225;NU5105</NoWarn>
+    <NoWarn>$(NoWarn);CA1010;CA1014;CA1303;CA1710;CA2007;CA2225;NU5105</NoWarn>
   </PropertyGroup>
 
 </Project>

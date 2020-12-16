@@ -5,6 +5,8 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SQLite;
 using System.Data.SQLite.EF6;
 
+#pragma warning disable CA1725
+
 namespace NeinLinq.Tests.DbAsyncQuery
 {
     public class Config : DbConfiguration, IDbConnectionFactory
