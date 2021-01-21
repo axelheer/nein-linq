@@ -31,7 +31,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Added support for EF Core 5.0.</PackageReleaseNotes>
+    <PackageReleaseNotes>Improved handling of dynamic lambda factories.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
