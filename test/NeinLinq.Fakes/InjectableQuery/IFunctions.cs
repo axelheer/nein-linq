@@ -27,5 +27,8 @@
             where TDummy : IDummy;
 
         double VelocityWithNonPublicSibling(Dummy value);
+
+        [InjectLambda]
+        double VelocityWithCachedExpression(Dummy value);
     }
 }

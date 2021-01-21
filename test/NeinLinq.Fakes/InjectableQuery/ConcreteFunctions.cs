@@ -63,5 +63,8 @@ namespace NeinLinq.Fakes.InjectableQuery
 
         public override Expression<Func<Dummy, double>> VelocityWithVirtualSibling()
             => v => Math.Round(v.Distance / v.Time, digits);
+
+        private CachedExpression<Func<Dummy, double>> VelocityWithCachedExpressionExpr { get; }
+            = CachedExpression.From<Func<Dummy, double>>(v => v.Distance / v.Time);
     }
 }

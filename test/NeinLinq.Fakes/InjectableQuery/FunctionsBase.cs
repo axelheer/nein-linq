@@ -79,5 +79,9 @@ namespace NeinLinq.Fakes.InjectableQuery
 
         public virtual Expression<Func<Dummy, double>> VelocityWithVirtualSibling()
             => throw new InvalidOperationException("Implementing sibling is missing.");
+
+        [InjectLambda]
+        public virtual double VelocityWithCachedExpression(Dummy value)
+            => throw new NotSupportedException();
     }
 }

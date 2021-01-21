@@ -112,7 +112,8 @@ namespace NeinLinq
                 var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value.Type);
 
                 // finally call lambda factory *uff*
-                return (LambdaExpression?)factoryMethod.Invoke(targetObject, null);
+                return Expression.Lambda<Func<LambdaExpression>>(
+                    Expression.Convert(Expression.Call(Expression.Convert(value, targetType), factoryMethod), typeof(LambdaExpression))).Compile()();
             };
         }
     }

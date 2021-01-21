@@ -141,11 +141,9 @@ namespace NeinLinq.Tests.InjectableQuery
             var query = from d in data.ToInjectable()
                         select functions.VelocityWithHiddenSibling(d);
 
-            var error = Assert.Throws<TargetInvocationException>(() => query.ToList());
+            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
 
-            var innerError = Assert.IsType<InvalidOperationException>(error.InnerException);
-
-            Assert.Equal("Implementing sibling has been hidden.", innerError.Message);
+            Assert.Equal("Implementing sibling has been hidden.", error.Message);
         }
 
         [Fact]
@@ -168,6 +166,17 @@ namespace NeinLinq.Tests.InjectableQuery
             var result = query.ToList();
 
             Assert.Equal(new[] { 200, .0, .1 }, result);
+        }
+
+        [Fact]
+        public void ShouldSucceedWithCachedExpression()
+        {
+            var query = from d in data.ToInjectable()
+                        select functions.VelocityWithCachedExpression(d);
+
+            var result = query.ToList();
+
+            Assert.Equal(new[] { 200.0, .0, .125 }, result);
         }
     }
 }
