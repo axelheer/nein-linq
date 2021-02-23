@@ -8,10 +8,7 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for query enumerable.
     /// </summary>
-    public class RewriteQueryEnumerable<T> : IEnumerable<T>
-#if !NET40
-        , IAsyncEnumerable<T>
-#endif
+    public class RewriteQueryEnumerable<T> : IEnumerable<T>, IAsyncEnumerable<T>
     {
         private readonly IEnumerable<T> enumerable;
 
@@ -35,10 +32,8 @@ namespace NeinLinq
         public IEnumerator<T> GetEnumerator()
             => new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
 
-#if !NET40
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
             => new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
-#endif
     }
 }

@@ -62,10 +62,7 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
-#if !NET40
-        , IAsyncEnumerable<T>
-#endif
+    public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>, IAsyncEnumerable<T>
     {
         /// <summary>
         /// Create a new query to rewrite.
@@ -85,7 +82,6 @@ namespace NeinLinq
                 .GetEnumerator();
         }
 
-#if !NET40
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
@@ -95,6 +91,5 @@ namespace NeinLinq
                 ? asyncEnumerable.GetAsyncEnumerator(cancellationToken)
                 : new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
         }
-#endif
     }
 }

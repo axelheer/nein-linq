@@ -5,10 +5,8 @@ jobs:
     strategy:
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
-        framework: [ 'netcoreapp2.1', 'netcoreapp3.1', 'net5.0' ]
+        framework: [ 'netcoreapp3.1', 'net5.0' ]
         include:
-        - os: windows-latest
-          framework: net46
         - os: windows-latest
           framework: net48
       fail-fast: false
@@ -16,11 +14,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Setup dotnet (2.1)
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '2.1'
-      if: matrix.framework == 'netcoreapp2.1'
     - name: Setup dotnet (3.1)
       uses: actions/setup-dotnet@v1
       with:
