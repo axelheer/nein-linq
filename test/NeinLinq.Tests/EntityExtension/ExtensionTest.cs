@@ -10,6 +10,13 @@ namespace NeinLinq.Tests.EntityExtension
     public class ExtensionTest
     {
         [Fact]
+        public void ShouldValidateArguments()
+        {
+            _ = Assert.Throws<ArgumentNullException>(() => InjectableDbContextOptionsBuilderExtensions.WithLambdaInjection(null!, Array.Empty<Type>()));
+            _ = Assert.Throws<ArgumentNullException>(() => InjectableDbContextOptionsBuilderExtensions.WithLambdaInjection(new DbContextOptionsBuilder(), null!));
+        }
+
+        [Fact]
         public void ShouldInject()
         {
             var services = new ServiceCollection();

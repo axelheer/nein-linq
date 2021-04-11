@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NeinLinq
 {
+    [ExcludeFromCodeCoverage]
     internal class InjectableQueryTranslationPreprocessorOptions
     {
         public Type[] Greenlist { get; }

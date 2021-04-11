@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Query;
 
 #pragma warning disable CA1812
 
 namespace NeinLinq
 {
+    [ExcludeFromCodeCoverage]
     internal class InjectableQueryTranslationPreprocessorFactory<TInnerFactory> : IQueryTranslationPreprocessorFactory
         where TInnerFactory : class, IQueryTranslationPreprocessorFactory
     {
