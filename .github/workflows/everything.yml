@@ -57,7 +57,7 @@ jobs:
         name: packages
         path: .
     - name: Publish packages
-      run: nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
     if: github.event_name == 'push' && github.ref != 'refs/heads/final'
   release:
     needs: package
@@ -69,7 +69,7 @@ jobs:
         name: packages
         path: .
     - name: Publish packages
-      run: nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
     - name: Extract version
       run: |
         if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
