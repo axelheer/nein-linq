@@ -43,6 +43,13 @@ Usage of specific flavors is encouraged for EF6 / EFCore (otherwise async querie
 
     PM> Install-Package NeinLinq.Interactive
 
+***New:***  with Version `5.1.0` the package *NeinLinq.EntityFrameworkCore* introduced an explicit `DbContext` extension for enabling *Lambda injection* globally:
+
+```csharp
+    services.AddDbContext<MyContext>(options =>
+         options.UseSqlOrTheLike("...").WithLambdaInjection());
+```
+
 Lambda injection
 ----------------
 
