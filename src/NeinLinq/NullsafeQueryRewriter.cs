@@ -12,7 +12,7 @@ namespace NeinLinq
     public class NullsafeQueryRewriter : ExpressionVisitor
     {
         private static readonly ObjectCache<Type, Expression?> Cache
-            = new ObjectCache<Type, Expression?>();
+            = new();
 
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
@@ -84,13 +84,10 @@ namespace NeinLinq
         }
 
         private static bool IsSafe(Expression? expression)
-        {
-            // in method call results and constant values we trust to avoid too much conditions...
-            return expression is null
+            => expression is null // in method call results and constant values we trust to avoid too much conditions...
                 || expression.NodeType == ExpressionType.Call
                 || expression.NodeType == ExpressionType.Constant
                 || !IsNullableOrReferenceType(expression.Type);
-        }
 
         private static Expression? Fallback(Type type)
         {

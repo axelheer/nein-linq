@@ -27,7 +27,7 @@ namespace NeinLinq
                             .Invoke(rewrite.Provider, new object[] { rewrite.Expression });
                     }
                     if (value is IAsyncQueryable query)
-                        return query.Expression;
+                        return Visit(query.Expression);
                 }
             }
 
@@ -35,13 +35,11 @@ namespace NeinLinq
         }
 
         private static object? GetValue(ConstantExpression target, MemberInfo member)
-        {
-            return member switch
+            => member switch
             {
                 PropertyInfo p => p.GetValue(target.Value, null),
                 FieldInfo f => f.GetValue(target.Value),
                 _ => null
             };
-        }
     }
 }

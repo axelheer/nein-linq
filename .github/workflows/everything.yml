@@ -37,10 +37,10 @@ jobs:
       uses: actions/setup-dotnet@v1
     - name: Create packages (w/o version suffix)
       run: dotnet pack --configuration Release --output pkg
-      if: github.ref == 'refs/heads/final'
+      if: github.ref == 'refs/tags/final'
     - name: Create packages (w/ version suffix)
       run: dotnet pack --configuration Release --output pkg --version-suffix preview.${{ github.run_number }}
-      if: github.ref != 'refs/heads/final'
+      if: github.ref != 'refs/tags/final'
     - name: Upload packages
       uses: actions/upload-artifact@v1
       with:
@@ -58,7 +58,7 @@ jobs:
         path: .
     - name: Publish packages
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-    if: github.event_name == 'push' && github.ref != 'refs/heads/final'
+    if: github.ref == 'refs/heads/main'
   release:
     needs: package
     runs-on: windows-latest
@@ -86,4 +86,4 @@ jobs:
         tag_name: v${{ env.RELEASE_VERSION }}
         release_name: Version ${{ env.RELEASE_VERSION }}
         draft: true
-    if: github.event_name == 'push' && github.ref == 'refs/heads/final'
+    if: github.ref == 'refs/tags/final'

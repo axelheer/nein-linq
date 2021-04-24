@@ -15,12 +15,7 @@ namespace NeinLinq
         /// <param name="predicate">The predicate expression to translate.</param>
         /// <returns>A translation object for the given predicate.</returns>
         public static PredicateTranslation<TSource> Translate<TSource>(this Expression<Func<TSource, bool>> predicate)
-        {
-            if (predicate is null)
-                throw new ArgumentNullException(nameof(predicate));
-
-            return new PredicateTranslation<TSource>(predicate);
-        }
+            => new(predicate);
 
         /// <summary>
         /// Combines two given predicates using a conditional AND operation.

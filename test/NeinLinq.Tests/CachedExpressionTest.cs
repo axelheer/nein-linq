@@ -7,14 +7,16 @@ namespace NeinLinq.Tests
     public class CachedExpressionTest
     {
         [Fact]
-        public void ShouldHandleInvalidArguments()
+        public void Ctor_NullArgument_Throws()
         {
-            _ = Assert.Throws<ArgumentNullException>(()
+            var expressionError = Assert.Throws<ArgumentNullException>(()
                 => new CachedExpression<Func<int, int>>(null!));
+
+            Assert.Equal("expression", expressionError.ParamName);
         }
 
         [Fact]
-        public void ShouldCompileExpression()
+        public void Compiled_IncrementExpression_Increments()
         {
             Expression<Func<int, int>> expression = i => i + i;
 
@@ -24,7 +26,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void ShouldCastToExpression()
+        public void ToTypedLambdaExpression_ProvicesActualExpression()
         {
             Expression<Func<int, int>> expected = i => i + i;
 
@@ -36,7 +38,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void ShouldCastToLambdaExpression()
+        public void ToUntypedLambdaExpression_ProvicesActualExpression()
         {
             Expression<Func<int, int>> expected = i => i + i;
 
@@ -48,7 +50,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void ShouldCastNullToExpression()
+        public void ToTypedLambdaExpression_NullArgument_ReturnsNull()
         {
             var subject = default(CachedExpression<Func<int, int>>);
 
@@ -58,7 +60,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void ShouldCastNullToLambdaExpression()
+        public void ToUntypedLambdaExpression_NullArgument_ReturnsNull()
         {
             var subject = default(CachedExpression<Func<int, int>>);
 

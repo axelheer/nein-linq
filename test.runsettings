@@ -6,7 +6,6 @@
         <Configuration>
           <Format>opencover</Format>
           <Include>[NeinLinq*]*</Include>
-          <Exclude>[NeinLinq.Fakes]*</Exclude>
         </Configuration>
       </DataCollector>
     </DataCollectors>

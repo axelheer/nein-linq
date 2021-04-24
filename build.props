@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1010;CA1014;CA1303;CA1710;CA2007;CA2225;NU5105</NoWarn>
+    <NoWarn>$(NoWarn);CA1014</NoWarn>
   </PropertyGroup>
 
 </Project>

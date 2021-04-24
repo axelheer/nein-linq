@@ -21,21 +21,18 @@ namespace NeinLinq
                     while (value is RewriteQueryable rewrite)
                         value = rewrite.Provider.RewriteQuery(rewrite.Expression);
                     if (value is IQueryable query)
-                        return query.Expression;
+                        return Visit(query.Expression);
                 }
             }
 
             return base.VisitMember(node);
         }
 
-        private static object? GetValue(ConstantExpression target, MemberInfo member)
+        private static object? GetValue(ConstantExpression target, MemberInfo member) => member switch
         {
-            return member switch
-            {
-                PropertyInfo p => p.GetValue(target.Value, null),
-                FieldInfo f => f.GetValue(target.Value),
-                _ => null
-            };
-        }
+            PropertyInfo p => p.GetValue(target.Value, null),
+            FieldInfo f => f.GetValue(target.Value),
+            _ => null
+        };
     }
 }

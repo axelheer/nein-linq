@@ -13,7 +13,7 @@ namespace NeinLinq
     public class InjectableQueryRewriter : ExpressionVisitor
     {
         private static readonly ObjectCache<MemberInfo, InjectLambdaMetadata> Cache
-            = new ObjectCache<MemberInfo, InjectLambdaMetadata>();
+            = new();
 
         private readonly Type[] greenlist;
 

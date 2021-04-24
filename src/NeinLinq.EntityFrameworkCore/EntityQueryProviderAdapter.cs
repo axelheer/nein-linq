@@ -15,6 +15,8 @@ namespace NeinLinq
     {
         private readonly RewriteEntityQueryProvider provider;
 
+        public ExpressionVisitor Rewriter => provider.Rewriter;
+
         public EntityQueryProviderAdapter(RewriteEntityQueryProvider provider)
             : base(new EmptyQueryCompiler())
         {

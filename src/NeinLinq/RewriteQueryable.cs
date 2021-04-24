@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 
+#pragma warning disable CA1010
+
 namespace NeinLinq
 {
     /// <summary>
@@ -40,11 +42,8 @@ namespace NeinLinq
 
         /// <inheritdoc />
         public IEnumerator GetEnumerator()
-        {
-            // rewrite on enumeration
-            return Provider.RewriteQuery(Expression)
-                .GetEnumerator();
-        }
+            => Provider.RewriteQuery(Expression)
+                .GetEnumerator(); // rewrite on enumeration
 
         /// <inheritdoc />
         public Type ElementType
@@ -62,7 +61,10 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
-    public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>, IAsyncEnumerable<T>
+    public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
+#if ASYNC_INTERFACES
+        , IAsyncEnumerable<T>
+#endif
     {
         /// <summary>
         /// Create a new query to rewrite.
@@ -76,11 +78,10 @@ namespace NeinLinq
 
         /// <inheritdoc />
         public new IEnumerator<T> GetEnumerator()
-        {
-            // rewrite on enumeration
-            return Provider.RewriteQuery<T>(Expression)
-                .GetEnumerator();
-        }
+            => Provider.RewriteQuery<T>(Expression)
+                .GetEnumerator(); // rewrite on enumeration
+
+#if ASYNC_INTERFACES
 
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
@@ -91,5 +92,8 @@ namespace NeinLinq
                 ? asyncEnumerable.GetAsyncEnumerator(cancellationToken)
                 : new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
         }
+
+#endif
+
     }
 }

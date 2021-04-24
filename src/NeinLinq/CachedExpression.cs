@@ -1,6 +1,8 @@
 using System;
 using System.Linq.Expressions;
 
+#pragma warning disable CA2225
+
 namespace NeinLinq
 {
     /// <summary>
@@ -38,7 +40,7 @@ namespace NeinLinq
         /// <param name="expression">Expression to cache.</param>
         /// <returns>The cached expression.</returns>
         public static implicit operator CachedExpression<TDelegate>(Expression<TDelegate> expression)
-            => new CachedExpression<TDelegate>(expression);
+            => new(expression);
 
         /// <summary>
         /// Returns the original expression.

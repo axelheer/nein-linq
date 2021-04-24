@@ -8,10 +8,10 @@ namespace NeinLinq
         where TKey : notnull
     {
         private readonly Dictionary<TKey, TValue> cache
-            = new Dictionary<TKey, TValue>();
+            = new();
 
         private readonly ReaderWriterLockSlim cacheLock
-            = new ReaderWriterLockSlim();
+            = new();
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {

@@ -10,7 +10,7 @@ namespace NeinLinq
     public static class DynamicExpression
     {
         private static readonly ObjectCache<Type, Func<string, IFormatProvider?, object>> Cache
-            = new ObjectCache<Type, Func<string, IFormatProvider?, object>>();
+            = new();
 
         /// <summary>
         /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.

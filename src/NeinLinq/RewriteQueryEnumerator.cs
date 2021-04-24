@@ -8,7 +8,10 @@ namespace NeinLinq
     /// <summary>
     /// Proxy for query enumerator.
     /// </summary>
-    public class RewriteQueryEnumerator<T> : IEnumerator<T>, IAsyncEnumerator<T>
+    public class RewriteQueryEnumerator<T> : IEnumerator<T>
+#if ASYNC_INTERFACES
+        , IAsyncEnumerator<T>
+#endif
     {
         private readonly IEnumerator<T> enumerator;
 
@@ -40,9 +43,11 @@ namespace NeinLinq
         public void Reset()
             => enumerator.Reset();
 
+#if ASYNC_INTERFACES
+
         /// <inheritdoc />
         public ValueTask<bool> MoveNextAsync()
-            => new ValueTask<bool>(enumerator.MoveNext());
+            => new(enumerator.MoveNext());
 
         /// <summary>
         /// Releases all resources.
@@ -52,6 +57,8 @@ namespace NeinLinq
             Dispose(true);
             return default;
         }
+
+#endif
 
         /// <summary>
         /// Releases all resources.

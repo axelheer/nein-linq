@@ -44,18 +44,20 @@ namespace NeinLinq
         public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
         {
             // execute query with rewritten expression; async, if possible
+            var rewritten = Rewrite(expression);
             return Provider is IDbAsyncQueryProvider asyncProvider
-                ? asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken)
-                : Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
+                ? asyncProvider.ExecuteAsync<TResult>(rewritten, cancellationToken)
+                : Task.FromResult(Provider.Execute<TResult>(rewritten));
         }
 
         /// <inheritdoc />
         public virtual Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken)
         {
             // execute query with rewritten expression; async, if possible
+            var rewritten = Rewrite(expression);
             return Provider is IDbAsyncQueryProvider asyncProvider
-                ? asyncProvider.ExecuteAsync(Rewrite(expression), cancellationToken)
-                : Task.FromResult(Provider.Execute(Rewrite(expression))!);
+                ? asyncProvider.ExecuteAsync(rewritten, cancellationToken)
+                : Task.FromResult(Provider.Execute(rewritten)!);
         }
     }
 }

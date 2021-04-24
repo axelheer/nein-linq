@@ -71,21 +71,17 @@ namespace NeinLinq
         }
 
         private bool IsMatchingDelegate(Type type)
-        {
-            return type.GetGenericArguments()
-                .FirstOrDefault(typeof(Delegate).IsAssignableFrom)
-                ?.GetMethod("Invoke", parameterTypes)
-                ?.ReturnParameter
-                .ParameterType == returnType;
-        }
+            => type.GetGenericArguments()
+                   .FirstOrDefault(typeof(Delegate).IsAssignableFrom)?
+                   .GetMethod("Invoke", parameterTypes)?
+                   .ReturnParameter
+                   .ParameterType == returnType;
 
         private static bool IsLambdaExpression(Type type)
-        {
-            return typeof(LambdaExpression).IsAssignableFrom(type)
+            => typeof(LambdaExpression).IsAssignableFrom(type)
                 || type.GetMethods(BindingFlags.Public | BindingFlags.Static)
                        .Any(method => typeof(LambdaExpression).IsEquivalentTo(method.ReturnType)
                                    && (method.Name == "op_Implicit" || method.Name == "op_Explicit"));
-        }
 
         private static Exception FailFactory(Type target, string method, string error)
         {

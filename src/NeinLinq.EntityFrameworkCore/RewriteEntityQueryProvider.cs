@@ -53,23 +53,22 @@ namespace NeinLinq
         public virtual TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             // execute query with rewritten expression; async, if possible
+            var rewritten = Rewrite(expression);
             return Provider is IAsyncQueryProvider asyncProvider
-                ? asyncProvider.ExecuteAsync<TResult>(Rewrite(expression), cancellationToken)
+                ? asyncProvider.ExecuteAsync<TResult>(rewritten, cancellationToken)
                 : typeof(Task).IsAssignableFrom(typeof(TResult))
-                ? Execute<TResult>(ExecuteTaskMethod, expression)
-                : Provider.Execute<TResult>(Rewrite(expression));
+                ? Execute<TResult>(ExecuteTaskMethod, rewritten)
+                : Provider.Execute<TResult>(rewritten);
         }
 
         private TResult Execute<TResult>(MethodInfo method, Expression expression)
-        {
-            return (TResult)(method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
+            => (TResult)(method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
                 .Invoke(this, new object[] { expression })!);
-        }
 
         private static readonly MethodInfo ExecuteTaskMethod
             = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)!;
 
         private Task<TResult> ExecuteTask<TResult>(Expression expression)
-            => Task.FromResult(Provider.Execute<TResult>(Rewrite(expression)));
+            => Task.FromResult(Provider.Execute<TResult>(expression));
     }
 }

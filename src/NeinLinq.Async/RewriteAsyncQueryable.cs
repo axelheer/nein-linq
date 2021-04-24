@@ -67,10 +67,7 @@ namespace NeinLinq
 
         /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
-        {
-            // rewrite on enumeration
-            return Provider.RewriteQuery<T>(Expression)
-                .GetAsyncEnumerator(cancellationToken);
-        }
+            => Provider.RewriteQuery<T>(Expression)
+                .GetAsyncEnumerator(cancellationToken); // rewrite on enumeration
     }
 }

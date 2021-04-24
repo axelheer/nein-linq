@@ -57,12 +57,7 @@ namespace NeinLinq
         }
 
         public InjectableDbContextOptionsExtension WithParams(Type[] greenlist)
-        {
-            if (greenlist is null)
-                throw new ArgumentNullException(nameof(greenlist));
-
-            return new InjectableDbContextOptionsExtension(greenlist);
-        }
+            => new(greenlist);
 
         public void Validate(IDbContextOptions options)
         {
