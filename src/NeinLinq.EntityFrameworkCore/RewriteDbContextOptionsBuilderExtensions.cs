@@ -29,6 +29,8 @@ namespace NeinLinq
         {
             if (optionsBuilder is null)
                 throw new ArgumentNullException(nameof(optionsBuilder));
+            if (rewriter is null)
+                throw new ArgumentNullException(nameof(rewriter));
 
             var extension = GetOrCreateExtension(optionsBuilder).WithRewriter(rewriter);
             ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(extension);

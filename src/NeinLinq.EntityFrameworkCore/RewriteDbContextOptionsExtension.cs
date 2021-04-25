@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,17 +69,26 @@ namespace NeinLinq
             {
             }
 
+            public new RewriteDbContextOptionsExtension Extension
+                => (RewriteDbContextOptionsExtension)base.Extension;
+
             public override bool IsDatabaseProvider
                 => false;
 
             public override string LogFragment
-                => "RewriteQuery";
+                => string.Join(", ", Extension.rewriters.Select(r => $"Rewriter={r.GetType().FullName}"));
 
             public override long GetServiceProviderHashCode()
-                => 1138;
+                => 0;
 
             public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
             {
+                var rewriters = Extension.rewriters;
+                for (var index = 0; index < rewriters.Length; index++)
+                {
+                    debugInfo[$"RewriteQuery:Rewriter:{index}:Type"] = rewriters[index].GetType().FullName!;
+                    debugInfo[$"RewriteQuery:Rewriter:{index}:Info"] = rewriters[index].ToString()!;
+                }
             }
         }
     }

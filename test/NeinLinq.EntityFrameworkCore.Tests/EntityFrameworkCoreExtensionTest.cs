@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +12,34 @@ namespace NeinLinq.Tests
     public class EntityFrameworkCoreExtensionTest
     {
         [Fact]
-        public void WithLambdaInjection_NullArgument_Throws()
+        public void WithRewriter_NullArgument_Throws()
         {
             var optionsBuilderError = Assert.Throws<ArgumentNullException>(()
-                => RewriteDbContextOptionsBuilderExtensions.WithLambdaInjection(null!));
-            var greenlistError = Assert.Throws<ArgumentNullException>(()
-                => RewriteDbContextOptionsBuilderExtensions.WithLambdaInjection(new DbContextOptionsBuilder(), null!));
+                => RewriteDbContextOptionsBuilderExtensions.WithRewriter(null!, new Rewriter()));
+            var rewriterError = Assert.Throws<ArgumentNullException>(()
+                => RewriteDbContextOptionsBuilderExtensions.WithRewriter(new DbContextOptionsBuilder(), null!));
 
             Assert.Equal("optionsBuilder", optionsBuilderError.ParamName);
-            Assert.Equal("greenlist", greenlistError.ParamName);
+            Assert.Equal("rewriter", rewriterError.ParamName);
+        }
+
+        [Fact]
+        public void WithRewriter_PopulatesInfo()
+        {
+            var info = new DbContextOptionsBuilder().WithRewriter(new Rewriter()).Options.FindExtension<RewriteDbContextOptionsExtension>().Info;
+            var debugInfo = new Dictionary<string, string>();
+            info.PopulateDebugInfo(debugInfo);
+
+            Assert.False(info.IsDatabaseProvider);
+            Assert.Equal("Rewriter=NeinLinq.Tests.EntityFrameworkCoreExtensionTest+Rewriter", info.LogFragment);
+            Assert.Equal(0, info.GetServiceProviderHashCode());
+            Assert.Equal(new Dictionary<string, string>()
+                {
+                    ["RewriteQuery:Rewriter:0:Type"] = "NeinLinq.Tests.EntityFrameworkCoreExtensionTest+Rewriter",
+                    ["RewriteQuery:Rewriter:0:Info"] = "I'm a rewriter."
+                },
+                debugInfo
+            );
         }
 
         [Fact]
@@ -130,6 +150,12 @@ namespace NeinLinq.Tests
             {
                 Models = Set<Model>();
             }
+        }
+
+        private class Rewriter : ExpressionVisitor
+        {
+            public override string ToString()
+                => "I'm a rewriter.";
         }
     }
 }
