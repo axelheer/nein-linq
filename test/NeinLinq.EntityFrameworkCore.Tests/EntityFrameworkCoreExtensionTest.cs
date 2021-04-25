@@ -11,12 +11,12 @@ namespace NeinLinq.Tests
     public class EntityFrameworkCoreExtensionTest
     {
         [Fact]
-        public void Ctor_NullArgument_Throws()
+        public void WithLambdaInjection_NullArgument_Throws()
         {
             var optionsBuilderError = Assert.Throws<ArgumentNullException>(()
-                => InjectableDbContextOptionsBuilderExtensions.WithLambdaInjection(null!));
+                => RewriteDbContextOptionsBuilderExtensions.WithLambdaInjection(null!));
             var greenlistError = Assert.Throws<ArgumentNullException>(()
-                => InjectableDbContextOptionsBuilderExtensions.WithLambdaInjection(new DbContextOptionsBuilder(), null!));
+                => RewriteDbContextOptionsBuilderExtensions.WithLambdaInjection(new DbContextOptionsBuilder(), null!));
 
             Assert.Equal("optionsBuilder", optionsBuilderError.ParamName);
             Assert.Equal("greenlist", greenlistError.ParamName);

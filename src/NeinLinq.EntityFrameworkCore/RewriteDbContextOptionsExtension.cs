@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 
-#pragma warning disable CA1307
-#pragma warning disable CA1508
-#pragma warning disable CA1822
-
 namespace NeinLinq
 {
-    internal class InjectableDbContextOptionsExtension : IDbContextOptionsExtension
+    internal class RewriteDbContextOptionsExtension : IDbContextOptionsExtension
     {
-        private readonly Type[] greenlist;
+        private readonly ExpressionVisitor[] rewriters;
 
-        public InjectableDbContextOptionsExtension(params Type[] greenlist)
+        public RewriteDbContextOptionsExtension(params ExpressionVisitor[] rewriters)
         {
-            this.greenlist = greenlist ?? throw new ArgumentNullException(nameof(greenlist));
+            this.rewriters = rewriters;
         }
 
         public DbContextOptionsExtensionInfo Info
@@ -35,10 +33,10 @@ namespace NeinLinq
                 if (descriptor.ImplementationType is null)
                     continue;
 
-                // Add Injectable factory for actual implementation
+                // Add Rewrite factory for actual implementation
                 services[index] = new ServiceDescriptor(
                     descriptor.ServiceType,
-                    typeof(InjectableQueryTranslationPreprocessorFactory<>)
+                    typeof(RewriteQueryTranslationPreprocessorFactory<>)
                         .MakeGenericType(descriptor.ImplementationType),
                     descriptor.Lifetime
                 );
@@ -53,11 +51,11 @@ namespace NeinLinq
                 );
             }
 
-            _ = services.AddSingleton(new InjectableQueryTranslationPreprocessorOptions(greenlist));
+            _ = services.AddSingleton(new RewriteQueryTranslationPreprocessorOptions(rewriters));
         }
 
-        public InjectableDbContextOptionsExtension WithParams(Type[] greenlist)
-            => new(greenlist);
+        public RewriteDbContextOptionsExtension WithRewriter(ExpressionVisitor rewriter)
+            => new(rewriters.Append(rewriter).ToArray());
 
         public void Validate(IDbContextOptions options)
         {
@@ -74,10 +72,10 @@ namespace NeinLinq
                 => false;
 
             public override string LogFragment
-                => "LambdaInjection";
+                => "RewriteQuery";
 
             public override long GetServiceProviderHashCode()
-                => "LambdaInjection".GetHashCode();
+                => 1138;
 
             public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
             {
