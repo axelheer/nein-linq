@@ -26,7 +26,7 @@ Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.co
 
     PM> Install-Package NeinLinq.EntityFrameworkCore
 
-***Breaking:*** since Version `3.0.0` the extension methods have different names depending on the chosen package above, in order to avoid some conflicts! For example there are now:
+***Note:*** the extension methods described below have different names depending on the chosen package above, in order to avoid some conflicts! For example there are:
 
 - `ToInjectable` (*NeinLinq*)
 - `ToAsyncInjectable` (*NeinLinq.Async*)
@@ -34,14 +34,6 @@ Use *NeinLinq.EntityFrameworkCore* for [Entity Framework Core](https://github.co
 - `ToEntityInjectable` (*NeinLinq.EntityFrameworkCore*)
 
 Usage of specific flavors is encouraged for EF6 / EFCore (otherwise async queries won't work).
-
-***Breaking:*** before Version `4.0.0` the package *NeinLinq.Queryable* is needed for plain LINQ queries:
-
-    PM> Install-Package NeinLinq.Queryable
-
-***Breaking:*** before Version `5.0.0` the package *NeinLinq.Interactive* is needed for async LINQ queries instead:
-
-    PM> Install-Package NeinLinq.Interactive
 
 ***New:***  with Version `5.1.0` the package *NeinLinq.EntityFrameworkCore* introduced an explicit `DbContext` extension for enabling *Lambda injection* globally:
 
@@ -158,44 +150,23 @@ public static Expression<Func<Entity, Whatever, decimal>> DoTheFancy()
 
 The methods `RetrieveWhatever`, `FulfillsSomeCriteria` and `DoTheFancy` should be marked accordingly, using the attribute `[InjectLambda]` or just the simple convention "same class, same name, matching signature" (which requires the class to be green listed by the way). And the call `ToInjectable` can happen anywhere within the LINQ query chain, so we don't have to pollute our business logic.
 
-*Note:* code duplication should not be necessary. The ordinary method can just compile the expression, ideally only once. A straightforward solution can look like the following code sample (it's possible to encapsulate / organize this stuff however sophisticated it seems fit, *NeinLinq* has no specific requirements; feel free to build some kind of "Expression Cache"...):
-
-```csharp
-static Func<string, int, string> limitText = LimitText().Compile();
-
-[InjectLambda]
-public static string LimitText(this string value, int maxLength)
-{
-    return limitText(value, maxLength);
-}
-
-// -------------------------------------------------------------------
-
-[InjectLambda]
-public static string LimitText(this string value, int maxLength)
-{
-    // for the lazy (compiles every time...)
-    return LimitText().Compile()(value, maxLength);
-}
-```
-
-**New:** with Version `4.1.0` a simple and build-in expression cache has been added. You can still use your own more fancy one; and if you add any cast operator to `LambdaExpression`, your code may get a nice little clean-up here...
+***Note:*** code duplication should not be necessary. The ordinary method can just compile the expression, ideally only once. A straightforward solution can look like the following code sample (it's possible to encapsulate / organize this stuff however sophisticated it seems fit, *NeinLinq* has no specific requirements; feel free to use the build-in "Expression Cache" or build something fancy...):
 
 ```csharp
 public static CachedExpression<Func<string, int, string>> LimitTextExpr { get; }
-    = CachedExpression.From<Func<string, int, string>>((v, l) => v != null && v.Length > l ? v.Substring(0, l) : v)
+    = new((v, l) => v != null && v.Length > l ? v.Substring(0, l) : v)
 
 [InjectLambda]
 public static string LimitText(this string value, int maxLength)
     => LimitTextExpr.Compiled(value, maxLength);
 ```
 
-**New:** that works with instance methods too (Version `1.3.1`), so the actual expression code is finally able to retrieve additional data. Since Version `1.5.1` even interfaces and / or base classes can be used to abstract all the things. Thus, we can declare an interface / base class without expressions, but provide the expression to inject using inheritance.
+***Advanced:*** that works with instance methods too, so the actual expression code is able to retrieve additional data. Even interfaces and / or base classes can be used to abstract all the things. Thus, we can declare an interface / base class without expressions, but provide the expression to inject using inheritance.
 
 ```csharp
 public class ParameterizedFunctions
 {
-    readonly int narf;
+    private readonly int narf;
 
     public ParameterizedFunctions(int narf)
     {
@@ -238,9 +209,9 @@ public class Functions : IFunctions
 
 ```
 
-*Note*: injecting instance methods is not as efficient as injecting static methods. Just don't use the former ones, if not really necessary. Furthermore, injecting instance methods of a sealed type reduces the overhead a bit, since there are more things that only need to be done once. Okay, nothing new to say here.
+***Note***: injecting instance methods is not as efficient as injecting static methods. Just don't use the former ones, if not really necessary. Furthermore, injecting instance methods of a sealed type reduces the overhead a bit, since there are more things that only need to be done once. Okay, nothing new to say here.
 
-**New:** to be more hacky and use less extension method ceremony, it's now (Version `1.7.0`) possible to inject properties directly whithin in models.
+***One more thing:*** to be more hacky and use less extension method ceremony, it's possible to inject properties directly within in models.
 
 ```csharp
 public class Model
@@ -452,7 +423,7 @@ var selectCourseWithAcademy =
                  });
 ```
 
-**New:** to be less verbose "Source translation" / "Result translation" can be used within a single bloated statement, if appropriate (Version `1.6.0`):
+***Note:*** to be less verbose "Source translation" / "Result translation" can be used within a single bloated statement, if appropriate:
 
 ```csharp
 Expression<Func<Course, CourseView>> selectCourse =
@@ -468,7 +439,7 @@ var selectAcademyWithCourses =
                 })
 ```
 
-*Note:* for parent / child relations the less dynamic but (maybe) more readable *Lambda injection* is also an option: just encapsulate the selector as a nice extension method.
+***Note:*** for parent / child relations the less dynamic but (maybe) more readable *Lambda injection* is also an option: just encapsulate the selector as a nice extension method.
 
 Function substitution
 ---------------------
@@ -513,4 +484,4 @@ var q = DynamicQuery.CreatePredicate<Whatever>("Name", "Contains", "q");
 var query = data.Where(p.Or(q));
 ```
 
-*Note:* if you're seeking a possibility to create complex queries based on string manipulation, this won't help. The goal of this library is to stay type safe as long as possible.
+***Note:*** if you're seeking a possibility to create complex queries based on string manipulation, this won't help. The goal of this library is to stay type safe as long as possible.
