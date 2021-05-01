@@ -37,10 +37,10 @@ jobs:
       uses: actions/setup-dotnet@v1
     - name: Create packages (w/o version suffix)
       run: dotnet pack --configuration Release --output pkg
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: startsWith(github.ref, 'refs/tags/v') == true
     - name: Create packages (w/ version suffix)
       run: dotnet pack --configuration Release --output pkg --version-suffix preview.${{ github.run_number }}
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: startsWith(github.ref, 'refs/tags/v') != true
     - name: Upload packages
       uses: actions/upload-artifact@v1
       with:
@@ -70,4 +70,4 @@ jobs:
         path: .
     - name: Publish packages
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') == true
