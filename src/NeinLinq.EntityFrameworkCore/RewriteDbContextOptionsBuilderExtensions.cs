@@ -8,6 +8,7 @@ namespace NeinLinq
     /// <summary>
     /// Replaces method calls with lambda expressions.
     /// </summary>
+    [CLSCompliant(false)]
     public static class RewriteDbContextOptionsBuilderExtensions
     {
         /// <summary>

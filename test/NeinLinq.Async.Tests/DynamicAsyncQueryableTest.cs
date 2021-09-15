@@ -6,6 +6,7 @@ using Xunit;
 
 namespace NeinLinq.Tests
 {
+    [CLSCompliant(false)]
     public class DynamicAsyncQueryableTest
     {
         [Fact]
