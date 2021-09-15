@@ -7,11 +7,16 @@ namespace NeinLinq
 {
     internal sealed class InjectLambdaSignature
     {
+
+#pragma warning disable S3011
+
         private const BindingFlags Everything
             = BindingFlags.NonPublic
             | BindingFlags.Public
             | BindingFlags.Static
             | BindingFlags.Instance;
+
+#pragma warning restore S3011
 
         private readonly Type[] genericArguments;
 

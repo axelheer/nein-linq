@@ -221,6 +221,8 @@ namespace NeinLinq
                 CreateOrderClause(target, query.Expression, selector, false, descending));
         }
 
+#pragma warning disable S3358
+
         private static Expression CreateOrderClause(ParameterExpression target,
                                                     Expression expression,
                                                     string selector,
@@ -237,6 +239,8 @@ namespace NeinLinq
             return Expression.Call(typeof(Queryable), method, new[] { target.Type, keySelector.ReturnType },
                 expression, Expression.Quote(keySelector));
         }
+
+#pragma warning restore S3358
 
         private static Expression CreateWhereClause(ParameterExpression target,
                                                     Expression expression,

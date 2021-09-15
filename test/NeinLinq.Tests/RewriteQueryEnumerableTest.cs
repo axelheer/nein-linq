@@ -44,6 +44,7 @@ namespace NeinLinq.Tests
         }
 
 #pragma warning disable CA1812
+#pragma warning disable S3881
 
         private class Model
         {

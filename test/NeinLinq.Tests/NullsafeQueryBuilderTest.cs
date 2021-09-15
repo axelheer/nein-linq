@@ -9,8 +9,6 @@ namespace NeinLinq.Tests
         [Fact]
         public void ToTypedQueryableNullsafe_NullArgument_Throws()
         {
-            var value = CreateQuery<IQueryable<Model>>();
-
             var valueError = Assert.Throws<ArgumentNullException>(()
                 => NullsafeQueryBuilder.ToNullsafe((IQueryable<Model>)null!));
 
@@ -20,8 +18,6 @@ namespace NeinLinq.Tests
         [Fact]
         public void ToTypedOrderedQueryableNullsafe_NullArgument_Throws()
         {
-            var value = CreateQuery<IOrderedQueryable<Model>>();
-
             var valueError = Assert.Throws<ArgumentNullException>(()
                 => NullsafeQueryBuilder.ToNullsafe((IOrderedQueryable<Model>)null!));
 
@@ -31,8 +27,6 @@ namespace NeinLinq.Tests
         [Fact]
         public void ToUntypedQueryableNullsafe_NullArgument_Throws()
         {
-            var value = CreateQuery<IQueryable>();
-
             var valueError = Assert.Throws<ArgumentNullException>(()
                 => NullsafeQueryBuilder.ToNullsafe((IQueryable)null!));
 
@@ -42,8 +36,6 @@ namespace NeinLinq.Tests
         [Fact]
         public void ToUntypedOrderedQueryableNullsafe_NullArgument_Throws()
         {
-            var value = CreateQuery<IOrderedQueryable>();
-
             var valueError = Assert.Throws<ArgumentNullException>(()
                 => NullsafeQueryBuilder.ToNullsafe((IOrderedQueryable)null!));
 

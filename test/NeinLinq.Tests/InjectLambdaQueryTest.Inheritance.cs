@@ -288,7 +288,7 @@ namespace NeinLinq.Tests
         {
             private readonly int digits;
 
-            public FunctionsBase(int digits)
+            protected FunctionsBase(int digits)
             {
                 this.digits = digits;
             }

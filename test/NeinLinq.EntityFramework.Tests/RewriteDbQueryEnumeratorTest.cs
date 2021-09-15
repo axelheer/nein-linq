@@ -78,6 +78,8 @@ namespace NeinLinq.Tests
             Assert.True(enumerator.MoveNextCalled);
         }
 
+#pragma warning disable S3966
+
         [Fact]
         public void Dispose_Disposes()
         {
@@ -88,6 +90,8 @@ namespace NeinLinq.Tests
 
             Assert.True(enumerator.DisposeCalled);
         }
+
+#pragma warning restore S3966
 
         [Fact]
         public async Task DisposeAsync_DisposesAsync()
@@ -101,6 +105,8 @@ namespace NeinLinq.Tests
         }
 
 #pragma warning disable CA1812
+#pragma warning disable S1121
+#pragma warning disable S3881
 
         private class Model
         {

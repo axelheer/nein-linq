@@ -27,4 +27,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.29.0.36737" PrivateAssets="All" />
+  </ItemGroup>
+
 </Project>

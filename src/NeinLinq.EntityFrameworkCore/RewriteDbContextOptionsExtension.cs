@@ -60,6 +60,7 @@ namespace NeinLinq
 
         public void Validate(IDbContextOptions options)
         {
+            // nothing to do here
         }
 
         private class ExtensionInfo : DbContextOptionsExtensionInfo

@@ -249,7 +249,9 @@ namespace NeinLinq.Tests
                             Question = z.SomeText.Contains("?")
                         };
 
-            var result = query.ToList();
+            _ = query.ToList();
+
+            Assert.True(true);
         }
 
         private static IQueryable<Model> CreateQuery()

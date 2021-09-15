@@ -117,6 +117,8 @@ namespace NeinLinq
                 CreateAsyncOrderClause(target, query.Expression, selector, false, descending));
         }
 
+#pragma warning disable S3358
+
         private static Expression CreateAsyncOrderClause(ParameterExpression target,
                                                          Expression expression,
                                                          string selector,
@@ -133,6 +135,8 @@ namespace NeinLinq
             return Expression.Call(typeof(AsyncQueryable), method, new[] { target.Type, keySelector.ReturnType },
                 expression, Expression.Quote(keySelector));
         }
+
+#pragma warning restore S3358
 
         private static Expression CreateAsyncWhereClause(ParameterExpression target,
                                                          Expression expression,
