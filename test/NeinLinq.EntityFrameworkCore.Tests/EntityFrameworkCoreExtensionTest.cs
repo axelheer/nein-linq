@@ -26,11 +26,12 @@ namespace NeinLinq.Tests
         [Fact]
         public void WithRewriter_PopulatesInfo()
         {
-            var info = new DbContextOptionsBuilder().WithRewriter(new Rewriter()).Options.FindExtension<RewriteDbContextOptionsExtension>().Info;
+            var info = new DbContextOptionsBuilder().WithRewriter(new Rewriter()).Options.FindExtension<RewriteDbContextOptionsExtension>()?.Info;
             var debugInfo = new Dictionary<string, string>();
-            info.PopulateDebugInfo(debugInfo);
+            info?.PopulateDebugInfo(debugInfo);
 
-            Assert.False(info.IsDatabaseProvider);
+            Assert.NotNull(info);
+            Assert.False(info!.IsDatabaseProvider);
             Assert.Equal("Rewriter=NeinLinq.Tests.EntityFrameworkCoreExtensionTest+Rewriter", info.LogFragment);
             Assert.Equal(0, info.GetServiceProviderHashCode());
             Assert.Equal(new Dictionary<string, string>()

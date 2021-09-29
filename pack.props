@@ -31,7 +31,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Added EF Core extension for global lambda injection.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added explicit support for .NET 6.0.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,8 +78,20 @@ namespace NeinLinq
             public override string LogFragment
                 => string.Join(", ", Extension.rewriters.Select(r => $"Rewriter={r.GetType().FullName}"));
 
+#if NET6_0_OR_GREATER
+
+            public override int GetServiceProviderHashCode()
+                => 0;
+
+            public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
+                => true;
+
+#else
+
             public override long GetServiceProviderHashCode()
                 => 0;
+
+#endif
 
             public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
             {
