@@ -74,7 +74,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void Query_Throws()
+        public void Query_WithoutLambdaInjection_Throws()
         {
             var services = new ServiceCollection();
 
@@ -96,7 +96,7 @@ namespace NeinLinq.Tests
         }
 
         [Fact]
-        public void SubQuery_WithLambdaInjection_ResolvesLambdaInjection()
+        public void Query_WithInnerLambdaInjection_ResolvesLambdaInjection()
         {
             var services = new ServiceCollection();
 
@@ -120,11 +120,72 @@ namespace NeinLinq.Tests
 
             var innerQuery = context.Models.Where(m => m.IsNarf);
 
-            var outerQuery = from m in context.Models
-                             from n in innerQuery
+            var outerQuery = from m in innerQuery
+                             where m.IsNarf
                              select m.Id;
 
-            Assert.Equal(3, outerQuery.Count());
+            Assert.Equal(1, outerQuery.Count());
+        }
+
+        [Fact(Skip = "TODO: fix this!")]
+        public void Query_WithNestedLambdaInjection_ResolvesLambdaInjection()
+        {
+            var services = new ServiceCollection();
+
+            _ = services.AddDbContext<TestContext>(options =>
+                options.UseSqlite("Data Source=EntityFrameworkCoreExtensionTest.db").WithLambdaInjection(typeof(Model)));
+
+            using var serviceProvider = services.BuildServiceProvider();
+
+            var context = serviceProvider.GetRequiredService<TestContext>();
+
+            _ = context.Database.EnsureDeleted();
+            _ = context.Database.EnsureCreated();
+
+            context.Models.AddRange(
+                new Model
+                {
+                    Name = "Heinz",
+                    Values =
+                    {
+                        new ModelValue { Value = 1, IsActive = true },
+                        new ModelValue { Value = 2 },
+                        new ModelValue { Value = 3 }
+                    }
+                },
+                new Model
+                {
+                    Name = "Narf",
+                    Values =
+                    {
+                        new ModelValue { Value = 4 },
+                        new ModelValue { Value = 5, IsActive = true },
+                        new ModelValue { Value = 6 }
+                    }
+                },
+                new Model
+                {
+                    Name = "Wat",
+                    Values =
+                    {
+                        new ModelValue { Value = 7 },
+                        new ModelValue { Value = 8 },
+                        new ModelValue { Value = 9, IsActive = true }
+                    }
+                }
+            );
+
+            _ = context.SaveChanges();
+
+            var query = from m in context.Models
+                        select new
+                        {
+                            m.Id,
+                            m.Name,
+                            m.ActiveValue
+                        };
+
+            Assert.Equal(15, query.Sum(m => m.ActiveValue));
         }
 
 #pragma warning disable CA1812
@@ -136,11 +197,32 @@ namespace NeinLinq.Tests
 
             public string? Name { get; set; }
 
+            public ISet<ModelValue> Values { get; set; }
+                = new HashSet<ModelValue>();
+
             public bool IsNarf
                 => throw new InvalidOperationException($"Unable to determine, whether {Name} is Narf or not.");
 
             public static Expression<Func<Model, bool>> IsNarfExpr
                 => d => d.Name == "Narf";
+
+            public int? ActiveValue
+                => null;
+
+            public static Expression<Func<Model, int?>> ActiveValueExpr
+                => d => d.Values.Where(v => v.IsActive == ModelValue.TrueValue).Select(v => v.Value).FirstOrDefault();
+        }
+
+        private class ModelValue
+        {
+            public int Id { get; set; }
+
+            public int Value { get; set; }
+
+            public bool IsActive { get; set; }
+
+            public static bool TrueValue
+                => true;
         }
 
         private class TestContext : DbContext

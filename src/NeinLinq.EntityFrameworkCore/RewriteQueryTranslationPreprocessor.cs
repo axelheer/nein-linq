@@ -22,6 +22,10 @@ namespace NeinLinq
         }
 
         public override Expression Process(Expression query)
-            => innerPreprocessor.Process(options.Rewriters.Aggregate(query, (q, r) => r.Visit(q)));
+        {
+            var rewritten = options.Rewriters.Aggregate(query, (q, r) => r.Visit(q));
+            var processed =  innerPreprocessor.Process(rewritten);
+            return processed;
+        }
     }
 }
