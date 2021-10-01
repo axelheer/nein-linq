@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.DependencyInjection;
+
+#pragma warning disable EF1001
 
 namespace NeinLinq
 {
@@ -28,15 +30,15 @@ namespace NeinLinq
             for (var index = services.Count - 1; index >= 0; index--)
             {
                 var descriptor = services[index];
-                if (descriptor.ServiceType != typeof(IQueryTranslationPreprocessorFactory))
+                if (descriptor.ServiceType != typeof(IQueryCompiler))
                     continue;
                 if (descriptor.ImplementationType is null)
                     continue;
 
-                // Add Rewrite factory for actual implementation
+                // Add Compiler adapter for actual implementation
                 services[index] = new ServiceDescriptor(
                     descriptor.ServiceType,
-                    typeof(RewriteQueryTranslationPreprocessorFactory<>)
+                    typeof(EntityQueryCompilerAdapter<>)
                         .MakeGenericType(descriptor.ImplementationType),
                     descriptor.Lifetime
                 );
@@ -51,7 +53,7 @@ namespace NeinLinq
                 );
             }
 
-            _ = services.AddSingleton(new RewriteQueryTranslationPreprocessorOptions(rewriters));
+            _ = services.AddSingleton(new EntityQueryCompilerAdapterOptions(rewriters));
         }
 
         public RewriteDbContextOptionsExtension WithRewriter(ExpressionVisitor rewriter)

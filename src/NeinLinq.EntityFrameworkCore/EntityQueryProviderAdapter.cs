@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -10,7 +9,6 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace NeinLinq
 {
-    [ExcludeFromCodeCoverage]
     internal class EntityQueryProviderAdapter : EntityQueryProvider
     {
         private readonly RewriteEntityQueryProvider provider;
