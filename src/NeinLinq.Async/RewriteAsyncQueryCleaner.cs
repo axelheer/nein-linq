@@ -5,11 +5,15 @@ using System.Reflection;
 
 namespace NeinLinq
 {
-    internal class RewriteAsyncQueryCleaner : ExpressionVisitor
+    /// <summary>
+    /// Prepares queries to be rewritten.
+    /// </summary>
+    public class RewriteAsyncQueryCleaner : ExpressionVisitor
     {
         private static readonly MethodInfo RewriteQueryMethod
             = typeof(RewriteAsyncQueryProvider).GetMethod("RewriteQuery")!;
 
+        /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
             if (node is null)
