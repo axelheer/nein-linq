@@ -120,14 +120,16 @@ namespace NeinLinq.Tests
 
             var innerQuery = context.Models.Where(m => m.IsNarf);
 
-            var outerQuery = from m in innerQuery
-                             where m.IsNarf
-                             select m.Id;
+            var outerQuery = from m in context.Models
+                             join n in innerQuery on m.Id equals n.Id
+                             select n.Id;
 
-            Assert.Equal(1, outerQuery.Count());
+            var query = context.Models.SelectMany(_ => outerQuery);
+
+            Assert.Equal(3, query.Count());
         }
 
-        [Fact(Skip = "TODO: fix this!")]
+        [Fact]
         public void Query_WithNestedLambdaInjection_ResolvesLambdaInjection()
         {
             var services = new ServiceCollection();
