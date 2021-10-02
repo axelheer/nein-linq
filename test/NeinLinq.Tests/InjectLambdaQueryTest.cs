@@ -51,6 +51,9 @@ namespace NeinLinq.Tests
 
             public double Time { get; set; }
         }
+
+#pragma warning disable S1144
+
         private class MixedFunctions
         {
             private readonly int digits;
@@ -72,5 +75,8 @@ namespace NeinLinq.Tests
             public Expression<Func<Model, double>> VelocityStaticToInstance()
                 => v => Math.Round(v.Distance / v.Time, digits);
         }
+
+#pragma warning restore S1144
+
     }
 }

@@ -190,6 +190,7 @@ namespace NeinLinq.Tests
             Assert.Equal(15, query.Sum(m => m.ActiveValue));
         }
 
+#pragma warning disable S1144
 #pragma warning disable S3459
 
         private class Model
@@ -208,7 +209,7 @@ namespace NeinLinq.Tests
                 => d => d.Name == "Narf";
 
             public int? ActiveValue
-                => null;
+                => throw new InvalidOperationException($"Unable to determine, whether {Name} has active value or not.");
 
             public static Expression<Func<Model, int?>> ActiveValueExpr
                 => d => d.Values.Where(v => v.IsActive == ModelValue.TrueValue).Select(v => v.Value).FirstOrDefault();
@@ -226,8 +227,6 @@ namespace NeinLinq.Tests
                 => true;
         }
 
-#pragma warning restore S3459
-
         private class TestContext : DbContext
         {
             public DbSet<Model> Models { get; }
@@ -238,6 +237,9 @@ namespace NeinLinq.Tests
                 Models = Set<Model>();
             }
         }
+
+#pragma warning restore S3459
+#pragma warning restore S1144
 
         private class Rewriter : ExpressionVisitor
         {

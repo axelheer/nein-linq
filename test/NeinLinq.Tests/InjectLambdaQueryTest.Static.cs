@@ -202,6 +202,8 @@ namespace NeinLinq.Tests
             public double Time { get; set; }
         }
 
+#pragma warning disable S1144
+
         private static class Functions
         {
             public static double VelocityWithoutSibling(Model value)
@@ -317,5 +319,8 @@ namespace NeinLinq.Tests
             public static Expression<Func<Model, double>> VelocityWithTypeMetadata()
                 => v => v.Distance / v.Time;
         }
+
+#pragma warning restore S1144
+
     }
 }

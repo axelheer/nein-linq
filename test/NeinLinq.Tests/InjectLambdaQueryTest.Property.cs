@@ -210,6 +210,7 @@ namespace NeinLinq.Tests
             return data.AsQueryable();
         }
 
+#pragma warning disable S1144
 #pragma warning disable S3459
 
         private class Model
@@ -317,8 +318,6 @@ namespace NeinLinq.Tests
                 => new(v => v.Distance / v.Time);
         }
 
-#pragma warning restore S3459
-
         private static class ModelExtensions
         {
             public static Expression<Func<Model, double>> VelocityWithTypeMetadata()
@@ -327,5 +326,9 @@ namespace NeinLinq.Tests
             public static Expression<Func<Model, double>> VelocityWithPropertyAndTypeMetadata
                 => v => v.Distance / v.Time;
         }
+
+#pragma warning restore S3459
+#pragma warning restore S1144
+
     }
 }

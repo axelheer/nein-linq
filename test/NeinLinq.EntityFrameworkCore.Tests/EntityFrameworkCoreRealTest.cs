@@ -187,6 +187,7 @@ namespace NeinLinq.Tests
             return new TestContext();
         }
 
+#pragma warning disable S1144
 #pragma warning disable S3459
 
         private class Model
@@ -210,6 +211,7 @@ namespace NeinLinq.Tests
         }
 
 #pragma warning restore S3459
+#pragma warning restore S1144
 
         private class TestContext : DbContext
         {

@@ -54,7 +54,7 @@ namespace NeinLinq.Tests
                         orderby a.SomeNumeric
                         select new ModelView
                         {
-                            Question = a.SomeText.Contains("?")
+                            Question = a.SomeText.Contains('?')
                         };
 
             var result = query.ToList();
@@ -240,7 +240,7 @@ namespace NeinLinq.Tests
                         {
                             Year = x.OneDay.Year,
                             Numeric = y.SomeOther.SomeNumeric,
-                            Question = z.SomeText.Contains("?")
+                            Question = z.SomeText.Contains('?')
                         };
 
             _ = query.ToList();

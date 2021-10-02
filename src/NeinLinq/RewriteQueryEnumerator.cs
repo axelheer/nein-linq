@@ -55,6 +55,7 @@ namespace NeinLinq
         public ValueTask DisposeAsync()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
             return default;
         }
 

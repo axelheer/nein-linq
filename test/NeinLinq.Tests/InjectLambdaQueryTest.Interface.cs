@@ -255,6 +255,8 @@ namespace NeinLinq.Tests
             double VelocityWithCachedExpression(Model value);
         }
 
+#pragma warning disable S1144
+
         private class Functions : IFunctions
         {
             private readonly int digits;
@@ -349,5 +351,8 @@ namespace NeinLinq.Tests
             private CachedExpression<Func<Model, double>> VelocityWithCachedExpressionExpr { get; }
                 = CachedExpression.From<Func<Model, double>>(v => Math.Round(v.Distance / v.Time, 2));
         }
+
+#pragma warning restore S1144
+
     }
 }
