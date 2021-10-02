@@ -43,9 +43,6 @@ namespace NeinLinq.Tests
             _ = Assert.IsType<RewriteQueryEnumerator<Model>>(subject.GetAsyncEnumerator());
         }
 
-#pragma warning disable CA1812
-#pragma warning disable S3881
-
         private class Model
         {
         }
@@ -59,7 +56,7 @@ namespace NeinLinq.Tests
                 => GetEnumerator();
         }
 
-        private class TestEnumerator : IEnumerator<Model>
+        private sealed class TestEnumerator : IEnumerator<Model>
         {
             public Model Current
                 => throw new NotImplementedException();

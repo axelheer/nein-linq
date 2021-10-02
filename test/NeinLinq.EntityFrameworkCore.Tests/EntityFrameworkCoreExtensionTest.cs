@@ -190,7 +190,6 @@ namespace NeinLinq.Tests
             Assert.Equal(15, query.Sum(m => m.ActiveValue));
         }
 
-#pragma warning disable CA1812
 #pragma warning disable S3459
 
         private class Model
@@ -226,6 +225,8 @@ namespace NeinLinq.Tests
             public static bool TrueValue
                 => true;
         }
+
+#pragma warning restore S3459
 
         private class TestContext : DbContext
         {

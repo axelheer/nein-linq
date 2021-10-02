@@ -95,8 +95,6 @@ namespace NeinLinq.Tests
             Assert.True(rewriter.VisitCalled);
         }
 
-#pragma warning disable CA1812
-
         private class Model
         {
         }

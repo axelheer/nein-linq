@@ -95,8 +95,6 @@ namespace NeinLinq.Tests
 
         private static IAsyncQueryable<Model> CreateQuery() => Enumerable.Empty<Model>().ToAsyncEnumerable().AsAsyncQueryable();
 
-#pragma warning disable CA1812
-
         private class Model
         {
         }

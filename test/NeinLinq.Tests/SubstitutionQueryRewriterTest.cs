@@ -17,8 +17,6 @@ namespace NeinLinq.Tests
             Assert.Equal("to", toError.ParamName);
         }
 
-#pragma warning disable CA1812
-
         private static class FromFunctions
         {
         }

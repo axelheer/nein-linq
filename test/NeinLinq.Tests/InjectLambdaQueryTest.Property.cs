@@ -210,7 +210,6 @@ namespace NeinLinq.Tests
             return data.AsQueryable();
         }
 
-#pragma warning disable CA1812
 #pragma warning disable S3459
 
         private class Model
@@ -317,6 +316,8 @@ namespace NeinLinq.Tests
             private static CachedExpression<Func<Model, double>> VelocityWithCachedExpressionExpr
                 => new(v => v.Distance / v.Time);
         }
+
+#pragma warning restore S3459
 
         private static class ModelExtensions
         {

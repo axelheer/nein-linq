@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-#pragma warning disable CA1307
-
 namespace NeinLinq.Tests
 {
     public class NullsafeQueryTest
@@ -160,8 +158,6 @@ namespace NeinLinq.Tests
                 r => Assert.Equal(new[] { 1, 1, 4, 7 }, r.Lot));
         }
 
-#pragma warning disable CS8629
-
         [Fact]
         public void Query_NullableMember_SelectsDefault()
         {
@@ -169,7 +165,7 @@ namespace NeinLinq.Tests
                         orderby a.SomeNumeric
                         select new ModelView
                         {
-                            Numeric = a.DaNullable.Value
+                            Numeric = a.DaNullable!.Value
                         };
 
             var result = query.ToList();
@@ -181,8 +177,6 @@ namespace NeinLinq.Tests
                 r => Assert.Equal(0, r.Numeric),
                 r => Assert.Equal(0, r.Numeric));
         }
-
-#pragma warning restore CS8629
 
         [Fact]
         public void Query_ExtensionMethod_SelectsDefault()
@@ -308,8 +302,6 @@ namespace NeinLinq.Tests
 
             return data.AsQueryable();
         }
-
-#pragma warning disable CA1812
 
         private class Model
         {

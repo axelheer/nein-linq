@@ -120,8 +120,6 @@ namespace NeinLinq.Tests
 
         private static IQueryable<Model> CreateQuery() => Enumerable.Empty<Model>().AsQueryable();
 
-#pragma warning disable CA1812
-
         private class Model
         {
         }

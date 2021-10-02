@@ -59,8 +59,6 @@ namespace NeinLinq.Tests
             Assert.Equal("selector", selectorError.ParamName);
         }
 
-#pragma warning disable CA1812
-
         private class Model
         {
         }

@@ -1,8 +1,6 @@
 using System;
 using System.Linq.Expressions;
 
-#pragma warning disable CA2225
-
 namespace NeinLinq
 {
     /// <summary>
@@ -34,6 +32,8 @@ namespace NeinLinq
             lazyCompiled = new Lazy<TDelegate>(expression.Compile);
         }
 
+#pragma warning disable CA2225
+
         /// <summary>
         /// Create a new cached expression.
         /// </summary>
@@ -57,6 +57,9 @@ namespace NeinLinq
         /// <returns>The original expression.</returns>
         public static implicit operator LambdaExpression(CachedExpression<TDelegate> cached)
             => cached?.Expression!;
+
+#pragma warning restore CA2225
+
     }
 
     /// <summary>

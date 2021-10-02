@@ -260,8 +260,6 @@ namespace NeinLinq.Tests
             return (T)data.AsQueryable();
         }
 
-#pragma warning disable CA1812
-
         private class Model
         {
             public int Id { get; set; }

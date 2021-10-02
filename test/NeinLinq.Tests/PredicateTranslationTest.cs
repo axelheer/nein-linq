@@ -14,8 +14,6 @@ namespace NeinLinq.Tests
             Assert.Equal("predicate", error.ParamName);
         }
 
-#pragma warning disable CA1812
-
         private class Model
         {
         }

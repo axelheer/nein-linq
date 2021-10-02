@@ -144,8 +144,6 @@ namespace NeinLinq.Tests
             return (T)data.ToAsyncEnumerable().AsAsyncQueryable();
         }
 
-#pragma warning disable CA1812
-
         private class Model
         {
             public int Id { get; set; }

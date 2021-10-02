@@ -193,8 +193,6 @@ namespace NeinLinq.Tests
             return d.Concat<IModel>(s).Concat(p).Concat(c).AsQueryable();
         }
 
-#pragma warning disable CA1812
-
         private interface IModel
         {
             int Id { get; set; }

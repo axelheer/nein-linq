@@ -94,15 +94,11 @@ namespace NeinLinq.Tests
             Assert.True(enumerator.DisposeCalled);
         }
 
-#pragma warning disable CA1812
-#pragma warning disable S1121
-#pragma warning disable S3881
-
         private class Model
         {
         }
 
-        private class TestEnumerator : IEnumerator<Model>
+        private sealed class TestEnumerator : IEnumerator<Model>
         {
             public Model Current { get; set; }
                 = new Model();
@@ -117,7 +113,10 @@ namespace NeinLinq.Tests
             public bool MoveNextCalled { get; set; }
 
             public bool MoveNext()
-                => !(MoveNextCalled = true);
+            {
+                MoveNextCalled = true;
+                return !MoveNextCalled;
+            }
 
             public bool ResetCalled { get; set; }
 

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 
-#pragma warning disable CA1010
-
 namespace NeinLinq
 {
+
+#pragma warning disable CA1010
+
     /// <summary>
     /// Proxy for rewritten queries.
     /// </summary>
@@ -57,6 +58,8 @@ namespace NeinLinq
         IQueryProvider IQueryable.Provider
             => Provider; // replace query provider
     }
+
+#pragma warning restore CA1010
 
     /// <summary>
     /// Proxy for rewritten queries.

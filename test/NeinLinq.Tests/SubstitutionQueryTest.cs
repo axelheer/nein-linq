@@ -35,8 +35,6 @@ namespace NeinLinq.Tests
             return items.AsQueryable();
         }
 
-#pragma warning disable CA1812
-
         private class Model
         {
         }

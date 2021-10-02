@@ -188,8 +188,6 @@ namespace NeinLinq.Tests
             return data.AsQueryable();
         }
 
-#pragma warning disable CA1812
-
         private interface IModel
         {
             int Id { get; set; }
