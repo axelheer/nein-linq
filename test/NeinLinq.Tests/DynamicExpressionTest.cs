@@ -9,9 +9,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void OperatorCreateComparison_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const DynamicCompare comparer = DynamicCompare.Equal;
+
             var target = Expression.Parameter(typeof(Model));
-            var selector = "selector";
-            var comparer = DynamicCompare.Equal;
 
             var targetError = Assert.Throws<ArgumentNullException>(()
                 => DynamicExpression.CreateComparison(null!, selector, comparer, null));
@@ -28,9 +29,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void MethodCreateComparison_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const string comparer = "comparer";
+
             var target = Expression.Parameter(typeof(Model));
-            var selector = "selector";
-            var comparer = "comparer";
 
             var targetError = Assert.Throws<ArgumentNullException>(()
                 => DynamicExpression.CreateComparison(null!, selector, comparer, null));
@@ -47,8 +49,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void CreateMemberAccess_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var target = Expression.Parameter(typeof(Model));
-            var selector = "selector";
 
             var targetError = Assert.Throws<ArgumentNullException>(()
                 => DynamicExpression.CreateMemberAccess(null!, selector));

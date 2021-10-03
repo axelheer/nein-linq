@@ -11,7 +11,6 @@ namespace NeinLinq.Tests
 
         private IAsyncQueryable<Model>? PropertyQuery { get; set; }
 
-
         [Fact]
         public async Task Visit_ResolvesAllTheInnerQueriesAsync()
         {

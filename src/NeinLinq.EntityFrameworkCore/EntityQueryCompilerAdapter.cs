@@ -5,8 +5,7 @@ using System.Threading;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-#pragma warning disable CA1812
-#pragma warning disable EF1001
+#pragma warning disable CA1812, EF1001
 
 namespace NeinLinq
 {
@@ -25,8 +24,12 @@ namespace NeinLinq
         public TResult Execute<TResult>(Expression query)
             => innerCompiler.Execute<TResult>(RewriteQuery(query));
 
+#pragma warning disable RCS1047
+
         public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
             => innerCompiler.ExecuteAsync<TResult>(RewriteQuery(query), cancellationToken);
+
+#pragma warning restore RCS1047
 
         public Func<QueryContext, TResult> CreateCompiledQuery<TResult>(Expression query)
             => innerCompiler.CreateCompiledQuery<TResult>(RewriteQuery(query));

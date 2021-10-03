@@ -21,8 +21,4 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1707;CA1812;CA2007</NoWarn>
-  </PropertyGroup>
-
 </Project>

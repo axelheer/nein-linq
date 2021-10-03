@@ -12,9 +12,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void OperatorWhere_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const DynamicCompare comparer = DynamicCompare.Equal;
+
             var query = CreateQuery<IAsyncQueryable<Model>>();
-            var selector = "selector";
-            var comparer = DynamicCompare.Equal;
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicAsyncQueryable.Where((IAsyncQueryable<Model>)null!, selector, comparer, null));
@@ -31,9 +32,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void MethodWhere_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const string comparer = "comparer";
+
             var query = CreateQuery<IAsyncQueryable<Model>>();
-            var selector = "selector";
-            var comparer = "comparer";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicAsyncQueryable.Where((IAsyncQueryable<Model>)null!, selector, comparer, null));
@@ -86,8 +88,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void OrderBy_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var query = CreateQuery<IAsyncQueryable<Model>>();
-            var selector = "selector";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicAsyncQueryable.OrderBy((IAsyncQueryable<Model>)null!, selector));
@@ -101,8 +104,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void ThenBy_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var query = CreateQuery<IOrderedAsyncQueryable<Model>>();
-            var selector = "selector";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicAsyncQueryable.ThenBy((IOrderedAsyncQueryable<Model>)null!, selector));

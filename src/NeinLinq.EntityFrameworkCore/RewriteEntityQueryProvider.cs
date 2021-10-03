@@ -49,7 +49,7 @@ namespace NeinLinq
                 query, this)!;
         }
 
-#pragma warning disable S3358
+#pragma warning disable RCS1047, S3358
 
         /// <inheritdoc />
         public virtual TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
@@ -63,7 +63,7 @@ namespace NeinLinq
                 : Provider.Execute<TResult>(rewritten);
         }
 
-#pragma warning restore S3358
+#pragma warning restore RCS1047, S3358
 
         private TResult Execute<TResult>(MethodInfo method, Expression expression)
             => (TResult)(method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])

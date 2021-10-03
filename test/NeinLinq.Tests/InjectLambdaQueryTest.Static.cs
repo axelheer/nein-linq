@@ -202,7 +202,7 @@ namespace NeinLinq.Tests
             public double Time { get; set; }
         }
 
-#pragma warning disable S1144
+#pragma warning disable RCS1213, S1144
 
         private static class Functions
         {
@@ -320,7 +320,7 @@ namespace NeinLinq.Tests
                 => v => v.Distance / v.Time;
         }
 
-#pragma warning restore S1144
+#pragma warning restore RCS1213, S1144
 
     }
 }

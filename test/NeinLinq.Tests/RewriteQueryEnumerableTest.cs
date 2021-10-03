@@ -56,6 +56,8 @@ namespace NeinLinq.Tests
                 => GetEnumerator();
         }
 
+#pragma warning disable RCS1079
+
         private sealed class TestEnumerator : IEnumerator<Model>
         {
             public Model Current
@@ -73,5 +75,8 @@ namespace NeinLinq.Tests
             public void Reset()
                 => throw new NotImplementedException();
         }
+
+#pragma warning restore RCS1079
+
     }
 }

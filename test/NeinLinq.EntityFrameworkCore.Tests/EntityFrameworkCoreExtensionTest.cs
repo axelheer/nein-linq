@@ -190,8 +190,7 @@ namespace NeinLinq.Tests
             Assert.Equal(15, query.Sum(m => m.ActiveValue));
         }
 
-#pragma warning disable S1144
-#pragma warning disable S3459
+#pragma warning disable S1144, S3459
 
         private class Model
         {
@@ -238,8 +237,7 @@ namespace NeinLinq.Tests
             }
         }
 
-#pragma warning restore S3459
-#pragma warning restore S1144
+#pragma warning restore S1144, S3459
 
         private class Rewriter : ExpressionVisitor
         {

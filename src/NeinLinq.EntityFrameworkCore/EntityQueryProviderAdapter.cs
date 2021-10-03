@@ -47,8 +47,13 @@ namespace NeinLinq
             public TResult Execute<TResult>(Expression query)
                 => throw new NotSupportedException();
 
+#pragma warning disable RCS1047
+
             public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
                 => throw new NotSupportedException();
+
+#pragma warning restore RCS1047
+
         }
     }
 }

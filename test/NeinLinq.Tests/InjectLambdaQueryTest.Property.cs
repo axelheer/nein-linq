@@ -210,8 +210,7 @@ namespace NeinLinq.Tests
             return data.AsQueryable();
         }
 
-#pragma warning disable S1144
-#pragma warning disable S3459
+#pragma warning disable RCS1213, S1144, S3459
 
         private class Model
         {
@@ -327,8 +326,7 @@ namespace NeinLinq.Tests
                 => v => v.Distance / v.Time;
         }
 
-#pragma warning restore S3459
-#pragma warning restore S1144
+#pragma warning restore RCS1213, S1144, S3459
 
     }
 }

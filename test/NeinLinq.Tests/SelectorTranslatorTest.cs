@@ -80,8 +80,8 @@ namespace NeinLinq.Tests
         [Fact]
         public void Apply_EmptyInit_Merges()
         {
-            Expression<Func<Model, ModelView>> s = d => new ModelView();
-            Expression<Func<Model, ModelView>> t = d => new ModelView();
+            Expression<Func<Model, ModelView>> s = _ => new ModelView();
+            Expression<Func<Model, ModelView>> t = _ => new ModelView();
 
             var select = s.Apply(t);
             var result = CreateQuery().OfType<Model>().Where(m => !(m is SpecialModel)).Select(select);
@@ -95,7 +95,7 @@ namespace NeinLinq.Tests
         [Fact]
         public void Apply_EmptyNotEmptyInit_Merges()
         {
-            Expression<Func<Model, ModelView>> s = d => new ModelView();
+            Expression<Func<Model, ModelView>> s = _ => new ModelView();
             Expression<Func<Model, ModelView>> t = d => new ModelView
             {
                 Id = d.Id + 5,
@@ -115,7 +115,7 @@ namespace NeinLinq.Tests
         [Fact]
         public void Apply_NotEmptyEmptyInit_Merges()
         {
-            Expression<Func<Model, ModelView>> s = d => new ModelView();
+            Expression<Func<Model, ModelView>> s = _ => new ModelView();
             Expression<Func<Model, ModelView>> t = d => new ModelView
             {
                 Id = d.Id + 5,
@@ -280,7 +280,7 @@ namespace NeinLinq.Tests
             Expression<Func<ChildModel, ParentModelView>> s = _ => new ParentModelView();
 
             var error = Assert.Throws<NotSupportedException>(()
-                => s.Translate().Result<ChildModelView>(d => null!));
+                => s.Translate().Result<ChildModelView>(_ => null!));
 
             Assert.Equal("Only member expressions are supported yet.", error.Message);
         }

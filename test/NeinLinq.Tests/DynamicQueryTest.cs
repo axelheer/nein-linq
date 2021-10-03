@@ -11,8 +11,8 @@ namespace NeinLinq.Tests
         [Fact]
         public void OperatorCreatePredicate_NullArgument_Throws()
         {
-            var selector = "selector";
-            var comparer = DynamicCompare.Equal;
+            const string selector = "selector";
+            const DynamicCompare comparer = DynamicCompare.Equal;
 
             var selectorError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQuery.CreatePredicate<Model>(null!, comparer, null));
@@ -26,8 +26,8 @@ namespace NeinLinq.Tests
         [Fact]
         public void MethodCreatePredicate_NullArgument_Throws()
         {
-            var selector = "selector";
-            var comparer = "comparer";
+            const string selector = "selector";
+            const string comparer = "comparer";
 
             var selectorError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQuery.CreatePredicate<Model>(null!, comparer, null));

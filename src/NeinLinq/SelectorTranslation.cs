@@ -115,7 +115,7 @@ namespace NeinLinq
         {
             if (selector.Body is MemberInitExpression init)
             {
-                if (init.NewExpression.Arguments.Any())
+                if (init.NewExpression.Arguments.Count > 0)
                     throw new NotSupportedException("Only parameterless constructors are supported yet.");
 
                 var s = selector.Parameters[0];

@@ -11,9 +11,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void UntypedOperatorWhere_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const DynamicCompare comparer = DynamicCompare.Equal;
+
             var query = CreateQuery<IQueryable>();
-            var selector = "selector";
-            var comparer = DynamicCompare.Equal;
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.Where((IQueryable)null!, selector, comparer, null));
@@ -30,9 +31,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void TypedOperatorWhere_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const DynamicCompare comparer = DynamicCompare.Equal;
+
             var query = CreateQuery<IQueryable<Model>>();
-            var selector = "selector";
-            var comparer = DynamicCompare.Equal;
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.Where((IQueryable<Model>)null!, selector, comparer, null));
@@ -49,9 +51,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void UntypedMethodWhere_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const string comparer = "comparer";
+
             var query = CreateQuery<IQueryable>();
-            var selector = "selector";
-            var comparer = "comparer";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.Where((IQueryable)null!, selector, comparer, null));
@@ -68,9 +71,10 @@ namespace NeinLinq.Tests
         [Fact]
         public void TypedMethodWhere_NullArgument_Throws()
         {
+            const string selector = "selector";
+            const string comparer = "comparer";
+
             var query = CreateQuery<IQueryable<Model>>();
-            var selector = "selector";
-            var comparer = "comparer";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.Where((IQueryable<Model>)null!, selector, comparer, null));
@@ -159,8 +163,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void UntypedOrderBy_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var query = CreateQuery<IQueryable>();
-            var selector = "selector";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.OrderBy((IQueryable)null!, selector));
@@ -174,8 +179,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void TypedOrderBy_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var query = CreateQuery<IQueryable<Model>>();
-            var selector = "selector";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.OrderBy((IQueryable<Model>)null!, selector));
@@ -189,8 +195,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void UntypedThenBy_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var query = CreateQuery<IOrderedQueryable>();
-            var selector = "selector";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.ThenBy((IOrderedQueryable)null!, selector));
@@ -204,8 +211,9 @@ namespace NeinLinq.Tests
         [Fact]
         public void TypedThenBy_NullArgument_Throws()
         {
+            const string selector = "selector";
+
             var query = CreateQuery<IOrderedQueryable<Model>>();
-            var selector = "selector";
 
             var queryError = Assert.Throws<ArgumentNullException>(()
                 => DynamicQueryable.ThenBy((IOrderedQueryable<Model>)null!, selector));

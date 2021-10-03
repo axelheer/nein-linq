@@ -10,7 +10,6 @@ namespace NeinLinq.Tests
 
         private IQueryable<Model>? PropertyQuery { get; set; }
 
-
         [Fact]
         public void Visit_ResolvesAllTheInnerQueries()
         {

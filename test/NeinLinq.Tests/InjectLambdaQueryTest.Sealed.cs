@@ -210,7 +210,7 @@ namespace NeinLinq.Tests
             public double Time { get; set; }
         }
 
-#pragma warning disable S1144
+#pragma warning disable RCS1213, S1144
 
         private sealed class Functions
         {
@@ -249,7 +249,7 @@ namespace NeinLinq.Tests
                 => throw new NotSupportedException($"Unable to process {value.Name}.");
 
             public Expression<Func<Model, double>> VelocityWithNullLambda()
-                => digits == 0 ? v => 0 : null!;
+                => digits == 0 ? _ => 0 : null!;
 
             [InjectLambda]
             public double VelocityWithoutLambda(Model value)
@@ -318,7 +318,7 @@ namespace NeinLinq.Tests
                 = CachedExpression.From<Func<Model, double>>(v => Math.Round(v.Distance / v.Time, 2));
         }
 
-#pragma warning restore S1144
+#pragma warning restore RCS1213, S1144
 
     }
 }

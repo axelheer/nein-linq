@@ -7,17 +7,6 @@ namespace NeinLinq
 {
     internal sealed class InjectLambdaSignature
     {
-
-#pragma warning disable S3011
-
-        private const BindingFlags Everything
-            = BindingFlags.NonPublic
-            | BindingFlags.Public
-            | BindingFlags.Static
-            | BindingFlags.Instance;
-
-#pragma warning restore S3011
-
         private readonly Type[] genericArguments;
 
         private readonly Type[] parameterTypes;
@@ -76,11 +65,10 @@ namespace NeinLinq
         }
 
         private bool IsMatchingDelegate(Type type)
-            => type.GetGenericArguments()
-                   .FirstOrDefault(typeof(Delegate).IsAssignableFrom)?
-                   .GetMethod("Invoke", parameterTypes)?
-                   .ReturnParameter
-                   .ParameterType == returnType;
+            => Array.Find(type.GetGenericArguments(), typeof(Delegate).IsAssignableFrom)?
+                    .GetMethod("Invoke", parameterTypes)?
+                    .ReturnParameter
+                    .ParameterType == returnType;
 
         private static bool IsLambdaExpression(Type type)
             => typeof(LambdaExpression).IsAssignableFrom(type)
@@ -98,6 +86,16 @@ namespace NeinLinq
 
         public MethodInfo? FindMatch(Type target, string method, Type? injectedType = null)
             => FindMatch(target, method, genericArguments, parameterTypes, injectedType);
+
+#pragma warning disable S3011
+
+        private const BindingFlags Everything
+            = BindingFlags.NonPublic
+            | BindingFlags.Public
+            | BindingFlags.Static
+            | BindingFlags.Instance;
+
+#pragma warning restore S3011
 
         private static MethodInfo? FindMatchWithoutParameters(Type target, string method, Type[] genericArguments, Type? injectedType = null)
         {

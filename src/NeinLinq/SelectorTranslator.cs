@@ -42,7 +42,7 @@ namespace NeinLinq
 
             if (leftNew is null || rightNew is null)
                 throw new NotSupportedException("Only member init expressions and new expressions are supported yet.");
-            if (leftNew.Arguments.Any() || rightNew.Arguments.Any())
+            if (leftNew.Arguments.Count > 0 || rightNew.Arguments.Count > 0)
                 throw new NotSupportedException("Only parameterless constructors are supported yet.");
 
             var leftBindings = leftInit?.Bindings ?? Enumerable.Empty<MemberBinding>();

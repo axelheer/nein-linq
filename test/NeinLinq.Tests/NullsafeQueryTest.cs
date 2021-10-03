@@ -206,10 +206,12 @@ namespace NeinLinq.Tests
             Assert.Equal(3, result.Count);
         }
 
+#pragma warning disable RCS1118
+
         [Fact]
         public void Query_ForeignMember_Handles()
         {
-            var danger = default(string)!;
+            string danger = default!;
 
             var query = from a in CreateQuery().ToNullsafe()
                         orderby a.SomeNumeric
@@ -227,6 +229,8 @@ namespace NeinLinq.Tests
                 r => Assert.Equal(0, r.Numeric),
                 r => Assert.Equal(0, r.Numeric));
         }
+
+#pragma warning restore RCS1118
 
         [Fact]
         public void Query_LetStatements_Handles()
