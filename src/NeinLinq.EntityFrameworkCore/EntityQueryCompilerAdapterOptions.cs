@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace NeinLinq
 {
-    internal class EntityQueryCompilerAdapterOptions
+    internal sealed class EntityQueryCompilerAdapterOptions
     {
         public IReadOnlyList<ExpressionVisitor> Rewriters { get; }
 

@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NeinLinq
 {
-    internal class RewriteDbContextOptionsExtension : IDbContextOptionsExtension
+    internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtension
     {
         private readonly ExpressionVisitor[] rewriters;
 
@@ -64,7 +64,7 @@ namespace NeinLinq
             // nothing to do here
         }
 
-        private class ExtensionInfo : DbContextOptionsExtensionInfo
+        private sealed class ExtensionInfo : DbContextOptionsExtensionInfo
         {
             public ExtensionInfo(IDbContextOptionsExtension extension)
                 : base(extension)

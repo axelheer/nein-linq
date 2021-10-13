@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace NeinLinq
 {
-    internal class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompiler
+    internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompiler
         where TInnerCompiler : IQueryCompiler
     {
         private readonly EntityQueryCompilerAdapterOptions options;

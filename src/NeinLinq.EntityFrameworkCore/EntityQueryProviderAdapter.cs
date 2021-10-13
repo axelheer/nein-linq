@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace NeinLinq
 {
-    internal class EntityQueryProviderAdapter : EntityQueryProvider
+    internal sealed class EntityQueryProviderAdapter : EntityQueryProvider
     {
         private readonly RewriteEntityQueryProvider provider;
 
@@ -36,7 +36,7 @@ namespace NeinLinq
         public override TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
             => provider.ExecuteAsync<TResult>(expression, cancellationToken);
 
-        private class EmptyQueryCompiler : IQueryCompiler
+        private sealed class EmptyQueryCompiler : IQueryCompiler
         {
             public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
                 => throw new NotSupportedException();
