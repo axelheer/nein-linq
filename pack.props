@@ -29,8 +29,8 @@ To support different LINQ implementations, the following flavours are available.
 
   <PropertyGroup>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/axelheer/nein-linq</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReleaseNotes>Added explicit support for .NET 6.0.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>

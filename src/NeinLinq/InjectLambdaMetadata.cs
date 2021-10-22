@@ -2,98 +2,98 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace NeinLinq
+namespace NeinLinq;
+
+internal sealed class InjectLambdaMetadata
 {
-    internal sealed class InjectLambdaMetadata
+    public bool Config { get; }
+
+    private readonly Lazy<Func<Expression?, LambdaExpression?>> lambda;
+
+    public LambdaExpression? Lambda(Expression? value)
+        => lambda.Value(value);
+
+    private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>> lambda)
     {
-        public bool Config { get; }
+        Config = config;
 
-        private readonly Lazy<Func<Expression?, LambdaExpression?>> lambda;
+        this.lambda = lambda;
+    }
 
-        public LambdaExpression? Lambda(Expression? value)
-            => lambda.Value(value);
+    public static InjectLambdaMetadata Create(MethodInfo method)
+    {
+        var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
 
-        private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>> lambda)
+        var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
+            => LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
+
+        return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
+    }
+
+    public static InjectLambdaMetadata Create(PropertyInfo property)
+    {
+        var metadata = InjectLambdaAttribute.GetCustomAttribute(property)
+            ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true)!);
+
+        var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
+            => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
+
+        return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
+    }
+
+    private static Func<Expression?, LambdaExpression?> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
+    {
+        if (method.DeclaringType is null)
+            throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
+
+        // retrieve method's signature
+        var signature = new InjectLambdaSignature(method);
+
+        // special ultra-fast treatment for static methods and sealed classes
+        if (method.IsStatic || method.DeclaringType.IsSealed)
         {
-            Config = config;
-
-            this.lambda = lambda;
+            return FixedLambdaFactory(metadata.Target ?? method.DeclaringType, metadata.Method ?? method.Name, signature);
         }
 
-        public static InjectLambdaMetadata Create(MethodInfo method)
+        // dynamic but not that fast treatment for other stuff
+        return DynamicLambdaFactory(method, signature);
+    }
+
+    private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
+    {
+        if (property.DeclaringType is null)
+            throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
+
+        // retrieve method's signature
+        var signature = new InjectLambdaSignature(property);
+
+        // apply "Expr" convention for property "overloading"
+        var method = metadata.Target is null ? property.Name + "Expr" : property.Name;
+
+        // special treatment for super-heroic property getters
+        return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
+    }
+
+    private static Func<Expression?, LambdaExpression?> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
+    {
+        // retrieve validated factory method once
+        var factory = signature.FindFactory(target, method);
+
+        if (factory.IsStatic)
         {
-            var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
-
-            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
-                => LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
-
-            return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
+            // compile factory call for performance reasons :-)
+            return Expression.Lambda<Func<Expression?, LambdaExpression>>(
+                Expression.Convert(Expression.Call(factory), typeof(LambdaExpression)),
+                Expression.Parameter(typeof(Expression))).Compile();
         }
 
-        public static InjectLambdaMetadata Create(PropertyInfo property)
-        {
-            var metadata = InjectLambdaAttribute.GetCustomAttribute(property)
-                ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true)!);
+        // call actual target object, compiles every time during execution... :-|
+        return value => Expression.Lambda<Func<LambdaExpression>>(
+            Expression.Convert(Expression.Call(value, factory), typeof(LambdaExpression))).Compile()();
+    }
 
-            var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
-                => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
-
-            return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
-        }
-
-        private static Func<Expression?, LambdaExpression?> LambdaFactory(MethodInfo method, InjectLambdaAttribute metadata)
-        {
-            if (method.DeclaringType is null)
-                throw new InvalidOperationException($"Method {method.Name} has no declaring type.");
-
-            // retrieve method's signature
-            var signature = new InjectLambdaSignature(method);
-
-            // special ultra-fast treatment for static methods and sealed classes
-            if (method.IsStatic || method.DeclaringType.IsSealed)
-            {
-                return FixedLambdaFactory(metadata.Target ?? method.DeclaringType, metadata.Method ?? method.Name, signature);
-            }
-
-            // dynamic but not that fast treatment for other stuff
-            return DynamicLambdaFactory(method, signature);
-        }
-
-        private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
-        {
-            if (property.DeclaringType is null)
-                throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
-
-            // retrieve method's signature
-            var signature = new InjectLambdaSignature(property);
-
-            // apply "Expr" convention for property "overloading"
-            var method = metadata.Target is null ? property.Name + "Expr" : property.Name;
-
-            // special treatment for super-heroic property getters
-            return FixedLambdaFactory(metadata.Target ?? property.DeclaringType, metadata.Method ?? method, signature);
-        }
-
-        private static Func<Expression?, LambdaExpression?> FixedLambdaFactory(Type target, string method, InjectLambdaSignature signature)
-        {
-            // retrieve validated factory method once
-            var factory = signature.FindFactory(target, method);
-
-            if (factory.IsStatic)
-            {
-                // compile factory call for performance reasons :-)
-                return Expression.Lambda<Func<Expression?, LambdaExpression>>(
-                    Expression.Convert(Expression.Call(factory), typeof(LambdaExpression)),
-                    Expression.Parameter(typeof(Expression))).Compile();
-            }
-
-            // call actual target object, compiles every time during execution... :-|
-            return value => Expression.Lambda<Func<LambdaExpression>>(
-                Expression.Convert(Expression.Call(value, factory), typeof(LambdaExpression))).Compile()();
-        }
-
-        private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature) => value =>
-        {
+    private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature) => value =>
+    {
             // retrieve actual target object, compiles every time and needs reflection too... :-(
             var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value!, typeof(object))).Compile()();
 
@@ -111,7 +111,6 @@ namespace NeinLinq
 
             // finally call lambda factory *uff*
             return Expression.Lambda<Func<LambdaExpression>>(
-                Expression.Convert(Expression.Call(Expression.Convert(value, targetType), factoryMethod), typeof(LambdaExpression))).Compile()();
-        };
-    }
+            Expression.Convert(Expression.Call(Expression.Convert(value, targetType), factoryMethod), typeof(LambdaExpression))).Compile()();
+    };
 }

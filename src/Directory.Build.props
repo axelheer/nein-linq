@@ -4,6 +4,7 @@
   <Import Project="..\pack.props" />
 
   <PropertyGroup>
+    <DefaultNamespace>NeinLinq</DefaultNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

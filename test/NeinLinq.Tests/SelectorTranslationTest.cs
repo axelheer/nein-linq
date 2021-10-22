@@ -1,25 +1,24 @@
 using System;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests;
+
+public class SelectorTranslationTest
 {
-    public class SelectorTranslationTest
+    [Fact]
+    public void Ctor_NullArgument_Throws()
     {
-        [Fact]
-        public void Ctor_NullArgument_Throws()
-        {
-            var error = Assert.Throws<ArgumentNullException>(()
-                => new SelectorTranslation<Model, ModelView>(null!));
+        var error = Assert.Throws<ArgumentNullException>(()
+            => new SelectorTranslation<Model, ModelView>(null!));
 
-            Assert.Equal("selector", error.ParamName);
-        }
+        Assert.Equal("selector", error.ParamName);
+    }
 
-        private class Model
-        {
-        }
+    private class Model
+    {
+    }
 
-        private class ModelView
-        {
-        }
+    private class ModelView
+    {
     }
 }

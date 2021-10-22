@@ -1,28 +1,27 @@
 using System;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests;
+
+public class SubstitutionQueryRewriterTest
 {
-    public class SubstitutionQueryRewriterTest
+    [Fact]
+    public void Ctor_NullArgument_Throws()
     {
-        [Fact]
-        public void Ctor_NullArgument_Throws()
-        {
-            var fromError = Assert.Throws<ArgumentNullException>(()
-                => new SubstitutionQueryRewriter(null!, typeof(ToFunctions)));
-            var toError = Assert.Throws<ArgumentNullException>(()
-                => new SubstitutionQueryRewriter(typeof(FromFunctions), null!));
+        var fromError = Assert.Throws<ArgumentNullException>(()
+            => new SubstitutionQueryRewriter(null!, typeof(ToFunctions)));
+        var toError = Assert.Throws<ArgumentNullException>(()
+            => new SubstitutionQueryRewriter(typeof(FromFunctions), null!));
 
-            Assert.Equal("from", fromError.ParamName);
-            Assert.Equal("to", toError.ParamName);
-        }
+        Assert.Equal("from", fromError.ParamName);
+        Assert.Equal("to", toError.ParamName);
+    }
 
-        private static class FromFunctions
-        {
-        }
+    private static class FromFunctions
+    {
+    }
 
-        private static class ToFunctions
-        {
-        }
+    private static class ToFunctions
+    {
     }
 }

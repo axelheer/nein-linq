@@ -3,80 +3,79 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests;
+
+public class InjectLambdaQueryTest
 {
-    public class InjectLambdaQueryTest
+    [Fact]
+    public void Query_StaticToInstance_Throws()
     {
-        [Fact]
-        public void Query_StaticToInstance_Throws()
+        var query = CreateQuery().ToInjectable(typeof(MixedFunctions)).Select(m => MixedFunctions.VelocityStaticToInstance(m));
+
+        var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+        Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Tests.InjectLambdaQueryTest+MixedFunctions.VelocityStaticToInstance: static implementation expected.", error.Message);
+    }
+
+    [Fact]
+    public void Query_InstanceToStatic_Throws()
+    {
+        var functions = new MixedFunctions(1);
+
+        var query = CreateQuery().ToInjectable(typeof(MixedFunctions)).Select(m => functions.VelocityInstanceToStatic(m));
+
+        var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+
+        Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Tests.InjectLambdaQueryTest+MixedFunctions.VelocityInstanceToStatic: non-static implementation expected.", error.Message);
+    }
+
+    private static IQueryable<Model> CreateQuery()
+    {
+        var data = new[]
         {
-            var query = CreateQuery().ToInjectable(typeof(MixedFunctions)).Select(m => MixedFunctions.VelocityStaticToInstance(m));
-
-            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
-
-            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Tests.InjectLambdaQueryTest+MixedFunctions.VelocityStaticToInstance: static implementation expected.", error.Message);
-        }
-
-        [Fact]
-        public void Query_InstanceToStatic_Throws()
-        {
-            var functions = new MixedFunctions(1);
-
-            var query = CreateQuery().ToInjectable(typeof(MixedFunctions)).Select(m => functions.VelocityInstanceToStatic(m));
-
-            var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
-
-            Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Tests.InjectLambdaQueryTest+MixedFunctions.VelocityInstanceToStatic: non-static implementation expected.", error.Message);
-        }
-
-        private static IQueryable<Model> CreateQuery()
-        {
-            var data = new[]
-            {
                 new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
                 new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
                 new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
             };
 
-            return data.AsQueryable();
-        }
+        return data.AsQueryable();
+    }
 
-        private class Model
-        {
-            public int Id { get; set; }
+    private class Model
+    {
+        public int Id { get; set; }
 
-            public string Name { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
-            public double Distance { get; set; }
+        public double Distance { get; set; }
 
-            public double Time { get; set; }
-        }
+        public double Time { get; set; }
+    }
 
 #pragma warning disable S1144
 
-        private class MixedFunctions
+    private class MixedFunctions
+    {
+        private readonly int digits;
+
+        public MixedFunctions(int digits)
         {
-            private readonly int digits;
-
-            public MixedFunctions(int digits)
-            {
-                this.digits = digits;
-            }
-
-            public double VelocityInstanceToStatic(Model value)
-                => throw new NotSupportedException($"Unable to process {value.Name}.");
-
-            public static Expression<Func<Model, double>> VelocityInstanceToStatic()
-                => v => v.Distance / v.Time;
-
-            public static double VelocityStaticToInstance(Model value)
-                => throw new NotSupportedException($"Unable to process {value.Name}.");
-
-            public Expression<Func<Model, double>> VelocityStaticToInstance()
-                => v => Math.Round(v.Distance / v.Time, digits);
+            this.digits = digits;
         }
+
+        public double VelocityInstanceToStatic(Model value)
+            => throw new NotSupportedException($"Unable to process {value.Name}.");
+
+        public static Expression<Func<Model, double>> VelocityInstanceToStatic()
+            => v => v.Distance / v.Time;
+
+        public static double VelocityStaticToInstance(Model value)
+            => throw new NotSupportedException($"Unable to process {value.Name}.");
+
+        public Expression<Func<Model, double>> VelocityStaticToInstance()
+            => v => Math.Round(v.Distance / v.Time, digits);
+    }
 
 #pragma warning restore S1144
 
-    }
 }

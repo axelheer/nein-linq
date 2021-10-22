@@ -9,6 +9,9 @@ dotnet_diagnostic.CA1812.severity = none
 # Do not directly await a Task
 dotnet_diagnostic.CA2007.severity = none
 
+# Move '?' into a named namespace.
+dotnet_diagnostic.S3903.severity = none
+
 # Call extension method as instance method
 dotnet_diagnostic.RCS1196.severity = none
 

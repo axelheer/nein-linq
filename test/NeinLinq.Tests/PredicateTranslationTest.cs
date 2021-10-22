@@ -1,21 +1,20 @@
 using System;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests;
+
+public class PredicateTranslationTest
 {
-    public class PredicateTranslationTest
+    [Fact]
+    public void Ctor_NullArgument_Throws()
     {
-        [Fact]
-        public void Ctor_NullArgument_Throws()
-        {
-            var error = Assert.Throws<ArgumentNullException>(()
-                => new PredicateTranslation<Model>(null!));
+        var error = Assert.Throws<ArgumentNullException>(()
+            => new PredicateTranslation<Model>(null!));
 
-            Assert.Equal("predicate", error.ParamName);
-        }
+        Assert.Equal("predicate", error.ParamName);
+    }
 
-        private class Model
-        {
-        }
+    private class Model
+    {
     }
 }

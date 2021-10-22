@@ -1,57 +1,56 @@
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests;
+
+public class SubstitutionQueryTest
 {
-    public class SubstitutionQueryTest
+    [Fact]
+    public void Query_WithSubstitution_CallsSubstitute()
     {
-        [Fact]
-        public void Query_WithSubstitution_CallsSubstitute()
+        var query = CreateQuery().ToSubstitution(typeof(FromFunctions), typeof(ToFunctions));
+
+        var result = query.Where(_ => FromFunctions.Condition()).Count();
+
+        Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Query_WithoutSubstitution_CallsOriginal()
+    {
+        var query = CreateQuery();
+
+        var result = query.Where(_ => FromFunctions.Condition()).Count();
+
+        Assert.Equal(1, result);
+    }
+
+    private static IQueryable<Model> CreateQuery()
+    {
+        var items = new[]
         {
-            var query = CreateQuery().ToSubstitution(typeof(FromFunctions), typeof(ToFunctions));
-
-            var result = query.Where(_ => FromFunctions.Condition()).Count();
-
-            Assert.Equal(0, result);
-        }
-
-        [Fact]
-        public void Query_WithoutSubstitution_CallsOriginal()
-        {
-            var query = CreateQuery();
-
-            var result = query.Where(_ => FromFunctions.Condition()).Count();
-
-            Assert.Equal(1, result);
-        }
-
-        private static IQueryable<Model> CreateQuery()
-        {
-            var items = new[]
-            {
                 new Model()
             };
 
-            return items.AsQueryable();
-        }
+        return items.AsQueryable();
+    }
 
-        private class Model
-        {
-        }
+    private class Model
+    {
+    }
 
-        private static class FromFunctions
-        {
-            public static bool Condition() => true;
-        }
+    private static class FromFunctions
+    {
+        public static bool Condition() => true;
+    }
 
 #pragma warning disable S1144
 
-        private static class ToFunctions
-        {
-            public static bool Condition() => false;
-        }
+    private static class ToFunctions
+    {
+        public static bool Condition() => false;
+    }
 
 #pragma warning restore S1144
 
-    }
 }

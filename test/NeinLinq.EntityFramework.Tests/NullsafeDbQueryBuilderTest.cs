@@ -2,98 +2,97 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace NeinLinq.Tests
+namespace NeinLinq.Tests;
+
+public class NullsafeDbQueryBuilderTest
 {
-    public class NullsafeDbQueryBuilderTest
+    [Fact]
+    public void ToTypedQueryableNullsafe_NullArgument_Throws()
     {
-        [Fact]
-        public void ToTypedQueryableNullsafe_NullArgument_Throws()
-        {
-            var valueError = Assert.Throws<ArgumentNullException>(()
-                => NullsafeDbQueryBuilder.ToDbNullsafe((IQueryable<Model>)null!));
+        var valueError = Assert.Throws<ArgumentNullException>(()
+            => NullsafeDbQueryBuilder.ToDbNullsafe((IQueryable<Model>)null!));
 
-            Assert.Equal("value", valueError.ParamName);
-        }
+        Assert.Equal("value", valueError.ParamName);
+    }
 
-        [Fact]
-        public void ToTypedOrderedQueryableNullsafe_NullArgument_Throws()
-        {
-            var valueError = Assert.Throws<ArgumentNullException>(()
-                => NullsafeDbQueryBuilder.ToDbNullsafe((IOrderedQueryable<Model>)null!));
+    [Fact]
+    public void ToTypedOrderedQueryableNullsafe_NullArgument_Throws()
+    {
+        var valueError = Assert.Throws<ArgumentNullException>(()
+            => NullsafeDbQueryBuilder.ToDbNullsafe((IOrderedQueryable<Model>)null!));
 
-            Assert.Equal("value", valueError.ParamName);
-        }
+        Assert.Equal("value", valueError.ParamName);
+    }
 
-        [Fact]
-        public void ToUntypedQueryableNullsafe_NullArgument_Throws()
-        {
-            var valueError = Assert.Throws<ArgumentNullException>(()
-                => NullsafeDbQueryBuilder.ToDbNullsafe((IQueryable)null!));
+    [Fact]
+    public void ToUntypedQueryableNullsafe_NullArgument_Throws()
+    {
+        var valueError = Assert.Throws<ArgumentNullException>(()
+            => NullsafeDbQueryBuilder.ToDbNullsafe((IQueryable)null!));
 
-            Assert.Equal("value", valueError.ParamName);
-        }
+        Assert.Equal("value", valueError.ParamName);
+    }
 
-        [Fact]
-        public void ToUntypedOrderedQueryableNullsafe_NullArgument_Throws()
-        {
-            var valueError = Assert.Throws<ArgumentNullException>(()
-                => NullsafeDbQueryBuilder.ToDbNullsafe((IOrderedQueryable)null!));
+    [Fact]
+    public void ToUntypedOrderedQueryableNullsafe_NullArgument_Throws()
+    {
+        var valueError = Assert.Throws<ArgumentNullException>(()
+            => NullsafeDbQueryBuilder.ToDbNullsafe((IOrderedQueryable)null!));
 
-            Assert.Equal("value", valueError.ParamName);
-        }
+        Assert.Equal("value", valueError.ParamName);
+    }
 
-        [Fact]
-        public void ToTypedQueryableNullsafe_RewritesQuery()
-        {
-            var value = CreateQuery<IQueryable<Model>>();
+    [Fact]
+    public void ToTypedQueryableNullsafe_RewritesQuery()
+    {
+        var value = CreateQuery<IQueryable<Model>>();
 
-            var result = value.ToDbNullsafe();
+        var result = value.ToDbNullsafe();
 
-            _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
+        _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
 
-            Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
-        }
+        Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
+    }
 
-        [Fact]
-        public void ToTypedOrderedQueryableNullsafe_RewritesQuery()
-        {
-            var value = CreateQuery<IOrderedQueryable<Model>>();
+    [Fact]
+    public void ToTypedOrderedQueryableNullsafe_RewritesQuery()
+    {
+        var value = CreateQuery<IOrderedQueryable<Model>>();
 
-            var result = value.ToDbNullsafe();
+        var result = value.ToDbNullsafe();
 
-            _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
+        _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
 
-            Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
-        }
+        Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
+    }
 
-        [Fact]
-        public void ToUntypedQueryableNullsafe_RewritesQuery()
-        {
-            var value = CreateQuery<IQueryable>();
+    [Fact]
+    public void ToUntypedQueryableNullsafe_RewritesQuery()
+    {
+        var value = CreateQuery<IQueryable>();
 
-            var result = value.ToDbNullsafe();
+        var result = value.ToDbNullsafe();
 
-            _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
+        _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
 
-            Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
-        }
+        Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
+    }
 
-        [Fact]
-        public void ToUntypedOrderedQueryableNullsafe_RewritesQuery()
-        {
-            var value = CreateQuery<IOrderedQueryable>();
+    [Fact]
+    public void ToUntypedOrderedQueryableNullsafe_RewritesQuery()
+    {
+        var value = CreateQuery<IOrderedQueryable>();
 
-            var result = value.ToDbNullsafe();
+        var result = value.ToDbNullsafe();
 
-            _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
+        _ = Assert.IsType<NullsafeQueryRewriter>(Assert.IsType<RewriteDbQueryProvider>(result.Provider).Rewriter);
 
-            Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
-        }
+        Assert.Equal(value, Assert.IsType<RewriteDbQueryable<Model>>(result).Query);
+    }
 
-        private static T CreateQuery<T>() => (T)Enumerable.Empty<Model>().AsQueryable();
+    private static T CreateQuery<T>() => (T)Enumerable.Empty<Model>().AsQueryable();
 
-        private class Model
-        {
-        }
+    private class Model
+    {
     }
 }

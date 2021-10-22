@@ -2,135 +2,134 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NeinLinq
+namespace NeinLinq;
+
+/// <summary>
+/// Helps building dynamic expressions.
+/// </summary>
+public static class DynamicExpression
 {
+    private static readonly ObjectCache<Type, Func<string, IFormatProvider?, object>> Cache
+        = new();
+
     /// <summary>
-    /// Helps building dynamic expressions.
+    /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.
     /// </summary>
-    public static class DynamicExpression
+    /// <param name="target">The parameter of the query data.</param>
+    /// <param name="selector">The property selector to parse.</param>
+    /// <param name="comparer">The comparison method to use.</param>
+    /// <param name="value">The reference value to compare with.</param>
+    /// <param name="provider">The culture-specific formatting information.</param>
+    /// <returns>The dynamic comparison expression.</returns>
+    public static Expression CreateComparison(ParameterExpression target,
+                                              string selector,
+                                              DynamicCompare comparer,
+                                              string? value,
+                                              IFormatProvider? provider = null)
     {
-        private static readonly ObjectCache<Type, Func<string, IFormatProvider?, object>> Cache
-            = new();
+        if (target is null)
+            throw new ArgumentNullException(nameof(target));
+        if (string.IsNullOrEmpty(selector))
+            throw new ArgumentNullException(nameof(selector));
+        if (!Enum.IsDefined(typeof(DynamicCompare), comparer))
+            throw new ArgumentOutOfRangeException(nameof(comparer));
 
-        /// <summary>
-        /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.
-        /// </summary>
-        /// <param name="target">The parameter of the query data.</param>
-        /// <param name="selector">The property selector to parse.</param>
-        /// <param name="comparer">The comparison method to use.</param>
-        /// <param name="value">The reference value to compare with.</param>
-        /// <param name="provider">The culture-specific formatting information.</param>
-        /// <returns>The dynamic comparison expression.</returns>
-        public static Expression CreateComparison(ParameterExpression target,
-                                                  string selector,
-                                                  DynamicCompare comparer,
-                                                  string? value,
-                                                  IFormatProvider? provider = null)
+        var memberAccess = CreateMemberAccess(target, selector);
+        var actualValue = CreateConstant(target, memberAccess, value, provider);
+
+        return comparer switch
         {
-            if (target is null)
-                throw new ArgumentNullException(nameof(target));
-            if (string.IsNullOrEmpty(selector))
-                throw new ArgumentNullException(nameof(selector));
-            if (!Enum.IsDefined(typeof(DynamicCompare), comparer))
-                throw new ArgumentOutOfRangeException(nameof(comparer));
+            DynamicCompare.Equal => Expression.Equal(memberAccess, actualValue),
+            DynamicCompare.NotEqual => Expression.NotEqual(memberAccess, actualValue),
+            DynamicCompare.GreaterThan => Expression.GreaterThan(memberAccess, actualValue),
+            DynamicCompare.GreaterThanOrEqual => Expression.GreaterThanOrEqual(memberAccess, actualValue),
+            DynamicCompare.LessThan => Expression.LessThan(memberAccess, actualValue),
+            DynamicCompare.LessThanOrEqual => Expression.LessThanOrEqual(memberAccess, actualValue),
+            _ => Expression.Constant(false),
+        };
+    }
 
-            var memberAccess = CreateMemberAccess(target, selector);
-            var actualValue = CreateConstant(target, memberAccess, value, provider);
+    /// <summary>
+    /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.
+    /// </summary>
+    /// <param name="target">The parameter of the query data.</param>
+    /// <param name="selector">The property selector to parse.</param>
+    /// <param name="comparer">The comparison method to use.</param>
+    /// <param name="value">The reference value to compare with.</param>
+    /// <param name="provider">The culture-specific formatting information.</param>
+    /// <returns>The dynamic comparison expression.</returns>
+    public static Expression CreateComparison(ParameterExpression target,
+                                              string selector,
+                                              string comparer,
+                                              string? value,
+                                              IFormatProvider? provider = null)
+    {
+        if (target is null)
+            throw new ArgumentNullException(nameof(target));
+        if (string.IsNullOrEmpty(selector))
+            throw new ArgumentNullException(nameof(selector));
+        if (string.IsNullOrEmpty(comparer))
+            throw new ArgumentNullException(nameof(comparer));
 
-            return comparer switch
-            {
-                DynamicCompare.Equal => Expression.Equal(memberAccess, actualValue),
-                DynamicCompare.NotEqual => Expression.NotEqual(memberAccess, actualValue),
-                DynamicCompare.GreaterThan => Expression.GreaterThan(memberAccess, actualValue),
-                DynamicCompare.GreaterThanOrEqual => Expression.GreaterThanOrEqual(memberAccess, actualValue),
-                DynamicCompare.LessThan => Expression.LessThan(memberAccess, actualValue),
-                DynamicCompare.LessThanOrEqual => Expression.LessThanOrEqual(memberAccess, actualValue),
-                _ => Expression.Constant(false),
-            };
-        }
+        var memberAccess = CreateMemberAccess(target, selector);
+        var actualValue = CreateConstant(target, memberAccess, value, provider);
 
-        /// <summary>
-        /// Create a dynamic comparison expression for a given property selector, comparison method and reference value.
-        /// </summary>
-        /// <param name="target">The parameter of the query data.</param>
-        /// <param name="selector">The property selector to parse.</param>
-        /// <param name="comparer">The comparison method to use.</param>
-        /// <param name="value">The reference value to compare with.</param>
-        /// <param name="provider">The culture-specific formatting information.</param>
-        /// <returns>The dynamic comparison expression.</returns>
-        public static Expression CreateComparison(ParameterExpression target,
-                                                  string selector,
-                                                  string comparer,
-                                                  string? value,
-                                                  IFormatProvider? provider = null)
-        {
-            if (target is null)
-                throw new ArgumentNullException(nameof(target));
-            if (string.IsNullOrEmpty(selector))
-                throw new ArgumentNullException(nameof(selector));
-            if (string.IsNullOrEmpty(comparer))
-                throw new ArgumentNullException(nameof(comparer));
+        return Expression.Call(memberAccess, comparer, null, actualValue);
+    }
 
-            var memberAccess = CreateMemberAccess(target, selector);
-            var actualValue = CreateConstant(target, memberAccess, value, provider);
+    /// <summary>
+    /// Creates a dynamic member access expression.
+    /// </summary>
+    /// <param name="target">The parameter of the query data.</param>
+    /// <param name="selector">The property selector to parse.</param>
+    /// <returns>The dynamic member access expression.</returns>
+    public static Expression CreateMemberAccess(Expression target,
+                                                string selector)
+    {
+        if (target is null)
+            throw new ArgumentNullException(nameof(target));
+        if (string.IsNullOrEmpty(selector))
+            throw new ArgumentNullException(nameof(selector));
 
-            return Expression.Call(memberAccess, comparer, null, actualValue);
-        }
+        return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
+    }
 
-        /// <summary>
-        /// Creates a dynamic member access expression.
-        /// </summary>
-        /// <param name="target">The parameter of the query data.</param>
-        /// <param name="selector">The property selector to parse.</param>
-        /// <returns>The dynamic member access expression.</returns>
-        public static Expression CreateMemberAccess(Expression target,
-                                                    string selector)
-        {
-            if (target is null)
-                throw new ArgumentNullException(nameof(target));
-            if (string.IsNullOrEmpty(selector))
-                throw new ArgumentNullException(nameof(selector));
+    private static Expression CreateConstant(ParameterExpression target,
+                                             Expression selector,
+                                             string? value,
+                                             IFormatProvider? provider)
+    {
+        var type = Expression.Lambda(selector, target).ReturnType;
 
-            return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
-        }
+        if (string.IsNullOrEmpty(value))
+            return Expression.Default(type);
 
-        private static Expression CreateConstant(ParameterExpression target,
-                                                 Expression selector,
-                                                 string? value,
-                                                 IFormatProvider? provider)
-        {
-            var type = Expression.Lambda(selector, target).ReturnType;
+        var converter = Cache.GetOrAdd(type, CreateConverter);
+        var convertedValue = converter(value!, provider);
 
-            if (string.IsNullOrEmpty(value))
-                return Expression.Default(type);
+        return Expression.Constant(convertedValue, type);
+    }
 
-            var converter = Cache.GetOrAdd(type, CreateConverter);
-            var convertedValue = converter(value!, provider);
+    private static Func<string, IFormatProvider?, object> CreateConverter(Type type)
+    {
+        var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+        if (underlyingType.IsEnum)
+            return (value, _) => Enum.Parse(underlyingType, value);
 
-            return Expression.Constant(convertedValue, type);
-        }
+        var target = Expression.Parameter(typeof(string));
+        var format = Expression.Parameter(typeof(IFormatProvider));
 
-        private static Func<string, IFormatProvider?, object> CreateConverter(Type type)
-        {
-            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
-            if (underlyingType.IsEnum)
-                return (value, _) => Enum.Parse(underlyingType, value);
+        var expression = (Expression)target;
 
-            var target = Expression.Parameter(typeof(string));
-            var format = Expression.Parameter(typeof(IFormatProvider));
+        var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
+        if (ordinalParse is not null)
+            expression = Expression.Call(ordinalParse, target);
 
-            var expression = (Expression)target;
+        var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+        if (cultureParse is not null)
+            expression = Expression.Call(cultureParse, target, format);
 
-            var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
-            if (ordinalParse is not null)
-                expression = Expression.Call(ordinalParse, target);
-
-            var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
-            if (cultureParse is not null)
-                expression = Expression.Call(cultureParse, target, format);
-
-            return Expression.Lambda<Func<string?, IFormatProvider?, object>>(
-                Expression.Convert(expression, typeof(object)), target, format).Compile();
-        }
+        return Expression.Lambda<Func<string?, IFormatProvider?, object>>(
+            Expression.Convert(expression, typeof(object)), target, format).Compile();
     }
 }
