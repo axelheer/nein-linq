@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Helps building dynamic queries.

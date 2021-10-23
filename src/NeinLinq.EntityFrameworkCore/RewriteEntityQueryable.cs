@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Proxy for rewritten queries.

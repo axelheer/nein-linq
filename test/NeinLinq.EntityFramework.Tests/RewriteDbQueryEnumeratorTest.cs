@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NeinLinq.Tests;

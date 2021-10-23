@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace NeinLinq;
 
@@ -94,23 +92,23 @@ internal sealed class InjectLambdaMetadata
 
     private static Func<Expression?, LambdaExpression?> DynamicLambdaFactory(MethodInfo method, InjectLambdaSignature signature) => value =>
     {
-            // retrieve actual target object, compiles every time and needs reflection too... :-(
-            var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value!, typeof(object))).Compile()();
+        // retrieve actual target object, compiles every time and needs reflection too... :-(
+        var targetObject = Expression.Lambda<Func<object>>(Expression.Convert(value!, typeof(object))).Compile()();
 
-            // retrieve actual target type at runtime, whatever it may be
-            var targetType = targetObject.GetType();
+        // retrieve actual target type at runtime, whatever it may be
+        var targetType = targetObject.GetType();
 
-            // actual method may provide different information
-            var concreteMethod = signature.FindMatch(targetType, method.Name, value!.Type)!;
+        // actual method may provide different information
+        var concreteMethod = signature.FindMatch(targetType, method.Name, value!.Type)!;
 
-            // configuration over convention, if any
-            var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
+        // configuration over convention, if any
+        var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
 
-            // retrieve validated factory method
-            var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value.Type);
+        // retrieve validated factory method
+        var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value.Type);
 
-            // finally call lambda factory *uff*
-            return Expression.Lambda<Func<LambdaExpression>>(
-            Expression.Convert(Expression.Call(Expression.Convert(value, targetType), factoryMethod), typeof(LambdaExpression))).Compile()();
+        // finally call lambda factory *uff*
+        return Expression.Lambda<Func<LambdaExpression>>(
+        Expression.Convert(Expression.Call(Expression.Convert(value, targetType), factoryMethod), typeof(LambdaExpression))).Compile()();
     };
 }

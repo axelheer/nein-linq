@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Proxy for query enumerator.
 /// </summary>
 public class RewriteQueryEnumerator<T> : IEnumerator<T>
 #if ASYNC_INTERFACES
-        , IAsyncEnumerator<T>
+    , IAsyncEnumerator<T>
 #endif
 {
     private readonly IEnumerator<T> enumerator;

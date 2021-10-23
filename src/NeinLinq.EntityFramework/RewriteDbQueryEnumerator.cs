@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity.Infrastructure;
 
 namespace NeinLinq;
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-
-#pragma warning disable CA1010
+﻿#pragma warning disable CA1010
 
 namespace NeinLinq;
 
@@ -63,7 +56,7 @@ public abstract class RewriteQueryable : IOrderedQueryable
 /// </summary>
 public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
 #if ASYNC_INTERFACES
-        , IAsyncEnumerable<T>
+    , IAsyncEnumerable<T>
 #endif
 {
     /// <summary>

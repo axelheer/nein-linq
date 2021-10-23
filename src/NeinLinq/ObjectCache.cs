@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 internal sealed class ObjectCache<TKey, TValue> : IDisposable
     where TKey : notnull

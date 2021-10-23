@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Proxy for rewritten async queries.

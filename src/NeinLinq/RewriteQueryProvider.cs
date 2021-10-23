@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Proxy for query provider.

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Replaces method types.

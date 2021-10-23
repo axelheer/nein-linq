@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Proxy for query enumerable.
 /// </summary>
 public class RewriteQueryEnumerable<T> : IEnumerable<T>
 #if ASYNC_INTERFACES
-        , IAsyncEnumerable<T>
+    , IAsyncEnumerable<T>
 #endif
 {
     private readonly IEnumerable<T> enumerable;

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace NeinLinq;
+﻿namespace NeinLinq;
 
 /// <summary>
 /// Makes a query null-safe.
