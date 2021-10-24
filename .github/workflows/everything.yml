@@ -41,10 +41,10 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
     - name: Create packages (w/o version suffix)
-      run: dotnet pack --configuration Release --output pkg
+      run: dotnet pack --configuration Release --include-symbols --output pkg
       if: startsWith(github.ref, 'refs/tags/v') == true
     - name: Create packages (w/ version suffix)
-      run: dotnet pack --configuration Release --output pkg --version-suffix preview.${{ github.run_number }}
+      run: dotnet pack --configuration Release --include-symbols --output pkg --version-suffix preview.${{ github.run_number }}
       if: startsWith(github.ref, 'refs/tags/v') != true
     - name: Upload packages
       uses: actions/upload-artifact@v1
