@@ -152,8 +152,8 @@ internal sealed class InjectLambdaSignature
 
             result = candidate;
         }
-        return result is not null || target.BaseType is not { } baseTarget
-            ? result
-            : FindMatch(baseTarget, method, genericArguments, parameterTypes, injectedType);
+        return result is null && target.BaseType is { } baseTarget
+            ? FindMatch(baseTarget, method, genericArguments, parameterTypes, injectedType)
+            : result;
     }
 }
