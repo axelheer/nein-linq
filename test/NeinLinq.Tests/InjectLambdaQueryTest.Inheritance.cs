@@ -197,6 +197,15 @@ public class InjectLambdaQueryTest_Inheritance
     }
 
     [Fact]
+    public void Query_WithPrivateBase_Injects()
+    {
+        FunctionsBase functions = new Functions(2);
+        var query = functions.CallVelocityWithPrivateBase(CreateQuery()).ToInjectable();
+        var result = query.ToList();
+        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+    }
+
+    [Fact]
     public void Query_WithAbstractSiblingViaDerived_Injects()
     {
         var functions = new Functions(2);
@@ -350,6 +359,12 @@ public class InjectLambdaQueryTest_Inheritance
         [InjectLambda]
         public double VelocityWithAbstractSibling(Model value)
             => throw new NotSupportedException($"Unable to process {value.Name}.");
+        public IQueryable<double> CallVelocityWithPrivateBase(IQueryable<Model> query) =>
+            query.Select(m => VelocityWithPrivateBase(m));
+
+        [InjectLambda]
+        private double VelocityWithPrivateBase(Model value) =>
+            throw new NotSupportedException($"Unable to process {value.Name}.");
 
         public abstract Expression<Func<Model, double>> VelocityWithAbstractSibling();
 
@@ -421,6 +436,8 @@ public class InjectLambdaQueryTest_Inheritance
 
         public override Expression<Func<Model, double>> VelocityWithAbstractSibling()
             => v => Math.Round(v.Distance / v.Time, digits);
+        public Expression<Func<Model, double>> VelocityWithPrivateBase() =>
+            v => Math.Round(v.Distance / v.Time, digits);
 
         public override Expression<Func<Model, double>> VelocityWithVirtualSibling()
             => v => Math.Round(v.Distance / v.Time, digits);
