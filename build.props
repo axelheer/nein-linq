@@ -38,8 +38,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.0.0" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.34.0.42011" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.0.2" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.35.0.42613" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
