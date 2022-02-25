@@ -1,4 +1,0 @@
-[*.cs]
-
-# Move '?' into a named namespace.
-dotnet_diagnostic.S3903.severity = none

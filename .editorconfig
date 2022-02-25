@@ -31,6 +31,10 @@ insert_final_newline = true
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true
 
+# Namespace options
+csharp_style_namespace_declarations = file_scoped:suggestion
+dotnet_style_namespace_match_folder = true:suggestion
+
 # this. and Me. preferences
 dotnet_style_qualification_for_event = false:suggestion
 dotnet_style_qualification_for_field = false:suggestion
@@ -204,6 +208,10 @@ dotnet_naming_rule.constant_field_should_be_pascal_case.severity = suggestion
 dotnet_naming_rule.constant_field_should_be_pascal_case.symbols = constant_field
 dotnet_naming_rule.constant_field_should_be_pascal_case.style = pascal_case
 
+dotnet_naming_rule.local_function_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.local_function_should_be_camel_case.symbols = local_function
+dotnet_naming_rule.local_function_should_be_camel_case.style = camel_case
+
 # Symbol specifications
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
@@ -233,6 +241,10 @@ dotnet_naming_symbols.static_and_readonly_field.required_modifiers = readonly, s
 dotnet_naming_symbols.constant_field.applicable_kinds = field
 dotnet_naming_symbols.constant_field.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.constant_field.required_modifiers = const
+
+dotnet_naming_symbols.local_function.applicable_kinds = local_function
+dotnet_naming_symbols.local_function.applicable_accessibilities = local
+dotnet_naming_symbols.local_function.required_modifiers =
 
 # Naming styles
 
