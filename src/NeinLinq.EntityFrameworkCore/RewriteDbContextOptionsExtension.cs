@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
-#pragma warning disable EF1001
-
 namespace NeinLinq;
+
+#pragma warning disable EF1001
 
 internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtension
 {
@@ -102,3 +102,5 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
         }
     }
 }
+
+#pragma warning restore EF1001

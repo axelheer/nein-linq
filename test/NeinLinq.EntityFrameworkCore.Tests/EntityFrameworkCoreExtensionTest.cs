@@ -186,8 +186,6 @@ public class EntityFrameworkCoreExtensionTest
         Assert.Equal(15, query.Sum(m => m.ActiveValue));
     }
 
-#pragma warning disable S1144, S3459
-
     private class Model
     {
         public int Id { get; set; }
@@ -232,8 +230,6 @@ public class EntityFrameworkCoreExtensionTest
             Models = Set<Model>();
         }
     }
-
-#pragma warning restore S1144, S3459
 
     private class Rewriter : ExpressionVisitor
     {

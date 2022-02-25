@@ -255,9 +255,3 @@ dotnet_naming_style.camel_case.required_prefix =
 dotnet_naming_style.camel_case.required_suffix =
 dotnet_naming_style.camel_case.word_separator =
 dotnet_naming_style.camel_case.capitalization = camel_case
-
-# Analyzers
-
-roslynator_accessibility_modifiers = explicit
-roslynator_enum_has_flag_style = operator
-roslynator_object_creation_type_style = implicit

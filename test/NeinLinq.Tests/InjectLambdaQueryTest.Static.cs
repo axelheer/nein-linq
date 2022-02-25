@@ -198,8 +198,6 @@ public class InjectLambdaQueryTest_Static
         public double Time { get; set; }
     }
 
-#pragma warning disable RCS1213, S1144
-
     private static class Functions
     {
         public static double VelocityWithoutSibling(Model value)
@@ -315,7 +313,4 @@ public class InjectLambdaQueryTest_Static
         public static Expression<Func<Model, double>> VelocityWithTypeMetadata()
             => v => v.Distance / v.Time;
     }
-
-#pragma warning restore RCS1213, S1144
-
 }

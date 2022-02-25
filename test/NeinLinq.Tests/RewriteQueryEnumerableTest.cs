@@ -53,8 +53,6 @@ public class RewriteQueryEnumerableTest
             => GetEnumerator();
     }
 
-#pragma warning disable RCS1079
-
     private sealed class TestEnumerator : IEnumerator<Model>
     {
         public Model Current
@@ -72,7 +70,4 @@ public class RewriteQueryEnumerableTest
         public void Reset()
             => throw new NotImplementedException();
     }
-
-#pragma warning restore RCS1079
-
 }

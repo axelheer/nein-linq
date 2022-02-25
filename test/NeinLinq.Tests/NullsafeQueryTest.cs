@@ -203,8 +203,6 @@ public class NullsafeQueryTest
         Assert.Equal(3, result.Count);
     }
 
-#pragma warning disable RCS1118
-
     [Fact]
     public void Query_ForeignMember_Handles()
     {
@@ -226,8 +224,6 @@ public class NullsafeQueryTest
             r => Assert.Equal(0, r.Numeric),
             r => Assert.Equal(0, r.Numeric));
     }
-
-#pragma warning restore RCS1118
 
     [Fact]
     public void Query_LetStatements_Handles()

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-#pragma warning disable CA1812, EF1001
-
 namespace NeinLinq;
+
+#pragma warning disable CA1812, EF1001
 
 internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompiler
     where TInnerCompiler : IQueryCompiler
@@ -20,12 +20,8 @@ internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompile
     public TResult Execute<TResult>(Expression query)
         => innerCompiler.Execute<TResult>(RewriteQuery(query));
 
-#pragma warning disable RCS1047
-
     public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
         => innerCompiler.ExecuteAsync<TResult>(RewriteQuery(query), cancellationToken);
-
-#pragma warning restore RCS1047
 
     public Func<QueryContext, TResult> CreateCompiledQuery<TResult>(Expression query)
         => innerCompiler.CreateCompiledQuery<TResult>(RewriteQuery(query));
@@ -39,3 +35,5 @@ internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompile
     private Expression RewriteQuery(Expression query)
         => options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q));
 }
+
+#pragma warning restore CA1812, EF1001

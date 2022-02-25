@@ -49,8 +49,6 @@ public class InjectLambdaQueryTest
         public double Time { get; set; }
     }
 
-#pragma warning disable S1144
-
     private class MixedFunctions
     {
         private readonly int digits;
@@ -72,7 +70,4 @@ public class InjectLambdaQueryTest
         public Expression<Func<Model, double>> VelocityStaticToInstance()
             => v => Math.Round(v.Distance / v.Time, digits);
     }
-
-#pragma warning restore S1144
-
 }

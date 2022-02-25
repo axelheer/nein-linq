@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 #endif
 
-#pragma warning disable EF1001
-
 namespace NeinLinq;
+
+#pragma warning disable EF1001
 
 /// <summary>
 /// Proxy for query provider.
@@ -45,8 +45,6 @@ public class RewriteEntityQueryProvider : RewriteQueryProvider, IAsyncQueryProvi
             query, this)!;
     }
 
-#pragma warning disable RCS1047, S3358
-
     /// <inheritdoc />
     public virtual TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
     {
@@ -59,19 +57,15 @@ public class RewriteEntityQueryProvider : RewriteQueryProvider, IAsyncQueryProvi
             : Provider.Execute<TResult>(rewritten);
     }
 
-#pragma warning restore RCS1047, S3358
-
     private TResult Execute<TResult>(MethodInfo method, Expression expression)
         => (TResult)(method.MakeGenericMethod(typeof(TResult).GetGenericArguments()[0])
             .Invoke(this, new object[] { expression })!);
 
-#pragma warning disable S3011
-
     private static readonly MethodInfo ExecuteTaskMethod
         = typeof(RewriteEntityQueryProvider).GetMethod(nameof(ExecuteTask), BindingFlags.Instance | BindingFlags.NonPublic)!;
-
-#pragma warning restore S3011
 
     private Task<TResult> ExecuteTask<TResult>(Expression expression)
         => Task.FromResult(Provider.Execute<TResult>(expression));
 }
+
+#pragma warning restore EF1001

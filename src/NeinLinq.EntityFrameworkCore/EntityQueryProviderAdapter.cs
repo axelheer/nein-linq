@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-#pragma warning disable EF1001
-
 namespace NeinLinq;
+
+#pragma warning disable EF1001
 
 internal sealed class EntityQueryProviderAdapter : EntityQueryProvider
 {
@@ -43,12 +43,9 @@ internal sealed class EntityQueryProviderAdapter : EntityQueryProvider
         public TResult Execute<TResult>(Expression query)
             => throw new NotSupportedException();
 
-#pragma warning disable RCS1047
-
         public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
             => throw new NotSupportedException();
-
-#pragma warning restore RCS1047
-
     }
 }
+
+#pragma warning restore EF1001

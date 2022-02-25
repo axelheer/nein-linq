@@ -74,8 +74,6 @@ public class RewriteDbQueryEnumeratorTest
         Assert.True(enumerator.MoveNextCalled);
     }
 
-#pragma warning disable S3966
-
     [Fact]
     public void Dispose_Disposes()
     {
@@ -86,8 +84,6 @@ public class RewriteDbQueryEnumeratorTest
 
         Assert.True(enumerator.DisposeCalled);
     }
-
-#pragma warning restore S3966
 
     [Fact]
     public async Task DisposeAsync_DisposesAsync()

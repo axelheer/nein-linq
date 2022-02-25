@@ -1,6 +1,6 @@
-#pragma warning disable CA1812
-
 namespace NeinLinq;
+
+#pragma warning disable CA1812
 
 internal sealed class EntityQueryCompilerAdapterOptions
 {
@@ -11,3 +11,5 @@ internal sealed class EntityQueryCompilerAdapterOptions
         Rewriters = new List<ExpressionVisitor>(rewriters);
     }
 }
+
+#pragma warning restore CA1812

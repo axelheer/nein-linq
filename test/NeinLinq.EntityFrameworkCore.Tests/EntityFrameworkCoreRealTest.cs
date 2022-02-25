@@ -184,8 +184,6 @@ public class EntityFrameworkCoreRealTest
         return new TestContext();
     }
 
-#pragma warning disable S1144, S3459
-
     private class Model
     {
         public int Id { get; set; }
@@ -205,8 +203,6 @@ public class EntityFrameworkCoreRealTest
 
         public string? Name { get; set; }
     }
-
-#pragma warning restore S1144, S3459
 
     private class TestContext : DbContext
     {

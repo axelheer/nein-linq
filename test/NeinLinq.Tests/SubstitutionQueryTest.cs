@@ -43,13 +43,8 @@ public class SubstitutionQueryTest
         public static bool Condition() => true;
     }
 
-#pragma warning disable S1144
-
     private static class ToFunctions
     {
         public static bool Condition() => false;
     }
-
-#pragma warning restore S1144
-
 }

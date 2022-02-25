@@ -206,8 +206,6 @@ public class InjectLambdaQueryTest_Property
         return data.AsQueryable();
     }
 
-#pragma warning disable RCS1213, S1144, S3459
-
     private class Model
     {
         public int Id { get; set; }
@@ -321,7 +319,4 @@ public class InjectLambdaQueryTest_Property
         public static Expression<Func<Model, double>> VelocityWithPropertyAndTypeMetadata
             => v => v.Distance / v.Time;
     }
-
-#pragma warning restore RCS1213, S1144, S3459
-
 }

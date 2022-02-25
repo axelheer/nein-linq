@@ -206,8 +206,6 @@ public class InjectLambdaQueryTest_Sealed
         public double Time { get; set; }
     }
 
-#pragma warning disable RCS1213, S1144
-
     private sealed class Functions
     {
         private readonly int digits;
@@ -313,7 +311,4 @@ public class InjectLambdaQueryTest_Sealed
         private CachedExpression<Func<Model, double>> VelocityWithCachedExpressionExpr { get; }
             = CachedExpression.From<Func<Model, double>>(v => Math.Round(v.Distance / v.Time, 2));
     }
-
-#pragma warning restore RCS1213, S1144
-
 }

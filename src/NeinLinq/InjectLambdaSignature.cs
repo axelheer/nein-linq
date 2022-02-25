@@ -84,15 +84,11 @@ internal sealed class InjectLambdaSignature
     public MethodInfo? FindMatch(Type target, string method, Type? injectedType = null)
         => FindMatch(target, method, genericArguments, parameterTypes, injectedType);
 
-#pragma warning disable S3011
-
     private const BindingFlags Everything
         = BindingFlags.NonPublic
         | BindingFlags.Public
         | BindingFlags.Static
         | BindingFlags.Instance;
-
-#pragma warning restore S3011
 
     private static MethodInfo? FindMatchWithoutParameters(Type target, string method, Type[] genericArguments, Type? injectedType = null)
     {

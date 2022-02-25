@@ -1,6 +1,6 @@
-﻿#pragma warning disable CA1010
+﻿namespace NeinLinq;
 
-namespace NeinLinq;
+#pragma warning disable CA1010
 
 /// <summary>
 /// Proxy for rewritten queries.
@@ -50,6 +50,8 @@ public abstract class RewriteQueryable : IOrderedQueryable
     IQueryProvider IQueryable.Provider
         => Provider; // replace query provider
 }
+
+#pragma warning restore CA1010
 
 /// <summary>
 /// Proxy for rewritten queries.

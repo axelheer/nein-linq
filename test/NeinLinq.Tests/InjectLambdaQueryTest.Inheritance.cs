@@ -287,8 +287,6 @@ public class InjectLambdaQueryTest_Inheritance
         public double Time { get; set; }
     }
 
-#pragma warning disable RCS1213, S1144
-
     private abstract class FunctionsBase
     {
         private readonly int digits;
@@ -445,7 +443,4 @@ public class InjectLambdaQueryTest_Inheritance
         private CachedExpression<Func<Model, double>> VelocityWithCachedExpressionExpr { get; }
             = CachedExpression.From<Func<Model, double>>(v => Math.Round(v.Distance / v.Time, 2));
     }
-
-#pragma warning restore RCS1213, S1144
-
 }
