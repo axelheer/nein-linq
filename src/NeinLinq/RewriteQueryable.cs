@@ -56,10 +56,7 @@ public abstract class RewriteQueryable : IOrderedQueryable
 /// <summary>
 /// Proxy for rewritten queries.
 /// </summary>
-public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
-#if ASYNC_INTERFACES
-    , IAsyncEnumerable<T>
-#endif
+public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>, IAsyncEnumerable<T>
 {
     /// <summary>
     /// Create a new query to rewrite.
@@ -76,8 +73,6 @@ public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
         => Provider.RewriteQuery<T>(Expression)
             .GetEnumerator(); // rewrite on enumeration
 
-#if ASYNC_INTERFACES
-
     /// <inheritdoc />
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
@@ -87,7 +82,4 @@ public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
             ? asyncEnumerable.GetAsyncEnumerator(cancellationToken)
             : new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
     }
-
-#endif
-
 }

@@ -3,10 +3,7 @@
 /// <summary>
 /// Proxy for query enumerator.
 /// </summary>
-public class RewriteQueryEnumerator<T> : IEnumerator<T>
-#if ASYNC_INTERFACES
-    , IAsyncEnumerator<T>
-#endif
+public class RewriteQueryEnumerator<T> : IEnumerator<T>, IAsyncEnumerator<T>
 {
     private readonly IEnumerator<T> enumerator;
 
@@ -35,14 +32,21 @@ public class RewriteQueryEnumerator<T> : IEnumerator<T>
         => enumerator.MoveNext();
 
     /// <inheritdoc />
+    public ValueTask<bool> MoveNextAsync()
+        => new(enumerator.MoveNext());
+
+    /// <inheritdoc />
     public void Reset()
         => enumerator.Reset();
 
-#if ASYNC_INTERFACES
-
-    /// <inheritdoc />
-    public ValueTask<bool> MoveNextAsync()
-        => new(enumerator.MoveNext());
+    /// <summary>
+    /// Releases all resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
     /// <summary>
     /// Releases all resources.
@@ -52,17 +56,6 @@ public class RewriteQueryEnumerator<T> : IEnumerator<T>
         Dispose(true);
         GC.SuppressFinalize(this);
         return default;
-    }
-
-#endif
-
-    /// <summary>
-    /// Releases all resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
     }
 
     /// <summary>
