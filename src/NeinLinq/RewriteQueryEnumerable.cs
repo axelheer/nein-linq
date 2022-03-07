@@ -3,7 +3,10 @@
 /// <summary>
 /// Proxy for query enumerable.
 /// </summary>
-public class RewriteQueryEnumerable<T> : IEnumerable<T>, IAsyncEnumerable<T>
+public class RewriteQueryEnumerable<T> : IEnumerable<T>
+#if ASYNC_INTERFACES
+    , IAsyncEnumerable<T>
+#endif
 {
     private readonly IEnumerable<T> enumerable;
 
@@ -27,7 +30,9 @@ public class RewriteQueryEnumerable<T> : IEnumerable<T>, IAsyncEnumerable<T>
     public IEnumerator<T> GetEnumerator()
         => new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
 
+#if ASYNC_INTERFACES
     /// <inheritdoc />
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         => new RewriteQueryEnumerator<T>(enumerable.GetEnumerator());
+#endif
 }

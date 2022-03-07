@@ -86,8 +86,8 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
 
 #else
 
-            public override long GetServiceProviderHashCode()
-                => 0;
+        public override long GetServiceProviderHashCode()
+            => 0;
 
 #endif
 
