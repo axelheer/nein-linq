@@ -181,13 +181,13 @@ public class ParameterizedFunctions
         this.narf = narf;
     }
 
-    [InjectLambda]
+    [InjectLambda("FooExpr")]
     public string Foo()
     {
         ...
     }
 
-    public Expression<Func<string>> Foo()
+    public Expression<Func<string>> FooExpr()
     {
         ... // use the narf!
     }
