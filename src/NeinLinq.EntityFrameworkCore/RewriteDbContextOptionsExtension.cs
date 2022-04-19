@@ -23,6 +23,8 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
         if (services is null)
             throw new ArgumentNullException(nameof(services));
 
+        var adapterAdded = 0;
+
         for (var index = services.Count - 1; index >= 0; index--)
         {
             var descriptor = services[index];
@@ -47,7 +49,12 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
                     descriptor.Lifetime
                 )
             );
+
+            adapterAdded++;
         }
+
+        if (adapterAdded == 0)
+            throw new InvalidOperationException("Unable to create rewrite adapter for actual query compiler. Please configure your query provider first!");
 
         _ = services.AddSingleton(new EntityQueryCompilerAdapterOptions(rewriters));
     }

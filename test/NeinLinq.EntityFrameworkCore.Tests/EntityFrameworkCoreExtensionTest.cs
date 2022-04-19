@@ -100,6 +100,19 @@ public class EntityFrameworkCoreExtensionTest
     }
 
     [Fact]
+    public void Query_WithLambdaInjectionUsingWrongOrder_Throws()
+    {
+        var services = new ServiceCollection();
+
+        _ = services.AddDbContext<TestContext>(options =>
+            options.WithLambdaInjection(typeof(Model)).UseSqlite("Data Source=EntityFrameworkCoreExtensionTest.db"));
+
+        using var serviceProvider = services.BuildServiceProvider();
+
+        _ = Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService<TestContext>());
+    }
+
+    [Fact]
     public void Query_WithoutLambdaInjection_Throws()
     {
         var services = new ServiceCollection();
