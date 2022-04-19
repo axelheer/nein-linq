@@ -50,6 +50,8 @@ Usage of specific flavors is encouraged for EF6 / EFCore (otherwise async querie
          options.UseSqlOrTheLike("...").WithLambdaInjection());
 ```
 
+***Note:*** the call to `WithLambdaInjection` needs to happen *after* the call to `UseSqlOrTheLike`!
+
 Lambda injection
 ----------------
 
