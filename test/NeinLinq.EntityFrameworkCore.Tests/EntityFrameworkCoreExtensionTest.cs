@@ -70,6 +70,36 @@ public class EntityFrameworkCoreExtensionTest
     }
 
     [Fact]
+    public void Query_WithLambdaInjectionUsingOverride_ResolvesLambdaInjection()
+    {
+        var services = new ServiceCollection();
+
+        _ = services.AddDbContext<TestWithOverrideContext>(options =>
+            options.UseSqlite("Data Source=EntityFrameworkCoreExtensionTest.db"));
+
+        using var serviceProvider = services.BuildServiceProvider();
+
+        var context = serviceProvider.GetRequiredService<TestWithOverrideContext>();
+
+        _ = context.Database.EnsureDeleted();
+        _ = context.Database.EnsureCreated();
+
+        context.Models.AddRange(
+            new Model { Name = "Heinz" },
+            new Model { Name = "Narf" },
+            new Model { Name = "Wat" }
+        );
+
+        _ = context.SaveChanges();
+
+        var query = from m in context.Models
+                    where m.IsNarf
+                    select m.Id;
+
+        Assert.Equal(1, query.Count());
+    }
+
+    [Fact]
     public void Query_WithoutLambdaInjection_Throws()
     {
         var services = new ServiceCollection();
@@ -229,6 +259,20 @@ public class EntityFrameworkCoreExtensionTest
         {
             Models = Set<Model>();
         }
+    }
+
+    private class TestWithOverrideContext : DbContext
+    {
+        public DbSet<Model> Models { get; }
+
+        public TestWithOverrideContext(DbContextOptions<TestWithOverrideContext> options)
+            : base(options)
+        {
+            Models = Set<Model>();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.WithLambdaInjection(typeof(Model));
     }
 
     private class Rewriter : ExpressionVisitor
