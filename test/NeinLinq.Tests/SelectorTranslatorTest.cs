@@ -74,6 +74,21 @@ public class SelectorTranslatorTest
     }
 
     [Fact]
+    public void Apply_WithOverride_Merges()
+    {
+        Expression<Func<Model, ModelView>> s = d => new ModelView { Id = d.Id, Name = d.Name };
+        Expression<Func<Model, ModelView>> t = d => new ModelView { Name = d.Name + " (!)" };
+
+        var select = s.Apply(t);
+        var result = CreateQuery().OfType<Model>().Where(m => !(m is SpecialModel)).Select(select);
+
+        Assert.Collection(result,
+            v => { Assert.Equal(1, v.Id); Assert.Equal("Asdf (!)", v.Name); },
+            v => { Assert.Equal(2, v.Id); Assert.Equal("Narf (!)", v.Name); },
+            v => { Assert.Equal(3, v.Id); Assert.Equal("Qwer (!)", v.Name); });
+    }
+
+    [Fact]
     public void Apply_EmptyInit_Merges()
     {
         Expression<Func<Model, ModelView>> s = _ => new ModelView();
