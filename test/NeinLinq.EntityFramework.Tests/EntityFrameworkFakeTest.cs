@@ -51,7 +51,7 @@ public class EntityFrameworkFakeTest
         var result = await query.SumAsync(m => m.Number);
 
         Assert.True(rewriter.VisitCalled);
-        Assert.Equal(194.48f, result, 2);
+        Assert.Equal(194.48, result, 2);
     }
 
     [Fact]

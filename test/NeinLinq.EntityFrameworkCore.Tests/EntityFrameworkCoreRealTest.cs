@@ -132,7 +132,7 @@ public class EntityFrameworkCoreRealTest
 
         var result = await context.Models.SumAsync(m => m.Number);
 
-        Assert.Equal(194.48f, result, 2);
+        Assert.Equal(194.48, result, 2);
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class EntityFrameworkCoreRealTest
 
         var result = await query.SumAsync(m => m.Number);
 
-        Assert.Equal(194.48f, result, 2);
+        Assert.Equal(194.48, result, 2);
     }
 
     private static TestContext CreateContext()

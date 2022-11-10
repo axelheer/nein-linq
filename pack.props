@@ -34,7 +34,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://nein.tech/nein-linq</PackageProjectUrl>
-    <PackageReleaseNotes>Added explicit support for .NET 6.0.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added explicit support for .NET 7.0.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
