@@ -27,11 +27,11 @@ To support different LINQ implementations, the following flavours are available.
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="\" />
+    <None Include="$(MSBuildThisFileDirectory)icon.jpg" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageIcon>icon.png</PackageIcon>
+    <PackageIcon>icon.jpg</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReleaseNotes>Added explicit support for .NET 7.0.</PackageReleaseNotes>
