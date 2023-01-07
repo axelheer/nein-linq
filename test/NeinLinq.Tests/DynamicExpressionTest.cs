@@ -1,5 +1,7 @@
 using Xunit;
 
+#pragma warning disable CA1305
+
 namespace NeinLinq.Tests;
 
 public class DynamicExpressionTest

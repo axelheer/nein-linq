@@ -1,6 +1,8 @@
 using System.Globalization;
 using Xunit;
 
+#pragma warning disable CA1305
+
 namespace NeinLinq.Tests;
 
 [CLSCompliant(false)]
