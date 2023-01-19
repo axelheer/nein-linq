@@ -1,4 +1,4 @@
-﻿namespace NeinLinq;
+namespace NeinLinq;
 
 internal sealed class ObjectCache<TKey, TValue> : IDisposable
     where TKey : notnull

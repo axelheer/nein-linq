@@ -1,4 +1,4 @@
-﻿namespace NeinLinq;
+namespace NeinLinq;
 
 #pragma warning disable CA1010
 

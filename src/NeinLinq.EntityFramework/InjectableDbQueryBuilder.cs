@@ -1,4 +1,4 @@
-﻿namespace NeinLinq;
+namespace NeinLinq;
 
 /// <summary>
 /// Replaces method calls with lambda expressions.

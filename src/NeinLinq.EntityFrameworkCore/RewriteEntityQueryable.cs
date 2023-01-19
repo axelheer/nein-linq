@@ -1,4 +1,4 @@
-﻿namespace NeinLinq;
+namespace NeinLinq;
 
 /// <summary>
 /// Proxy for rewritten queries.

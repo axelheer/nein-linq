@@ -1,4 +1,4 @@
-﻿namespace NeinLinq;
+namespace NeinLinq;
 
 /// <summary>
 /// Makes a query null-safe.

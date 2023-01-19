@@ -1,4 +1,4 @@
-﻿namespace NeinLinq;
+namespace NeinLinq;
 
 /// <summary>
 /// Represents a translation of a given predicate.

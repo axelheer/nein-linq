@@ -1,4 +1,4 @@
-﻿NeinLinq
+NeinLinq
 ========
 
 [![Latest package](https://img.shields.io/nuget/v/NeinLinq.svg)](https://www.nuget.org/packages/NeinLinq)
