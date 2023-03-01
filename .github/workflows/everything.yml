@@ -39,16 +39,16 @@ jobs:
           6.0.x
           7.0.x
     - name: Create packages (w/o version suffix)
-      run: dotnet pack --configuration Release --include-symbols --output pkg
+      run: dotnet pack --configuration Release --include-symbols --property:PackageOutputPath=${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') == true
     - name: Create packages (w/ version suffix)
-      run: dotnet pack --configuration Release --include-symbols --output pkg --version-suffix preview.${{ github.run_number }}
+      run: dotnet pack --configuration Release --include-symbols --version-suffix preview.${{ github.run_number }} --property:PackageOutputPath=${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') != true
     - name: Upload packages
       uses: actions/upload-artifact@v3
       with:
         name: packages
-        path: pkg
+        path: ${{ runner.temp }}\pkg
     if: github.event_name == 'push'
   prerelease:
     needs: package
