@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace NeinLinq;
@@ -7,6 +8,9 @@ namespace NeinLinq;
 /// </summary>
 public class RewriteDbQueryProvider : RewriteQueryProvider, IDbAsyncQueryProvider
 {
+    private static readonly Type DbQueryVisitorType = typeof(DbContext).Assembly.GetType("System.Data.Entity.Internal.Linq.DbQueryVisitor")
+        ?? throw new InvalidOperationException("Unable to resolve 'DbQueryVisitor'.");
+
     /// <summary>
     /// Create a new rewrite query provider.
     /// </summary>
@@ -15,6 +19,15 @@ public class RewriteDbQueryProvider : RewriteQueryProvider, IDbAsyncQueryProvide
     public RewriteDbQueryProvider(IQueryProvider provider, ExpressionVisitor rewriter)
         : base(provider, rewriter)
     {
+    }
+
+    /// <inheritdoc />
+    protected override Expression Rewrite(Expression expression)
+    {
+        var rewritten = base.Rewrite(expression);
+        return Activator.CreateInstance(DbQueryVisitorType) is ExpressionVisitor dbQueryVisitor
+            ? dbQueryVisitor.Visit(rewritten)
+            : rewritten;
     }
 
     /// <inheritdoc />

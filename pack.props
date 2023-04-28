@@ -36,7 +36,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Added current README.md to package contents.</PackageReleaseNotes>
+    <PackageReleaseNotes>Improved query processing for Entity Framework 6 expressions.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
