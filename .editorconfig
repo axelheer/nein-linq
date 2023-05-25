@@ -8,6 +8,7 @@ root = true
 charset = utf-8
 
 # Indentation and spacing
+tab_width = 2
 indent_size = 2
 indent_style = space
 
@@ -18,6 +19,7 @@ insert_final_newline = true
 # Code files
 [*.{cs,cshtml,ps1,ts,js,sql}]
 
+tab_width = 4
 indent_size = 4
 
 # C# files
@@ -28,10 +30,6 @@ indent_size = 4
 # Organize usings
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true
-
-# Namespace options
-csharp_style_namespace_declarations = file_scoped:suggestion
-dotnet_style_namespace_match_folder = true:suggestion
 
 # this. and Me. preferences
 dotnet_style_qualification_for_event = false:suggestion
@@ -56,6 +54,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggest
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_explicit_tuple_names = true:suggestion
+dotnet_style_namespace_match_folder = true:suggestion
 dotnet_style_null_propagation = true:suggestion
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -63,6 +62,7 @@ dotnet_style_prefer_auto_properties = true:suggestion
 dotnet_style_prefer_compound_assignment = true:suggestion
 dotnet_style_prefer_conditional_expression_over_assignment = true:suggestion
 dotnet_style_prefer_conditional_expression_over_return = true:suggestion
+dotnet_style_prefer_foreach_explicit_cast_in_source = when_strongly_typed
 dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
@@ -77,6 +77,10 @@ dotnet_code_quality_unused_parameters = all:suggestion
 
 # Suppression preferences
 dotnet_remove_unnecessary_suppression_exclusions = none
+
+# New line preferences
+dotnet_style_allow_multiple_blank_lines_experimental = false:suggestion
+dotnet_style_allow_statement_immediately_after_block_experimental = false:suggestion
 
 #### C# Coding Conventions ####
 
@@ -98,6 +102,7 @@ csharp_style_expression_bodied_properties = true:suggestion
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_prefer_extended_property_pattern = true:suggestion
 csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_pattern_matching = true:suggestion
 csharp_style_prefer_switch_expression = true:suggestion
@@ -108,24 +113,39 @@ csharp_style_conditional_delegate_call = false:suggestion
 # Modifier preferences
 csharp_prefer_static_local_function = true:suggestion
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:silent
+csharp_style_prefer_readonly_struct = true:suggestion
 
 # Code-block preferences
 csharp_prefer_braces = when_multiline:suggestion
 csharp_prefer_simple_using_statement = false:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_prefer_method_group_conversion = true:suggestion
+csharp_style_prefer_top_level_statements = false:suggestion
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_deconstructed_variable_declaration = true:suggestion
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
 csharp_style_inlined_variable_declaration = true:suggestion
-csharp_style_pattern_local_over_anonymous_function = true:suggestion
 csharp_style_prefer_index_operator = true:suggestion
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
+csharp_style_prefer_null_check_over_type_check = true:suggestion
 csharp_style_prefer_range_operator = true:suggestion
+csharp_style_prefer_tuple_swap = true:suggestion
+csharp_style_prefer_utf8_string_literals = true:suggestion
 csharp_style_throw_expression = true:suggestion
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
 
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace:suggestion
+
+# New line preferences
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false:suggestion
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false:suggestion
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false:suggestion
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:suggestion
+csharp_style_allow_embedded_statements_on_same_line_experimental = false:suggestion
 
 #### C# Formatting Rules ####
 
