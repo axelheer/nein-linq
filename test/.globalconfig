@@ -1,4 +1,4 @@
-[*.cs]
+is_global = true
 
 # Identifiers should not contain underscores
 dotnet_diagnostic.CA1707.severity = none
