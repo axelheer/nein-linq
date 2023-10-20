@@ -3,7 +3,7 @@ using Xunit;
 
 namespace NeinLinq.Tests;
 
-public class EntityFrameworkFakeTest
+public class EntityFrameworkCoreFakeTest
 {
     [Fact]
     public async Task ToListAsync_Throws()
