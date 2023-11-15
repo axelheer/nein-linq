@@ -1,0 +1,7 @@
+is_global = true
+
+# Use 'ArgumentNullException.ThrowIfNull' instead
+dotnet_diagnostic.CA1510.severity = none
+
+#  Change return type of method
+dotnet_diagnostic.CA1859.severity = none

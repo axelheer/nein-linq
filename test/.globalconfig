@@ -9,5 +9,11 @@ dotnet_diagnostic.CA1812.severity = none
 # Avoid unsealed internal classes
 dotnet_diagnostic.CA1852.severity = none
 
+#  Change return type of method
+dotnet_diagnostic.CA1859.severity = none
+
+#  Prefer 'static readonly' fields
+dotnet_diagnostic.CA1861.severity = none
+
 # Do not directly await a Task
 dotnet_diagnostic.CA2007.severity = none
