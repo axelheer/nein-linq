@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.88
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62384529-4A89-45AA-9241-6C41D736333C}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,24 +10,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC57719B-6A66-4F54-B935-C206C91DA09D}"
+	ProjectSection(SolutionItems) = preProject
+		src\.globalconfig = src\.globalconfig
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq", "src\NeinLinq\NeinLinq.csproj", "{620F44CA-BD35-43C4-B449-B12C87942FE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq", "src\NeinLinq\NeinLinq.csproj", "{620F44CA-BD35-43C4-B449-B12C87942FE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.Async", "src\NeinLinq.Async\NeinLinq.Async.csproj", "{8A2507C3-E583-432C-8613-E673DE93E799}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.Async", "src\NeinLinq.Async\NeinLinq.Async.csproj", "{8A2507C3-E583-432C-8613-E673DE93E799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.EntityFramework", "src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj", "{34E61C0E-4109-426C-B7AE-B7024A815DF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.EntityFramework", "src\NeinLinq.EntityFramework\NeinLinq.EntityFramework.csproj", "{34E61C0E-4109-426C-B7AE-B7024A815DF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.EntityFrameworkCore", "src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj", "{8A92E5D9-60E5-4683-802F-6745EF459ECF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.EntityFrameworkCore", "src\NeinLinq.EntityFrameworkCore\NeinLinq.EntityFrameworkCore.csproj", "{8A92E5D9-60E5-4683-802F-6745EF459ECF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F79B7C9C-7883-4D8C-AF41-1E155CAF01A9}"
+	ProjectSection(SolutionItems) = preProject
+		test\.globalconfig = test\.globalconfig
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.Tests", "test\NeinLinq.Tests\NeinLinq.Tests.csproj", "{9D6EE79A-734A-4212-A802-1CA2D9746C82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.Tests", "test\NeinLinq.Tests\NeinLinq.Tests.csproj", "{9D6EE79A-734A-4212-A802-1CA2D9746C82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.Async.Tests", "test\NeinLinq.Async.Tests\NeinLinq.Async.Tests.csproj", "{95AE475D-3FCD-477E-AFCE-18B4A61E0290}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.Async.Tests", "test\NeinLinq.Async.Tests\NeinLinq.Async.Tests.csproj", "{95AE475D-3FCD-477E-AFCE-18B4A61E0290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.EntityFramework.Tests", "test\NeinLinq.EntityFramework.Tests\NeinLinq.EntityFramework.Tests.csproj", "{E5C860D8-5879-4291-9C5A-D415982D4EB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.EntityFramework.Tests", "test\NeinLinq.EntityFramework.Tests\NeinLinq.EntityFramework.Tests.csproj", "{E5C860D8-5879-4291-9C5A-D415982D4EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinLinq.EntityFrameworkCore.Tests", "test\NeinLinq.EntityFrameworkCore.Tests\NeinLinq.EntityFrameworkCore.Tests.csproj", "{DA287DB2-E87C-4EDB-A070-F695B2038E7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeinLinq.EntityFrameworkCore.Tests", "test\NeinLinq.EntityFrameworkCore.Tests\NeinLinq.EntityFrameworkCore.Tests.csproj", "{DA287DB2-E87C-4EDB-A070-F695B2038E7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

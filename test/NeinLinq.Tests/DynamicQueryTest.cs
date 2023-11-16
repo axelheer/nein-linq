@@ -1,6 +1,8 @@
 using System.Globalization;
 using Xunit;
 
+#pragma warning disable CA1861
+
 namespace NeinLinq.Tests;
 
 [CLSCompliant(false)]
@@ -73,9 +75,9 @@ public class DynamicQueryTest
     {
         var predicate = DynamicQuery.CreatePredicate<Model>("Name", "Contains", "b");
 
-        var result = CreateQuery().Where(predicate).Select(d => d.Id).ToArray();
+        var result = CreateQuery().Where(predicate).Select(d => d.Id).ToList();
 
-        Assert.Equal(new[] { 2, 5, 8 }, result);
+        Assert.Equal([2, 5, 8], result);
     }
 
     [Fact]
@@ -125,16 +127,16 @@ public class DynamicQueryTest
     {
         var data = new[]
         {
-                new Model { Id = 1, Name = "aaaa", Number = 11.11m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Undefined, OneTwoMaybe = OneTwo.Two },
-                new Model { Id = 2, Name = "bbbb", Number = 22.22m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Undefined, OneTwoMaybe = OneTwo.Two},
-                new Model { Id = 3, Name = "cccc", Number = 33.33m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Undefined, OneTwoMaybe = null},
-                new Model { Id = 4, Name = "aaa", Number = 111.111m, Reference = Guid.NewGuid(), OneTwo = OneTwo.One, OneTwoMaybe = OneTwo.Undefined },
-                new Model { Id = 5, Name = "bbb", Number = 222.222m, Reference = Guid.NewGuid(), OneTwo = OneTwo.One, OneTwoMaybe = OneTwo.Undefined },
-                new Model { Id = 6, Name = "ccc", Number = 333.333m, Reference = Guid.NewGuid(), OneTwo = OneTwo.One, OneTwoMaybe = null },
-                new Model { Id = 7, Name = "aa", Number = 1111.1111m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Two, OneTwoMaybe = OneTwo.One},
-                new Model { Id = 8, Name = "bb", Number = 2222.2222m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Two, OneTwoMaybe = OneTwo.One },
-                new Model { Id = 9, Name = "cc", Number = 3333.3333m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Two, OneTwoMaybe = null }
-            };
+            new Model { Id = 1, Name = "aaaa", Number = 11.11m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Undefined, OneTwoMaybe = OneTwo.Two },
+            new Model { Id = 2, Name = "bbbb", Number = 22.22m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Undefined, OneTwoMaybe = OneTwo.Two},
+            new Model { Id = 3, Name = "cccc", Number = 33.33m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Undefined, OneTwoMaybe = null},
+            new Model { Id = 4, Name = "aaa", Number = 111.111m, Reference = Guid.NewGuid(), OneTwo = OneTwo.One, OneTwoMaybe = OneTwo.Undefined },
+            new Model { Id = 5, Name = "bbb", Number = 222.222m, Reference = Guid.NewGuid(), OneTwo = OneTwo.One, OneTwoMaybe = OneTwo.Undefined },
+            new Model { Id = 6, Name = "ccc", Number = 333.333m, Reference = Guid.NewGuid(), OneTwo = OneTwo.One, OneTwoMaybe = null },
+            new Model { Id = 7, Name = "aa", Number = 1111.1111m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Two, OneTwoMaybe = OneTwo.One},
+            new Model { Id = 8, Name = "bb", Number = 2222.2222m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Two, OneTwoMaybe = OneTwo.One },
+            new Model { Id = 9, Name = "cc", Number = 3333.3333m, Reference = Guid.NewGuid(), OneTwo = OneTwo.Two, OneTwoMaybe = null }
+        };
 
         return data.AsQueryable();
     }

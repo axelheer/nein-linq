@@ -73,7 +73,7 @@ public class EntityFrameworkFakeTest
         var query = CreateQuery().DbRewrite(rewriter);
 
         var result = await ((IDbAsyncQueryProvider)query.Provider).ExecuteAsync(
-            Expression.Call(typeof(Queryable), nameof(Queryable.Count), new[] { typeof(Model) }, query.Expression),
+            Expression.Call(typeof(Queryable), nameof(Queryable.Count), [typeof(Model)], query.Expression),
             default
         );
 
@@ -85,25 +85,25 @@ public class EntityFrameworkFakeTest
     {
         var data = new[]
         {
-                new Model
-                {
-                    Id = 1,
-                    Name = "Asdf",
-                    Number = 123.45f
-                },
-                new Model
-                {
-                    Id = 2,
-                    Name = "Qwer",
-                    Number = 67.89f
-                },
-                new Model
-                {
-                    Id = 3,
-                    Name = "Narf",
-                    Number = 3.14f
-                }
-            };
+            new Model
+            {
+                Id = 1,
+                Name = "Asdf",
+                Number = 123.45f
+            },
+            new Model
+            {
+                Id = 2,
+                Name = "Qwer",
+                Number = 67.89f
+            },
+            new Model
+            {
+                Id = 3,
+                Name = "Narf",
+                Number = 3.14f
+            }
+        };
 
         return data.AsQueryable();
     }

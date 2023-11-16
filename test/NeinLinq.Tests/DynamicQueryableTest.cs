@@ -1,7 +1,7 @@
 using System.Globalization;
 using Xunit;
 
-#pragma warning disable CA1305
+#pragma warning disable CA1305, CA1861
 
 namespace NeinLinq.Tests;
 
@@ -147,17 +147,17 @@ public class DynamicQueryableTest
     [Fact]
     public void UntypedMethodWhere_Compares()
     {
-        var actual = CreateQuery<IQueryable>().Where("Name", "Contains", "b").Cast<Model>().Select(d => d.Id).ToArray();
+        var actual = CreateQuery<IQueryable>().Where("Name", "Contains", "b").Cast<Model>().Select(d => d.Id).ToList();
 
-        Assert.Equal(new[] { 2, 5, 8 }, actual);
+        Assert.Equal([2, 5, 8], actual);
     }
 
     [Fact]
     public void TypedMethodWhere_Compares()
     {
-        var actual = CreateQuery<IQueryable<Model>>().Where("Name", "Contains", "b").Select(d => d.Id).ToArray();
+        var actual = CreateQuery<IQueryable<Model>>().Where("Name", "Contains", "b").Select(d => d.Id).ToList();
 
-        Assert.Equal(new[] { 2, 5, 8 }, actual);
+        Assert.Equal([2, 5, 8], actual);
     }
 
     [Fact]
@@ -230,11 +230,11 @@ public class DynamicQueryableTest
         var one = CreateQuery<IQueryable>().OrderBy("Name.Length").ThenBy("Name", true);
         var two = CreateQuery<IQueryable>().OrderBy("Name.Length", true).ThenBy("Name");
 
-        var oneResult = one.Cast<Model>().Select(d => d.Id).ToArray();
-        var twoResult = two.Cast<Model>().Select(d => d.Id).ToArray();
+        var oneResult = one.Cast<Model>().Select(d => d.Id).ToList();
+        var twoResult = two.Cast<Model>().Select(d => d.Id).ToList();
 
-        Assert.Equal(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 }, oneResult);
-        Assert.Equal(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, twoResult);
+        Assert.Equal([9, 8, 7, 6, 5, 4, 3, 2, 1], oneResult);
+        Assert.Equal([1, 2, 3, 4, 5, 6, 7, 8, 9], twoResult);
     }
 
     [Fact]
@@ -243,27 +243,27 @@ public class DynamicQueryableTest
         var one = CreateQuery<IQueryable<Model>>().OrderBy("Name.Length").ThenBy("Name", true);
         var two = CreateQuery<IQueryable<Model>>().OrderBy("Name.Length", true).ThenBy("Name");
 
-        var oneResult = one.Select(d => d.Id).ToArray();
-        var twoResult = two.Select(d => d.Id).ToArray();
+        var oneResult = one.Select(d => d.Id).ToList();
+        var twoResult = two.Select(d => d.Id).ToList();
 
-        Assert.Equal(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 }, oneResult);
-        Assert.Equal(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, twoResult);
+        Assert.Equal([9, 8, 7, 6, 5, 4, 3, 2, 1], oneResult);
+        Assert.Equal([1, 2, 3, 4, 5, 6, 7, 8, 9], twoResult);
     }
 
     private static T CreateQuery<T>()
     {
         var data = new[]
         {
-                new Model { Id = 1, Name = "aaaa", Number = 11.11m },
-                new Model { Id = 2, Name = "bbbb", Number = 22.22m },
-                new Model { Id = 3, Name = "cccc", Number = 33.33m },
-                new Model { Id = 4, Name = "aaa", Number = 111.111m },
-                new Model { Id = 5, Name = "bbb", Number = 222.222m },
-                new Model { Id = 6, Name = "ccc", Number = 333.333m },
-                new Model { Id = 7, Name = "aa", Number = 1111.1111m },
-                new Model { Id = 8, Name = "bb", Number = 2222.2222m },
-                new Model { Id = 9, Name = "cc", Number = 3333.3333m }
-            };
+            new Model { Id = 1, Name = "aaaa", Number = 11.11m },
+            new Model { Id = 2, Name = "bbbb", Number = 22.22m },
+            new Model { Id = 3, Name = "cccc", Number = 33.33m },
+            new Model { Id = 4, Name = "aaa", Number = 111.111m },
+            new Model { Id = 5, Name = "bbb", Number = 222.222m },
+            new Model { Id = 6, Name = "ccc", Number = 333.333m },
+            new Model { Id = 7, Name = "aa", Number = 1111.1111m },
+            new Model { Id = 8, Name = "bb", Number = 2222.2222m },
+            new Model { Id = 9, Name = "cc", Number = 3333.3333m }
+        };
 
         return (T)data.AsQueryable();
     }

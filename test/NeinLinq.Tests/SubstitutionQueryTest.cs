@@ -28,8 +28,8 @@ public class SubstitutionQueryTest
     {
         var items = new[]
         {
-                new Model()
-            };
+            new Model()
+        };
 
         return items.AsQueryable();
     }

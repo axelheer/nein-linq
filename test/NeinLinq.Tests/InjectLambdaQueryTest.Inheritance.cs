@@ -25,7 +25,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -133,7 +133,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -193,16 +193,19 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
     public void Query_WithPrivateBase_Injects()
     {
         FunctionsBase functions = new Functions(2);
+
         var query = functions.CallVelocityWithPrivateBase(CreateQuery()).ToInjectable();
+
         var result = query.ToList();
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -214,7 +217,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -226,7 +229,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -238,7 +241,7 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -250,17 +253,17 @@ public class InjectLambdaQueryTest_Inheritance
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     private static IQueryable<Model> CreateQuery()
     {
         var data = new[]
         {
-                new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
-                new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
-                new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
-            };
+            new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
+            new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
+            new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
+        };
 
         return data.AsQueryable();
     }
@@ -357,12 +360,13 @@ public class InjectLambdaQueryTest_Inheritance
         [InjectLambda]
         public double VelocityWithAbstractSibling(Model value)
             => throw new NotSupportedException($"Unable to process {value.Name}.");
-        public IQueryable<double> CallVelocityWithPrivateBase(IQueryable<Model> query) =>
-            query.Select(m => VelocityWithPrivateBase(m));
+
+        public IQueryable<double> CallVelocityWithPrivateBase(IQueryable<Model> query)
+            => query.Select(m => VelocityWithPrivateBase(m));
 
         [InjectLambda]
-        private double VelocityWithPrivateBase(Model value) =>
-            throw new NotSupportedException($"Unable to process {value.Name}.");
+        private double VelocityWithPrivateBase(Model value)
+            => throw new NotSupportedException($"Unable to process {value.Name}.");
 
         public abstract Expression<Func<Model, double>> VelocityWithAbstractSibling();
 
@@ -434,8 +438,8 @@ public class InjectLambdaQueryTest_Inheritance
 
         public override Expression<Func<Model, double>> VelocityWithAbstractSibling()
             => v => Math.Round(v.Distance / v.Time, digits);
-        public Expression<Func<Model, double>> VelocityWithPrivateBase() =>
-            v => Math.Round(v.Distance / v.Time, digits);
+        public Expression<Func<Model, double>> VelocityWithPrivateBase()
+            => v => Math.Round(v.Distance / v.Time, digits);
 
         public override Expression<Func<Model, double>> VelocityWithVirtualSibling()
             => v => Math.Round(v.Distance / v.Time, digits);

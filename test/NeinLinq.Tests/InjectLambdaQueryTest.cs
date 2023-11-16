@@ -30,10 +30,10 @@ public class InjectLambdaQueryTest
     {
         var data = new[]
         {
-                new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
-                new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
-                new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
-            };
+            new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
+            new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
+            new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
+        };
 
         return data.AsQueryable();
     }

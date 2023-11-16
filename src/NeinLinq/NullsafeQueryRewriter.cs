@@ -101,7 +101,7 @@ public class NullsafeQueryRewriter : ExpressionVisitor
             : null;
     }
 
-    private static Expression? CollectionFallback(Type definition, Type type)
+    private static UnaryExpression? CollectionFallback(Type definition, Type type)
     {
         var collection = definition.MakeGenericType(type.GetGenericArguments());
 

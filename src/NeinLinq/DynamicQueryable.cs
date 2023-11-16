@@ -217,11 +217,11 @@ public static class DynamicQueryable
             CreateOrderClause(target, query.Expression, selector, false, descending));
     }
 
-    private static Expression CreateOrderClause(ParameterExpression target,
-                                                Expression expression,
-                                                string selector,
-                                                bool initial,
-                                                bool descending)
+    private static MethodCallExpression CreateOrderClause(ParameterExpression target,
+                                                          Expression expression,
+                                                          string selector,
+                                                          bool initial,
+                                                          bool descending)
     {
         var keySelector = Expression.Lambda(DynamicExpression.CreateMemberAccess(target, selector), target);
 
@@ -230,17 +230,17 @@ public static class DynamicQueryable
                              : (descending ? nameof(Queryable.ThenByDescending)
                                            : nameof(Queryable.ThenBy));
 
-        return Expression.Call(typeof(Queryable), method, new[] { target.Type, keySelector.ReturnType },
+        return Expression.Call(typeof(Queryable), method, [target.Type, keySelector.ReturnType],
             expression, Expression.Quote(keySelector));
     }
 
-    private static Expression CreateWhereClause(ParameterExpression target,
-                                                Expression expression,
-                                                Expression comparison)
+    private static MethodCallExpression CreateWhereClause(ParameterExpression target,
+                                                          Expression expression,
+                                                          Expression comparison)
     {
         var predicate = Expression.Lambda(comparison, target);
 
-        return Expression.Call(typeof(Queryable), nameof(Queryable.Where), new[] { target.Type },
+        return Expression.Call(typeof(Queryable), nameof(Queryable.Where), [target.Type],
             expression, Expression.Quote(predicate));
     }
 }

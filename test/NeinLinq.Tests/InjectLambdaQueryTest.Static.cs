@@ -21,7 +21,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -151,7 +151,7 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     [Fact]
@@ -161,17 +161,17 @@ public class InjectLambdaQueryTest_Static
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .125 }, result);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     private static IQueryable<Model> CreateQuery()
     {
         var data = new[]
         {
-                new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
-                new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
-                new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
-            };
+            new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
+            new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
+            new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
+        };
 
         return data.AsQueryable();
     }
@@ -243,7 +243,7 @@ public class InjectLambdaQueryTest_Static
             => throw new NotSupportedException($"Unable to process {value.Name}.");
 
         public static IEnumerable<Func<Model, double>> VelocityWithoutLambda()
-            => new Func<Model, double>[] { v => v.Distance / v.Time };
+            => [v => v.Distance / v.Time];
 
         [InjectLambda]
         public static double VelocityWithoutExpression(Model value)

@@ -57,25 +57,25 @@ public class EntityFrameworkCoreFakeTest
     {
         var data = new[]
         {
-                new Model
-                {
-                    Id = 1,
-                    Name = "Asdf",
-                    Number = 123.45f
-                },
-                new Model
-                {
-                    Id = 2,
-                    Name = "Qwer",
-                    Number = 67.89f
-                },
-                new Model
-                {
-                    Id = 3,
-                    Name = "Narf",
-                    Number = 3.14f
-                }
-            };
+            new Model
+            {
+                Id = 1,
+                Name = "Asdf",
+                Number = 123.45f
+            },
+            new Model
+            {
+                Id = 2,
+                Name = "Qwer",
+                Number = 67.89f
+            },
+            new Model
+            {
+                Id = 3,
+                Name = "Narf",
+                Number = 3.14f
+            }
+        };
 
         return data.AsQueryable();
     }

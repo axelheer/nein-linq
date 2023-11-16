@@ -29,7 +29,7 @@ internal sealed class InjectLambdaSignature
             throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
 
         genericArguments = Type.EmptyTypes;
-        parameterTypes = new[] { property.DeclaringType };
+        parameterTypes = [property.DeclaringType];
         returnType = property.PropertyType;
         isStatic = true;
     }

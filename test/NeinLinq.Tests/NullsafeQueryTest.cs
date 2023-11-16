@@ -68,10 +68,11 @@ public class NullsafeQueryTest
     public void Query_ChainedMethodCall_SelectsDefault()
     {
         var query = from a in CreateQuery().ToNullsafe()
+                    let firstSpace = a.SomeText.IndexOf(' ')
                     orderby a.SomeNumeric
                     select new ModelView
                     {
-                        FirstWord = a.SomeText.Split(new[] { ' ' }).FirstOrDefault(),
+                        FirstWord = firstSpace != -1 ? a.SomeText.Substring(firstSpace) : a.SomeText,
                         CharacterCount = a.SomeText.ToCharArray().GetLength(0)
                     };
 
@@ -108,7 +109,7 @@ public class NullsafeQueryTest
         Assert.Collection(result,
             r => Assert.Empty(r.Other),
             r => Assert.Empty(r.Other),
-            r => Assert.Equal(new[] { 1, 3, 6 }, r.Other),
+            r => Assert.Equal([1, 3, 6], r.Other),
             r => Assert.Empty(r.Other),
             r => Assert.Empty(r.Other));
     }
@@ -130,7 +131,7 @@ public class NullsafeQueryTest
             r => Assert.Empty(r.More),
             r => Assert.Empty(r.More),
             r => Assert.Empty(r.More),
-            r => Assert.Equal(new[] { 1, 1, 5, 8 }, r.More),
+            r => Assert.Equal([1, 1, 5, 8], r.More),
             r => Assert.Empty(r.More));
     }
 
@@ -152,7 +153,7 @@ public class NullsafeQueryTest
             r => Assert.Empty(r.Lot),
             r => Assert.Empty(r.Lot),
             r => Assert.Empty(r.Lot),
-            r => Assert.Equal(new[] { 1, 1, 4, 7 }, r.Lot));
+            r => Assert.Equal([1, 1, 4, 7], r.Lot));
     }
 
     [Fact]
@@ -185,7 +186,7 @@ public class NullsafeQueryTest
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 4 }, result);
+        Assert.Equal([4], result);
     }
 
     [Fact]
@@ -249,53 +250,53 @@ public class NullsafeQueryTest
     {
         var data = new[]
         {
-                new Model
+            new Model
+            {
+                SomeNumeric = 7,
+                SomeText = "Narf",
+                OneDay = new DateTime(1977, 05, 25),
+                SomeOther = new Model { SomeNumeric = 42 },
+                DaNullable = 2017
+            },
+            new Model
+            {
+                SomeNumeric = 1138,
+                SomeText = "What is thy bidding?",
+                OneDay = new DateTime(1980, 05, 21),
+                SomeOthers = new[]
                 {
-                    SomeNumeric = 7,
-                    SomeText = "Narf",
-                    OneDay = new DateTime(1977, 05, 25),
-                    SomeOther = new Model { SomeNumeric = 42 },
-                    DaNullable = 2017
-                },
-                new Model
+                    null!,
+                    new Model { OneDay = new DateTime(2000, 3, 1) },
+                    new Model { OneDay = new DateTime(2000, 6, 1) }
+                }
+            },
+            new Model
+            {
+                SomeNumeric = 123456,
+                OneDay = new DateTime(1983, 05, 25),
+                MoreOthers = new[]
                 {
-                    SomeNumeric = 1138,
-                    SomeText = "What is thy bidding?",
-                    OneDay = new DateTime(1980, 05, 21),
-                    SomeOthers = new[]
-                    {
-                        null!,
-                        new Model { OneDay = new DateTime(2000, 3, 1) },
-                        new Model { OneDay = new DateTime(2000, 6, 1) }
-                    }
-                },
-                new Model
+                    null!,
+                    new Model(),
+                    new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 5) } },
+                    new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 8) } }
+                }
+            },
+            new Model
+            {
+                SomeNumeric = 654321,
+                SomeText = "",
+                OneDay = new DateTime(2015, 12, 18),
+                EvenLotMoreOthers = new HashSet<Model>
                 {
-                    SomeNumeric = 123456,
-                    OneDay = new DateTime(1983, 05, 25),
-                    MoreOthers = new[]
-                    {
-                        null!,
-                        new Model(),
-                        new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 5) } },
-                        new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 8) } }
-                    }
-                },
-                new Model
-                {
-                    SomeNumeric = 654321,
-                    SomeText = "",
-                    OneDay = new DateTime(2015, 12, 18),
-                    EvenLotMoreOthers = new HashSet<Model>
-                    {
-                        null!,
-                        new Model(),
-                        new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 4) } },
-                        new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 7) } }
-                    }
-                },
-                null!
-            };
+                    null!,
+                    new Model(),
+                    new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 4) } },
+                    new Model { SomeOther = new Model { OneDay = new DateTime(2000, 1, 7) } }
+                }
+            },
+            null!
+        };
 
         return data.AsQueryable();
     }

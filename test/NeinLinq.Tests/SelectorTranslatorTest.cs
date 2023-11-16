@@ -497,31 +497,31 @@ public class SelectorTranslatorTest
     {
         var d = new[]
         {
-                new Model { Id = 1, Name = "Asdf" },
-                new Model { Id = 2, Name = "Narf" },
-                new Model { Id = 3, Name = "Qwer" }
-            };
+            new Model { Id = 1, Name = "Asdf" },
+            new Model { Id = 2, Name = "Narf" },
+            new Model { Id = 3, Name = "Qwer" }
+        };
 
         var s = new[]
         {
-                new SpecialModel { Id = 4, Name = "Asdf", Description = "Asdf" },
-                new SpecialModel { Id = 5, Name = "Narf", Description = "Narf" },
-                new SpecialModel { Id = 6, Name = "Qwer", Description = "Qwer" }
-            };
+            new SpecialModel { Id = 4, Name = "Asdf", Description = "Asdf" },
+            new SpecialModel { Id = 5, Name = "Narf", Description = "Narf" },
+            new SpecialModel { Id = 6, Name = "Qwer", Description = "Qwer" }
+        };
 
         var p = new[]
         {
-                new ParentModel { Id = 7, Name = "Asdf" },
-                new ParentModel { Id = 8, Name = "Narf" },
-                new ParentModel { Id = 9, Name = "Qwer" }
-            };
+            new ParentModel { Id = 7, Name = "Asdf" },
+            new ParentModel { Id = 8, Name = "Narf" },
+            new ParentModel { Id = 9, Name = "Qwer" }
+        };
 
         var c = new[]
         {
-                new ChildModel { Id = 10, Name = "Asdf", Parent = p[1] },
-                new ChildModel { Id = 11, Name = "Narf", Parent = p[2] },
-                new ChildModel { Id = 12, Name = "Qwer", Parent = p[0] }
-            };
+            new ChildModel { Id = 10, Name = "Asdf", Parent = p[1] },
+            new ChildModel { Id = 11, Name = "Narf", Parent = p[2] },
+            new ChildModel { Id = 12, Name = "Qwer", Parent = p[0] }
+        };
 
         p[0].Children = new[] { c[0], c[1] };
         p[1].Children = new[] { c[1], c[2] };

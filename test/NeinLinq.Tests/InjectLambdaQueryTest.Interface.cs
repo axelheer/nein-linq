@@ -25,7 +25,7 @@ public class InjectLambdaQueryTest_Interface
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class InjectLambdaQueryTest_Interface
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class InjectLambdaQueryTest_Interface
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -133,7 +133,7 @@ public class InjectLambdaQueryTest_Interface
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public class InjectLambdaQueryTest_Interface
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     [Fact]
@@ -169,17 +169,17 @@ public class InjectLambdaQueryTest_Interface
 
         var result = query.ToList();
 
-        Assert.Equal(new[] { 200.0, .0, .12 }, result);
+        Assert.Equal([200.0, .0, .12], result);
     }
 
     private static IQueryable<Model> CreateQuery()
     {
         var data = new[]
         {
-                new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
-                new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
-                new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
-            };
+            new Model { Id = 1, Name = "Asdf", Distance = 66, Time = .33 },
+            new Model { Id = 2, Name = "Narf", Distance = 0, Time = 3.14 },
+            new Model { Id = 3, Name = "Qwer", Distance = 8, Time = 64 }
+        };
 
         return data.AsQueryable();
     }

@@ -113,11 +113,11 @@ public static class DynamicAsyncQueryable
             CreateAsyncOrderClause(target, query.Expression, selector, false, descending));
     }
 
-    private static Expression CreateAsyncOrderClause(ParameterExpression target,
-                                                     Expression expression,
-                                                     string selector,
-                                                     bool initial,
-                                                     bool descending)
+    private static MethodCallExpression CreateAsyncOrderClause(ParameterExpression target,
+                                                               Expression expression,
+                                                               string selector,
+                                                               bool initial,
+                                                               bool descending)
     {
         var keySelector = Expression.Lambda(DynamicExpression.CreateMemberAccess(target, selector), target);
 
@@ -126,17 +126,17 @@ public static class DynamicAsyncQueryable
                              : (descending ? nameof(AsyncQueryable.ThenByDescending)
                                            : nameof(AsyncQueryable.ThenBy));
 
-        return Expression.Call(typeof(AsyncQueryable), method, new[] { target.Type, keySelector.ReturnType },
+        return Expression.Call(typeof(AsyncQueryable), method, [target.Type, keySelector.ReturnType],
             expression, Expression.Quote(keySelector));
     }
 
-    private static Expression CreateAsyncWhereClause(ParameterExpression target,
-                                                     Expression expression,
-                                                     Expression comparison)
+    private static MethodCallExpression CreateAsyncWhereClause(ParameterExpression target,
+                                                               Expression expression,
+                                                               Expression comparison)
     {
         var predicate = Expression.Lambda(comparison, target);
 
-        return Expression.Call(typeof(AsyncQueryable), nameof(AsyncQueryable.Where), new[] { target.Type },
+        return Expression.Call(typeof(AsyncQueryable), nameof(AsyncQueryable.Where), [target.Type],
             expression, Expression.Quote(predicate));
     }
 }

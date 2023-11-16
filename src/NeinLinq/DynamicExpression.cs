@@ -117,11 +117,11 @@ public static class DynamicExpression
 
         var expression = (Expression)target;
 
-        var ordinalParse = underlyingType.GetMethod("Parse", new[] { typeof(string) });
+        var ordinalParse = underlyingType.GetMethod("Parse", [typeof(string)]);
         if (ordinalParse is not null)
             expression = Expression.Call(ordinalParse, target);
 
-        var cultureParse = underlyingType.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+        var cultureParse = underlyingType.GetMethod("Parse", [typeof(string), typeof(IFormatProvider)]);
         if (cultureParse is not null)
             expression = Expression.Call(cultureParse, target, format);
 
