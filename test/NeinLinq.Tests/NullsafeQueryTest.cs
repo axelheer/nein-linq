@@ -72,7 +72,7 @@ public class NullsafeQueryTest
                     orderby a.SomeNumeric
                     select new ModelView
                     {
-                        FirstWord = firstSpace != -1 ? a.SomeText.Substring(firstSpace) : a.SomeText,
+                        FirstWord = firstSpace != -1 ? a.SomeText.Remove(firstSpace) : a.SomeText,
                         CharacterCount = a.SomeText.ToCharArray().GetLength(0)
                     };
 

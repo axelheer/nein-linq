@@ -250,7 +250,7 @@ public class InjectLambdaQueryTest_Sealed
             => throw new NotSupportedException($"Unable to process {value.Name}.");
 
         public IEnumerable<Func<Model, double>> VelocityWithoutLambda()
-            => new Func<Model, double>[] { v => Math.Round(v.Distance / v.Time, digits) };
+            => [v => Math.Round(v.Distance / v.Time, digits)];
 
         [InjectLambda]
         public double VelocityWithoutExpression(Model value)

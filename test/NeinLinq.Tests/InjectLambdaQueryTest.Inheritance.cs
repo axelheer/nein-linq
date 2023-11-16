@@ -409,7 +409,7 @@ public class InjectLambdaQueryTest_Inheritance
             => digits == 0 ? _ => 0 : null!;
 
         public IEnumerable<Func<Model, double>> VelocityWithoutLambda()
-            => new Func<Model, double>[] { v => Math.Round(v.Distance / v.Time, digits) };
+            => [v => Math.Round(v.Distance / v.Time, digits)];
 
         public Func<Model, double> VelocityWithoutExpression()
             => v => Math.Round(v.Distance / v.Time, digits);
