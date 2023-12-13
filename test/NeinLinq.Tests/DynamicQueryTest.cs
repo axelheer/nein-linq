@@ -114,7 +114,7 @@ public class DynamicQueryTest
     [InlineData("1", new[] { 7, 8 })]
     [InlineData("2", new[] { 1, 2 })]
     [InlineData(null, new[] { 3, 6, 9 })]
-    public void OperatorCreatePredicate_NullableEnumValue_Compares(string value, int[] expectedResult)
+    public void OperatorCreatePredicate_NullableEnumValue_Compares(string? value, int[] expectedResult)
     {
         var predicate = DynamicQuery.CreatePredicate<Model>(nameof(Model.OneTwoMaybe), DynamicCompare.Equal, value);
 
