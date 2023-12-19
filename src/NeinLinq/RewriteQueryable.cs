@@ -71,6 +71,12 @@ public class RewriteQueryable<T> : RewriteQueryable, IOrderedQueryable<T>
     {
     }
 
+    /// <summary>
+    /// Gets a debug representation of the underlying query.
+    /// </summary>
+    public string? DebugString
+        => Provider.RewriteQuery<T>(Expression).ToString();
+
     /// <inheritdoc />
     public new IEnumerator<T> GetEnumerator()
         => Provider.RewriteQuery<T>(Expression)

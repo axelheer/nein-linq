@@ -8,6 +8,17 @@ namespace NeinLinq.Tests;
 public class EntityFrameworkRealTest
 {
     [Fact]
+    public void DebugString_ShowsSql()
+    {
+        using var context = CreateContext();
+        var query = context.Models.ToDbInjectable();
+
+        var actual = ((RewriteQueryable<Model>)query).DebugString;
+
+        Assert.Matches("SELECT", actual);
+    }
+
+    [Fact]
     public async Task AsNoTracking_MarksQuery()
     {
         using var context = CreateContext();
