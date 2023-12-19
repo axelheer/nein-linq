@@ -5,7 +5,7 @@ jobs:
     strategy:
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
-        framework: [ 'net7.0', 'net6.0', 'net8.0' ]
+        framework: [ 'net8.0', 'net6.0' ]
         include:
         - os: windows-latest
           framework: net48
@@ -19,7 +19,6 @@ jobs:
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
           8.0.x
     - name: Run tests (${{ matrix.framework }})
       run: dotnet test --configuration Release --framework ${{ matrix.framework }} --results-directory test-results --settings test.runsettings
@@ -38,7 +37,6 @@ jobs:
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
           8.0.x
     - name: Create packages (w/o version suffix)
       run: dotnet pack --configuration Release --include-symbols --property:PackageOutputPath=${{ runner.temp }}\pkg
