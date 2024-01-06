@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <Authors>Axel Heer</Authors>
-    <Copyright>Copyright © 2014-2023 Axel Heer</Copyright>
+    <Copyright>Copyright © 2014-2024 Axel Heer</Copyright>
     <Description>NeinLinq provides helpful extensions for using LINQ providers such as Entity Framework that support only a minor subset of .NET functions, reusing functions, rewriting queries, even making them null-safe, and building dynamic queries using translatable predicates and selectors.
 
 To support different LINQ implementations, the following flavours are available. Choose at least one.

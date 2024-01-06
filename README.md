@@ -242,7 +242,7 @@ Again, instead of placing `[InjectLambda]` on everything it's possible to add al
 Null-safe queries
 -----------------
 
-We are writing the year 2023 and still have to worry about null values.
+We are writing the year 2024 and still have to worry about null values.
 
 Howsoever, we got used to it and we are fine. But writing queries in C# loaded with null checks doesn't feel right, it just looks awful, the translated SQL even gets worse. A LINQ query just for SQL dbs can spare these null checks, a LINQ query just for in-memory calculations must include them. And a LINQ query for both has a problem (unit testing?), which *NeinLinq* tries to solve.
 
