@@ -1,8 +1,8 @@
 # User
 *.vs
+*.vscode
 *.suo
 *.user
-.DS_Store
 
 # Build
 bin/
