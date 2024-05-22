@@ -62,7 +62,50 @@ public class DynamicExpressionTest
         Assert.Equal("selector", selectorError.ParamName);
     }
 
+    [Fact]
+    public void RegisterConverter_NullArgument_Throws()
+    {
+        var type = typeof(CustomType);
+
+        Func<string, IFormatProvider?, object> converter = (value, _) => CustomType.Create(value);
+
+        var typeError = Assert.Throws<ArgumentNullException>(()
+            => DynamicExpression.RegisterConverter(null!, converter));
+        var converterError = Assert.Throws<ArgumentNullException>(()
+            => DynamicExpression.RegisterConverter(type, null!));
+
+        Assert.Equal("type", typeError.ParamName);
+        Assert.Equal("converter", converterError.ParamName);
+    }
+
+    [Fact]
+    public void RegisterConverter_ValidArguments_Works()
+    {
+        DynamicExpression.RegisterConverter(typeof(CustomType), (value, _) => CustomType.Create(value));
+
+        var predicate = DynamicQuery.CreatePredicate<Model>("Value", DynamicCompare.Equal, "narf");
+
+        var actual = Assert.IsType<CustomType>(
+            Assert.IsAssignableFrom<ConstantExpression>(
+                Assert.IsAssignableFrom<BinaryExpression>(
+                    predicate.Body)
+                .Right)
+            .Value)
+        .Value;
+
+        Assert.Equal("narf", actual);
+    }
+
+    private class CustomType
+    {
+        public string Value { get; private set; } = "";
+
+        public static CustomType Create(string value)
+            => new() { Value = value };
+    }
+
     private class Model
     {
+        public CustomType? Value { get; set; }
     }
 }

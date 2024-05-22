@@ -90,6 +90,21 @@ public static class DynamicExpression
         return selector.Split('.').Aggregate(target, Expression.PropertyOrField);
     }
 
+    /// <summary>
+    /// Registers a custom converter for any type.
+    /// </summary>
+    /// <param name="type">Tye type to convert.</param>
+    /// <param name="converter">The culture-specific converter.</param>
+    public static void RegisterConverter(Type type, Func<string, IFormatProvider?, object> converter)
+    {
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
+        if (converter is null)
+            throw new ArgumentNullException(nameof(converter));
+
+        Cache.Add(type, converter);
+    }
+
     private static Expression CreateConstant(ParameterExpression target,
                                              Expression selector,
                                              string? value,
