@@ -9,6 +9,20 @@ internal sealed class ObjectCache<TKey, TValue> : IDisposable
     private readonly ReaderWriterLockSlim cacheLock
         = new();
 
+    public void Add(TKey key, TValue value)
+    {
+        cacheLock.EnterWriteLock();
+
+        try
+        {
+            cache.Add(key, value);
+        }
+        finally
+        {
+            cacheLock.ExitWriteLock();
+        }
+    }
+
     public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
     {
         cacheLock.EnterReadLock();
