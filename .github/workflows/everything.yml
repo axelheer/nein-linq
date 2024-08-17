@@ -25,7 +25,7 @@ jobs:
     - name: Publish coverage
       uses: codecov/codecov-action@v4
       with:
-        file: test-results/*/coverage.opencover.xml
+        directory: ./test-results/
         token: ${{ secrets.CODECOV_TOKEN }}
   package:
     needs: test
