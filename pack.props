@@ -36,7 +36,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Added simple method for registering custom converters.</PackageReleaseNotes>
+    <PackageReleaseNotes>.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 

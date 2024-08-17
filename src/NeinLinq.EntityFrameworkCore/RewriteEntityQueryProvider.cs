@@ -2,15 +2,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Query;
 
-#if NETSTANDARD2_0
-
-using Microsoft.EntityFrameworkCore.Query.Internal;
-
-#endif
-
 namespace NeinLinq;
-
-#pragma warning disable EF1001
 
 /// <summary>
 /// Proxy for query provider.
@@ -67,5 +59,3 @@ public class RewriteEntityQueryProvider : RewriteQueryProvider, IAsyncQueryProvi
     private Task<TResult> ExecuteTask<TResult>(Expression expression)
         => Task.FromResult(Provider.Execute<TResult>(expression));
 }
-
-#pragma warning restore EF1001

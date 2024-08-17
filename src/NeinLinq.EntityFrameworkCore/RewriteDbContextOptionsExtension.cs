@@ -83,20 +83,11 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
         public override string LogFragment
             => string.Join(", ", Extension.rewriters.Select(r => $"Rewriter={r.GetType().FullName}"));
 
-#if NET6_0_OR_GREATER
-
         public override int GetServiceProviderHashCode()
             => 0;
 
         public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
             => true;
-
-#else
-
-        public override long GetServiceProviderHashCode()
-            => 0;
-
-#endif
 
         public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
         {

@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworks);net48</TargetFrameworks>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\NeinLinq.Async\NeinLinq.Async.csproj" />
   </ItemGroup>

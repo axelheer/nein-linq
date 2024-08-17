@@ -99,8 +99,6 @@ public class EntityFrameworkCoreExtensionTest
         Assert.Equal(1, query.Count());
     }
 
-#if NET6_0_OR_GREATER
-
     [Fact]
     public void Query_WithLambdaInjectionUsingWrongOrder_Throws()
     {
@@ -113,8 +111,6 @@ public class EntityFrameworkCoreExtensionTest
 
         _ = Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService<TestContext>());
     }
-
-#endif
 
     [Fact]
     public void Query_WithoutLambdaInjection_Throws()
