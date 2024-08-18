@@ -21,4 +21,24 @@ public class InjectLambdaAttributeTest
         Assert.Equal("target", targetMethodError.ParamName);
         Assert.Equal("method", methodTargetError.ParamName);
     }
+
+    [Fact]
+    public void SetAttributeProvider_NullProvider_Throws()
+    {
+        var error = Assert.Throws<ArgumentNullException>(() => InjectLambdaAttribute.SetAttributeProvider(null!));
+
+        Assert.Equal("provider", error.ParamName);
+    }
+
+    [Fact]
+    public void SetAttributeProvider_SetsProvider()
+    {
+        var oldProvider = InjectLambdaAttribute.Provider;
+
+        InjectLambdaAttributeProvider newProvider = mem => oldProvider(mem);
+
+        InjectLambdaAttribute.SetAttributeProvider(newProvider);
+
+        Assert.Equal(InjectLambdaAttribute.Provider, newProvider);
+    }
 }

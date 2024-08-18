@@ -20,7 +20,7 @@ internal sealed class InjectLambdaMetadata
 
     public static InjectLambdaMetadata Create(MethodInfo method)
     {
-        var metadata = InjectLambdaAttribute.GetCustomAttribute(method);
+        var metadata = InjectLambdaAttribute.Provider(method);
 
         var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
             => LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
@@ -30,8 +30,8 @@ internal sealed class InjectLambdaMetadata
 
     public static InjectLambdaMetadata Create(PropertyInfo property)
     {
-        var metadata = InjectLambdaAttribute.GetCustomAttribute(property)
-            ?? InjectLambdaAttribute.GetCustomAttribute(property.GetGetMethod(true)!);
+        var metadata = InjectLambdaAttribute.Provider(property)
+            ?? InjectLambdaAttribute.Provider(property.GetGetMethod(true)!);
 
         var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
             => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
@@ -102,7 +102,7 @@ internal sealed class InjectLambdaMetadata
         var concreteMethod = signature.FindMatch(targetType, method.Name, value!.Type)!;
 
         // configuration over convention, if any
-        var metadata = InjectLambdaAttribute.GetCustomAttribute(concreteMethod) ?? InjectLambdaAttribute.None;
+        var metadata = InjectLambdaAttribute.Provider(concreteMethod) ?? InjectLambdaAttribute.None;
 
         // retrieve validated factory method
         var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value.Type);
