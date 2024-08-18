@@ -8,8 +8,4 @@
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' != 'net40' ">
-    <DefineConstants>$(DefineConstants);ASYNC_INTERFACES</DefineConstants>
-  </PropertyGroup>
-
 </Project>
