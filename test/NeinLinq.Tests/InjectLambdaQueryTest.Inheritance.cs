@@ -256,6 +256,30 @@ public class InjectLambdaQueryTest_Inheritance
         Assert.Equal([200.0, .0, .12], result);
     }
 
+    [Fact]
+    public void Query_WithHiddenStaticSiblingViaBase_Injects()
+    {
+        FunctionsBase functions = new Functions(2);
+
+        var query = CreateQuery().ToInjectable().Select(m => functions.VelocityWithHiddenStaticSibling(m));
+
+        var result = query.ToList();
+
+        Assert.Equal([200, 0, 0.125], result);
+    }
+
+    [Fact]
+    public void Query_WithHiddenStaticSiblingViaDerived_Injects()
+    {
+        var functions = new Functions(2);
+
+        var query = CreateQuery().ToInjectable().Select(m => functions.VelocityWithHiddenStaticSibling(m));
+
+        var result = query.ToList();
+
+        Assert.Equal([200, 0, 0.125], result);
+    }
+
     private static IQueryable<Model> CreateQuery()
     {
         var data = new[]
@@ -380,6 +404,13 @@ public class InjectLambdaQueryTest_Inheritance
         [InjectLambda]
         public double VelocityWithCachedExpression(Model value)
             => throw new NotSupportedException($"Unable to process {value.Name}.");
+
+        [InjectLambda]
+        public double VelocityWithHiddenStaticSibling(Model value)
+           => throw new NotSupportedException($"Unable to process {value.Name}.");
+
+        public static Expression<Func<Model, double>> VelocityWithHiddenStaticSibling()
+            => throw new InvalidOperationException("Implementing sibling is missing.");
     }
 
     private class Functions : FunctionsBase
@@ -446,5 +477,8 @@ public class InjectLambdaQueryTest_Inheritance
 
         private CachedExpression<Func<Model, double>> VelocityWithCachedExpressionExpr { get; }
             = CachedExpression.From<Func<Model, double>>(v => Math.Round(v.Distance / v.Time, 2));
+
+        public new static Expression<Func<Model, double>> VelocityWithHiddenStaticSibling()
+            => v => v.Distance / v.Time;
     }
 }

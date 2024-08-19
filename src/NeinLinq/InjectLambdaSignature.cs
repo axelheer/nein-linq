@@ -47,8 +47,8 @@ internal sealed class InjectLambdaSignature
             factory = factory.MakeGenericMethod(genericArguments);
 
         // mixed static and non-static methods?
-        if (factory.IsStatic != isStatic)
-            throw FailFactory(target, factory.Name, $"{(isStatic ? "static" : "non-static")} implementation expected");
+        if (!factory.IsStatic && isStatic)
+            throw FailFactory(target, factory.Name, "static implementation expected");
 
         // method returns lambda expression?
         if (!IsLambdaExpression(factory.ReturnType))

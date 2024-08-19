@@ -15,15 +15,15 @@ public class InjectLambdaQueryTest
     }
 
     [Fact]
-    public void Query_InstanceToStatic_Throws()
+    public void Query_InstanceToStatic_DontThrow()
     {
         var functions = new MixedFunctions(1);
 
         var query = CreateQuery().ToInjectable(typeof(MixedFunctions)).Select(m => functions.VelocityInstanceToStatic(m));
 
-        var error = Assert.Throws<InvalidOperationException>(() => query.ToList());
+        var result = query.ToList();
 
-        Assert.Equal("Unable to retrieve lambda expression from NeinLinq.Tests.InjectLambdaQueryTest+MixedFunctions.VelocityInstanceToStatic: non-static implementation expected.", error.Message);
+        Assert.Equal([200.0, .0, .125], result);
     }
 
     private static IQueryable<Model> CreateQuery()
