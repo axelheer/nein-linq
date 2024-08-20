@@ -110,6 +110,22 @@ select ...
 
 This is an example of how we can abstract the `SqlFunctions` class of *Entity Framework* to use a (hopefully) nicer `Like` extension method within our query code -- `PatIndex` is likely used to simulate a SQL LIKE statement, why not make it so? We can actually implement the "ordinary" method with the help of regular expressions to run our code *without* touching `SqlFunctions` too...
 
+***New:***  with Version `7.0.0` NeinLinq now supports custom providers for the InjectLambdaAttribute. This feature allows you to define your own logic to determine which methods should be considered injectable without explicitly adding `[InjectLambda]` attribute. This is particularly useful when working with external libraries or code you can't modify directly:
+
+```csharp
+var oldProvider = InjectLambdaAttribute.Provider;
+
+InjectLambdaAttribute.SetAttributeProvider(memberInfo => 
+{
+    // Your custom logic here
+    if (memberInfo.Name.StartsWith("ExternalMethod"))
+    {
+        return new InjectLambdaAttribute(typoef(MyType), nameof(MyType.ExternalMethodExpression));
+    }
+    // fallback to standard provider
+    return oldProvider(memberInfo);
+});
+```
 Finally, let us look at this query using *Entity Framework* or the like:
 
 ```csharp

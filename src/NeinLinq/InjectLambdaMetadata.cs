@@ -107,8 +107,11 @@ internal sealed class InjectLambdaMetadata
         // retrieve validated factory method
         var factoryMethod = signature.FindFactory(targetType, metadata.Method ?? method.Name, value.Type);
 
+        var callExpression = factoryMethod.IsStatic
+            ? Expression.Call(factoryMethod)
+            : Expression.Call(Expression.Convert(value, targetType), factoryMethod);
+
         // finally call lambda factory *uff*
-        return Expression.Lambda<Func<LambdaExpression>>(
-        Expression.Convert(Expression.Call(Expression.Convert(value, targetType), factoryMethod), typeof(LambdaExpression))).Compile()();
+        return Expression.Lambda<Func<LambdaExpression>>(Expression.Convert(callExpression, typeof(LambdaExpression))).Compile()();
     };
 }

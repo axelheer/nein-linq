@@ -36,7 +36,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Added custom InjectLambdaAttribute provider.</PackageReleaseNotes>
+    <PackageReleaseNotes>Allow static Expression injection for instance methods.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
