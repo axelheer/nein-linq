@@ -1,3 +1,5 @@
+#pragma warning disable CA2263
+
 namespace NeinLinq;
 
 /// <summary>
