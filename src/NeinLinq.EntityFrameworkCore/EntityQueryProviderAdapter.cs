@@ -46,13 +46,8 @@ internal sealed class EntityQueryProviderAdapter : EntityQueryProvider
         public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
             => throw new NotSupportedException();
 
-#if NET9_0_OR_GREATER
-
         public Expression<Func<QueryContext, TResult>> PrecompileQuery<TResult>(Expression query, bool async)
             => throw new NotSupportedException();
-
-#endif
-
     }
 }
 

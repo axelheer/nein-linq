@@ -29,11 +29,11 @@ internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompile
     public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
         => innerCompiler.CreateCompiledQuery<TResult>(RewriteQuery(query));
 
-#if NET9_0_OR_GREATER
-
     public Expression<Func<QueryContext, TResult>> PrecompileQuery<TResult>(Expression query, bool async)
+#if NET9_0_OR_GREATER
         => innerCompiler.PrecompileQuery<TResult>(RewriteQuery(query), async);
-
+#else
+        => throw new NotSupportedException(".NET 9.0 or greater only.");
 #endif
 
     private readonly ExpressionVisitor cleaner
