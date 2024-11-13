@@ -1,5 +1,7 @@
 using Xunit;
 
+#pragma warning disable CA1859
+
 namespace NeinLinq.Tests;
 
 public class NullsafeQueryTest

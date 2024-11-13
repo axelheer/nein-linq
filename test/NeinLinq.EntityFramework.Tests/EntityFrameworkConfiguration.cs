@@ -7,7 +7,7 @@ using System.Data.SQLite.EF6;
 
 namespace NeinLinq.Tests;
 
-public class TestConfiguration : DbConfiguration, IDbConnectionFactory
+internal class TestConfiguration : DbConfiguration, IDbConnectionFactory
 {
     public TestConfiguration()
     {

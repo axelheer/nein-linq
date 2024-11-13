@@ -156,7 +156,7 @@ public class DynamicQueryTest
         public OneTwo? OneTwoMaybe { get; set; }
     }
 
-    public enum OneTwo
+    private enum OneTwo
     {
         Undefined = 0,
         One = 1,

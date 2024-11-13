@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace NeinLinq;
 
-#pragma warning disable CA1812, EF1001
+#pragma warning disable CA1812, EF1001, EF9100
 
 internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompiler
     where TInnerCompiler : IQueryCompiler
@@ -29,6 +29,13 @@ internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompile
     public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
         => innerCompiler.CreateCompiledQuery<TResult>(RewriteQuery(query));
 
+    public Expression<Func<QueryContext, TResult>> PrecompileQuery<TResult>(Expression query, bool async)
+#if NET9_0_OR_GREATER
+        => innerCompiler.PrecompileQuery<TResult>(RewriteQuery(query), async);
+#else
+        => throw new NotSupportedException(".NET 9.0 or greater only.");
+#endif
+
     private readonly ExpressionVisitor cleaner
         = new RewriteQueryCleaner();
 
@@ -36,4 +43,4 @@ internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompile
         => options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q));
 }
 
-#pragma warning restore CA1812, EF1001
+#pragma warning restore CA1812, EF1001, EF9100
