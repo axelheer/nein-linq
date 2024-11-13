@@ -16,11 +16,6 @@ jobs:
       uses: actions/checkout@v4
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
-          9.0.x
     - name: Run tests (${{ matrix.framework }})
       run: dotnet test --configuration Release --framework ${{ matrix.framework }} --results-directory test-results --settings test.runsettings
     - name: Publish coverage
@@ -36,11 +31,6 @@ jobs:
       uses: actions/checkout@v4
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
-          9.0.x
     - name: Create packages (w/o version suffix)
       run: dotnet pack --configuration Release --include-symbols --property:PackageOutputPath=${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') == true
