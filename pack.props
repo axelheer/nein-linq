@@ -36,7 +36,7 @@ To support different LINQ implementations, the following flavours are available.
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Fixed usage of EF Core 9 on .NET 8.</PackageReleaseNotes>
+    <PackageReleaseNotes>Enabled usage of EF Core 9 on .NET 8.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
