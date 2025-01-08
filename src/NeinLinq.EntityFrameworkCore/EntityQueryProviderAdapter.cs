@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace NeinLinq;
@@ -12,7 +11,7 @@ internal sealed class EntityQueryProviderAdapter : EntityQueryProvider
     public ExpressionVisitor Rewriter => provider.Rewriter;
 
     public EntityQueryProviderAdapter(RewriteEntityQueryProvider provider)
-        : base(new EmptyQueryCompiler())
+        : base(null!)
     {
         this.provider = provider;
     }
@@ -31,24 +30,6 @@ internal sealed class EntityQueryProviderAdapter : EntityQueryProvider
 
     public override TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         => provider.ExecuteAsync<TResult>(expression, cancellationToken);
-
-    private sealed class EmptyQueryCompiler : IQueryCompiler
-    {
-        public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
-            => throw new NotSupportedException();
-
-        public Func<QueryContext, TResult> CreateCompiledQuery<TResult>(Expression query)
-            => throw new NotSupportedException();
-
-        public TResult Execute<TResult>(Expression query)
-            => throw new NotSupportedException();
-
-        public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
-            => throw new NotSupportedException();
-
-        public Expression<Func<QueryContext, TResult>> PrecompileQuery<TResult>(Expression query, bool async)
-            => throw new NotSupportedException();
-    }
 }
 
 #pragma warning restore EF1001
