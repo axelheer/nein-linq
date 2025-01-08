@@ -23,37 +23,27 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
         if (services is null)
             throw new ArgumentNullException(nameof(services));
 
-        var adapterAdded = 0;
+        var adapterAdded = false;
 
         for (var index = services.Count - 1; index >= 0; index--)
         {
             var descriptor = services[index];
             if (descriptor.ServiceType != typeof(IQueryCompiler))
                 continue;
-            if (descriptor.ImplementationType is null)
+            if (!typeof(EntityQueryCompilerAdapter).IsAssignableTo(descriptor.ImplementationType))
                 continue;
 
-            // Add Compiler adapter for actual implementation
             services[index] = new ServiceDescriptor(
                 descriptor.ServiceType,
-                typeof(EntityQueryCompilerAdapter<>)
-                    .MakeGenericType(descriptor.ImplementationType),
+                typeof(EntityQueryCompilerAdapter),
                 descriptor.Lifetime
             );
 
-            // Add actual implementation as it is
-            services.Add(
-                new ServiceDescriptor(
-                    descriptor.ImplementationType,
-                    descriptor.ImplementationType,
-                    descriptor.Lifetime
-                )
-            );
-
-            adapterAdded++;
+            adapterAdded = true;
+            break;
         }
 
-        if (adapterAdded == 0)
+        if (!adapterAdded)
             throw new InvalidOperationException("Unable to create rewrite adapter for actual query compiler. Please configure your query provider first!");
 
         _ = services.AddSingleton(new EntityQueryCompilerAdapterOptions(rewriters));

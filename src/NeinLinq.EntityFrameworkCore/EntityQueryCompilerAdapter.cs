@@ -1,46 +1,40 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace NeinLinq;
 
-#pragma warning disable CA1812, EF1001, EF9100
+#pragma warning disable EF1001
 
-internal sealed class EntityQueryCompilerAdapter<TInnerCompiler> : IQueryCompiler
-    where TInnerCompiler : IQueryCompiler
+internal sealed class EntityQueryCompilerAdapter : QueryCompiler
 {
     private readonly EntityQueryCompilerAdapterOptions options;
-    private readonly TInnerCompiler innerCompiler;
 
-    public EntityQueryCompilerAdapter(EntityQueryCompilerAdapterOptions options, TInnerCompiler innerCompiler)
+    public EntityQueryCompilerAdapter(EntityQueryCompilerAdapterOptions options,
+        IQueryContextFactory queryContextFactory,
+        ICompiledQueryCache compiledQueryCache,
+        ICompiledQueryCacheKeyGenerator compiledQueryCacheKeyGenerator,
+        IDatabase database,
+        IDiagnosticsLogger<DbLoggerCategory.Query> logger,
+        ICurrentDbContext currentContext,
+        IEvaluatableExpressionFilter evaluatableExpressionFilter,
+        IModel model)
+        : base(queryContextFactory, compiledQueryCache, compiledQueryCacheKeyGenerator, database, logger, currentContext, evaluatableExpressionFilter, model)
     {
         this.options = options ?? throw new ArgumentNullException(nameof(options));
-        this.innerCompiler = innerCompiler ?? throw new ArgumentNullException(nameof(innerCompiler));
     }
-
-    public TResult Execute<TResult>(Expression query)
-        => innerCompiler.Execute<TResult>(RewriteQuery(query));
-
-    public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
-        => innerCompiler.ExecuteAsync<TResult>(RewriteQuery(query), cancellationToken);
-
-    public Func<QueryContext, TResult> CreateCompiledQuery<TResult>(Expression query)
-        => innerCompiler.CreateCompiledQuery<TResult>(RewriteQuery(query));
-
-    public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
-        => innerCompiler.CreateCompiledQuery<TResult>(RewriteQuery(query));
-
-    public Expression<Func<QueryContext, TResult>> PrecompileQuery<TResult>(Expression query, bool async)
-#if NET9_0_OR_GREATER
-        => innerCompiler.PrecompileQuery<TResult>(RewriteQuery(query), async);
-#else
-        => throw new NotSupportedException(".NET 9.0 or greater only.");
-#endif
 
     private readonly ExpressionVisitor cleaner
         = new RewriteQueryCleaner();
 
-    private Expression RewriteQuery(Expression query)
-        => options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q));
+    // Sadly, the "extraction of parameters" isn't part of any interface; thus, we have to inherit the whole internal QueryCompiler in order to make this happen!
+    // Implementing IQueryExpressionVisitorInterceptor doesn't help for more complex scenarios, because inception happens after extraction, whatever that means...
+    public override Expression ExtractParameters(Expression query, IParameterValues parameterValues, IDiagnosticsLogger<DbLoggerCategory.Query> logger, bool compiledQuery = false, bool generateContextAccessors = false)
+        => base.ExtractParameters(options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q)), parameterValues, logger, compiledQuery, generateContextAccessors);
 }
 
-#pragma warning restore CA1812, EF1001, EF9100
+#pragma warning restore EF1001
