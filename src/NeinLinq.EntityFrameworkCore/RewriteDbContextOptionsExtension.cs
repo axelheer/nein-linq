@@ -30,12 +30,12 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
             var descriptor = services[index];
             if (descriptor.ServiceType != typeof(IQueryCompiler))
                 continue;
-            if (!typeof(EntityQueryCompilerAdapter).IsAssignableTo(descriptor.ImplementationType))
+            if (!typeof(RewriteQueryCompiler).IsAssignableTo(descriptor.ImplementationType))
                 continue;
 
             services[index] = new ServiceDescriptor(
                 descriptor.ServiceType,
-                typeof(EntityQueryCompilerAdapter),
+                typeof(RewriteQueryCompiler),
                 descriptor.Lifetime
             );
 
@@ -46,7 +46,7 @@ internal sealed class RewriteDbContextOptionsExtension : IDbContextOptionsExtens
         if (!adapterAdded)
             throw new InvalidOperationException("Unable to create rewrite adapter for actual query compiler. Please configure your query provider first!");
 
-        _ = services.AddSingleton(new EntityQueryCompilerAdapterOptions(rewriters));
+        _ = services.AddSingleton(new RewriteQueryCompilerOptions(rewriters));
     }
 
     public RewriteDbContextOptionsExtension WithRewriter(ExpressionVisitor rewriter)

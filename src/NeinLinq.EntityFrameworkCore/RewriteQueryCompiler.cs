@@ -10,11 +10,11 @@ namespace NeinLinq;
 
 #pragma warning disable EF1001
 
-internal sealed class EntityQueryCompilerAdapter : QueryCompiler
+internal sealed class RewriteQueryCompiler : QueryCompiler
 {
-    private readonly EntityQueryCompilerAdapterOptions options;
+    private readonly RewriteQueryCompilerOptions options;
 
-    public EntityQueryCompilerAdapter(EntityQueryCompilerAdapterOptions options,
+    public RewriteQueryCompiler(RewriteQueryCompilerOptions options,
         IQueryContextFactory queryContextFactory,
         ICompiledQueryCache compiledQueryCache,
         ICompiledQueryCacheKeyGenerator compiledQueryCacheKeyGenerator,

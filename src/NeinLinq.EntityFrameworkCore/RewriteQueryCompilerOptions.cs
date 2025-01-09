@@ -1,10 +1,10 @@
 namespace NeinLinq;
 
-internal sealed class EntityQueryCompilerAdapterOptions
+internal sealed class RewriteQueryCompilerOptions
 {
     public IReadOnlyList<ExpressionVisitor> Rewriters { get; }
 
-    public EntityQueryCompilerAdapterOptions(params ExpressionVisitor[] rewriters)
+    public RewriteQueryCompilerOptions(params ExpressionVisitor[] rewriters)
     {
         Rewriters = new List<ExpressionVisitor>(rewriters);
     }
