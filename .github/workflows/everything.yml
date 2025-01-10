@@ -17,11 +17,11 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
     - name: Run tests (${{ matrix.framework }})
-      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --results-directory test-results --settings test.runsettings
+      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --collect "Code Coverage;Format=cobertura" --results-directory test-results
     - name: Publish coverage
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
-        directory: ./test-results/
+        files: ./test-results/*/*.cobertura.xml
         token: ${{ secrets.CODECOV_TOKEN }}
   package:
     needs: test
@@ -32,10 +32,10 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
     - name: Create packages (w/o version suffix)
-      run: dotnet pack --configuration Release --include-symbols --property:PackageOutputPath=${{ runner.temp }}\pkg
+      run: dotnet pack --configuration Release --include-symbols --output ${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') == true
     - name: Create packages (w/ version suffix)
-      run: dotnet pack --configuration Release --include-symbols --version-suffix preview.${{ github.run_number }} --property:PackageOutputPath=${{ runner.temp }}\pkg
+      run: dotnet pack --configuration Release --include-symbols --version-suffix preview.${{ github.run_number }} --output ${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') != true
     - name: Upload packages
       uses: actions/upload-artifact@v4
