@@ -6,7 +6,7 @@ namespace NeinLinq;
 /// <summary>
 /// Proxy for rewritten queries.
 /// </summary>
-public class RewriteDbQueryable<T> : RewriteQueryable<T>, IDbAsyncEnumerable<T>
+public class RewriteDbQueryable<T> : RewriteQueryable<T>, IDbAsyncEnumerable<T>, IAsyncEnumerable<T>
 {
     /// <summary>
     /// Create a new query to rewrite.
@@ -46,4 +46,19 @@ public class RewriteDbQueryable<T> : RewriteQueryable<T>, IDbAsyncEnumerable<T>
     /// <inheritdoc />
     IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator()
         => GetAsyncEnumerator();
+
+    /// <inheritdoc />
+    IAsyncEnumerator<T> IAsyncEnumerable<T>.GetAsyncEnumerator(CancellationToken cancellationToken)
+    {
+        // rewrite on enumeration
+        var queryable = Provider.RewriteQuery<T>(Expression);
+
+        if (queryable is IDbAsyncEnumerable dbAsyncEnumerable)
+            return new RewriteDbQueryAsyncEnumerable<T>(dbAsyncEnumerable).GetAsyncEnumerator(cancellationToken);
+
+        if (queryable is IAsyncEnumerable<T> asyncEnumerable)
+            return asyncEnumerable.GetAsyncEnumerator(cancellationToken);
+
+        return new RewriteQueryEnumerator<T>(queryable.GetEnumerator());
+    }
 }
