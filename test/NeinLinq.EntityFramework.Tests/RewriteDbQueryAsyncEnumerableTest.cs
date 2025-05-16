@@ -72,7 +72,9 @@ public class RewriteDbQueryAsyncEnumerableTest
         await using var asyncEnumerator = asyncEnumerable.GetAsyncEnumerator(cts.Token);
         await asyncEnumerator.MoveNextAsync();
 
-        await cts.CancelAsync();
+#pragma warning disable CA1849
+        cts.Cancel();
+#pragma warning restore CA1849
 
         await Assert.ThrowsAsync<OperationCanceledException>(async () =>
         {
@@ -98,7 +100,7 @@ public class RewriteDbQueryAsyncEnumerableTest
 
         public bool DisposeCalled { get; private set; }
 
-        public object Current { get; private set; }
+        public object? Current { get; private set; }
 
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
         {
