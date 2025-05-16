@@ -4,7 +4,7 @@
     <AnalysisMode>All</AnalysisMode>
     <LangVersion>13.0</LangVersion>
     <Nullable>Enable</Nullable>
-    <VersionPrefix>7.3.0</VersionPrefix>
+    <VersionPrefix>7.3.1</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
