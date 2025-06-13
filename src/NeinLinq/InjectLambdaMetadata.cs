@@ -5,13 +5,14 @@ namespace NeinLinq;
 internal sealed class InjectLambdaMetadata
 {
     public bool Config { get; }
+    public bool HasLambdaFactory => lambda.Value is not null;
 
-    private readonly Lazy<Func<Expression?, LambdaExpression?>> lambda;
+    private readonly Lazy<Func<Expression?, LambdaExpression?>?> lambda;
 
     public LambdaExpression? Lambda(Expression? value)
-        => lambda.Value(value);
+        => lambda.Value?.Invoke(value);
 
-    private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>> lambda)
+    private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>?> lambda)
     {
         Config = config;
 
@@ -22,7 +23,7 @@ internal sealed class InjectLambdaMetadata
     {
         var metadata = InjectLambdaAttribute.Provider(method);
 
-        var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
+        var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>?>(()
             => LambdaFactory(method, metadata ?? InjectLambdaAttribute.None));
 
         return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
@@ -33,8 +34,8 @@ internal sealed class InjectLambdaMetadata
         var metadata = InjectLambdaAttribute.Provider(property)
             ?? InjectLambdaAttribute.Provider(property.GetGetMethod(true)!);
 
-        var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
-            => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));
+        var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>?>(()
+            => LambdaFactory(property, metadata));
 
         return new InjectLambdaMetadata(metadata is not null, lambdaFactory);
     }
@@ -57,10 +58,17 @@ internal sealed class InjectLambdaMetadata
         return DynamicLambdaFactory(method, signature);
     }
 
-    private static Func<Expression?, LambdaExpression?> LambdaFactory(PropertyInfo property, InjectLambdaAttribute metadata)
+    private static Func<Expression?, LambdaExpression?>? LambdaFactory(PropertyInfo property, InjectLambdaAttribute? metadata)
     {
         if (property.DeclaringType is null)
             throw new InvalidOperationException($"Property {property.Name} has no declaring type.");
+
+        // property with a setter but no metadata should not be injectable as that's just a normal property
+        if (property.GetSetMethod(true) is not null && metadata is null)
+            return null;
+
+        // metadata is null, use default metadata
+        metadata ??= InjectLambdaAttribute.None;
 
         // retrieve method's signature
         var signature = new InjectLambdaSignature(property);
