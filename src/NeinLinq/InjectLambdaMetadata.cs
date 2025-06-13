@@ -5,13 +5,15 @@ namespace NeinLinq;
 internal sealed class InjectLambdaMetadata
 {
     public bool Config { get; }
+    public bool HasLambdaFactory => lambda is not null;
+    private static readonly InjectLambdaMetadata None = new InjectLambdaMetadata(false, null);
 
-    private readonly Lazy<Func<Expression?, LambdaExpression?>> lambda;
+    private readonly Lazy<Func<Expression?, LambdaExpression?>>? lambda;
 
     public LambdaExpression? Lambda(Expression? value)
-        => lambda.Value(value);
+        => lambda?.Value.Invoke(value);
 
-    private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>> lambda)
+    private InjectLambdaMetadata(bool config, Lazy<Func<Expression?, LambdaExpression?>>? lambda)
     {
         Config = config;
 
@@ -32,6 +34,10 @@ internal sealed class InjectLambdaMetadata
     {
         var metadata = InjectLambdaAttribute.Provider(property)
             ?? InjectLambdaAttribute.Provider(property.GetGetMethod(true)!);
+
+        // property with a setter but no metadata should not be injectable as that's just a normal property
+        if (property.GetSetMethod(true) is not null && metadata is null)
+            return None;
 
         var lambdaFactory = new Lazy<Func<Expression?, LambdaExpression?>>(()
             => LambdaFactory(property, metadata ?? InjectLambdaAttribute.None));

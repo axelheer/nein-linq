@@ -38,7 +38,7 @@ public class InjectableQueryRewriter : ExpressionVisitor
 
         var property = node.Member as PropertyInfo;
 
-        if (property?.GetGetMethod(true) is not null && property.GetSetMethod(true) is null)
+        if (property?.GetGetMethod(true) is not null)
         {
             // cache "meta-data" for performance reasons
             var data = Cache.GetOrAdd(property, _ => InjectLambdaMetadata.Create(property));
@@ -95,6 +95,9 @@ public class InjectableQueryRewriter : ExpressionVisitor
             throw new InvalidOperationException($"Member {member.Name} has no declaring type.");
 
         // inject only configured or green-listed targets
-        return data.Config || greenlist.Any(member.DeclaringType.IsAssignableFrom);
+        var shouldInject =  data.Config || greenlist.Any(member.DeclaringType.IsAssignableFrom);
+
+        // only check if there's a lambda expression if we should inject, this avoids evaluating the LambdaFactory
+        return shouldInject && data.HasLambdaFactory;
     }
 }

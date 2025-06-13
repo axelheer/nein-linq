@@ -17,7 +17,7 @@ public class InjectLambdaQueryTest_Property
     [Fact]
     public void Query_ReadonlyProperty_Ignores()
     {
-        var query = CreateQuery().Select(m => m.Velocity);
+        var query = CreateQuery().ToInjectable().Select(m => m.Velocity);
 
         var result = query.ToList();
 
@@ -194,6 +194,29 @@ public class InjectLambdaQueryTest_Property
         Assert.Equal([200.0, .0, .125], result);
     }
 
+    [Fact]
+    public void Query_WithSetter_Injects()
+    {
+        var query = CreateQuery().ToInjectable().Select(m => m.VelocityWithSetter);
+
+        var result = query.ToList();
+
+        Assert.Equal([200.0, .0, .125], result);
+    }
+
+    [Fact]
+    public void Query_WithSetter_InjectsWhenSetting()
+    {
+        var query = CreateQuery().ToInjectable().Select(m => new Model()
+        {
+            VelocityWithSetter = m.VelocityWithSetter
+        });
+
+        var result = query.ToList().Select(m => m.VelocityWithSetter);
+
+        Assert.Equal([200.0, .0, .125], result);
+    }
+
     private static IQueryable<Model> CreateQuery()
     {
         var data = new[]
@@ -309,6 +332,12 @@ public class InjectLambdaQueryTest_Property
 
         private static CachedExpression<Func<Model, double>> VelocityWithCachedExpressionExpr
             => new(v => v.Distance / v.Time);
+
+        [InjectLambda]
+        public double VelocityWithSetter { get; set; }
+
+        public static Expression<Func<Model, double>> VelocityWithSetterExpr
+            => v => v.Distance / v.Time;
     }
 
     private static class ModelExtensions
