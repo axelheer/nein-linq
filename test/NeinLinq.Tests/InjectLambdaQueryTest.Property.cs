@@ -17,7 +17,7 @@ public class InjectLambdaQueryTest_Property
     [Fact]
     public void Query_ReadonlyProperty_Ignores()
     {
-        var query = CreateQuery().Select(m => m.Velocity);
+        var query = CreateQuery().ToInjectable().Select(m => m.Velocity);
 
         var result = query.ToList();
 
