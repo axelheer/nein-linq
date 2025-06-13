@@ -5,6 +5,7 @@
   <PropertyGroup>
     <DefaultNamespace>NeinLinq.Tests</DefaultNamespace>
     <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    <IsPackable>False</IsPackable>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
