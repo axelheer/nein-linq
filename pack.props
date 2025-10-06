@@ -16,14 +16,17 @@
   <PropertyGroup>
     <Authors>Axel Heer</Authors>
     <Copyright>Copyright © 2014-2025 Axel Heer</Copyright>
-    <Description>NeinLinq provides helpful extensions for using LINQ providers such as Entity Framework that support only a minor subset of .NET functions, reusing functions, rewriting queries, even making them null-safe, and building dynamic queries using translatable predicates and selectors.
+    <Description>NeinLinq provides helpful extensions for using LINQ providers such as Entity
+      Framework that support only a minor subset of .NET functions, reusing functions, rewriting
+      queries, even making them null-safe, and building dynamic queries using translatable
+      predicates and selectors.
 
-To support different LINQ implementations, the following flavours are available. Choose at least one.
+      To support different LINQ implementations, the following flavours are available. Choose at
+      least one.
 
-- Use NeinLinq for plain LINQ queries
-- Use NeinLinq.Async for async LINQ queries
-- Use NeinLinq.EntityFramework for Entity Framework 6 LINQ queries
-- Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries</Description>
+      - Use NeinLinq for plain LINQ queries
+      - Use NeinLinq.EntityFramework for Entity Framework 6 LINQ queries
+      - Use NeinLinq.EntityFrameworkCore for Entity Framework Core LINQ queries</Description>
   </PropertyGroup>
 
   <ItemGroup>

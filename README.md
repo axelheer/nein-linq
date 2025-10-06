@@ -16,12 +16,6 @@ Use *NeinLinq* for plain LINQ queries:
 PM> Install-Package NeinLinq
 ```
 
-Use *NeinLinq.Async* for [async](https://github.com/dotnet/reactive/) LINQ queries:
-
-```ps1
-PM> Install-Package NeinLinq.Async
-```
-
 Use *NeinLinq.EntityFramework* for [Entity Framework 6](https://github.com/dotnet/ef6/) LINQ queries:
 
 ```ps1
@@ -37,7 +31,6 @@ PM> Install-Package NeinLinq.EntityFrameworkCore
 ***Note:*** the extension methods described below have different names depending on the chosen package above, in order to avoid some conflicts! For example there are:
 
 - `ToInjectable` (*NeinLinq*)
-- `ToAsyncInjectable` (*NeinLinq.Async*)
 - `ToDbInjectable` (*NeinLinq.EntityFramework*)
 - `ToEntityInjectable` (*NeinLinq.EntityFrameworkCore*)
 
