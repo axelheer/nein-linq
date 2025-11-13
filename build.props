@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <AnalysisMode>All</AnalysisMode>
-    <LangVersion>13.0</LangVersion>
+    <LangVersion>Latest</LangVersion>
     <Nullable>Enable</Nullable>
-    <VersionPrefix>7.3.2</VersionPrefix>
+    <VersionPrefix>7.4.0</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

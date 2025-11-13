@@ -1,0 +1,25 @@
+<Solution>
+
+  <Folder Name="/.solution/">
+    <File Path=".editorconfig" />
+    <File Path="build.props" />
+    <File Path="pack.props" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <File Path="src/.globalconfig" />
+    <File Path="src/Directory.Build.props" />
+    <Project Path="src/NeinLinq.EntityFramework/NeinLinq.EntityFramework.csproj" />
+    <Project Path="src/NeinLinq.EntityFrameworkCore/NeinLinq.EntityFrameworkCore.csproj" />
+    <Project Path="src/NeinLinq/NeinLinq.csproj" />
+  </Folder>
+
+  <Folder Name="/test/">
+    <File Path="test/.globalconfig" />
+    <File Path="test/Directory.Build.props" />
+    <Project Path="test/NeinLinq.EntityFramework.Tests/NeinLinq.EntityFramework.Tests.csproj" />
+    <Project Path="test/NeinLinq.EntityFrameworkCore.Tests/NeinLinq.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="test/NeinLinq.Tests/NeinLinq.Tests.csproj" />
+  </Folder>
+
+</Solution>
