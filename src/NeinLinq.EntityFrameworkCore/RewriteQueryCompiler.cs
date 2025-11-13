@@ -33,8 +33,21 @@ internal sealed class RewriteQueryCompiler : QueryCompiler
 
     // Sadly, the "extraction of parameters" isn't part of any interface; thus, we have to inherit the whole internal QueryCompiler in order to make this happen!
     // Implementing IQueryExpressionVisitorInterceptor doesn't help for more complex scenarios, because inception happens after extraction, whatever that means...
-    public override Expression ExtractParameters(Expression query, IParameterValues parameterValues, IDiagnosticsLogger<DbLoggerCategory.Query> logger, bool compiledQuery = false, bool generateContextAccessors = false)
-        => base.ExtractParameters(options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q)), parameterValues, logger, compiledQuery, generateContextAccessors);
+    //
+    // TODO: maybe / hopefully there's a more elegant solution for .NET 10 here?
+    //
+    public override Expression ExtractParameters(
+        Expression query,
+#if NET10_0_OR_GREATER
+        Dictionary<string, object?> parameters,
+#else
+        IParameterValues parameters,
+#endif
+        IDiagnosticsLogger<DbLoggerCategory.Query> logger,
+        bool compiledQuery = false,
+        bool generateContextAccessors = false
+    )
+        => base.ExtractParameters(options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q)), parameters, logger, compiledQuery, generateContextAccessors);
 }
 
 #pragma warning restore EF1001
