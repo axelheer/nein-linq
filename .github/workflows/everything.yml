@@ -17,11 +17,11 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v5
     - name: Run tests (${{ matrix.framework }})
-      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --no-progress --results-directory test-results --coverage --coverage-output coverage.xml --coverage-output-format cobertura
+      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --no-progress --results-directory test-results --coverage --coverage-output-format cobertura
     - name: Publish coverage
       uses: codecov/codecov-action@v6
       with:
-        directory: test-results
+        files: ./test-results/*.cobertura.xml
         token: ${{ secrets.CODECOV_TOKEN }}
     - name: Upload coverage
       uses: actions/upload-artifact@v7
