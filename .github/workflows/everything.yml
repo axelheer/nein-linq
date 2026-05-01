@@ -13,13 +13,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
     - name: Run tests (${{ matrix.framework }})
       run: dotnet test --configuration Release --framework ${{ matrix.framework }} --coverage --coverage-output-format cobertura --results-directory test-results
     - name: Publish coverage
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
       with:
         files: ./test-results/*.cobertura.xml
         token: ${{ secrets.CODECOV_TOKEN }}
@@ -28,9 +28,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
     - name: Create packages (w/o version suffix)
       run: dotnet pack --configuration Release --include-symbols --output ${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') == true
@@ -38,7 +38,7 @@ jobs:
       run: dotnet pack --configuration Release --include-symbols --version-suffix preview.${{ github.run_number }} --output ${{ runner.temp }}\pkg
       if: startsWith(github.ref, 'refs/tags/v') != true
     - name: Upload packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: packages
         path: ${{ runner.temp }}\pkg
@@ -48,7 +48,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Download packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: packages
     - name: Publish packages
@@ -59,7 +59,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Download packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: packages
     - name: Publish packages
