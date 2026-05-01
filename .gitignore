@@ -7,6 +7,7 @@
 # Build
 bin/
 obj/
+pkg/
 
 # Test
 test-results/

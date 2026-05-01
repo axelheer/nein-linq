@@ -17,12 +17,17 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v5
     - name: Run tests (${{ matrix.framework }})
-      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --coverage --coverage-output-format cobertura --results-directory test-results
+      run: dotnet test --configuration Release --framework ${{ matrix.framework }} --no-progress --results-directory test-results --coverage --coverage-output coverage.xml --coverage-output-format cobertura
     - name: Publish coverage
       uses: codecov/codecov-action@v6
       with:
-        files: ./test-results/*.cobertura.xml
+        directory: test-results
         token: ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload coverage
+      uses: actions/upload-artifact@v7
+      with:
+        name: coverage
+        path: test-results
   package:
     needs: test
     runs-on: windows-latest
@@ -32,16 +37,20 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v5
     - name: Create packages (w/o version suffix)
-      run: dotnet pack --configuration Release --include-symbols --output ${{ runner.temp }}\pkg
+      run: dotnet pack --configuration Release --include-symbols --output pkg
+      env:
+        DETERMINISTIC_BUILD: true
       if: startsWith(github.ref, 'refs/tags/v') == true
     - name: Create packages (w/ version suffix)
-      run: dotnet pack --configuration Release --include-symbols --version-suffix preview.${{ github.run_number }} --output ${{ runner.temp }}\pkg
+      run: dotnet pack --configuration Release --include-symbols --output pkg --version-suffix preview.${{ github.run_number }}
+      env:
+        DETERMINISTIC_BUILD: true
       if: startsWith(github.ref, 'refs/tags/v') != true
     - name: Upload packages
       uses: actions/upload-artifact@v7
       with:
         name: packages
-        path: ${{ runner.temp }}\pkg
+        path: pkg
     if: github.event_name == 'push'
   prerelease:
     needs: package
