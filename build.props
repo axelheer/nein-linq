@@ -21,12 +21,6 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
-  <ItemGroup>
-    <AssemblyAttribute Include="CLSCompliantAttribute">
-      <_Parameter1>true</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
-
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nein-linq.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
