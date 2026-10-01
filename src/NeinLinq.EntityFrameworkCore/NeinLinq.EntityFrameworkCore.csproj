@@ -4,10 +4,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.31" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.20" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
   </ItemGroup>
