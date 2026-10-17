@@ -10,12 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.111" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.113" PrivateAssets="All" />
   </ItemGroup>
 
   <PropertyGroup>
     <Authors>Axel Heer</Authors>
-    <Copyright>Copyright © 2014-2025 Axel Heer</Copyright>
+    <Copyright>Copyright © 2014-2026 Axel Heer</Copyright>
     <Description>NeinLinq provides helpful extensions for using LINQ providers such as Entity
       Framework that support only a minor subset of .NET functions, reusing functions, rewriting
       queries, even making them null-safe, and building dynamic queries using translatable
