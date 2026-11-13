@@ -39,7 +39,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://nein.tech/nein-linq</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Added explicit support for .NET 10.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added explicit support for .NET 11.</PackageReleaseNotes>
     <PackageTags>LINQ;EF;IX</PackageTags>
   </PropertyGroup>
 
