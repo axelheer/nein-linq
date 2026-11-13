@@ -44,10 +44,16 @@ internal sealed class RewriteQueryCompiler : QueryCompiler
         IParameterValues parameters,
 #endif
         IDiagnosticsLogger<DbLoggerCategory.Query> logger,
+#if NET11_0_OR_GREATER
+        bool compiledQuery = false
+    )
+        => base.ExtractParameters(options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q)), parameters, logger, compiledQuery);
+#else
         bool compiledQuery = false,
         bool generateContextAccessors = false
     )
         => base.ExtractParameters(options.Rewriters.Prepend(cleaner).Aggregate(query, (q, r) => r.Visit(q)), parameters, logger, compiledQuery, generateContextAccessors);
+#endif
 }
 
 #pragma warning restore EF1001
